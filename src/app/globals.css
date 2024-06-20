@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SBAggroB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  @apply box-border;
+}
+
+button {
+  /* @apply cursor-pointer; */
+}
+
+.scroll {
+  @apply overflow-x-hidden overflow-y-scroll;
+}
+
+::-webkit-scrollbar {
+  @apply w-[0.4375rem];
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#ECECEC];
+  /* rounded-[0.625rem] */
+}
+
+.root-bg {
+  @apply h-full w-full bg-[#f3f3f3];
+  /* @apply h-full w-full bg-[#000000]; */
+}
+
+.hd-items {
+  @apply p-0.5 text-[2rem] text-[#8A1F21];
+}
+
+.hd-items:hover {
+  @apply rounded-full bg-white;
+}
+
+.su-i-blocked {
+  @apply select-none rounded-full bg-[#D9D9D9] px-5 py-3 text-[#7B7B7B] outline-none;
+}
+
+.su-i {
+  @apply grow rounded-full border-2 border-[#8A1F21] px-5 py-3 focus:outline-none;
+}
+
+.su-btn {
+  @apply rounded-full border-2 border-[#8A1F21] p-1 px-4 py-2 font-bold;
+}
+
+.p-content-pd {
+  @apply px-[63px] py-[44px];
+}
+
+.p-content-mr {
+  @apply mr-11;
+}
+
+.p-content-s-mr {
+  @apply mr-[1.125rem];
+}
+
+.p-content-rounded {
+  @apply rounded-[1.875rem];
+}
+
+.p-content-mb {
+  @apply mb-11;
+}
+
+.p-content-s-mb {
+  @apply mb-[1.125rem];
+}
+
+.p-content-ss-mb {
+  @apply mb-[0.375rem];
+}
+
+.p-last-mb {
+  @apply mb-[9.375rem];
+}
+
+.p-content-tag {
+  @apply p-content-s-mr rounded-full border-2 px-[0.875rem] py-[0.5rem] text-xs;
+}
+
+.p-voting-champ-dot {
+  @apply mx-[1.125em] h-[1em] w-[1em] rounded-full;
+}
+.p-voting-number-element {
+  @apply mr-[0.625em] text-[1.375em] font-semibold;
+}
+.p-voing-bar-element {
+  @apply mr-[0.125em] h-[1.5em] w-[3.125em] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
+}
+
+.p-tab-title {
+  @apply mr-[0.3125rem] h-[5rem] w-[8.5rem] rounded-t-[0.625rem] text-[#333333];
+}
+
+.p-tab-n-selected {
+  @apply h-[4.375rem] rounded-[10px] bg-[#F8F8F8];
+}
+.p-tab-selected {
+  @apply border-[0.09375rem] border-b-2 border-[#828282] border-b-[#ffffff] text-[#8A1F21];
+}
+
+.p-tab-content {
+  @apply absolute top-[4.89375rem] z-0 w-full border-collapse rounded-[1.875rem] border-[0.09375rem] border-[#828282] px-[1.875rem] py-[1.25rem] text-lg text-[#828282];
+}
+
+.p-font-color-default {
+  @apply text-[#333333];
+}
+
+.p-input-hidden {
+  @apply absolute h-0 w-0 overflow-hidden border-0 p-0;
+}
+
+.p-position {
+  @apply mr-[0.625rem] flex cursor-pointer select-none flex-row items-center whitespace-nowrap rounded-[1.875rem] border-[0.09375rem] px-[1.25rem] py-[0.3125rem] text-xs;
+}
+
+.p-position-selected {
+  @apply bg-[#8A1F21] text-[#ECECEC];
+}
+
+.p-position-n-selected {
+  @apply border-[#828282] bg-[#ECECEC] text-[#828282];
+}
+
+.p-select {
+  @apply mr-[0.625rem] grow rounded-[1.875rem] border-[0.0625rem] border-[#333333] px-[5px] py-[0.3125rem] text-xs outline-none;
+}
+
+.v-label {
+  @apply mb-1 mr-[10px] flex w-[240px] flex-row items-center justify-between rounded-[84px] border-2;
+}
+
+.si-input {
+  @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-[#8A1F21] p-[20px] outline-none;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  aspect-ratio: 4;
+  --_g: no-repeat radial-gradient(circle closest-side, #8a1f21 90%, #0000);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 100%;
+  animation: l7 1s infinite linear;
+}
+@keyframes l7 {
+  33% {
+    background-size:
+      calc(100% / 3) 0%,
+      calc(100% / 3) 100%,
+      calc(100% / 3) 100%;
+  }
+  50% {
+    background-size:
+      calc(100% / 3) 100%,
+      calc(100% / 3) 0%,
+      calc(100% / 3) 100%;
+  }
+  66% {
+    background-size:
+      calc(100% / 3) 100%,
+      calc(100% / 3) 100%,
+      calc(100% / 3) 0%;
+  }
+}
+
+.pagination {
+  display: flex;
+  gap: 1rem;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader2 {
+  position: fixed; /* 수정된 부분 */
+  top: 50%; /* 수정된 부분 */
+  left: 50%; /* 수정된 부분 */
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid #ececec;
+  border-right-color: #8a1f21;
+  animation: l2 1s infinite linear;
+}
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}
