@@ -28,7 +28,7 @@ export default function Home() {
               <Image className='h-[32px] w-[32px]' src={writeSVG} alt='writeIcon' />
               <div className='text-[0.875rem]'>글쓰기</div>
             </button>
-            <div className='mb-[44px] flex flex-row items-center justify-between '>
+            <div className='mb-[40px] flex flex-row items-center justify-end '>
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
             <HomePostItems />
