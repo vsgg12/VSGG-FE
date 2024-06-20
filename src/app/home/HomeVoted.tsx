@@ -1,13 +1,14 @@
+import DoughnutChart from '@/components/DoughnutChart';
 import PostVotingChampList from '../post/PostVotingChampList';
-import PostVotingGraph from '../post/PostVotingGraph';
+import { inGameInfo } from '../post/VoteResult';
 
 export default function HomeVoted() {
   return (
     <>
-      <div className="h-[8.563rm] rounded-[1.875em] bg-gray-100">
-        <div className="flex items-center p-[1.563em] text-[0.625em]">
+      <div className='flex h-full rounded-[1.875em] items-center'>
+        <div className='flex items-center justify-center p-[1rem] text-[0.625em] gap-[30px]'>
           <PostVotingChampList />
-          <PostVotingGraph />
+          <DoughnutChart ingameInfos={inGameInfo} />
         </div>
       </div>
     </>
