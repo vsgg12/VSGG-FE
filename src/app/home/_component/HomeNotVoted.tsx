@@ -50,7 +50,15 @@ export default function HomeNotVoted() {
           </div>
         </div>
       </div>
-      <div className='absolute right-[35%] top-5 flex h-[6rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'>
+      <div
+        className=' flex h-[70%] w-[40%] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         <div className='mb-2 text-center text-[10px]'>
           판결이 궁금하시다구요? <br />
           판결에 참여하고, 결과를 확인하세요
