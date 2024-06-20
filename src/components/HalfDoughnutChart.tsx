@@ -31,9 +31,9 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className='flex flex-col items-center justify-center'>
       <Doughnut data={data} options={options} />
-      <span className="relative bottom-28 text-3xl text-[#8A1F21]">
+      <span className='relative bottom-28 text-3xl text-[#8A1F21]'>
         {winPercentage.toFixed(0)}%
       </span>
     </div>

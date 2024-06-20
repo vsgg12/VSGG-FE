@@ -2,7 +2,7 @@
 
 import HomePostItems from './HomePostItems';
 import Image from 'next/image';
-import writeSVG from '../../../../public/svg/writingWhite.svg';
+import writeSVG from '../../../public/svg/writingWhite.svg';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Search from '@/components/Search';

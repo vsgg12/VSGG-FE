@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartProps {
-  ingameInfos: { championName: string; averageValue: number }[];
+  ingameInfos: GetAVGType[];
 }
 
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ ingameInfos }) => {
@@ -18,13 +18,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ ingameInfos }) => {
       {
         label: '# of Votes',
         data: averageValues,
-        backgroundColor: [
-          '#000000',
-          '#9D2A2C',
-          '#B5B5B5',
-          '#656565',
-          '#8A1F21',
-        ],
+        backgroundColor: ['#000000', '#9D2A2C', '#B5B5B5', '#656565', '#8A1F21'],
         borderWidth: 0,
       },
     ],
@@ -50,7 +44,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ ingameInfos }) => {
   };
 
   return (
-    <div className="flex h-[175px] w-[175px] flex-col items-center justify-center">
+    <div className='flex h-[175px] w-[175px] flex-col items-center justify-center'>
       <Doughnut data={data} options={options} />
     </div>
   );

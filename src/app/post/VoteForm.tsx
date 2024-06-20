@@ -65,6 +65,15 @@ const positions = [
   },
 ];
 
+const inGameInfo: GetGameInfoType[] = [
+  {
+    inGameInfoId: 0,
+    tier: 'CHALLENGER',
+    position: 'TOP',
+    championName: 'string',
+  },
+];
+
 interface IVoteFormProps {
   voteInfo: GetVoteType[];
   setIsVoted: React.Dispatch<SetStateAction<boolean>>;
@@ -74,7 +83,7 @@ interface IVoteFormProps {
 export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProps) {
   const router = useRouter();
 
-  const [selectedChamp, setSelectedChamp] = useState<string>(voteInfo[0].championName);
+  const [selectedChamp, setSelectedChamp] = useState<string>(inGameInfo[0].championName);
 
   const handleSubmit = () => {};
 
@@ -124,7 +133,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
       <div className='relative flex w-full flex-row items-center'>
         <div className='mx-2 flex flex-col '>
-          {voteInfo.map((ingameInfo, index) => (
+          {inGameInfo.map((ingameInfo, index) => (
             <div className={`${colors[index].hover} `} key={index}>
               <div
                 onClick={() => {
@@ -132,7 +141,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
                 }}
               />
               <label
-                htmlFor={`${ingameInfo.inga}`}
+                htmlFor={`${ingameInfo.inGameInfoId}`}
                 className={'v-label cursor-pointer ' + colors[index].border}
               >
                 <div
