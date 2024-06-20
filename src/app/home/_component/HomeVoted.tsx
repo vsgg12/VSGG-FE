@@ -1,5 +1,5 @@
-import PostVotingChampList from '../post/PostVotingChampList';
-import PostVotingGraph from '../post/PostVotingGraph';
+import PostVotingChampList from "@/app/post/_component/PostVotingChampList";
+import PostVotingGraph from "@/app/post/_component/PostVotingGraph";
 
 export default function HomeVoted() {
   return (
