@@ -1,5 +1,5 @@
 'use client';
-import PostTag from '../post/PostTag';
+import PostTag from '@/app/post/_component/PostTag';
 import HomeNotVoted from './HomeNotVoted';
 import { IoPersonCircleSharp } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';

@@ -1,14 +1,12 @@
 'use client';
 
-import HomePostItems from './HomePostItems';
+import HomePostItems from './_component/HomePostItems';
 import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
-import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
 
 export default function Home() {
-  const router = useRouter();
 
   const handleWriteClick = (): void => {
     return;

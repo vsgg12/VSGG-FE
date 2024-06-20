@@ -1,6 +1,6 @@
 'use client';
 import Logo from '@/components/Logo';
-import PostForm from '../PostForm';
+import PostForm from '../_component/PostForm';
 import Header from '@/components/Header';
 import Link from 'next/link';
 

@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import topWSVG from '../../../public/svg/top-w.svg';
-import midWSVG from '../../../public/svg/mid-w.svg';
-import jungleWSVG from '../../../public/svg/jungle-w.svg';
-import onedealWSVG from '../../../public/svg/onedeal-w.svg';
-import supportWSVG from '../../../public/svg/supporter-w.svg';
+import topWSVG from '../../../../public/svg/top-w.svg';
+import midWSVG from '../../../../public/svg/mid-w.svg';
+import jungleWSVG from '../../../../public/svg/jungle-w.svg';
+import onedealWSVG from '../../../../public/svg/onedeal-w.svg';
+import supportWSVG from '../../../../public/svg/supporter-w.svg';
 import DoughnutChart from '@/components/DoughnutChart';
 
 export const inGameInfo: GetAVGType[] = [

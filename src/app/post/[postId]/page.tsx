@@ -1,11 +1,10 @@
 "use client";
-import PostTag from "../PostTag";
-import PostCommentInput from "../PostCommentInput";
-import PostComment from "../PostComment";
-import VoteForm from "../VoteForm";
+import PostTag from "../_component/PostTag";
+import PostCommentInput from "../_component/PostCommentInput";
+import PostComment from "../_component/PostComment";
+import VoteForm from "../_component/VoteForm";
 import { IoPersonCircleSharp } from "react-icons/io5";
-import VoteResult from "../VoteResult";
-import { useRouter } from "next/navigation";
+import VoteResult from "../_component/VoteResult";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
@@ -31,7 +30,6 @@ interface IPostReadParams {
 }
 
 export default function PostRead({ params }: { params: IPostReadParams }) {
-  const router = useRouter();
 
   return (
     <>
@@ -140,7 +138,7 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                           </div>
                         )} */}
                         <div className="mb-[30px] border-l-2 border-[#8A1F21] pl-6">
-                          {commentData?.map((reply: any, index: any) => (
+                          {commentData?.map((reply, index) => (
                             <div key={index} className="mb-[10px]">
                               <PostComment />
                             </div>
