@@ -8,6 +8,9 @@ import LoadingFull from '@/components/LoadingFull';
 export default function SignIn() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const handleLogin = (): void => {
+    router.push('/');
+  };
 
   return (
     <div className='flex h-screen flex-col items-center justify-center'>
@@ -18,7 +21,9 @@ export default function SignIn() {
       <div>
         <div className='mb-3 flex items-center justify-center gap-2 rounded-3xl bg-black p-2 px-32 '>
           <SiNaver color='white' />
-          <button className='text-white'>네이버로 3초만에 시작하기</button>
+          <button className='text-white' onClick={handleLogin}>
+            네이버로 3초만에 시작하기
+          </button>
         </div>
       </div>
       <div className='mb-20 mt-auto flex gap-5'>

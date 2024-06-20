@@ -15,7 +15,7 @@ export default function PostTag({ hashtags }: { hashtags: GetHashTagListType[] }
   };
 
   return (
-    <div className='flex flex-row '>
+    <div className='flex flex-row mt-[20px]'>
       {hashtags.map((hashtag: GetHashTagListType, index: number) => (
         <div key={index} className='flex flex-row'>
           <div className={changeIngameInfoColor(index) + ' p-content-tag'}># {hashtag.name}</div>

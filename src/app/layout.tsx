@@ -14,28 +14,16 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="root-bg">
+    <html lang='ko' className='root-bg'>
       <head>
-        <link
-          rel="stylesheet"
-          href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css"
-        />
-        <Script
-          defer
-          src="https://cdn.swygbro.com/public/widget/swyg-widget.js"
-        ></Script>
+        <link rel='stylesheet' href='https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css' />
+        <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
       </head>
       <body className={inter.className}>
         <RQProvider>
-          <Suspense>
-            {children}
-          </Suspense>
+          <Suspense>{children}</Suspense>
         </RQProvider>
       </body>
     </html>
