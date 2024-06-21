@@ -44,7 +44,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
   };
 
   return (
-    <div className='flex h-[175px] w-[175px] flex-col items-center justify-center'>
+    <div className='flex h-[45%] w-[45%] flex-col items-center justify-center'>
       <Doughnut data={data} options={options} />
     </div>
   );

@@ -81,3 +81,13 @@ type GetAVGType = {
   position: string;
   tier: string;
 };
+
+type GetAlarmConfirmType = {
+  createdDateTime: string;
+  modifyDateTime: string;
+  id: number;
+  memberName: string;
+  memberTier: string;
+  alarmContents: string;
+  alarmType: string;
+};
