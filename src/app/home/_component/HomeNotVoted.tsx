@@ -51,7 +51,7 @@ export default function HomeNotVoted() {
         </div>
       </div>
       <div
-        className=' flex h-[70%] w-[40%] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
+        className=' flex h-[70%] w-[13rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
         style={{
           position: 'absolute',
           left: '50%',
