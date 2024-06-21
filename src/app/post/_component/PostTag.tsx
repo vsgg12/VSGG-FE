@@ -1,4 +1,4 @@
-export default function PostTag({ hashtags }: any) {
+export default function PostTag({ hashtags }: { hashtags: GetHashTagListType[] }) {
   const changeIngameInfoColor = (index: number) => {
     switch (index) {
       case 0:
@@ -15,12 +15,10 @@ export default function PostTag({ hashtags }: any) {
   };
 
   return (
-    <div className="flex">
-      {hashtags.map((hashtag: any, index: number) => (
-        <div key={index} className="mb-[44px] flex flex-row">
-          <div className={changeIngameInfoColor(index) + ' p-content-tag'}>
-            # {hashtag.name}
-          </div>
+    <div className='flex flex-row mt-[20px]'>
+      {hashtags.map((hashtag: GetHashTagListType, index: number) => (
+        <div key={index} className='flex flex-row'>
+          <div className={changeIngameInfoColor(index) + ' p-content-tag'}># {hashtag.name}</div>
         </div>
       ))}
     </div>

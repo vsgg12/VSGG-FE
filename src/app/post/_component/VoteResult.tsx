@@ -1,18 +1,30 @@
 'use client';
 
 import Image from 'next/image';
-import topWSVG from '../../../public/svg/top-w.svg';
-import midWSVG from '../../../public/svg/mid-w.svg';
-import jungleWSVG from '../../../public/svg/jungle-w.svg';
-import onedealWSVG from '../../../public/svg/onedeal-w.svg';
-import supportWSVG from '../../../public/svg/supporter-w.svg';
+import topWSVG from '../../../../public/svg/top-w.svg';
+import midWSVG from '../../../../public/svg/mid-w.svg';
+import jungleWSVG from '../../../../public/svg/jungle-w.svg';
+import onedealWSVG from '../../../../public/svg/onedeal-w.svg';
+import supportWSVG from '../../../../public/svg/supporter-w.svg';
 import DoughnutChart from '@/components/DoughnutChart';
 
-const inGameInfo: GetAVGType[] = [
+export const inGameInfo: GetAVGType[] = [
   {
     championName: '가렌',
-    averageValue: 2,
+    averageValue: 20.5,
     position: '탑',
+    tier: '아이언',
+  },
+  {
+    championName: '노틸러스',
+    averageValue: 40.5,
+    position: '서폿',
+    tier: '아이언',
+  },
+  {
+    championName: '갈리오',
+    averageValue: 39,
+    position: '미드',
     tier: '아이언',
   },
 ];

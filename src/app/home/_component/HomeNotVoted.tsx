@@ -1,7 +1,7 @@
 export default function HomeNotVoted() {
   return (
     <>
-      <div className='flex flex-row items-center  text-[0.625em]'>
+      <div className='flex flex-row items-center  text-[0.625em] gap-[30px]'>
         <div className='flex flex-col'>
           <div className='mb-1 flex flex-row items-center'>
             <div className='p-voting-champ-dot bg-[#000000]'></div>
@@ -26,15 +26,15 @@ export default function HomeNotVoted() {
         </div>
         <div className='flex flex-col items-center'>
           <div className='p-content-s-mb flex flex-row'>
-            <div className='p-voting-number-element text-[#000000] '>2 </div>
+            <div className='p-voting-number-element text-[#000000] '>? </div>
             <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#9D2A2C]'>2 </div>
+            <div className='p-voting-number-element text-[#9D2A2C]'>? </div>
             <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#CACACA]'>2 </div>
+            <div className='p-voting-number-element text-[#CACACA]'>? </div>
             <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#656565] '>2 </div>
+            <div className='p-voting-number-element text-[#656565] '>? </div>
             <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#6C0000] '>2 </div>
+            <div className='p-voting-number-element text-[#6C0000] '>? </div>
           </div>
           <div className='p-content-s-mb flex flex-row'>
             <div className='p-voing-bar-element rounded-l-[30px] bg-[#000000]'></div>
@@ -50,7 +50,15 @@ export default function HomeNotVoted() {
           </div>
         </div>
       </div>
-      <div className='absolute right-[35%] top-5 flex h-[6rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'>
+      <div
+        className=' flex h-[70%] w-[13rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         <div className='mb-2 text-center text-[10px]'>
           판결이 궁금하시다구요? <br />
           판결에 참여하고, 결과를 확인하세요
