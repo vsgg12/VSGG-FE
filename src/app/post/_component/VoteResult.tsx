@@ -31,7 +31,7 @@ export const inGameInfo: GetAVGType[] = [
 
 interface IVoteResultProps {
   postId: number;
-  voteInfos: GetGameInfoType[];
+  voteInfos: GetAVGType[];
 }
 
 export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
@@ -66,46 +66,9 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
   };
 
   const changePositionName = (position: string) => {
-    switch (position) {
-      case 'TOP':
-        return '탑';
-      case 'ADCARRY':
-        return '원딜';
-      case 'MID':
-        return '미드';
-      case 'JUNGLE':
-        return '정글';
-      case 'SUPPORT':
-        return '서폿';
-    }
+    
   };
 
-  const changeTierName = (tier: string) => {
-    switch (tier) {
-      case 'UNRANK':
-        return '언랭';
-      case 'IRON':
-        return '아이언';
-      case 'BRONZE':
-        return '브론즈';
-      case 'SILVER':
-        return '실버';
-      case 'GOLD':
-        return '골드';
-      case 'PLATINUM':
-        return '플래티넘';
-      case 'EMERALD':
-        return '에메랄드';
-      case 'DIAMOND':
-        return '다이아';
-      case 'MASTER':
-        return '마스터';
-      case 'GRANDMASTER':
-        return '그랜드마스터';
-      case 'CHALLENGER':
-        return '챌린저';
-    }
-  };
 
   const changePostionSVG = (position: string) => {
     switch (position) {
@@ -126,10 +89,9 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
       <div className='flex items-center'>
         <div className='flex w-[40%] flex-col'>
-          {voteInfos.map((gameInfo: any, index: number) => (
+          {voteInfos.map((gameInfo, index: number) => (
             <div key={index} className='flex w-full items-center '>
               <label
-                htmlFor={`${gameInfo.inGameInfoId}`}
                 className={'v-label ' + changeVoteInfoBorderColor(index)}
               >
                 <div
@@ -142,7 +104,7 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
                   {/* {changePostionSVG('TOP')} */}
                 </div>
                 <div className='mx-[10px] text-[16px] font-semibold text-[#8A1F21]'>
-                  {changePositionName(gameInfo.position)}
+                  positionName
                   {/* {changePositionName('TOP')} */}
                 </div>
                 <div className='w-[50%]'>
@@ -150,12 +112,12 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
                     {gameInfo.championName}
                   </div>
                   <div className='text=[#33333] text-[12px]'>
-                    {changeTierName(gameInfo.tier)}
+                    changeTierName(gameInfo.tier)
                     {/* {'DIAMOND'} */}
                   </div>
                 </div>
               </label>
-              <div className='text-[#8A1F21]'>과실 {gameInfo.averageValue}</div>
+              <div className='text-[#8A1F21]'>과실 voteInfos.averageValue</div>
             </div>
           ))}
         </div>
@@ -168,7 +130,7 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
           {voteInfos.length === 0 ? (
             <div className='flex justify-center'>아직 투표한 사람이 없는 게시글입니다.</div>
           ) : (
-            <DoughnutChart ingameInfos={inGameInfo} />
+            <DoughnutChart voteAVGInfos={voteInfos} />
           )}
         </div>
       </div>
