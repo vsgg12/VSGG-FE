@@ -12,8 +12,7 @@ interface IVoteFormProps {
 }
 
 export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProps) {
-  const [selectedChampion, setSelectedChampion] = useState<number>();
-
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const getPositionSrc = (position: string) => {
     return positionInfo.find((pos) => pos.name=== position)?.src ?? '';
@@ -34,7 +33,9 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
       <div className='relative flex w-full flex-row items-center'>
         <div className='mx-2 flex flex-col '>
           {voteInfo.map((champion, index) => (
-            <div key={index} className="relative group" onClick={()=>setSelectedChampion(index)}>
+            <div key={index} className="relative group" onClick={()=>{selectedIndex && console.log(voteInfo[selectedIndex].championName) 
+              setSelectedIndex(index)
+            }}>
               <div className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}>
                   <Image
                     src={getPositionSrc(champion.position)}
@@ -43,7 +44,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
                     height={24}
                   />
               </div>
-              <div className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampion === index ? 'visible' : 'invisible'}`}>
+              <div className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedIndex === index ? 'visible' : 'invisible'}`}>
                 <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
                   {champion.position}</p>
                 <div className='w-[50%]'>
@@ -70,10 +71,10 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
               ))}
             </div>
             <div className='p-content-s-mb flex flex-row'>
-                <VotingGraph selectedIndex={selectedChampion}/>
+              <VotingGraph selectedIndex={selectedIndex && selectedIndex} />
             </div>
           </div>
-          <div className='text-[12px] text-[#7B7B7B]'>{selectedChampion && voteInfo[selectedChampion].championName}의 과실을 선택해주세요</div>
+          <div className='text-[12px] text-[#7B7B7B]'>{voteInfo[selectedIndex].championName}의 과실을 선택해주세요</div>
         </div>
       </div>
       <div className='flex justify-end'>

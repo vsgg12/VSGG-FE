@@ -12,8 +12,8 @@ import { commentData, post } from "./dummyData/dummy";
 
 const voteAVGInfos: GetAVGType[] = [
   {
-    championName: "가렌",
-    averageValue: 0,
+    championName: "노틸러스",
+    averageValue: 1,
     position: "탑",
     tier: "챌린저"
   },
@@ -30,13 +30,13 @@ const voteAVGInfos: GetAVGType[] = [
     tier: "마스터",
   },
   {
-    championName: "가렌",
+    championName: "갈리오",
     averageValue: 3,
     position: "탑",
     tier: "챌린저",
   },
   {
-    championName: "가렌",
+    championName: "티모",
     averageValue: 0,
     position: "탑",
     tier: "챌린저",
