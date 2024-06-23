@@ -2,7 +2,7 @@
 export default function PostVotingChampList() {
   return (
     <>
-      <div className='mx-2 flex flex-col '>
+      <div className='flex flex-col '>
         <div className='mb-1 flex flex-row items-center  '>
           <div className='p-voting-champ-dot bg-[#000000]'></div>
           <div className='whitespace-nowrap'>트위스티드 페이트</div>
