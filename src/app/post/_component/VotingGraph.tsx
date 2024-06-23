@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { voteColors } from '../../../data/championData'
 
-// 막대 그래프(투표 결과)
-interface IVotingGraphProps {
 
+interface IVotingGraphProps{
+  selectedIndex: number;
 }
-export default function VotingGraph() {
+
+export default function VotingGraph({selectedIndex}:IVotingGraphProps) {
   const [votingGraph, setVotingGraph] = useState<boolean[]>(Array(10).fill(false));
 
   const handleClick = (index: number) => {
@@ -20,17 +22,14 @@ export default function VotingGraph() {
 
   const findLastTrueIndex = (arr: boolean[]) => {
     for (let index = arr.length - 1; index >= 0; index--) {
-      if (arr[index]) {
-        return index; 
-      }
-    }
-    return -1; 
+      if (arr[index]) return index; 
+    } return -1; 
   };
 
   return (
     <>
     {votingGraph.map((voting, index)=>{
-      const colorClass = voting && 'bg-[#000000]' ;
+      const colorClass = voting && voteColors[selectedIndex].background;
       const roundedClass = index === 0 ? 'rounded-l-[30px]' : (index === 9 ? 'rounded-r-[30px]' : ''); // 첫 번째와 마지막 요소에 둥근 모서리 클래스 추가
 
       return(

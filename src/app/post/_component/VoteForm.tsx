@@ -12,7 +12,7 @@ interface IVoteFormProps {
 }
 
 export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProps) {
-  const [selectedChampion, setSelectedChampion] = useState<number | null>(null);
+  const [selectedChampion, setSelectedChampion] = useState<number>();
 
 
   const getPositionSrc = (position: string) => {
@@ -70,9 +70,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
               ))}
             </div>
             <div className='p-content-s-mb flex flex-row'>
-                <VotingGraph />
-                
-              
+                <VotingGraph selectedIndex={selectedChampion}/>
             </div>
           </div>
           <div className='text-[12px] text-[#7B7B7B]'>{selectedChampion && voteInfo[selectedChampion].championName}의 과실을 선택해주세요</div>
