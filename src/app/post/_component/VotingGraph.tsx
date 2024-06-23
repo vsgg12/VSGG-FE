@@ -1,36 +1,59 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { voteColors } from '../../../data/championData'
+import usePostIdStore from "../[postId]/store/usePostIdStore";
 
-
-interface IVotingGraphProps{
-  selectedIndex: number;
-}
-
-export default function VotingGraph({selectedIndex}:IVotingGraphProps) {
-  const [votingGraph, setVotingGraph] = useState<boolean[]>(Array(10).fill(false));
+export default function VotingGraph() {
+  const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));
+  const { voteResult, setVoteResult, selectedChampIdx } = usePostIdStore();
 
   const handleClick = (index: number) => {
-    if(votingGraph[index] && index === findLastTrueIndex(votingGraph)){
-      const newGraph = [...votingGraph]; // 배열 복사
-      newGraph[index] = false;
+    const lastCheckedIndex = findLastCheckedIndex(votingGraph);
+    const newVoteResult = [...voteResult];
+    const valueCount = votingGraph.filter((item) => item === selectedChampIdx).length;
+
+    if(votingGraph[index] !== -1){
+      const newGraph = [...votingGraph];
+      for(let idx = index ; idx <= lastCheckedIndex; idx++){
+        if(votingGraph[lastCheckedIndex] === selectedChampIdx){
+          newGraph[idx] = -1;
+          if(newVoteResult[selectedChampIdx]){
+            newVoteResult[selectedChampIdx] = newVoteResult[selectedChampIdx] - 1;
+          }
+        }
+      }
       setVotingGraph(newGraph);   
+      setVoteResult(newVoteResult);
     }else{
-    const newGraph = Array(index+1).fill(true).concat(Array(10 - (index + 1)).fill(false));
-    setVotingGraph(newGraph);
+      const newGraph = [...votingGraph];
+      for (let idx = lastCheckedIndex + 1; idx <= index; idx++) {
+        if(votingGraph[lastCheckedIndex] === selectedChampIdx
+          || !votingGraph.includes(selectedChampIdx)
+        ){
+          newGraph[idx] = selectedChampIdx;
+          newVoteResult[selectedChampIdx] = newVoteResult[selectedChampIdx] + 1;
+        }
+      }
+      setVotingGraph(newGraph);
+      setVoteResult(newVoteResult);
     }
+    console.log( votingGraph)
+    console.log('vote' , newVoteResult);
+    
+
   };
 
-  const findLastTrueIndex = (arr: boolean[]) => {
+  const findLastCheckedIndex = (arr: number[]) => {
     for (let index = arr.length - 1; index >= 0; index--) {
-      if (arr[index]) return index; 
-    } return -1; 
+      if (arr[index] !== -1) return index;
+    }
+    return -1; 
   };
 
   return (
     <>
     {votingGraph.map((voting, index)=>{
-      const colorClass = voting && voteColors[selectedIndex].background;
-      const roundedClass = index === 0 ? 'rounded-l-[30px]' : (index === 9 ? 'rounded-r-[30px]' : ''); // 첫 번째와 마지막 요소에 둥근 모서리 클래스 추가
+      const colorClass = (voting !== -1) && `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`;
+      const roundedClass = index === 0 ? 'rounded-l-[30px]' : (index === 9 ? 'rounded-r-[30px]' : ''); 
 
       return(
       <div key={index} className={`p-voing-bar-element ${roundedClass} ${colorClass}`} onClick={()=>{handleClick(index)}}></div>
