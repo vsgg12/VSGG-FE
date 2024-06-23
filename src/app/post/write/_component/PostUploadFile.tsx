@@ -1,6 +1,6 @@
-import { ICreatePostFormProps } from '@/types/form';
+// import { ICreatePostFormProps } from '@/types/form';
 import { SetStateAction, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 import {
   IoDocumentOutline,
   IoEaselOutline,
@@ -10,8 +10,8 @@ import {
 
 const tabs = [
   { id: 0, title: '파일 불러오기' },
-  { id: 1, title: '링크로 불러오기' },
-  { id: 2, title: '썸네일 업로드' },
+  // { id: 1, title: '링크로 불러오기' },
+  { id: 1, title: '썸네일 업로드' },
 ];
 
 interface IPostUploadFileProps {
@@ -25,7 +25,7 @@ export default function PostUploadFile({
   setUploadedVideo,
   setThumbnail,
 }: IPostUploadFileProps) {
-  const { register, watch, setValue } = useForm<ICreatePostFormProps>();
+  // const { register, watch, setValue } = useForm<ICreatePostFormProps>();
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [uploadedThumbnail, setUploadedThumbnail] = useState<any>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,28 +33,29 @@ export default function PostUploadFile({
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleTabChange = (index: number) => {
-    const link = watch('link');
-    if ((index === 0 || index === 2) && link) {
-      const confirmChange = confirm('파일 업로드 선택 시 링크가 삭제됩니다.');
-      if (confirmChange) {
-        setValue('link', '');
-        setSelectedTab(index);
-      } else {
-        return;
-      }
-    } else if ((index === 1 && uploadedVideo) || (index === 1 && uploadedThumbnail)) {
-      const confirmChange = confirm('링크 선택 시 업로드한 파일과 썸네일이 삭제됩니다.');
-      if (confirmChange) {
-        setUploadedVideo(undefined);
-        setUploadedThumbnail(undefined);
-        setThumbnail(undefined);
-        setSelectedTab(index);
-      } else {
-        return;
-      }
-    } else {
-      setSelectedTab(index);
-    }
+    //   const link = watch('link');
+    //   if ((index === 0 || index === 2) && link) {
+    //     const confirmChange = confirm('파일 업로드 선택 시 링크가 삭제됩니다.');
+    //     if (confirmChange) {
+    //       setValue('link', '');
+    //       setSelectedTab(index);
+    //     } else {
+    //       return;
+    //     }
+    //   } else if ((index === 1 && uploadedVideo) || (index === 1 && uploadedThumbnail)) {
+    //     const confirmChange = confirm('링크 선택 시 업로드한 파일과 썸네일이 삭제됩니다.');
+    //     if (confirmChange) {
+    //       setUploadedVideo(undefined);
+    //       setUploadedThumbnail(undefined);
+    //       setThumbnail(undefined);
+    //       setSelectedTab(index);
+    //     } else {
+    //       return;
+    //     }
+    //   } else {
+    //     setSelectedTab(index);
+    //   }
+    setSelectedTab(index);
   };
 
   const changeTabTitleStyle = (index: number): string => {
@@ -124,7 +125,6 @@ export default function PostUploadFile({
     }
 
     if (file) {
-      // Check file size (500MB) and type (mp4)
       const maxSizeMB = 500;
       const maxSizeBytes = maxSizeMB * 1024 * 1024;
       const fileType = 'video/mp4';
@@ -187,11 +187,12 @@ export default function PostUploadFile({
               <div className='text-[30px]'>
                 {index === 0 ? (
                   <IoVideocamOutline />
-                ) : index === 1 ? (
-                  <IoLinkOutline />
-                ) : index === 2 ? (
+                ) : (
+                  // ) : index === 1 ? (
+                  //   <IoLinkOutline />
+                  // )
                   <IoEaselOutline />
-                ) : null}
+                )}
               </div>
               <div className=''>{tab.title}</div>
             </div>
@@ -226,47 +227,46 @@ export default function PostUploadFile({
                   )}
                 </label>
                 <video ref={videoRef} style={{ display: 'none' }} />
-                <canvas ref={canvasRef} style={{ display: 'none' }} />
+                {/* <canvas ref={canvasRef} style={{ display: 'none' }} /> */}
                 <img ref={imageRef} style={{ display: 'none' }} alt='Video Thumbnail' />
               </div>
-            ) : tab.id === 1 ? (
-              <div className='flex flex-row items-center '>
-                <div className='flex w-full flex-row items-center justify-center'>
-                  <IoLinkOutline className='mr-[10px] text-[25px]' />
-                  <input
-                    type='text'
-                    placeholder='링크를 붙여 넣어주세요'
-                    className='p-font-color-default grow outline-none'
-                    {...register('link')}
-                  />
-                </div>
-              </div>
             ) : (
-              tab.id === 2 && (
-                <div onDragOver={handleDragOver} onDrop={handleThumbnailDrop}>
-                  <input
-                    type='file'
-                    id='uploadedThumbnail'
-                    name='uploadedThumbnail'
-                    className='p-input-hidden'
-                    accept='image/*'
-                    onChange={handleThumbnailFileChange}
-                  />
-                  <label
-                    htmlFor='uploadedThumbnail'
-                    className='flex cursor-pointer flex-row items-center justify-center'
-                  >
-                    {uploadedThumbnail ? (
-                      <div>{uploadedThumbnail.name}</div>
-                    ) : (
-                      <>
-                        <IoDocumentOutline className='mr-[10px] text-[20px]' />
-                        <div>파일을 끌어오거나 클릭 후 업로드 하세요</div>
-                      </>
-                    )}
-                  </label>
-                </div>
-              )
+              // : tab.id === 1 ? (
+              // <div className='flex flex-row items-center '>
+              //   <div className='flex w-full flex-row items-center justify-center'>
+              //     <IoLinkOutline className='mr-[10px] text-[25px]' />
+              //     <input
+              //       type='text'
+              //       placeholder='링크를 붙여 넣어주세요'
+              //       className='p-font-color-default grow outline-none'
+              //       {...register('link')}
+              //     />
+              //   </div>
+              // </div>
+              // )
+              <div onDragOver={handleDragOver} onDrop={handleThumbnailDrop}>
+                <input
+                  type='file'
+                  id='uploadedThumbnail'
+                  name='uploadedThumbnail'
+                  className='p-input-hidden'
+                  accept='image/*'
+                  onChange={handleThumbnailFileChange}
+                />
+                <label
+                  htmlFor='uploadedThumbnail'
+                  className='flex cursor-pointer flex-row items-center justify-center'
+                >
+                  {uploadedThumbnail ? (
+                    <div>{uploadedThumbnail.name}</div>
+                  ) : (
+                    <>
+                      <IoDocumentOutline className='mr-[10px] text-[20px]' />
+                      <div>파일을 끌어오거나 클릭 후 업로드 하세요</div>
+                    </>
+                  )}
+                </label>
+              </div>
             )}
           </div>
         ))}
