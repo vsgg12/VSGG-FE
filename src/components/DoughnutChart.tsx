@@ -9,8 +9,8 @@ interface DoughnutChartProps {
 }
 
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
-  const championNames = voteAVGInfos.map((info) => info.championName);
-  const averageValues = voteAVGInfos.map((info) => info.averageValue);
+  const championNames = voteAVGInfos?.map((info) => info.championName);
+  const averageValues = voteAVGInfos?.map((info) => info.averageValue);
 
   const data = {
     labels: championNames,
@@ -44,7 +44,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
   };
 
   return (
-    <div className='flex h-[45%] w-[45%] flex-col items-center justify-center'>
+    <div className='flex h-[110px] w-[110px] flex-col items-center justify-center'>
       <Doughnut data={data} options={options} />
     </div>
   );
