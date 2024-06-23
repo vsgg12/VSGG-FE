@@ -1,56 +1,25 @@
+import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
+import { inGameInfo } from '@/app/post/_component/VoteResult';
+import DoughnutChart from '@/components/DoughnutChart';
+
 export default function HomeNotVoted() {
   return (
     <>
-      <div className='flex flex-row items-center  text-[0.625em]'>
-        <div className='flex flex-col'>
-          <div className='mb-1 flex flex-row items-center'>
-            <div className='p-voting-champ-dot bg-[#000000]'></div>
-            <div className='whitespace-nowrap'>트위스티드 페이트</div>
-          </div>
-          <div className='mb-1  flex flex-row items-center'>
-            <div className='p-voting-champ-dot bg-[#9D2A2C]'></div>
-            <div className='whitespace-nowrap'>블리츠크랭크</div>
-          </div>
-          <div className='mb-1 flex flex-row items-center'>
-            <div className='p-voting-champ-dot bg-[#CACACA]'></div>
-            <div className='whitespace-nowrap'>아우렐리온 솔</div>
-          </div>
-          <div className='mb-1 flex flex-row items-center'>
-            <div className='p-voting-champ-dot bg-[#656565]'></div>
-            <div className='whitespace-nowrap'>레나타 글라스크</div>
-          </div>
-          <div className='mb-1 flex flex-row items-center'>
-            <div className='p-voting-champ-dot bg-[#6C0000]'></div>
-            <div className='whitespace-nowrap'>누누와 윌럼프</div>
-          </div>
-        </div>
-        <div className='flex flex-col items-center'>
-          <div className='p-content-s-mb flex flex-row'>
-            <div className='p-voting-number-element text-[#000000] '>2 </div>
-            <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#9D2A2C]'>2 </div>
-            <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#CACACA]'>2 </div>
-            <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#656565] '>2 </div>
-            <div className='p-voting-number-element '> : </div>
-            <div className='p-voting-number-element text-[#6C0000] '>2 </div>
-          </div>
-          <div className='p-content-s-mb flex flex-row'>
-            <div className='p-voing-bar-element rounded-l-[30px] bg-[#000000]'></div>
-            <div className='p-voing-bar-element bg-[#000000]'></div>
-            <div className='p-voing-bar-element bg-[#9D2A2C]'></div>
-            <div className='p-voing-bar-element bg-[#9D2A2C]'></div>
-            <div className='p-voing-bar-element bg-[#CACACA]'></div>
-            <div className='p-voing-bar-element bg-[#CACACA]'></div>
-            <div className='p-voing-bar-element bg-[#656565]'></div>
-            <div className='p-voing-bar-element bg-[#656565]'></div>
-            <div className='p-voing-bar-element bg-[#6C0000]'></div>
-            <div className='p-voing-bar-element rounded-r-[30px] bg-[#6C0000]'></div>
-          </div>
+      <div className='flex h-full rounded-[1.875em] items-center'>
+        <div className='flex items-center justify-center p-[1rem] text-[0.625em] gap-[90px] blur-sm'>
+          <PostVotingChampList />
+          <DoughnutChart voteAVGInfos={inGameInfo} />
         </div>
       </div>
-      <div className='absolute right-[35%] top-5 flex h-[6rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'>
+      <div
+        className=' flex h-[70%] w-[13rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         <div className='mb-2 text-center text-[10px]'>
           판결이 궁금하시다구요? <br />
           판결에 참여하고, 결과를 확인하세요

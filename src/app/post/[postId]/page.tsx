@@ -9,19 +9,69 @@ import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
 
-const ingameInfos: GetVoteType[] = [
+const voteAVGInfos: GetAVGType[] = [
   {
-    ingameInfoId: 2,
-    ratio: 2,
+    championName: "노틸러스",
+    averageValue: 1,
+    position: "탑",
+    tier: "챌린저"
   },
-];
+  {
+    championName: "가렌",
+    averageValue: 2,
+    position: "정글",
+    tier: "그랜드마스터",
+  },
+  {
+    championName: "트위스티드 페이트",
+    averageValue: 2,
+    position: "탑",
+    tier: "마스터",
+  },
+  {
+    championName: "갈리오",
+    averageValue: 3,
+    position: "탑",
+    tier: "챌린저",
+  },
+  {
+    championName: "티모",
+    averageValue: 0,
+    position: "탑",
+    tier: "챌린저",
+  },
+]
 
-const inGameInfo: GetGameInfoType[] = [
+const ingameInfo: GetGameInfoType[] = [
   {
     inGameInfoId: 0,
-    tier: "CHALLENGER",
-    position: "TOP",
-    championName: "string",
+    tier: "챌린저",
+    position: "탑",
+    championName: "가렌",
+  },
+  {
+    inGameInfoId: 0,
+    tier: "그랜드마스터",
+    position: "JUNGLE",
+    championName: "가렌",
+  },
+  {
+    inGameInfoId: 0,
+    tier: "마스터",
+    position: "탑",
+    championName: "트위스티드 페이트",
+  },
+  {
+    inGameInfoId: 0,
+    tier: "챌린저",
+    position: "탑",
+    championName: "가렌",
+  },
+  {
+    inGameInfoId: 0,
+    tier: "챌린저",
+    position: "탑",
+    championName: "가렌",
   },
 ];
 
@@ -151,14 +201,12 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
               </div>
             </div>
             <VoteForm
-              setIsVoted={() => {
-                return;
-              }}
+              setIsVoted={() => {return;}}
               postId={2}
-              voteInfo={ingameInfos}
+              voteInfo={voteAVGInfos}
             />
 
-            <VoteResult postId={3} voteInfos={inGameInfo} />
+            <VoteResult postId={3} voteInfos={voteAVGInfos} />
           </div>
         </section>
       </main>
