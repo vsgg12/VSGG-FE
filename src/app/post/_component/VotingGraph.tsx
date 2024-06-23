@@ -1,32 +1,44 @@
 import { useState } from "react";
 import { voteColors } from '../../../data/championData'
+import usePostIdStore from "../[postId]/store/usePostIdStore";
 
-
-interface IVotingGraphProps{
-  selectedIndex: number;
-}
-
-export default function VotingGraph({selectedIndex}:IVotingGraphProps) {
+export default function VotingGraph() {
   const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));
+  const { voteResult, setVoteResult, selectedChampIdx } = usePostIdStore();
 
   const handleClick = (index: number) => {
     const lastCheckedIndex = findLastCheckedIndex(votingGraph);
-    console.log(lastCheckedIndex);
+    const newVoteResult = [...voteResult];
+    const valueCount = votingGraph.filter((item) => item === selectedChampIdx).length;
 
     if(votingGraph[index] !== -1){
       const newGraph = [...votingGraph];
-      for(let idx = index; idx <= lastCheckedIndex; idx++){
-        newGraph[idx] = -1;
+      for(let idx = index ; idx <= lastCheckedIndex; idx++){
+        if(votingGraph[lastCheckedIndex] === selectedChampIdx){
+          newGraph[idx] = -1;
+          if(newVoteResult[selectedChampIdx]){
+            newVoteResult[selectedChampIdx] = newVoteResult[selectedChampIdx] - 1;
+          }
+        }
       }
       setVotingGraph(newGraph);   
+      setVoteResult(newVoteResult);
     }else{
       const newGraph = [...votingGraph];
       for (let idx = lastCheckedIndex + 1; idx <= index; idx++) {
-        newGraph[idx] = selectedIndex;
+        if(votingGraph[lastCheckedIndex] === selectedChampIdx
+          || !votingGraph.includes(selectedChampIdx)
+        ){
+          newGraph[idx] = selectedChampIdx;
+          newVoteResult[selectedChampIdx] = newVoteResult[selectedChampIdx] + 1;
+        }
       }
       setVotingGraph(newGraph);
+      setVoteResult(newVoteResult);
     }
     console.log( votingGraph)
+    console.log('vote' , newVoteResult);
+    
 
   };
 
@@ -40,7 +52,7 @@ export default function VotingGraph({selectedIndex}:IVotingGraphProps) {
   return (
     <>
     {votingGraph.map((voting, index)=>{
-      const colorClass = (voting !== -1) && `${voteColors[voting].background} ${voting !== selectedIndex ? 'disabled' : ''}`;
+      const colorClass = (voting !== -1) && `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`;
       const roundedClass = index === 0 ? 'rounded-l-[30px]' : (index === 9 ? 'rounded-r-[30px]' : ''); 
 
       return(

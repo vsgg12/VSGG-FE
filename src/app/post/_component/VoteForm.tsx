@@ -4,6 +4,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { voteColors, positionInfo} from '../../../data/championData'
 import VotingGraph from './VotingGraph';
+import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
   voteInfo: GetAVGType[];
@@ -12,7 +13,12 @@ interface IVoteFormProps {
 }
 
 export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProps) {
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+  const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx } = usePostIdStore();
+
+  useEffect(() => {
+    setVoteResult(Array(voteInfo.length).fill(0));
+  },[]);
 
   const getPositionSrc = (position: string) => {
     return positionInfo.find((pos) => pos.name=== position)?.src ?? '';
@@ -33,9 +39,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
       <div className='relative flex w-full flex-row items-center'>
         <div className='mx-2 flex flex-col '>
           {voteInfo.map((champion, index) => (
-            <div key={index} className="relative group" onClick={()=>{selectedIndex && console.log(voteInfo[selectedIndex].championName) 
-              setSelectedIndex(index)
-            }}>
+            <div key={index} className="relative group" onClick={()=>{setSelectedChampIdx(index)}}>
               <div className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}>
                   <Image
                     src={getPositionSrc(champion.position)}
@@ -44,7 +48,7 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
                     height={24}
                   />
               </div>
-              <div className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedIndex === index ? 'visible' : 'invisible'}`}>
+              <div className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}>
                 <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
                   {champion.position}</p>
                 <div className='w-[50%]'>
@@ -59,10 +63,10 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
           <div className='mb-[3rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
           <div className='flex  flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
-              {voteInfo.map((eachVote, index) => (
+              {voteResult.map((vote, index) => (
                 <div key={index} className='flex'>
                   <div className={voteColors[index].border + ' p-voting-number-element'}>
-                    {eachVote.averageValue}
+                    {vote}
                   </div>
                   {index !== voteInfo.length - 1 && (
                     <div className='p-voting-number-element '> : </div>
@@ -71,10 +75,10 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
               ))}
             </div>
             <div className='p-content-s-mb flex flex-row'>
-              <VotingGraph selectedIndex={selectedIndex && selectedIndex} />
+              <VotingGraph selectedChampIdx={selectedChampIdx && selectedChampIdx} />
             </div>
           </div>
-          <div className='text-[12px] text-[#7B7B7B]'>{voteInfo[selectedIndex].championName}의 과실을 선택해주세요</div>
+          <div className='text-[12px] text-[#7B7B7B]'>{voteInfo[selectedChampIdx].championName}의 과실을 선택해주세요</div>
         </div>
       </div>
       <div className='flex justify-end'>

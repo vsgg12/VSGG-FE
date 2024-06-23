@@ -9,7 +9,6 @@ import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
 
-
 const voteAVGInfos: GetAVGType[] = [
   {
     championName: "노틸러스",
