@@ -36,8 +36,8 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
     //     </div>
     //   </div>
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
-      <div className='relative flex w-full flex-row items-center'>
-        <div className='mx-2 flex flex-col '>
+      <div className='relative flex w-full flex-row justify-around'>
+        <div className='flex flex-col'>
           {voteInfo.map((champion, index) => (
             <div key={index} className="relative group" onClick={()=>{setSelectedChampIdx(index)}}>
               <div className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}>
@@ -59,37 +59,37 @@ export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProp
               </div>
           ))}
         </div>
-        <div className='flex grow flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-center'>
           <div className='mb-[3rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
-          <div className='flex  flex-col items-center'>
+          <div className='flex flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
               {voteResult.map((vote, index) => (
-                <div key={index} className='flex'>
-                  <div className={voteColors[index].border + ' p-voting-number-element'}>
+                <div key={index} className={ ` flex`}>
+                  <p className={`${voteColors[index].text} p-voting-number-element`}>
                     {vote}
-                  </div>
+                  </p>
                   {index !== voteInfo.length - 1 && (
-                    <div className='p-voting-number-element '> : </div>
+                    <div className='p-voting-number-element'> : </div>
                   )}
                 </div>
               ))}
             </div>
             <div className='p-content-s-mb flex flex-row'>
-              <VotingGraph selectedChampIdx={selectedChampIdx && selectedChampIdx} />
+              <VotingGraph />
             </div>
           </div>
           <div className='text-[12px] text-[#7B7B7B]'>{voteInfo[selectedChampIdx].championName}의 과실을 선택해주세요</div>
         </div>
+        <div className='flex flex-col justify-end'>
+          <button
+            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800'
+            onClick={handleSubmit}
+          >
+            제출하기
+          </button>
+        </div>
       </div>
-      <div className='flex justify-end'>
-        <button
-          type='submit'
-          className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800'
-          onClick={handleSubmit}
-        >
-          제출하기
-        </button>
-      </div>
+      
     </div>
   );
 }

@@ -8,6 +8,9 @@ import VoteResult from "../_component/VoteResult";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
+import moment from "moment";
+import { useState } from "react";
+import HomeVoted from "@/app/home/_component/HomeVoted";
 
 const voteAVGInfos: GetAVGType[] = [
   {
@@ -80,6 +83,8 @@ interface IPostReadParams {
 }
 
 export default function PostRead({ params }: { params: IPostReadParams }) {
+  // const formattedDate = moment().format("YYYY-MM-DD");
+  // const [post, setPost] = useState<GetPostDTOType>();
 
   return (
     <>
@@ -87,13 +92,13 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
       <main>
         <Search />
         <section className="flex justify-center">
-          <div className="w-4/5 max-w-[1400px]">
-            <header className="mb-[44px] flex flex-row items-center justify-between">
+          <div className="w-[100%] mx-28">
+            <header className="flex flex-row items-center justify-between">
               <button
                 onClick={() => {
                   history.back();
                 }}
-                className=" mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
+                className="mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
               >
                 <div className="text-[13px]">글 목록</div>
               </button>
@@ -124,7 +129,7 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                           </div>
                         </div>
                         <div className="text-[12px] text-[#C8C8C8]">
-                          2024-06-19
+                          {post[0].updatedAt}
                         </div>
                       </div>
                     </div>
@@ -146,7 +151,6 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                       allowFullScreen
                     ></iframe>
                   )}
-
                   <PostTag hashtags={post[0].hashtagList} />
                   <div className="w-full">{post[0].content}</div>
                 </div>
@@ -205,7 +209,6 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
               postId={2}
               voteInfo={voteAVGInfos}
             />
-
             <VoteResult postId={3} voteInfos={voteAVGInfos} />
           </div>
         </section>

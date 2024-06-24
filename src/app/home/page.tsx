@@ -19,7 +19,7 @@ export default function Home() {
       <main className='px-[50px]'>
         <Search />
         <section className='flex justify-center'>
-          <div className='relative max-w-[1400px]'>
+          <div className='relative w-[100%] mx-28'>
             <button
               onClick={handleWriteClick}
               className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'

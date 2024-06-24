@@ -9,7 +9,6 @@ export default function VotingGraph() {
   const handleClick = (index: number) => {
     const lastCheckedIndex = findLastCheckedIndex(votingGraph);
     const newVoteResult = [...voteResult];
-    const valueCount = votingGraph.filter((item) => item === selectedChampIdx).length;
 
     if(votingGraph[index] !== -1){
       const newGraph = [...votingGraph];

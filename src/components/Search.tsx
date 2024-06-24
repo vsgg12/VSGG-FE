@@ -4,7 +4,7 @@ import Logo from './Logo';
 export default function Search() {
   return (
     <>
-      <div className='mb-[230px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
+      <div className='mb-[180px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
         <div className='relative flex flex-row'>
           <input
