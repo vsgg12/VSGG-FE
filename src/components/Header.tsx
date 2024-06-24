@@ -4,16 +4,18 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useRouter } from 'next/navigation';
+
 import { useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Header() {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
+  const currentUrl = usePathname();
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {
@@ -51,12 +53,14 @@ export default function Header() {
           {isLogin ? (
             <>
               <div className='hd-items cursor-pointer'>
-                <Image
-                  className='h-[32px] w-[32px]'
-                  src={writeSVG}
-                  alt='writeIcon'
-                  onClick={handleGoPostBtnClick}
-                />
+                {currentUrl !== '/post/write' && (
+                  <Image
+                    className='h-[32px] w-[32px]'
+                    src={writeSVG}
+                    alt='writeIcon'
+                    onClick={handleGoPostBtnClick}
+                  />
+                )}
               </div>
 
               <button
