@@ -1,166 +1,157 @@
-"use client";
-import PostTag from "../_component/PostTag";
-import PostCommentInput from "../_component/PostCommentInput";
-import PostComment from "../_component/PostComment";
-import VoteForm from "../_component/VoteForm";
-import { IoPersonCircleSharp } from "react-icons/io5";
-import VoteResult from "../_component/VoteResult";
-import Header from "@/components/Header";
-import Search from "@/components/Search";
-import { commentData, post } from "./dummyData/dummy";
-import { useQuery } from "@tanstack/react-query";
-import getPostItem from "@/api/getPostItem";
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+'use client';
+import PostTag from '../_component/PostTag';
+import PostCommentInput from '../_component/PostCommentInput';
+import PostComment from '../_component/PostComment';
+import VoteForm from '../_component/VoteForm';
+import { IoPersonCircleSharp } from 'react-icons/io5';
+import VoteResult from '../_component/VoteResult';
+import Header from '@/components/Header';
+import Search from '@/components/Search';
+import { commentData, post } from './dummyData/dummy';
+import { useQuery } from '@tanstack/react-query';
+import getPostItem from '@/api/getPostItem';
+import { useEffect, use } from 'react';
+import { useParams } from 'next/navigation';
 // import moment from "moment";
 // import { useState } from "react";
 // import HomeVoted from "@/app/home/_component/HomeVoted";
 
 const voteAVGInfos: GetAVGType[] = [
   {
-    championName: "노틸러스",
+    championName: '노틸러스',
     averageValue: 1,
-    position: "탑",
-    tier: "챌린저"
+    position: '탑',
+    tier: '챌린저',
   },
   {
-    championName: "가렌",
+    championName: '가렌',
     averageValue: 2,
-    position: "정글",
-    tier: "그랜드마스터",
+    position: '정글',
+    tier: '그랜드마스터',
   },
   {
-    championName: "트위스티드 페이트",
+    championName: '트위스티드 페이트',
     averageValue: 2,
-    position: "탑",
-    tier: "마스터",
+    position: '탑',
+    tier: '마스터',
   },
   {
-    championName: "갈리오",
+    championName: '갈리오',
     averageValue: 3,
-    position: "탑",
-    tier: "챌린저",
+    position: '탑',
+    tier: '챌린저',
   },
   {
-    championName: "티모",
+    championName: '티모',
     averageValue: 0,
-    position: "탑",
-    tier: "챌린저",
+    position: '탑',
+    tier: '챌린저',
   },
-]
+];
 
 export default function PostRead() {
-  const {postId} = useParams();
+  const { postId } = useParams();
   const id: string = postId as string;
 
   // const formattedDate = moment().format("YYYY-MM-DD");
   //sconst [post, setPost] = useState<GetPostDTOType>();
   //const postId:number = Number(params.postId);
 
-  const { data:postData, error } = useQuery({
-    queryKey: ["POST_ITEM", id],
-    queryFn: async () => getPostItem(id),
+  const { data: postData, error } = useQuery({
+    queryKey: ['POST_ITEM', id],
+    queryFn: async () => use(getPostItem(id)),
   });
 
   useEffect(() => {
-    if(postData){
+    if (postData) {
       console.log(postData);
     }
-    if(error){
+    if (error) {
       console.log(error);
     }
-  },[]);
-
+  }, []);
 
   return (
     <>
       <Header />
       <main>
         <Search />
-        <section className="flex justify-center">
-          <div className="w-[100%] mx-28">
-            <header className="flex flex-row items-center justify-between">
+        <section className='flex justify-center'>
+          <div className='w-[100%] mx-28'>
+            <header className='flex flex-row items-center justify-between'>
               <button
                 onClick={() => {
                   history.back();
                 }}
-                className="mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
+                className='mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
               >
-                <div className="text-[13px]">글 목록</div>
+                <div className='text-[13px]'>글 목록</div>
               </button>
-              <div className="text-xs text-[#909090]">홈{" > "}게시글</div>
+              <div className='text-xs text-[#909090]'>홈{' > '}게시글</div>
             </header>
 
-            <div className="flex flex-row">
+            <div className='flex flex-row'>
               {post && (
-                <div className=" p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white  px-[63px] pb-[44px]">
-                  <div className="sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px]">
-                    <div className="flex w-full flex-row place-items-start justify-between font-medium">
-                      <div className="p-content-s-mb text-[25px]">
-                        {post[0].title}
-                      </div>
-                      <div className="text-[12px] text-[#C8C8C8]">
-                        조회수 {post[0].viewCount}
-                      </div>
+                <div className=' p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white  px-[63px] pb-[44px]'>
+                  <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px]'>
+                    <div className='flex w-full flex-row place-items-start justify-between font-medium'>
+                      <div className='p-content-s-mb text-[25px]'>{post[0].title}</div>
+                      <div className='text-[12px] text-[#C8C8C8]'>조회수 {post[0].viewCount}</div>
                     </div>
-                    <div className="p-content-s-mb flex flex-row items-center justify-start font-medium">
-                      <IoPersonCircleSharp className="mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]" />
+                    <div className='p-content-s-mb flex flex-row items-center justify-start font-medium'>
+                      <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
                       <div>
-                        <div className="flex flex-row">
-                          <div className=" mr-[6px] text-[12px] text-[#333333]">
+                        <div className='flex flex-row'>
+                          <div className=' mr-[6px] text-[12px] text-[#333333]'>
                             {post[0].memberDTO.nickname}
                           </div>
-                          <div className="text-[12px] text-[#909090]">
-                            {post[0].memberDTO.tier}
-                          </div>
+                          <div className='text-[12px] text-[#909090]'>{post[0].memberDTO.tier}</div>
                         </div>
-                        <div className="text-[12px] text-[#C8C8C8]">
-                          {post[0].updatedAt}
-                        </div>
+                        <div className='text-[12px] text-[#C8C8C8]'>{post[0].updatedAt}</div>
                       </div>
                     </div>
                   </div>
-                  {post[0].video.type === "FILE" ? (
+                  {post[0].video.type === 'FILE' ? (
                     <video
                       controls
-                      className="p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]"
+                      className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]'
                     >
-                      <source src={post[0].video.url} type="video/webm" />
+                      <source src={post[0].video.url} type='video/webm' />
                     </video>
                   ) : (
                     <iframe
-                      className="p-content-rounded p-content-s-mb h-[50%] w-full"
-                      src="https://www.youtube.com/embed/TByv13Yq4I4"
-                      title="롤 랭크 4:5 바론한타"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
+                      className='p-content-rounded p-content-s-mb h-[50%] w-full'
+                      src='https://www.youtube.com/embed/TByv13Yq4I4'
+                      title='롤 랭크 4:5 바론한타'
+                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                      referrerPolicy='strict-origin-when-cross-origin'
                       allowFullScreen
                     ></iframe>
                   )}
                   <PostTag hashtags={post[0].hashtagList} />
-                  <div className="w-full">{post[0].content}</div>
+                  <div className='w-full'>{post[0].content}</div>
                 </div>
               )}
 
-              <div className="p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]">
-                <div className="sticky top-[-1px] bg-[#ffffff] pt-[44px]">
-                  <div className="p-content-s-mb text-lg">댓글</div>
-                  <div className="flex flex-row">
-                    <PostCommentInput postId={postId} />
+              <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
+                <div className='sticky top-[-1px] bg-[#ffffff] pt-[44px]'>
+                  <div className='p-content-s-mb text-lg'>댓글</div>
+                  <div className='flex flex-row'>
+                    <PostCommentInput postId={id} />
                   </div>
                 </div>
                 {commentData.length === 0 ? (
-                  <div className="flex justify-center">
+                  <div className='flex justify-center'>
                     <div>아직 댓글이 없습니다.</div>
                   </div>
                 ) : (
                   <>
                     {commentData.map((comment, index) => (
-                      <div key={index} className="mb-[20px] text-[13px]">
+                      <div key={index} className='mb-[20px] text-[13px]'>
                         <PostComment />
                         <button
                           key={index}
-                          type="button"
+                          type='button'
                           // onClick={() => {
                           //   if (index === showReply) {
                           //     setShowReply(undefined);
@@ -168,7 +159,7 @@ export default function PostRead() {
                           //     setShowReply(index);
                           //   }
                           // }}
-                          className="mb-[10px] text-[10px] font-medium text-[#8A1F21]"
+                          className='mb-[10px] text-[10px] font-medium text-[#8A1F21]'
                         >
                           {/* {index === showReply ? '닫기' : '답글'} */}
                         </button>
@@ -177,9 +168,9 @@ export default function PostRead() {
                             <PostCommentInput postId={params.postId} parentId={comment.id} />
                           </div>
                         )} */}
-                        <div className="mb-[30px] border-l-2 border-[#8A1F21] pl-6">
+                        <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
                           {commentData?.map((reply, index) => (
-                            <div key={index} className="mb-[10px]">
+                            <div key={index} className='mb-[10px]'>
                               <PostComment />
                             </div>
                           ))}
@@ -191,7 +182,9 @@ export default function PostRead() {
               </div>
             </div>
             <VoteForm
-              setIsVoted={() => {return;}}
+              setIsVoted={() => {
+                return;
+              }}
               postId={2}
               voteInfo={voteAVGInfos}
             />
