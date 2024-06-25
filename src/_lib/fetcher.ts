@@ -3,21 +3,18 @@ interface IFetchOptions {
   body?: any;
   method?: string;
   authorization?: string;
-  apiType?: boolean; // 0이면 http 1이면 소켓
   id?: string;
 }
 
 interface IGetOptions {
   endpoint: string;
   authorization?: string;
-  apiType?: boolean;
 }
 
 interface IPostOptions {
   endpoint: string;
   body?: any;
   authorization: string;
-  apiType?: boolean;
 }
 
 interface IDeleteOptions {
@@ -46,7 +43,7 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
   }
 
   try {
-    const res = await fetch(process.env.PROXY_URL as string + endpoint, requestOptions);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,requestOptions);
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -59,20 +56,20 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
   }
 };
 
-const _get = async ({ endpoint, authorization, apiType }: IGetOptions) => {
-  return _fetch({ method: "GET", endpoint, authorization, apiType });
+const _get = async ({ endpoint, authorization }: IGetOptions) => {
+  return _fetch({ method: "GET", endpoint, authorization });
 };
 
-const _post = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "POST", endpoint, body, authorization, apiType });
+const _post = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: "POST", endpoint, body, authorization });
 };
 
-const _patch = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "PATCH", endpoint, body, authorization, apiType });
+const _patch = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: "PATCH", endpoint, body, authorization });
 };
 
-const _put = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "PUT", endpoint, body, authorization, apiType });
+const _put = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: "PUT", endpoint, body, authorization });
 };
 
 const _delete = async ({ endpoint, authorization }: IDeleteOptions) => {
