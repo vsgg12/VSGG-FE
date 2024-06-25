@@ -57,7 +57,7 @@ export default function PostRead() {
   //sconst [post, setPost] = useState<GetPostDTOType>();
   //const postId:number = Number(params.postId);
 
-  const { data:postData, error } = useQuery({
+  const { data:postData } = useQuery({
     queryKey: ["POST_ITEM", id],
     queryFn: async () => getPostItem(id),
   });
@@ -66,9 +66,7 @@ export default function PostRead() {
     if(postData){
       console.log(postData);
     }
-    if(error){
-      console.log(error);
-    }
+   
   },[]);
 
 

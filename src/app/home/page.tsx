@@ -15,17 +15,14 @@ export default function Home() {
     return;
   };
 
-  const { data:postData, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ["POST_LIST"],
     queryFn: async () => getPostList("",""),
   });
 
   useEffect(() => {
-    if(postData){
-      console.log(postData);
-    }
-    if(error){
-      console.log(error);
+    if(data){
+      console.log(data);
     }
   },[]);
 
