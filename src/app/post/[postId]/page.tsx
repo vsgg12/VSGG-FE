@@ -12,9 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import getPostItem from "@/api/getPostItem";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-// import moment from "moment";
-// import { useState } from "react";
-// import HomeVoted from "@/app/home/_component/HomeVoted";
+import moment from "moment";
 
 const voteAVGInfos: GetAVGType[] = [
   {
@@ -52,24 +50,18 @@ const voteAVGInfos: GetAVGType[] = [
 export default function PostRead() {
   const {postId} = useParams();
   const id: string = postId as string;
-
-  // const formattedDate = moment().format("YYYY-MM-DD");
-  //sconst [post, setPost] = useState<GetPostDTOType>();
-  //const postId:number = Number(params.postId);
-
-  const { data:postData } = useQuery({
+  const { data:post } = useQuery({
     queryKey: ["POST_ITEM", id],
     queryFn: async () => getPostItem(id),
   });
+  const [formattedDate, setFormattedDate] = useState<string>();
+  const [votingStatus, setVotingStatus] = useState();
 
-  useEffect(() => {
-    if(postData){
-      console.log(postData);
-    }
-   
+  useEffect(()=>{
+    console.log(post);
+    setFormattedDate(moment(post.createdAt).format("YYYY-MM-DD"));
+    setVotingStatus(post.postDTO.status);
   },[]);
-
-
   return (
     <>
       <Header />
@@ -95,48 +87,37 @@ export default function PostRead() {
                   <div className="sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px]">
                     <div className="flex w-full flex-row place-items-start justify-between font-medium">
                       <div className="p-content-s-mb text-[25px]">
-                        {post[0].title}
+                        {post.postDTO.title}
                       </div>
                       <div className="text-[12px] text-[#C8C8C8]">
-                        조회수 {post[0].viewCount}
+                        조회수 {post.postDTO.viewCount}
                       </div>
                     </div>
-                    <div className="p-content-s-mb flex flex-row items-center justify-start font-medium">
+                    <div className="flex flex-row items-center justify-start font-medium">
                       <IoPersonCircleSharp className="mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]" />
                       <div>
                         <div className="flex flex-row">
                           <div className=" mr-[6px] text-[12px] text-[#333333]">
-                            {post[0].memberDTO.nickname}
+                            {post.postDTO.memberDTO.nickname}
                           </div>
                           <div className="text-[12px] text-[#909090]">
-                            {post[0].memberDTO.tier}
+                            {post.postDTO.memberDTO.tier}
                           </div>
                         </div>
                         <div className="text-[12px] text-[#C8C8C8]">
-                          {post[0].updatedAt}
+                          {formattedDate}
                         </div>
                       </div>
                     </div>
                   </div>
-                  {post[0].video.type === "FILE" ? (
                     <video
                       controls
                       className="p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]"
                     >
-                      <source src={post[0].video.url} type="video/webm" />
+                      <source src={post.postDTO.video.url} type="video/webm" />
                     </video>
-                  ) : (
-                    <iframe
-                      className="p-content-rounded p-content-s-mb h-[50%] w-full"
-                      src="https://www.youtube.com/embed/TByv13Yq4I4"
-                      title="롤 랭크 4:5 바론한타"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    ></iframe>
-                  )}
-                  <PostTag hashtags={post[0].hashtagList} />
-                  <div className="w-full">{post[0].content}</div>
+                  <PostTag hashtags={post.postDTO.hashtagList} />
+                  <div className="w-full mt-10">{post.postDTO.content}</div>
                 </div>
               )}
 
@@ -144,7 +125,7 @@ export default function PostRead() {
                 <div className="sticky top-[-1px] bg-[#ffffff] pt-[44px]">
                   <div className="p-content-s-mb text-lg">댓글</div>
                   <div className="flex flex-row">
-                    <PostCommentInput postId={postId} />
+                    <PostCommentInput postId={id} />
                   </div>
                 </div>
                 {commentData.length === 0 ? (
@@ -188,12 +169,15 @@ export default function PostRead() {
                 )}
               </div>
             </div>
-            <VoteForm
+            {post.isVote ?
+              <VoteResult postId={3} voteInfos={voteAVGInfos} />
+              :<VoteForm
               setIsVoted={() => {return;}}
-              postId={2}
-              voteInfo={voteAVGInfos}
-            />
+              voteInfo={post.inGameInfo}
+              />
+            }
             <VoteResult postId={3} voteInfos={voteAVGInfos} />
+
           </div>
         </section>
       </main>
