@@ -1,8 +1,8 @@
 'use client';
 
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect } from 'react';
 import Image from 'next/image';
-import { voteColors, positionInfo} from '../../../data/championData'
+import { voteColors, positionInfo } from '../../../data/championData';
 import VotingGraph from './VotingGraph';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 
@@ -16,16 +16,13 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
-  },[]);
+  }, []);
 
   const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name=== position)?.src ?? '';
+    return positionInfo.find((pos) => pos.name === position)?.src ?? '';
   };
 
-
-  const handleSubmit = () => {
-    
-  };
+  const handleSubmit = () => {};
 
   return (
     //  <div className='p-content-pd p-content-rounded p-last-mb flex flex h-[313px] w-full items-center bg-white'>
@@ -37,24 +34,35 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
       <div className='relative flex w-full flex-row justify-around'>
         <div className='flex flex-col'>
           {voteInfo.map((champion, index) => (
-            <div key={index} className="relative group" onClick={()=>{setSelectedChampIdx(index)}}>
-              <div className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}>
-                  <Image
-                    src={getPositionSrc(champion.position)}
-                    alt='position'
-                    width={24}
-                    height={24}
-                  />
+            <div
+              key={index}
+              className='relative group'
+              onClick={() => {
+                setSelectedChampIdx(index);
+              }}
+            >
+              <div
+                className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
+              >
+                <Image
+                  src={getPositionSrc(champion.position)}
+                  alt='position'
+                  width={24}
+                  height={24}
+                />
               </div>
-              <div className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}>
+              <div
+                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
+              >
                 <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
-                  {champion.position}</p>
+                  {champion.position}
+                </p>
                 <div className='w-[50%]'>
                   <p className='text=[#33333] text-[14px] font-semibold'>{champion.championName}</p>
                   <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
                 </div>
-                </div>
               </div>
+            </div>
           ))}
         </div>
         <div className='flex flex-col items-center justify-center'>
@@ -76,7 +84,9 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
               <VotingGraph />
             </div>
           </div>
-          <div className='text-[12px] text-[#7B7B7B]'>{voteInfo[selectedChampIdx].championName}의 과실을 선택해주세요</div>
+          <div className='text-[12px] text-[#7B7B7B]'>
+            {voteInfo[selectedChampIdx].championName}의 과실을 선택해주세요
+          </div>
         </div>
         <div className='flex flex-col justify-end'>
           <button

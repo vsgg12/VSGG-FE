@@ -5,7 +5,7 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 
@@ -15,16 +15,19 @@ export default function Home() {
     return;
   };
 
-  const { data } = useQuery({
-    queryKey: ["POST_LIST"],
-    queryFn: async () => getPostList("",""),
+  const { data: postData, error } = useQuery({
+    queryKey: ['POST_LIST'],
+    queryFn: async () => use(getPostList('', '')),
   });
 
   useEffect(() => {
-    if(data){
-      console.log(data);
+    if(postData){
+      console.log(postData);
     }
-  },[]);
+    if(error){
+      console.log(error);
+    }
+  }, []);
 
   return (
     <>

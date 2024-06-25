@@ -16,39 +16,39 @@ import moment from "moment";
 
 const voteAVGInfos: GetAVGType[] = [
   {
-    championName: "노틸러스",
+    championName: '노틸러스',
     averageValue: 1,
-    position: "탑",
-    tier: "챌린저"
+    position: '탑',
+    tier: '챌린저',
   },
   {
-    championName: "가렌",
+    championName: '가렌',
     averageValue: 2,
-    position: "정글",
-    tier: "그랜드마스터",
+    position: '정글',
+    tier: '그랜드마스터',
   },
   {
-    championName: "트위스티드 페이트",
+    championName: '트위스티드 페이트',
     averageValue: 2,
-    position: "탑",
-    tier: "마스터",
+    position: '탑',
+    tier: '마스터',
   },
   {
-    championName: "갈리오",
+    championName: '갈리오',
     averageValue: 3,
-    position: "탑",
-    tier: "챌린저",
+    position: '탑',
+    tier: '챌린저',
   },
   {
-    championName: "티모",
+    championName: '티모',
     averageValue: 0,
-    position: "탑",
-    tier: "챌린저",
+    position: '탑',
+    tier: '챌린저',
   },
-]
+];
 
 export default function PostRead() {
-  const {postId} = useParams();
+  const { postId } = useParams();
   const id: string = postId as string;
   const { data:post } = useQuery({
     queryKey: ["POST_ITEM", id],
@@ -67,21 +67,21 @@ export default function PostRead() {
       <Header />
       <main>
         <Search />
-        <section className="flex justify-center">
-          <div className="w-[100%] mx-28">
-            <header className="flex flex-row items-center justify-between">
+        <section className='flex justify-center'>
+          <div className='w-[100%] mx-28'>
+            <header className='flex flex-row items-center justify-between'>
               <button
                 onClick={() => {
                   history.back();
                 }}
-                className="mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
+                className='mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
               >
-                <div className="text-[13px]">글 목록</div>
+                <div className='text-[13px]'>글 목록</div>
               </button>
-              <div className="text-xs text-[#909090]">홈{" > "}게시글</div>
+              <div className='text-xs text-[#909090]'>홈{' > '}게시글</div>
             </header>
 
-            <div className="flex flex-row">
+            <div className='flex flex-row'>
               {post && (
                 <div className=" p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white  px-[63px] pb-[44px]">
                   <div className="sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px]">
@@ -107,12 +107,13 @@ export default function PostRead() {
                         <div className="text-[12px] text-[#C8C8C8]">
                           {formattedDate}
                         </div>
+                        <div className='text-[12px] text-[#C8C8C8]'>{post[0].updatedAt}</div>
                       </div>
                     </div>
                   </div>
                     <video
                       controls
-                      className="p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]"
+                      className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]'
                     >
                       <source src={post.postDTO.video.url} type="video/webm" />
                     </video>
@@ -129,17 +130,17 @@ export default function PostRead() {
                   </div>
                 </div>
                 {commentData.length === 0 ? (
-                  <div className="flex justify-center">
+                  <div className='flex justify-center'>
                     <div>아직 댓글이 없습니다.</div>
                   </div>
                 ) : (
                   <>
                     {commentData.map((comment, index) => (
-                      <div key={index} className="mb-[20px] text-[13px]">
+                      <div key={index} className='mb-[20px] text-[13px]'>
                         <PostComment />
                         <button
                           key={index}
-                          type="button"
+                          type='button'
                           // onClick={() => {
                           //   if (index === showReply) {
                           //     setShowReply(undefined);
@@ -147,7 +148,7 @@ export default function PostRead() {
                           //     setShowReply(index);
                           //   }
                           // }}
-                          className="mb-[10px] text-[10px] font-medium text-[#8A1F21]"
+                          className='mb-[10px] text-[10px] font-medium text-[#8A1F21]'
                         >
                           {/* {index === showReply ? '닫기' : '답글'} */}
                         </button>
@@ -156,9 +157,9 @@ export default function PostRead() {
                             <PostCommentInput postId={params.postId} parentId={comment.id} />
                           </div>
                         )} */}
-                        <div className="mb-[30px] border-l-2 border-[#8A1F21] pl-6">
+                        <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
                           {commentData?.map((reply, index) => (
-                            <div key={index} className="mb-[10px]">
+                            <div key={index} className='mb-[10px]'>
                               <PostComment />
                             </div>
                           ))}
