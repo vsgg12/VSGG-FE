@@ -32,6 +32,32 @@ export const post: GetPostDTOType[] = [
         name: '정재호',
       },
     ],
+    inGameInfoList: [
+      {
+        inGameInfoId: 20,
+        tier: 'PLATINUM',
+        position: 'TOP',
+        championName: '그라가스',
+      },
+      {
+        inGameInfoId: 21,
+        tier: 'IRON',
+        position: 'ADCARRY',
+        championName: '그레이브즈',
+      },
+      {
+        inGameInfoId: 22,
+        tier: 'SILVER',
+        position: 'MID',
+        championName: '가렌',
+      },
+      {
+        inGameInfoId: 23,
+        tier: 'BRONZE',
+        position: 'JUNGLE',
+        championName: '루시안',
+      },
+    ],
     isVote: true,
   },
 ];

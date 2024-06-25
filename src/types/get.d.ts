@@ -17,6 +17,7 @@ type GetPostDTOType = {
   updatedAt: string;
   hashtagList: GetHashTagListType[];
   isVote: boolean;
+  inGameInfoList: GetGameInfoType[];
 };
 
 type GetVideoType = {
@@ -25,13 +26,13 @@ type GetVideoType = {
 };
 
 type GetMemberDTOType = {
-  token: string;
+  token: string | null;
   email: string;
   nickname: string;
   age: string;
   gender: string;
   mobile: string;
-  profileImage: string;
+  profileImage: string | null;
   tier: string;
   agreeAge: boolean;
   agreeTerms: boolean;
