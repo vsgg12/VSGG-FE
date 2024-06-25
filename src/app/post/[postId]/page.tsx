@@ -8,9 +8,13 @@ import VoteResult from "../_component/VoteResult";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
-import moment from "moment";
-import { useState } from "react";
-import HomeVoted from "@/app/home/_component/HomeVoted";
+import { useQuery } from "@tanstack/react-query";
+import getPostItem from "@/api/getPostItem";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+// import moment from "moment";
+// import { useState } from "react";
+// import HomeVoted from "@/app/home/_component/HomeVoted";
 
 const voteAVGInfos: GetAVGType[] = [
   {
@@ -45,46 +49,28 @@ const voteAVGInfos: GetAVGType[] = [
   },
 ]
 
-const ingameInfo: GetGameInfoType[] = [
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "그랜드마스터",
-    position: "JUNGLE",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "마스터",
-    position: "탑",
-    championName: "트위스티드 페이트",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-];
+export default function PostRead() {
+  const {postId} = useParams();
+  const id: string = postId as string;
 
-interface IPostReadParams {
-  postId: string;
-}
-
-export default function PostRead({ params }: { params: IPostReadParams }) {
   // const formattedDate = moment().format("YYYY-MM-DD");
-  // const [post, setPost] = useState<GetPostDTOType>();
+  //sconst [post, setPost] = useState<GetPostDTOType>();
+  //const postId:number = Number(params.postId);
+
+  const { data:postData, error } = useQuery({
+    queryKey: ["POST_ITEM", id],
+    queryFn: async () => getPostItem(id),
+  });
+
+  useEffect(() => {
+    if(postData){
+      console.log(postData);
+    }
+    if(error){
+      console.log(error);
+    }
+  },[]);
+
 
   return (
     <>
@@ -160,7 +146,7 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                 <div className="sticky top-[-1px] bg-[#ffffff] pt-[44px]">
                   <div className="p-content-s-mb text-lg">댓글</div>
                   <div className="flex flex-row">
-                    <PostCommentInput postId={Number(params.postId)} />
+                    <PostCommentInput postId={postId} />
                   </div>
                 </div>
                 {commentData.length === 0 ? (

@@ -2,7 +2,7 @@ import { BsArrowUpCircle } from 'react-icons/bs';
 import { useState } from 'react';
 import Loading from '@/components/Loading';
 
-export default function PostCommentInput({ postId }: { postId: number }) {
+export default function PostCommentInput({ postId }: { postId: string }) {
   const [isCreationInProgress, setIsCreationInProgress] = useState<boolean>(false);
 
   const handleSubmit = async () => {

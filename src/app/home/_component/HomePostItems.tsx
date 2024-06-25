@@ -102,7 +102,7 @@ export default function HomePostItems() {
               key={index}
               className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff]'
               onClick={() => {
-                router.push(`/post/${String(post.id)}/`);
+                router.push(`/post/${post.id}/`);
               }}
             >
               <div className='flex w-full flex-row justify-between font-medium'>
