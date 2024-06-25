@@ -5,7 +5,9 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import getPostList from '@/api/getPostList';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -13,13 +15,27 @@ export default function Home() {
     return;
   };
 
+  const { data:postData, error } = useQuery({
+    queryKey: ["POST_LIST"],
+    queryFn: async () => getPostList("",""),
+  });
+
+  useEffect(() => {
+    if(postData){
+      console.log(postData);
+    }
+    if(error){
+      console.log(error);
+    }
+  },[]);
+
   return (
     <>
       <Header />
       <main className='px-[50px]'>
         <Search />
         <section className='flex justify-center'>
-          <div className='relative max-w-[1400px]'>
+          <div className='relative w-[100%] mx-28'>
             <button
               onClick={handleWriteClick}
               className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'

@@ -8,6 +8,13 @@ import VoteResult from "../_component/VoteResult";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
 import { commentData, post } from "./dummyData/dummy";
+import { useQuery } from "@tanstack/react-query";
+import getPostItem from "@/api/getPostItem";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+// import moment from "moment";
+// import { useState } from "react";
+// import HomeVoted from "@/app/home/_component/HomeVoted";
 
 const voteAVGInfos: GetAVGType[] = [
   {
@@ -42,44 +49,28 @@ const voteAVGInfos: GetAVGType[] = [
   },
 ]
 
-const ingameInfo: GetGameInfoType[] = [
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "그랜드마스터",
-    position: "JUNGLE",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "마스터",
-    position: "탑",
-    championName: "트위스티드 페이트",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-  {
-    inGameInfoId: 0,
-    tier: "챌린저",
-    position: "탑",
-    championName: "가렌",
-  },
-];
+export default function PostRead() {
+  const {postId} = useParams();
+  const id: string = postId as string;
 
-interface IPostReadParams {
-  postId: string;
-}
+  // const formattedDate = moment().format("YYYY-MM-DD");
+  //sconst [post, setPost] = useState<GetPostDTOType>();
+  //const postId:number = Number(params.postId);
 
-export default function PostRead({ params }: { params: IPostReadParams }) {
+  const { data:postData, error } = useQuery({
+    queryKey: ["POST_ITEM", id],
+    queryFn: async () => getPostItem(id),
+  });
+
+  useEffect(() => {
+    if(postData){
+      console.log(postData);
+    }
+    if(error){
+      console.log(error);
+    }
+  },[]);
+
 
   return (
     <>
@@ -87,13 +78,13 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
       <main>
         <Search />
         <section className="flex justify-center">
-          <div className="w-4/5 max-w-[1400px]">
-            <header className="mb-[44px] flex flex-row items-center justify-between">
+          <div className="w-[100%] mx-28">
+            <header className="flex flex-row items-center justify-between">
               <button
                 onClick={() => {
                   history.back();
                 }}
-                className=" mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
+                className="mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white"
               >
                 <div className="text-[13px]">글 목록</div>
               </button>
@@ -124,7 +115,7 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                           </div>
                         </div>
                         <div className="text-[12px] text-[#C8C8C8]">
-                          2024-06-19
+                          {post[0].updatedAt}
                         </div>
                       </div>
                     </div>
@@ -146,7 +137,6 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                       allowFullScreen
                     ></iframe>
                   )}
-
                   <PostTag hashtags={post[0].hashtagList} />
                   <div className="w-full">{post[0].content}</div>
                 </div>
@@ -156,7 +146,7 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
                 <div className="sticky top-[-1px] bg-[#ffffff] pt-[44px]">
                   <div className="p-content-s-mb text-lg">댓글</div>
                   <div className="flex flex-row">
-                    <PostCommentInput postId={Number(params.postId)} />
+                    <PostCommentInput postId={postId} />
                   </div>
                 </div>
                 {commentData.length === 0 ? (
@@ -205,7 +195,6 @@ export default function PostRead({ params }: { params: IPostReadParams }) {
               postId={2}
               voteInfo={voteAVGInfos}
             />
-
             <VoteResult postId={3} voteInfos={voteAVGInfos} />
           </div>
         </section>
