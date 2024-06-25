@@ -43,7 +43,7 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
   }
 
   try {
-    const res = await fetch(`${process.env.PROXY_URL}${endpoint}`,requestOptions);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,requestOptions);
 
     if (!res.ok) {
       const errorData = await res.json();

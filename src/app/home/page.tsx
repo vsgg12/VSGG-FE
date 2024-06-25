@@ -5,13 +5,29 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import getPostList from '@/api/getPostList';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const handleWriteClick = (): void => {
     return;
   };
+
+  const { data:postData, error } = useQuery({
+    queryKey: ["POST_LIST"],
+    queryFn: async () => getPostList("",""),
+  });
+
+  useEffect(() => {
+    if(postData){
+      console.log(postData);
+    }
+    if(error){
+      console.log(error);
+    }
+  },[]);
 
   return (
     <>
