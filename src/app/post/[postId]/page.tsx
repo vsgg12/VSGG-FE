@@ -10,7 +10,7 @@ import Search from '@/components/Search';
 import { commentData, post } from './dummyData/dummy';
 import { useQuery } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
-import { useEffect, use } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 // import moment from "moment";
 // import { useState } from "react";
@@ -59,7 +59,7 @@ export default function PostRead() {
 
   const { data: postData, error } = useQuery({
     queryKey: ['POST_ITEM', id],
-    queryFn: async () => use(getPostItem(id)),
+    queryFn: async () => getPostItem(id),
   });
 
   useEffect(() => {
