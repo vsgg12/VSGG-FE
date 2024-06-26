@@ -8,6 +8,7 @@ import Search from '@/components/Search';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
+import Loading from '@/components/Loading';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -16,19 +17,22 @@ export default function Home() {
     return;
   };
 
-  const { data: postData, error } = useQuery<GetPostListType>({
-    queryKey: ['POST_LIST'],
-    queryFn: async () => getPostList('', ''),
+  const { data: postData, isLoading } = useQuery<GetPostListType>({
+    queryKey: ['POST_LIST', activeButton],
+    queryFn: async () => {
+      if (activeButton === 'createdatetime') {
+        return await getPostList(activeButton, '');
+      } else if (activeButton === 'view') {
+        return await getPostList(activeButton, '');
+      }
+    },
   });
 
   useEffect(() => {
     if (postData) {
       console.log(postData);
     }
-    if (error) {
-      console.log(error);
-    }
-  }, [postData, error]);
+  }, [postData]);
 
   return (
     <>
@@ -79,6 +83,8 @@ export default function Home() {
             </div>
             {postData ? (
               postData.postDTO.map((post) => <HomePostItems post={post} />)
+            ) : isLoading ? (
+              <Loading />
             ) : (
               <div className='flex flex-col flex-grow items-center justify-center'>
                 현재 작성된 게시물이 없습니다.

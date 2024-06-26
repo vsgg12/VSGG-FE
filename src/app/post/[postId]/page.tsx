@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import moment from 'moment';
 import PostComment from '@/api/postComment';
+import DOMPurify from 'dompurify';
+import { HtmlContext } from 'next/dist/shared/lib/html-context.shared-runtime';
 
 const voteAVGInfos: GetAVGType[] = [
   {
@@ -60,12 +62,15 @@ export default function PostRead() {
   const [formattedDate, setFormattedDate] = useState<string>();
   const [votingStatus, setVotingStatus] = useState<string>();
   const [isCommentInProgress, setIsCommentInProgress] = useState<boolean>(false);
+  const [sanitizedHtml, setSanitizedHtml] = useState();
 
   useEffect(() => {
     if (post) {
       console.log(post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       setVotingStatus(post.postDTO.status);
+      const sanitize = DOMPurify.sanitize(post.postDTO.content);
+      setSanitizedHtml(sanitize);
     }
   }, [post]);
 
@@ -112,7 +117,7 @@ export default function PostRead() {
                         조회수 {post.postDTO.viewCount}
                       </div>
                     </div>
-                    <div className='flex flex-row items-center justify-start font-medium'>
+                    <div className='flex flex-row items-center justify-start font-medium '>
                       <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
                       <div>
                         <div className='flex flex-row'>
@@ -134,7 +139,10 @@ export default function PostRead() {
                     <source src={post.postDTO.video.url} type='video/webm' />
                   </video>
                   <PostTag hashtags={post.postDTO.hashtagList} />
-                  <div className='w-full mt-10'>{post.postDTO.content}</div>
+                  <div
+                    className='w-full mt-10'
+                    dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+                  ></div>
                 </div>
               )}
 
