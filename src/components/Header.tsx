@@ -32,7 +32,7 @@ export default function Header() {
   };
 
   const handleLoginBtnClick = (): void => {
-    setIsLogin(true);
+    router.push('/login');
   };
 
   const handleLogoutBtnClick = (): void => {

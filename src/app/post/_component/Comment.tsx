@@ -1,6 +1,4 @@
-'use client';
-
-export default function PostComment() {
+export default function Comment() {
   return (
     <>
       <div>

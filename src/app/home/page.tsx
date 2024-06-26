@@ -5,29 +5,30 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 
 export default function Home() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
+
   const handleWriteClick = (): void => {
     return;
   };
 
-  const { data: postData, error } = useQuery({
+  const { data: postData, error } = useQuery<GetPostListType>({
     queryKey: ['POST_LIST'],
-    queryFn: async () => use(getPostList('', '')),
+    queryFn: async () => getPostList('', ''),
   });
 
   useEffect(() => {
-    if(postData){
+    if (postData) {
       console.log(postData);
     }
-    if(error){
+    if (error) {
       console.log(error);
     }
-  }, []);
+  }, [postData, error]);
 
   return (
     <>
@@ -76,7 +77,13 @@ export default function Home() {
 
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
-            <HomePostItems />
+            {postData ? (
+              postData.postDTO.map((post) => <HomePostItems post={post} />)
+            ) : (
+              <div className='flex flex-col flex-grow items-center justify-center'>
+                현재 작성된 게시물이 없습니다.
+              </div>
+            )}
           </div>
         </section>
       </main>
