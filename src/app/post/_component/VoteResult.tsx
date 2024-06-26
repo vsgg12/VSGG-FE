@@ -68,7 +68,6 @@ export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
           <div className='mb-[50px] flex text-[20px] '>
             이 게임의 과실은 몇 대 몇 ~?
           </div>
-
           {voteInfos.length === 0 ? (
             <div className='flex justify-center'>아직 투표한 사람이 없는 게시글입니다.</div>
           ) : (

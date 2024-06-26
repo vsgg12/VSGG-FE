@@ -8,13 +8,18 @@ import Search from '@/components/Search';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
+<<<<<<< Updated upstream
 import Loading from '@/components/Loading';
+=======
+import { useRouter } from 'next/navigation';
+>>>>>>> Stashed changes
 
 export default function Home() {
+  const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
 
   const handleWriteClick = (): void => {
-    return;
+    router.push('/post/write');
   };
 
   const { data: postData, isLoading } = useQuery<GetPostListType>({
