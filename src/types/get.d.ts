@@ -19,6 +19,7 @@ type GetPostDTOType = {
   hashtagList: GetHashTagListType[];
   inGameInfoList: GetGameInfoType[];
   isVote: boolean;
+  inGameInfoList: GetGameInfoType[];
 };
 
 type GetVideoType = {

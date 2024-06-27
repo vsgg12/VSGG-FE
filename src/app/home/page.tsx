@@ -8,26 +8,33 @@ import Search from '@/components/Search';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
+import Loading from '@/components/Loading';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
+
   const handleWriteClick = (): void => {
-    return;
+    router.push('/post/write');
   };
 
-  const { data: postData, error } = useQuery({
-    queryKey: ['POST_LIST'],
-    queryFn: async () => getPostList('', ''),
+  const { data: postData, isLoading } = useQuery<GetPostListType>({
+    queryKey: ['POST_LIST', activeButton],
+    queryFn: async () => {
+      if (activeButton === 'createdatetime') {
+        return await getPostList(activeButton, '');
+      } else if (activeButton === 'view') {
+        return await getPostList(activeButton, '');
+      }
+    },
   });
 
   useEffect(() => {
     if (postData) {
       console.log(postData);
     }
-    if (error) {
-      console.log(error);
-    }
-  }, []);
+  }, [postData]);
 
   return (
     <>
@@ -76,7 +83,15 @@ export default function Home() {
 
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
-            <HomePostItems />
+            {postData ? (
+              postData.postDTO.map((post) => <HomePostItems post={post} />)
+            ) : isLoading ? (
+              <Loading />
+            ) : (
+              <div className='flex flex-col flex-grow items-center justify-center'>
+                현재 작성된 게시물이 없습니다.
+              </div>
+            )}
           </div>
         </section>
       </main>
