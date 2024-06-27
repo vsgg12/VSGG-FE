@@ -1,28 +1,12 @@
 import { BsArrowUpCircle } from 'react-icons/bs';
-import { useState } from 'react';
 import Loading from '@/components/Loading';
 
-export default function PostCommentInput({ postId }: { postId: string }) {
-  const [isCreationInProgress, setIsCreationInProgress] = useState<boolean>(false);
+interface IPostCommentProps {
+  handleSubmit: () => void;
+  isProgress: boolean;
+}
 
-  const handleSubmit = async () => {
-    if (isCreationInProgress) {
-      return;
-    }
-
-    setIsCreationInProgress(true);
-  };
-  //   try {
-  //     const res = await createComments(postId, commentData);
-  //     if (res.resultCode === 201) {
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   } finally {
-  //     setIsCreationInProgress(false);
-  //   }
-  // };
-
+export default function PostCommentInput({ handleSubmit, isProgress }: IPostCommentProps) {
   return (
     <div className='mb-[20px] flex grow flex-col'>
       <form className='grow' onSubmit={handleSubmit}>
@@ -37,7 +21,7 @@ export default function PostCommentInput({ postId }: { postId: string }) {
           </button>
         </div>
       </form>
-      {isCreationInProgress && <Loading />}
+      {isProgress && <Loading />}
     </div>
   );
 }

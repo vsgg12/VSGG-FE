@@ -7,12 +7,11 @@ import VotingGraph from './VotingGraph';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
-  voteInfo: GetAVGType[];
+  voteInfo: GetGameInfoType[];
   setIsVoted: React.Dispatch<SetStateAction<boolean>>;
-  postId: number;
 }
 
-export default function VoteForm({ voteInfo, setIsVoted, postId }: IVoteFormProps) {
+export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
   const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx } = usePostIdStore();
 
   useEffect(() => {

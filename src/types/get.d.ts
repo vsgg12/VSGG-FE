@@ -17,6 +17,7 @@ type GetPostDTOType = {
   updatedAt: string;
   hashtagList: GetHashTagListType[];
   isVote: boolean;
+  inGameInfoList: GetGameInfoType[];
 };
 
 type GetVideoType = {
@@ -47,8 +48,9 @@ type GetHashTagListType = {
 type GetPostItemType = {
   resultCode: number;
   resultMsg: string;
-  postDTO: GetPostDTOType[];
-  inGameInfo: GetGameInfoType[];
+  postDTO: GetPostDTOType;
+  inGameInfoList: GetGameInfoType[];
+  memberDTO: GetMemberDTOType;
 };
 
 type GetGameInfoType = {

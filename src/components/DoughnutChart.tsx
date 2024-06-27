@@ -25,7 +25,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos, size }) => 
     ],
   };
 
-  const options: any = {
+  const options = {
     responsive: true,
     plugins: {
       legend: {
@@ -45,7 +45,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos, size }) => 
   };
 
   return (
-    <div className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} flex-col items-center justify-center`}>
+    <div
+      className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} flex-col items-center justify-center`}
+    >
       <Doughnut data={data} options={options} />
     </div>
   );
