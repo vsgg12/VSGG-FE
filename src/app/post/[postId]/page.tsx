@@ -62,7 +62,7 @@ export default function PostRead() {
   const [formattedDate, setFormattedDate] = useState<string>();
   const [votingStatus, setVotingStatus] = useState<string>();
   const [isCommentInProgress, setIsCommentInProgress] = useState<boolean>(false);
-  const [sanitizedHtml, setSanitizedHtml] = useState();
+  const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
   useEffect(() => {
     if (post) {

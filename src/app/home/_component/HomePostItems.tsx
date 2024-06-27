@@ -7,7 +7,7 @@ import HomeVoted from './HomeVoted';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 
-export default function HomePostItems({ post }: { post: GetPostDTOType | undefined }) {
+export default function HomePostItems({ post }: { post: GetPostDTOType }) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
 
