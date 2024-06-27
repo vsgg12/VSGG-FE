@@ -6,13 +6,15 @@ import { useRouter } from 'next/navigation';
 import HomeVoted from './HomeVoted';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import useConvertHTML from '@/hooks/useConvertHTML';
 
-export default function HomePostItems({ post }: { post: GetPostDTOType | undefined }) {
+export default function HomePostItems({ post }: { post: GetPostDTOType }) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
+  const contentsArr = useConvertHTML(post.content);
 
   useEffect(() => {
-    setFormattedDate(moment(post?.createdAt).format('YYYY-MM-DD'));
+    setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
   }, []);
 
   return (
@@ -61,16 +63,17 @@ export default function HomePostItems({ post }: { post: GetPostDTOType | undefin
                 ></iframe>
               )}
               <div className='flex w-full flex-col overflow-hidden'>
-                <div
-                  className='mb-1 line-clamp-[8] h-[50%] cursor-pointer overflow-hidden text-ellipsis decoration-solid'
-                  dangerouslySetInnerHTML={{ __html: post.content }}
-                ></div>
+                <div className='mb-1 line-clamp-[8] h-[50%] cursor-pointer overflow-hidden text-ellipsis decoration-solid'>
+                  {contentsArr.pTags.map((content, idx) => (
+                    <p key={idx}>{content}</p>
+                  ))}
+                </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post?.isVote ? <HomeVoted /> : <HomeNotVoted />}
+                  {post.isVote ? <HomeVoted /> : <HomeNotVoted />}
                 </div>
               </div>
             </div>
-            <PostTag hashtags={post?.hashtagList} />
+            <PostTag hashtags={post.hashtagList} />
           </div>
         )}
       </div>

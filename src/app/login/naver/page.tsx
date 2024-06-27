@@ -13,8 +13,8 @@ export default function Naver() {
 
   const { mutate: login } = useMutation({
     mutationFn: () => NaverLogin({ code, state }),
-    onSuccess: (data) => console.log(data),
-    onSettled: () => router.push('/home'),
+    onSuccess: () => router.push('/home'),
+    onSettled: (data) => console.log(data),
   });
 
   useEffect(() => {
