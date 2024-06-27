@@ -1,18 +1,14 @@
 'use client';
 
 import { SiNaver } from 'react-icons/si';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
 
 export default function Login() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { data: NAVER_AUTH_URL } = useQuery({
-    queryKey: ['KAKAO_CODE'],
+  const { data: NAVER_AUTH_URL, isLoading } = useQuery({
+    queryKey: ['NAVER_URL'],
     queryFn: async () => getNaverURL(),
   });
 

@@ -59,8 +59,8 @@ export default function PostRead() {
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id),
   });
-  const [formattedDate, setFormattedDate] = useState<string>();
-  const [votingStatus, setVotingStatus] = useState<string>();
+  const [formattedDate, setFormattedDate] = useState<string>('');
+  const [votingStatus, setVotingStatus] = useState<string>('');
   const [isCommentInProgress, setIsCommentInProgress] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
