@@ -17,6 +17,8 @@ import DOMPurify from 'dompurify';
 import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
+import ReplyInput from '../_component/ReplyInput';
+import DeleteComment from '@/api/deleteComment';
 
 const voteAVGInfos: IGetAVGType[] = [
   {
@@ -59,56 +61,74 @@ export default function PostRead() {
   const {
     isCommentInProgress,
     setIsCommentInProgress,
-    parentId,
     commentContent,
     setCommentContent,
+    showReply,
+    setShowReply,
   } = useCommentStore();
 
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [votingStatus, setVotingStatus] = useState<string>('');
   const [isVote, setIsVote] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
-  const [showReply, setShowReply] = useState<number | null>(null);
 
   const { data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
-    queryFn: () => getPostItem(id),
+    queryFn: async () => getPostItem(id),
   });
 
   const { data: commentData } = useQuery<IGetCommentListType>({
     queryKey: ['COMMENTS', id],
-    queryFn: () => getComments(id),
+    queryFn: async () => getComments(id),
   });
 
   useEffect(() => {
     if (post) {
       console.log(post);
-      console.log(commentData);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
       setIsVote(post.postDTO.isVote);
     }
+
+    if (commentData) {
+      console.log('comment', commentData);
+    }
   }, [post, commentData]);
 
   const { mutate: writeComment } = useMutation({
-    mutationFn: () => PostComment(id, { parentId: parentId, content: commentContent }, accessToken),
-    onSuccess: () => {
-      setCommentContent('');
-      queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+    mutationFn: () =>
+      PostComment(id, { parentId: showReply, content: commentContent }, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
+      setCommentContent('');
+      setShowReply(null);
     },
     onError: (error) => console.log(error),
   });
 
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+    },
+    onError: (err) => console.log(err),
+  });
+
   const handleCommentSubmit = async () => {
-    if (isCommentInProgress || commentContent === '') {
+    console.log(commentContent);
+    if (isCommentInProgress) {
       return;
     }
     setIsCommentInProgress(true);
 
     writeComment();
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    deleteComment(commentId);
   };
 
   return (
@@ -184,7 +204,10 @@ export default function PostRead() {
                     {commentData &&
                       commentData?.comments.map((comment, index) => (
                         <div key={index} className='mb-[20px] text-[13px]'>
-                          <Comment comment={comment} />
+                          <Comment
+                            comment={comment}
+                            deleteComment={() => handleDeleteComment(comment.id)}
+                          />
                           <button
                             key={index}
                             type='button'
@@ -201,7 +224,7 @@ export default function PostRead() {
                           </button>
                           {showReply === comment.id && (
                             <div className='text-[12px]'>
-                              <PostCommentInput handleSubmit={handleCommentSubmit} />
+                              <ReplyInput handleSubmit={handleCommentSubmit} />
                             </div>
                           )}
                           <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
