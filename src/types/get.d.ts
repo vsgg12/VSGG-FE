@@ -94,11 +94,16 @@ type IGetAVGType = {
 
 // 알람 확인
 type IGetAlarmConfirmType = {
-  createdDateTime: string;
-  modifyDateTime: string;
-  id: number;
-  memberName: string;
-  memberTier: string;
+  resultCode: number;
+  resultMsg: string;
+  alarmDTOList: IAlarmsType[];
+};
+
+type IAlarmsType = {
+  alarmId: number;
   alarmContents: string;
-  alarmType: string;
+  postId: number;
+  alarmType: 'POST' | 'COMMENT';
+  isRead: boolean;
+  createDateTime: string;
 };
