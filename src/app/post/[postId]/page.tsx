@@ -175,7 +175,7 @@ export default function PostRead() {
                     <PostCommentInput handleSubmit={handleCommentSubmit} />
                   </div>
                 </div>
-                {!commentData ? (
+                {commentData?.comments.length === 0 ? (
                   <div className='flex justify-center'>
                     <div>아직 댓글이 없습니다.</div>
                   </div>
@@ -199,7 +199,7 @@ export default function PostRead() {
                           >
                             {showReply === comment.id ? '닫기' : '답글'}
                           </button>
-                          {showReply && (
+                          {showReply === comment.id && (
                             <div className='text-[12px]'>
                               <PostCommentInput handleSubmit={handleCommentSubmit} />
                             </div>
