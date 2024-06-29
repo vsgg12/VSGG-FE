@@ -1,8 +1,10 @@
 import api from '@/_lib/fetcher';
-import { getStoredLoginState } from '@/app/login/store/useAuthStore';
 
-export default async function postRefresh() {
-  const { refreshToken } = getStoredLoginState();
+interface IPostRefresh {
+  refreshToken: string;
+}
+
+export default async function postRefresh(refreshToken: IPostRefresh) {
   const data = await api.post({ endpoint: '/users/token/refresh', body: refreshToken });
   return data;
 }
