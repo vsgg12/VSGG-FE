@@ -91,14 +91,9 @@ export default function PostRead() {
   }, [post, commentData]);
 
   const { mutate: writeComment } = useMutation({
-    mutationFn: () =>
-      PostComment(
-        id,
-        { commentAddRequest: { parentId: parentId, content: commentContent } },
-        accessToken,
-      ),
+    mutationFn: () => PostComment(id, { parentId: parentId, content: commentContent }, accessToken),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', parentId, commentContent] });
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', parentId, commentContent, id] });
       setIsCommentInProgress(false);
     },
     onError: (error) => console.log(error),
