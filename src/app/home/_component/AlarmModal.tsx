@@ -1,7 +1,7 @@
 import React from 'react';
 import AlarmList from './AlarmList';
 
-const dummyData: GetAlarmConfirmType[] = [
+const dummyData: IGetAlarmConfirmType[] = [
   {
     createdDateTime: '2024-05-18T08:18:02.092Z',
     modifyDateTime: '2024-05-18T08:18:02.092Z',

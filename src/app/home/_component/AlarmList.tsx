@@ -2,12 +2,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface AlarmListProps {
-  alarms: GetAlarmConfirmType[];
+  alarms: IGetAlarmConfirmType[];
 }
 
 export default function AlarmList({ alarms }: AlarmListProps) {
   const router = useRouter();
-  const [alarmData, setAlarmData] = useState<GetAlarmConfirmType[]>(alarms);
+  const [alarmData, setAlarmData] = useState<IGetAlarmConfirmType[]>(alarms);
 
   const handleAlarmItemClick = (id: number) => {
     // 해당 알림의 게시글로 이동해야 함(postId 필요)
@@ -15,7 +15,7 @@ export default function AlarmList({ alarms }: AlarmListProps) {
   };
 
   // Group alarms by memberName
-  const groupedAlarms = alarms.reduce<{ [key: string]: GetAlarmConfirmType[] }>((acc, alarm) => {
+  const groupedAlarms = alarms.reduce<{ [key: string]: IGetAlarmConfirmType[] }>((acc, alarm) => {
     if (!acc[alarm.memberName]) {
       acc[alarm.memberName] = [];
     }
