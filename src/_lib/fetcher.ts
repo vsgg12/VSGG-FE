@@ -1,3 +1,7 @@
+import postRefresh from '@/api/postRefresh';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useRouter } from 'next/navigation';
+
 interface IFetchOptions {
   endpoint: string;
   body?: any;
@@ -23,6 +27,7 @@ interface IDeleteOptions {
 }
 
 const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) => {
+  const router = useRouter();
   const headers: HeadersInit = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -46,6 +51,26 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
     const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
 
     if (!res.ok) {
+      if (res.status === 401) {
+        // 토큰 만료시
+        try {
+          const refreshRes = await postRefresh();
+          if (refreshRes) {
+            // 재발급받은 토큰 다시 저장
+            useAuthStore.setState({
+              isLogin: true,
+              accessToken: refreshRes.tokens.accessToken,
+              refreshToken: refreshRes.tokens.refreshToken,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+          // refreshToken도 만료되면
+          useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+          localStorage.clear();
+          router.push('/login');
+        }
+      }
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
