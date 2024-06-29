@@ -1,19 +1,29 @@
-import { ICreatePostFormProps } from '@/types/form';
+import { ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import dynamic from 'next/dynamic';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Quill from 'quill';
 import ReactQuill from 'react-quill';
-import ImageResize from 'quill-image-resize-module-ts';
-
-Quill.register('modules/imageResize', ImageResize);
+// import 'react-quill/dist/quill.snow.css';
 
 const ReactQuillBase = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
-    return ({ forwardedRef, ...props }: { forwardedRef: React.Ref<any> } & any) => (
-      <RQ ref={forwardedRef} {...props} />
-    );
+    const { ImageResize } = await import('quill-image-resize-module-ts');
+    RQ.Quill.register('modules/imageResize', ImageResize);
+
+    return function forwardRef({ forwardedRef, ...props }: IWrappedComponent) {
+      const newProps = {
+        ...props,
+        modules: {
+          ...props.modules,
+          imageResize: {
+            parchment: RQ.Quill.import('parchment'),
+            modules: ['Resize'],
+          },
+        },
+      };
+      return <RQ ref={forwardedRef} {...newProps} />;
+    };
   },
   { ssr: false },
 );
@@ -29,8 +39,8 @@ export default function PostForm() {
     '- 파일 형식: jpg, jpeg, png\n' +
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
     '- 문자 수 제한 : 1000자 이내\n';
-
   const quillRef = useRef<ReactQuill>(null);
+
   const { register } = useForm<ICreatePostFormProps>();
   const [content, setContent] = useState('');
 
@@ -54,6 +64,10 @@ export default function PostForm() {
       /*서버에서 FormData형식으로 받기 때문에 이에 맞는 데이터형식으로 만들어준다.*/
       const formData = new FormData();
       formData.append('file', file);
+      /*에디터 정보를 가져온다.*/
+      let quillObj = quillRef.current?.getEditor();
+      /*에디터 커서 위치를 가져온다.*/
+      const range = quillObj?.getSelection()!;
       // try {
       /*서버에다가 정보를 보내준 다음 서버에서 보낸 url을 imgUrl로 받는다.*/
       // const res = await axios.post('api주소', formData);\
