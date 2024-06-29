@@ -14,14 +14,13 @@ export default function Naver() {
   const { mutate: login } = useMutation({
     mutationFn: () => NaverLogin({ code, state }),
     onSuccess: () => router.push('/home'),
+    onError: (error) => console.log(error),
     onSettled: (data) => console.log(data),
   });
 
   useEffect(() => {
-    if (code && state) {
-      login();
-    }
-  }, [code, state, login]);
+    login();
+  }, []);
 
   return (
     <div>
