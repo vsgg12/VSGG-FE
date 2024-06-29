@@ -9,7 +9,7 @@ interface IPostComment {
 
 export default async function PostComment(body: IPostComment, token: string) {
   const data = await api.post({
-    endpoint: `/api/post/{postid}/comment`,
+    endpoint: `/post/{postid}/comment`,
     body,
     authorization: token,
   });

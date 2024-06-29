@@ -5,21 +5,17 @@ import { persist } from 'zustand/middleware';
 
 type LoginState = {
   isLogin: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
-  setLoginState: (
-    isLogin: boolean,
-    accessToken: string | null,
-    refreshToken: string | null,
-  ) => void;
+  accessToken: string;
+  refreshToken: string;
+  setLoginState: (isLogin: boolean, accessToken: string, refreshToken: string) => void;
 };
 
 export const useAuthStore = create<LoginState>(
   persist(
     (set) => ({
       isLogin: false,
-      accessToken: null,
-      refreshToken: null,
+      accessToken: '',
+      refreshToken: '',
       setLoginState: (isLogin, accessToken, refreshToken) =>
         set({
           isLogin,
@@ -43,6 +39,6 @@ export const getStoredLoginState = () => {
     const refreshToken = storedData.state.refreshToken;
     return { isLogin, accessToken, refreshToken };
   } else {
-    return { isLogin: false, accessToken: null, refreshToken: null };
+    return { isLogin: false, accessToken: '', refreshToken: '' };
   }
 };

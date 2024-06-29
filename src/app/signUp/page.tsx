@@ -4,10 +4,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import deleteIcon from '../../../public/svg/deleteIcon.svg';
+import { useMutation } from '@tanstack/react-query';
+import PostSignUp from '@/api/PostSignUp';
+import { useAuthStore } from '../login/store/useAuthStore';
+import getNicknameCheck from '@/api/getNicknameCheck';
 
 export default function SignUp() {
   const router = useRouter();
-  const [nickName, setNickName] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
   const [isSameNickname, setIsSameNickname] = useState<boolean>(true); // 닉네임 중복인지 아닌지
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
@@ -17,6 +21,8 @@ export default function SignUp() {
     agreePrivacy: false,
     agreePromotion: false,
   });
+  const email = String(localStorage.getItem('email'));
+  const profileImage = String(localStorage.getItem('profileImage'));
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
@@ -35,50 +41,88 @@ export default function SignUp() {
     });
   };
 
-  const handleChangeNickName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    if (inputValue !== nickName) {
+    if (inputValue !== nickname) {
       setIsSameNickname(true);
     }
-    setNickName(inputValue);
+    setNickname(inputValue);
     inputValue.length > 1 && inputValue.length <= 20
       ? setErrorMessage('')
       : setErrorMessage('닉네임은 2글자 이상 20글자 이하이어야 합니다.');
   };
+  const { mutate: nicknameCheck } = useMutation({
+    mutationFn: () => getNicknameCheck(nickname),
+    mutationKey: ['nickNameCheck', isSameNickname],
+    onSuccess: (data) => {
+      if (data.nicknameCheck) {
+        setErrorMessage('중복된 닉네임입니다.');
+      } else {
+        setErrorMessage('사용 가능한 닉네임입니다.');
+        setIsSameNickname(false);
+      }
+    },
+    onError: (error) => console.log(error),
+  });
 
   // 닉네임 중복 체크
   const handleCheckNickname = () => {
-    if (nickName === '') {
+    if (nickname === '') {
       return;
     }
     if (errorMessage !== '') {
       return;
     }
-    // 중복일때
-    // setErrorMessage('중복된 닉네임입니다.');
-    // 중복이 아닐때
-    setErrorMessage('사용 가능한 닉네임입니다.');
-    setIsSameNickname(false);
+    nicknameCheck();
   };
 
   const handleDeleteBtnClick = () => {
-    setNickName('');
+    setNickname('');
     setIsSameNickname(true);
     setErrorMessage('');
   };
 
   useEffect(() => {
-    !isSameNickname &&
-    checkboxes.agreeAge &&
-    checkboxes.agreePrivacy &&
-    checkboxes.agreePromotion &&
-    checkboxes.agreeTerms
+    !isSameNickname && checkboxes.agreeAge && checkboxes.agreePrivacy && checkboxes.agreeTerms
       ? setIsAllValid(true)
       : setIsAllValid(false);
-  }, [nickName, checkboxes, isSameNickname]);
+  }, [nickname, checkboxes, isSameNickname]);
+
+  const { mutate: signUp } = useMutation({
+    mutationFn: () =>
+      PostSignUp({
+        email,
+        profileImage,
+        nickname,
+        agrees: {
+          agreeAge: checkboxes.agreeAge,
+          agreeTerms: checkboxes.agreeTerms,
+          agreePrivacy: checkboxes.agreePrivacy,
+          agreePromotion: checkboxes.agreePromotion,
+        },
+      }),
+    onError: (error) => {
+      alert('네트워크 또는 기타 문제로 오류가 발생하였습니다. \n 다시 시도해주세요.');
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      useAuthStore.setState({
+        isLogin: true,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      });
+      localStorage.setItem('nickname', nickname);
+      alert('회원가입이 완료되었습니다.');
+      router.push('/home');
+    },
+  });
 
   const handleSignUpBtnClick = (): void => {
-    isAllValid && router.push('/');
+    if (!isAllValid) {
+      return;
+    }
+    signUp();
   };
 
   return (
@@ -96,7 +140,7 @@ export default function SignUp() {
         <div className='flex flex-col gap-10 w-[530px]'>
           <div className='flex flex-col gap-2'>
             <p>이메일</p>
-            <input type='text' readOnly value='jjh0773@naver.com' className='su-i-blocked' />
+            <input type='text' readOnly value={email} className='su-i-blocked' />
           </div>
 
           <div className='flex flex-col gap-2'>
@@ -106,8 +150,8 @@ export default function SignUp() {
                 <input
                   type='text'
                   placeholder='닉네임을 입력해주세요.'
-                  value={nickName}
-                  onChange={handleChangeNickName}
+                  value={nickname}
+                  onChange={handleChangeNickname}
                   className='su-i'
                 />
                 <Image
