@@ -6,6 +6,6 @@ interface INaverLogin {
 }
 
 export default async function NaverLogin(body: INaverLogin) {
-  const data = await api.get({ endpoint: `/users/signin`, body });
+  const data = await api.post({ endpoint: `/oauth/signin`, body });
   return data;
 }

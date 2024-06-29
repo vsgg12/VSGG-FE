@@ -15,7 +15,7 @@ export default function HomePostItems({ post }: { post: GetPostDTOType }) {
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
-  }, []);
+  }, [post]);
 
   return (
     <div className='min-h-[calc(100vh-504px)] flex flex-col'>

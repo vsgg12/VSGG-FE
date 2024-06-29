@@ -109,8 +109,8 @@ export default function PostRead() {
             </header>
             <div className='flex flex-row'>
               {post && (
-                <div className=' p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white  px-[63px] pb-[44px]'>
-                  <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px]'>
+                <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white px-[63px] pb-[44px]'>
+                  <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
                     <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                       <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
                       <div className='text-[12px] text-[#C8C8C8]'>
@@ -134,7 +134,7 @@ export default function PostRead() {
                   </div>
                   <video
                     controls
-                    className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px]'
+                    className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px] mt-5'
                   >
                     <source src={post.postDTO.video.url} type='video/webm' />
                   </video>
