@@ -39,6 +39,6 @@ export const getStoredLoginState = () => {
     const refreshToken = storedData.state.refreshToken;
     return { isLogin, accessToken, refreshToken };
   } else {
-    return { isLogin: false, accessToken: null, refreshToken: null };
+    return { isLogin: false, accessToken: '', refreshToken: '' };
   }
 };

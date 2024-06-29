@@ -9,13 +9,22 @@ import { useRouter } from 'next/navigation';
 
 interface IProfileModalProps {
   handleLogoutClick: () => void;
+  nickname: string;
+  profileImage: string;
+  email: string;
 }
 
-export default function ProfileModal({ handleLogoutClick }: IProfileModalProps) {
+export default function ProfileModal({
+  handleLogoutClick,
+  nickname,
+  email,
+  profileImage,
+}: IProfileModalProps) {
   const router = useRouter();
 
   const handleMyPageBtnClick = (): void => {
-    router.push('/myPage');
+    return;
+    // router.push('/myPage');
   };
 
   const handleMyJudgeBtnClick = (): void => {
@@ -31,15 +40,19 @@ export default function ProfileModal({ handleLogoutClick }: IProfileModalProps) 
   return (
     <>
       <div
-        className='w-[200px] h-[205px] border border-[#8A1F21] rounded-[18px] p-[13px] bg-[#FFFFFF]'
-        style={{ position: 'absolute', transform: 'translate(-20%,65%)' }}
+        className='w-[250px] h-[205px] border border-[#8A1F21] rounded-[18px] p-[13px] bg-[#FFFFFF] z-50'
+        style={{ position: 'absolute', transform: 'translate(-35%,65%)' }}
       >
         <div className='flex flex-col gap-[8.5px]'>
           <div className='flex flex-row gap-[10px] mb-[9px]'>
-            <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
+            <img
+              src={profileImage}
+              alt='profileImage'
+              className='h-[2.2rem] w-[2.2rem] rounded-full'
+            />
             <div className='flex-col gap-[15px]'>
-              <p className='text-[14px] font-semibold text-[#000000]'>김철수</p>
-              <p className='text-[12px] font-medium text-[#555555]'>@가나다라마바사아자차</p>
+              <p className='text-[14px] font-semibold text-[#000000]'>{nickname}</p>
+              <p className='text-[12px] font-medium text-[#555555]'>@ {email}</p>
             </div>
           </div>
 
