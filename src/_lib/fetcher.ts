@@ -1,5 +1,5 @@
 import postRefresh from '@/api/postRefresh';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 
 interface IFetchOptions {
@@ -27,7 +27,6 @@ interface IDeleteOptions {
 }
 
 const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) => {
-  const router = useRouter();
   const headers: HeadersInit = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -52,23 +51,35 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
 
     if (!res.ok) {
       if (res.status === 401) {
-        // 토큰 만료시
-        try {
-          const refreshRes = await postRefresh();
-          if (refreshRes) {
-            // 재발급받은 토큰 다시 저장
-            useAuthStore.setState({
-              isLogin: true,
-              accessToken: refreshRes.tokens.accessToken,
-              refreshToken: refreshRes.tokens.refreshToken,
-            });
+        const { refreshToken } = getStoredLoginState();
+        if (refreshToken) {
+          const newToken = await postRefresh(refreshToken);
+          useAuthStore.setState({
+            isLogin: true,
+            accessToken: newToken.tokens.accessToken,
+            refreshToken: refreshToken,
+          });
+          headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
+          const retryRequestOptions: RequestInit = {
+            ...requestOptions,
+            headers,
+          };
+          const retryRes = await fetch(
+            `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+            retryRequestOptions,
+          );
+          if (!retryRes.ok) {
+            const retryErrorData = await retryRes.json();
+            throw new Error(retryErrorData.message);
           }
-        } catch (error) {
-          console.log(error);
-          // refreshToken도 만료되면
+          return await retryRes.json();
+        } else {
+          // refreshToken 만료시
+          const router = useRouter();
           useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
           localStorage.clear();
           router.push('/login');
+          throw new Error('Session expired. Please log in again.');
         }
       }
       const errorData = await res.json();
