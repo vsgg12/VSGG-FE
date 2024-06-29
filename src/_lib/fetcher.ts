@@ -1,3 +1,7 @@
+import postRefresh from '@/api/postRefresh';
+import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import { useRouter } from 'next/navigation';
+
 interface IFetchOptions {
   endpoint: string;
   body?: any;
@@ -46,6 +50,40 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
     const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
 
     if (!res.ok) {
+      if (res.status === 401) {
+        const { refreshToken } = getStoredLoginState();
+        if (refreshToken) {
+          const newToken = await postRefresh(refreshToken);
+          if (newToken) {
+            useAuthStore.setState({
+              isLogin: true,
+              accessToken: newToken.tokens.accessToken,
+              refreshToken: refreshToken,
+            });
+            headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
+            const retryRequestOptions: RequestInit = {
+              ...requestOptions,
+              headers,
+            };
+            const retryRes = await fetch(
+              `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+              retryRequestOptions,
+            );
+            if (!retryRes.ok) {
+              const retryErrorData = await retryRes.json();
+              throw new Error(retryErrorData.message);
+            }
+            return await retryRes.json();
+          } else {
+            // refreshToken 만료시
+            const router = useRouter();
+            useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+            localStorage.clear();
+            router.push('/login');
+            throw new Error('Session expired. Please log in again.');
+          }
+        } 
+      }
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
