@@ -1,5 +1,3 @@
-'use server';
-
 import api from '@/_lib/fetcher';
 
 export default async function getComments(postId: string) {
