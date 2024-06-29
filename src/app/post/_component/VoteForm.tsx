@@ -7,7 +7,7 @@ import VotingGraph from './VotingGraph';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
-  voteInfo: GetGameInfoType[];
+  voteInfo: IGetGameInfoType[];
   setIsVoted: React.Dispatch<SetStateAction<boolean>>;
 }
 
@@ -70,10 +70,8 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
           <div className='flex flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
               {voteResult.map((vote, index) => (
-                <div key={index} className={ ` flex`}>
-                  <p className={`${voteColors[index].text} p-voting-number-element`}>
-                    {vote}
-                  </p>
+                <div key={index} className={` flex`}>
+                  <p className={`${voteColors[index].text} p-voting-number-element`}>{vote}</p>
                   {index !== voteInfo.length - 1 && (
                     <div className='p-voting-number-element'> : </div>
                   )}
@@ -97,7 +95,6 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
           </button>
         </div>
       </div>
-      
     </div>
   );
 }

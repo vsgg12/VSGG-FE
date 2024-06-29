@@ -19,7 +19,7 @@ export default function Home() {
     router.push('/post/write');
   };
 
-  const { data: postData, isLoading } = useQuery<GetPostListType>({
+  const { data: postData, isLoading } = useQuery<IGetPostListType>({
     queryKey: ['POST_LIST', activeButton],
     queryFn: async () => {
       if (activeButton === 'createdatetime') {
