@@ -93,17 +93,19 @@ export default function PostRead() {
   const { mutate: writeComment } = useMutation({
     mutationFn: () =>
       PostComment(
+        id,
         { commentAddRequest: { parentId: parentId, content: commentContent } },
         accessToken,
       ),
-    onSettled: async () => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', parentId, commentContent] });
+      setIsCommentInProgress(false);
     },
-    onSuccess: () => setIsCommentInProgress(false),
     onError: (error) => console.log(error),
   });
 
   const handleCommentSubmit = async () => {
+    console.log(commentContent);
     if (isCommentInProgress) {
       return;
     }
@@ -183,7 +185,7 @@ export default function PostRead() {
                 ) : (
                   <>
                     {commentData &&
-                      commentData.comments.map((comment, index) => (
+                      commentData?.comments.map((comment, index) => (
                         <div key={index} className='mb-[20px] text-[13px]'>
                           <Comment comment={comment} />
                           <button
