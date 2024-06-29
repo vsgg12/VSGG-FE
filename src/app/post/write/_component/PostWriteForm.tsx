@@ -11,9 +11,9 @@ import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
 import PostJudgeParticipants from './PostJudgeParticipants';
 
-const intialIngameInfos: IIngameInfoRequestType[] = [
-  { id: 0, position: 'TOP', champion: '', tier: '' },
-  { id: 1, position: 'TOP', champion: '', tier: '' },
+const intialInGameInfoRequest: IIngameInfoRequestType[] = [
+  { position: 'TOP', champion: '', tier: '' },
+  { position: 'TOP', champion: '', tier: '' },
 ];
 
 export default function PostWriteForm() {
@@ -25,7 +25,8 @@ export default function PostWriteForm() {
   const [content, setContent] = useState('');
   const [contentUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [ingameInfos, setIngameInfos] = useState<IIngameInfoRequestType[]>(intialIngameInfos);
+  const [InGameInfoRequest, setInGameInfoRequest] =
+    useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
 
   const postCreated = false;
   const { handleSubmit } = useForm<ICreatePostFormProps>();
@@ -41,7 +42,7 @@ export default function PostWriteForm() {
       return;
     }
 
-    const inGameInfoRequests = ingameInfos.map(({ id, champion, ...rest }) => ({
+    const inGameInfoRequests = InGameInfoRequest.map(({ champion, ...rest }) => ({
       championName: champion,
       ...rest,
     }));
