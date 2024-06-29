@@ -56,14 +56,9 @@ export default function Header() {
         <div className='flex flex-row items-center gap-6'>
           {isLogin ? (
             <>
-              <div className='hd-items cursor-pointer'>
+              <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
                 {currentUrl !== '/post/write' && (
-                  <Image
-                    className='h-[32px] w-[32px]'
-                    src={writeSVG}
-                    alt='writeIcon'
-                    onClick={handleGoPostBtnClick}
-                  />
+                  <Image className='h-[32px] w-[32px]' src={writeSVG} alt='writeIcon' />
                 )}
               </div>
 

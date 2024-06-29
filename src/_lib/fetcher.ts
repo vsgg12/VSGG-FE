@@ -1,6 +1,6 @@
 import postRefresh from '@/api/postRefresh';
 import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
-import { useRouter } from 'next/navigation';
+import refreshTokenExpired from './refreshTokenExpired';
 
 interface IFetchOptions {
   endpoint: string;
@@ -76,13 +76,10 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
             return await retryRes.json();
           } else {
             // refreshToken 만료시
-            const router = useRouter();
-            useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-            localStorage.clear();
-            router.push('/login');
+            refreshTokenExpired();
             throw new Error('Session expired. Please log in again.');
           }
-        } 
+        }
       }
       const errorData = await res.json();
       throw new Error(errorData.message);
