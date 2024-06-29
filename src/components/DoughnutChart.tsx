@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartProps {
-  voteAVGInfos: GetAVGType[];
+  voteAVGInfos: IGetAVGType[];
   size: 'home' | 'post';
 }
 

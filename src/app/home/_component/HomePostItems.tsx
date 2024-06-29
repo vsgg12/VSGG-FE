@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
 
-export default function HomePostItems({ post }: { post: GetPostDTOType }) {
+export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);

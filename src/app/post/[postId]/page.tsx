@@ -18,7 +18,7 @@ import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
 
-const voteAVGInfos: GetAVGType[] = [
+const voteAVGInfos: IGetAVGType[] = [
   {
     championName: '노틸러스',
     averageValue: 1,
@@ -65,12 +65,12 @@ export default function PostRead() {
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [showReply, setShowReply] = useState<number | null>(null);
 
-  const { data: post } = useQuery<GetPostItemType>({
+  const { data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id),
   });
 
-  const { data: commentData } = useQuery<GetCommentListType>({
+  const { data: commentData } = useQuery<IGetCommentListType>({
     queryKey: ['COMMENTS', id],
     queryFn: async () => getComments(id),
   });
@@ -100,6 +100,7 @@ export default function PostRead() {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', parentId, commentContent] });
     },
     onSuccess: () => setIsCommentInProgress(false),
+    onError: (error) => console.log(error),
   });
 
   const handleCommentSubmit = async () => {
@@ -205,7 +206,7 @@ export default function PostRead() {
                             </div>
                           )}
                           <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
-                            {comment.children?.map((reply, index) => (
+                            {comment.children?.map((reply: ICommentType, index: number) => (
                               <div key={index} className='mb-[10px]'>
                                 <Comment comment={reply} />
                               </div>

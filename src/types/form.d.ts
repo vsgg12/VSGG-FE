@@ -45,7 +45,28 @@ interface ICreatePostRequestProps {
   videoUrl: string;
 }
 
+//투표 - 세부 구조
+export interface ICreateVoteProps {
+  ingameInfoId: number;
+  ratio: number;
+}
+
+export type ICreateVotingDataProps = ICreateVoteProps[];
+
 //react-quill
 export interface IWrappedComponent extends React.ComponentProps<typeof ReactQuill> {
   forwardedRef: LegacyRef<ReactQuill>;
+}
+
+//image
+interface ICreateImageData {
+  imageUrl: string[];
+}
+
+export interface ChampionDataProps {
+  data: {
+    [key: string]: {
+      name: string;
+    };
+  };
 }

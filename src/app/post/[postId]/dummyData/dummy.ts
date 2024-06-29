@@ -1,4 +1,4 @@
-export const post: GetPostDTOType[] = [
+export const post: IGetPostDTOType[] = [
   {
     id: 1,
     title: '이건 title',
@@ -62,7 +62,7 @@ export const post: GetPostDTOType[] = [
   },
 ];
 
-export const commentData: GetCommentItemType[] = [
+export const commentData: IGetCommentItemType[] = [
   {
     id: 0,
     content: '이건 내용',

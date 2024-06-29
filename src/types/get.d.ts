@@ -16,7 +16,7 @@ type IGetPostDTOType = {
   memberDTO: GetMemberDTOType;
   createdAt: string;
   updatedAt: string;
-  hashtagList: GetHashTagListType[];
+  hashtagList: IHashTagListType[];
   inGameInfoList: IGetGameInfoType[];
   isVote: boolean;
 };
@@ -41,7 +41,7 @@ type IGetMemberDTOType = {
   agreePromotion: boolean;
 };
 
-type IGetHashTagListType = {
+type IHashTagListType = {
   id: number;
   name: string;
 };

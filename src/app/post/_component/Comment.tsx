@@ -1,4 +1,4 @@
-export default function Comment({ comment }: { comment: GetCommentItemType }) {
+export default function Comment({ comment }: { comment: IGetCommentItemType }) {
   return (
     <>
       <div>
