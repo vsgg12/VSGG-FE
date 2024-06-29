@@ -1,3 +1,4 @@
+// 메인 페이지
 type GetPostListType = {
   resultCode: number;
   resultMsg: string;
@@ -16,6 +17,7 @@ type GetPostDTOType = {
   createdAt: string;
   updatedAt: string;
   hashtagList: GetHashTagListType[];
+  inGameInfoList: GetGameInfoType[];
   isVote: boolean;
   inGameInfoList: GetGameInfoType[];
 };
@@ -26,13 +28,13 @@ type GetVideoType = {
 };
 
 type GetMemberDTOType = {
-  token: string;
+  token: string | null;
   email: string;
   nickname: string;
   age: string;
   gender: string;
   mobile: string;
-  profileImage: string;
+  profileImage: string | null;
   tier: string;
   agreeAge: boolean;
   agreeTerms: boolean;
@@ -45,14 +47,6 @@ type GetHashTagListType = {
   name: string;
 };
 
-type GetPostItemType = {
-  resultCode: number;
-  resultMsg: string;
-  postDTO: GetPostDTOType;
-  inGameInfoList: GetGameInfoType[];
-  memberDTO: GetMemberDTOType;
-};
-
 type GetGameInfoType = {
   inGameInfoId: number;
   tier: string;
@@ -60,12 +54,21 @@ type GetGameInfoType = {
   championName: string;
 };
 
+// 게시물 상세 조회 페이지
+type GetPostItemType = {
+  resultCode: number;
+  resultMsg: string;
+  postDTO: GetPostDTOType;
+};
+
+// 댓글 조회 (게시물 상세 조회 페이지)
 type GetCommentListType = {
   resultCode: number;
   resultMsg: string;
   comments: GetCommentItemType[];
 };
 
+// 수정해야함
 type GetCommentItemType = {
   id: number;
   content: string;
@@ -84,6 +87,7 @@ type GetAVGType = {
   tier: string;
 };
 
+// 알람 확인
 type GetAlarmConfirmType = {
   createdDateTime: string;
   modifyDateTime: string;

@@ -15,7 +15,6 @@ import { useParams } from 'next/navigation';
 import moment from 'moment';
 import PostComment from '@/api/postComment';
 import DOMPurify from 'dompurify';
-import { HtmlContext } from 'next/dist/shared/lib/html-context.shared-runtime';
 
 const voteAVGInfos: GetAVGType[] = [
   {
