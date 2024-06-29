@@ -1,10 +1,8 @@
 import api from '@/_lib/fetcher';
 
 interface IPostComment {
-  CommentAddRequest: {
-    parentId: number | null;
-    content: string | null;
-  };
+  parentId: number | null;
+  content: string | null;
 }
 
 export default async function PostComment(postId: string, body: IPostComment, token: string) {
