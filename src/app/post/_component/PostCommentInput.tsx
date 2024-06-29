@@ -1,16 +1,25 @@
 import { BsArrowUpCircle } from 'react-icons/bs';
 import Loading from '@/components/Loading';
+import useCommentStore from '../[postId]/store/useCommentStore';
 
 interface IPostCommentProps {
   handleSubmit: () => void;
-  isProgress: boolean;
 }
 
-export default function PostCommentInput({ handleSubmit, isProgress }: IPostCommentProps) {
+export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
+  const { isCommentInProgress, setCommentContent } = useCommentStore();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentContent(e.target.value);
+  };
+
   return (
     <div className='mb-[20px] flex grow flex-col'>
       <form className='grow' onSubmit={handleSubmit}>
-        <textarea className=' h-[35px] w-[100%] resize-none overflow-hidden rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none' />
+        <input
+          className='h-[35px] w-[100%] resize-none overflow-hidden rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none'
+          onChange={handleInputChange}
+        />
         <div className='flex w-full justify-end'>
           <button
             className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
@@ -21,7 +30,7 @@ export default function PostCommentInput({ handleSubmit, isProgress }: IPostComm
           </button>
         </div>
       </form>
-      {isProgress && <Loading />}
+      {isCommentInProgress && <Loading />}
     </div>
   );
 }

@@ -68,11 +68,17 @@ type GetCommentListType = {
   comments: GetCommentItemType[];
 };
 
+interface ICommentType {
+  id: number;
+  content: string;
+  member: GetMemberDTOType;
+}
 // 수정해야함
 type GetCommentItemType = {
   id: number;
   content: string;
   member: GetMemberDTOType;
+  children?: ICommentType[];
 };
 
 type GetVoteType = {

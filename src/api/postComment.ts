@@ -1,15 +1,15 @@
 import api from '@/_lib/fetcher';
 
 interface IPostComment {
-  CommentAddRequest: {
+  commentAddRequest: {
     parentId: number | null;
-    content: string;
+    content: string | null;
   };
 }
 
 export default async function PostComment(body: IPostComment, token: string) {
   const data = await api.post({
-    endpoint: `/api/post/{postid}/comment`,
+    endpoint: `/post/{postid}/comment`,
     body,
     authorization: token,
   });
