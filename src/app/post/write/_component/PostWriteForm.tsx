@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
@@ -10,28 +9,32 @@ import PostUploadFile from './PostUploadFile';
 import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
 import PostJudgeParticipants from './PostJudgeParticipants';
+import { useMutation } from '@tanstack/react-query';
+import postPostWrite from '@/api/postPostWrite';
+import { getStoredLoginState } from '@/app/login/store/useAuthStore';
 
-const intialIngameInfos: IIngameInfoRequestType[] = [
-  { id: 0, position: 'TOP', champion: '', tier: '' },
-  { id: 1, position: 'TOP', champion: '', tier: '' },
+const intialInGameInfoRequest: IIngameInfoRequestType[] = [
+  { position: 'TOP', champion: '', tier: '' },
+  { position: 'TOP', champion: '', tier: '' },
 ];
 
 export default function PostWriteForm() {
   const isLogin = true;
   const router = useRouter();
-  const [uploadedVideo, setUploadedVideo] = useState<any>(null);
+  const [uploadedVideos, setUploadedVideos] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<Blob>();
   const [uploadedThumbnail, setUploadedThumbnail] = useState<any>(null);
   const [content, setContent] = useState('');
   const [contentUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [ingameInfos, setIngameInfos] = useState<IIngameInfoRequestType[]>(intialIngameInfos);
-
+  const [InGameInfoRequest, setInGameInfoRequest] =
+    useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
+  const { accessToken } = getStoredLoginState();
   const postCreated = false;
   const { handleSubmit } = useForm<ICreatePostFormProps>();
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
-    if (!uploadedVideo) {
+    if (!uploadedVideos) {
       alert('영상을 업로드 해주세요');
       return;
     }
@@ -41,7 +44,7 @@ export default function PostWriteForm() {
       return;
     }
 
-    const inGameInfoRequests = ingameInfos.map(({ id, champion, ...rest }) => ({
+    const inGameInfoRequests = InGameInfoRequest.map(({ champion, ...rest }) => ({
       championName: champion,
       ...rest,
     }));
@@ -79,11 +82,26 @@ export default function PostWriteForm() {
       'postAddRequest',
       new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
     );
-    if (uploadedVideo) {
-      postFormData.append('uploadVideos', uploadedVideo);
+    if (uploadedVideos) {
+      postFormData.append('uploadVideos', uploadedVideos);
     } else {
       postFormData.append('uploadVideos', emptyFile);
     }
+    useEffect(() => {
+      console.log(postFormData);
+    }, [postFormData]);
+
+    // const { mutate: postWirte } = useMutation({
+    //   mutationFn: () => postPostWrite({ body: '', authorization: accessToken }),
+    //   onError: (error) => {
+    //     console.log(error);
+    //     alert('게시물 등록에 실패하셨습니다.');
+    //   },
+    //   onSuccess: () => {
+    //     alert('게시물 등록이 완료되었습니다!');
+    //     router.push('/');
+    //   },
+    // });
 
     if (!uploadedThumbnail) {
       if (thumbnail) {
@@ -99,27 +117,7 @@ export default function PostWriteForm() {
 
     const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
     if (postComfirm) {
-      router.push('/');
-      //   setIsLoading(true);
-      //   const res = await createPost(postFormData);
-      //   // console.log(res);
-      //   if (res.resultMsg === 'CREATED') {
-      //     if (typeof window !== 'undefined') {
-      //       alert('게시글 작성이 완료되었습니다.');
-      //       setIsLoading(false);
-      //       router.push('/home');
-      //     }
-      //   }
-      //   if (res.status === 500) {
-      //     // alert('작성 오류입니다. 업로드한 파일을 확인해주세요');
-      //     await deleteToken();
-      //     alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
-      //     router.push('/auth/signIn');
-      //     return;
-      //   }
-      // } else {
-      //   return;
-      // }
+      // postWirte();
     }
   };
 
@@ -184,8 +182,8 @@ export default function PostWriteForm() {
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
             <PostUploadFile
-              uploadedVideo={uploadedVideo}
-              setUploadedVideo={setUploadedVideo}
+              uploadedVideo={uploadedVideos}
+              setUploadedVideo={setUploadedVideos}
               setThumbnail={setThumbnail}
             />
           </div>

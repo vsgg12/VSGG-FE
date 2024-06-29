@@ -4,7 +4,6 @@ import { SetStateAction, useRef, useState } from 'react';
 import {
   IoDocumentOutline,
   IoEaselOutline,
-  IoLinkOutline,
   IoVideocamOutline,
 } from 'react-icons/io5';
 

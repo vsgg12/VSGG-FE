@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 
 const ReactQuillBase = dynamic(
   async () => {
