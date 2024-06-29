@@ -7,7 +7,7 @@ interface IPostCommentProps {
 }
 
 export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
-  const { isCommentInProgress, setCommentContent } = useCommentStore();
+  const { isCommentInProgress, setCommentContent, commentContent } = useCommentStore();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentContent(e.target.value);
@@ -18,6 +18,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
       <input
         className='h-[35px] w-[100%] resize-none overflow-hidden rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none'
         onChange={handleInputChange}
+        value={commentContent}
       />
       <div className='flex w-full justify-end'>
         <button

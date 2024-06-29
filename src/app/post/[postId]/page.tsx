@@ -56,8 +56,13 @@ export default function PostRead() {
   const id: string = postId as string;
   const queryClient = useQueryClient();
   const { accessToken } = useAuthStore();
-  const { isCommentInProgress, setIsCommentInProgress, parentId, commentContent } =
-    useCommentStore();
+  const {
+    isCommentInProgress,
+    setIsCommentInProgress,
+    parentId,
+    commentContent,
+    setCommentContent,
+  } = useCommentStore();
 
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [votingStatus, setVotingStatus] = useState<string>('');
@@ -67,41 +72,38 @@ export default function PostRead() {
 
   const { data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
-    queryFn: async () => getPostItem(id),
+    queryFn: () => getPostItem(id),
   });
 
   const { data: commentData } = useQuery<IGetCommentListType>({
     queryKey: ['COMMENTS', id],
-    queryFn: async () => getComments(id),
+    queryFn: () => getComments(id),
   });
 
   useEffect(() => {
     if (post) {
       console.log(post);
+      console.log(commentData);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
       setIsVote(post.postDTO.isVote);
     }
-
-    if (commentData) {
-      console.log('comment', commentData);
-    }
   }, [post, commentData]);
 
   const { mutate: writeComment } = useMutation({
     mutationFn: () => PostComment(id, { parentId: parentId, content: commentContent }, accessToken),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', parentId, commentContent, id] });
+    onSuccess: () => {
+      setCommentContent('');
+      queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
     },
     onError: (error) => console.log(error),
   });
 
   const handleCommentSubmit = async () => {
-    console.log(commentContent);
-    if (isCommentInProgress) {
+    if (isCommentInProgress || commentContent === '') {
       return;
     }
     setIsCommentInProgress(true);
