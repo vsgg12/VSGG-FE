@@ -14,29 +14,33 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const queryClient = useQueryClient();
 
   const handleAlarmItemClick = (id: number, alarmType: string) => {
+
+    const { mutate: postAlarm } = useMutation({
+      mutationFn: () => patchPostAlarm({ accessToken, alarmId: id }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['alarms'],
+        });
+      },
+    });
+
+    const { mutate: commentAlarm } = useMutation({
+      mutationFn: () =>
+        patchCommentAlarm({
+          accessToken,
+          alarmId: id,
+        }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['alarms'],
+        });
+      },
+    });
     // 해당 알림 읽음 api 호출
     if (alarmType === 'POST') {
-      useMutation({
-        mutationFn: () => patchPostAlarm({ accessToken, alarmId: id }),
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ['alarms'],
-          });
-        },
-      });
+      postAlarm();
     } else {
-      useMutation({
-        mutationFn: () =>
-          patchCommentAlarm({
-            accessToken,
-            alarmId: id,
-          }),
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ['alarms'],
-          });
-        },
-      });
+      commentAlarm();
     }
     router.push(`/post/${id}`);
   };

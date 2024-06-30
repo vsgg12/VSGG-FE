@@ -65,9 +65,9 @@ export default function PostForm() {
       const formData = new FormData();
       formData.append('file', file);
       /*에디터 정보를 가져온다.*/
-      let quillObj = quillRef.current?.getEditor();
+      // let quillObj = quillRef.current?.getEditor();
       /*에디터 커서 위치를 가져온다.*/
-      const range = quillObj?.getSelection()!;
+      // const range = quillObj?.getSelection()!;
       // try {
       /*서버에다가 정보를 보내준 다음 서버에서 보낸 url을 imgUrl로 받는다.*/
       // const res = await axios.post('api주소', formData);\

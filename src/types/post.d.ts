@@ -15,3 +15,10 @@ type IPostWriteType = {
   }[];
   videoUrl: string;
 };
+
+type IInGameInfoType = {
+  id: number;
+  championName: string;
+  position: string;
+  tier: string;
+};

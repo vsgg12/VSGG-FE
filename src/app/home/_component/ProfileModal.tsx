@@ -1,11 +1,10 @@
 import React from 'react';
-import { IoPersonCircle } from 'react-icons/io5';
 import logoutIcon from '../../../../public/svg/gologout.svg';
 import myJudgeIcon from '../../../../public/svg/gomyjudge.svg';
 import myPostIcon from '../../../../public/svg/gomypost.svg';
 import myPageIcon from '../../../../public/svg/gomypage.svg';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 interface IProfileModalProps {
   handleLogoutClick: () => void;
@@ -20,7 +19,7 @@ export default function ProfileModal({
   email,
   profileImage,
 }: IProfileModalProps) {
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleMyPageBtnClick = (): void => {
     return;
