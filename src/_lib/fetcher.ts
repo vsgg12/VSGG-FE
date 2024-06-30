@@ -1,23 +1,24 @@
+import postRefresh from '@/api/postRefresh';
+import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import refreshTokenExpired from './refreshTokenExpired';
+
 interface IFetchOptions {
   endpoint: string;
   body?: any;
   method?: string;
   authorization?: string;
-  apiType?: boolean; // 0이면 http 1이면 소켓
   id?: string;
 }
 
 interface IGetOptions {
   endpoint: string;
   authorization?: string;
-  apiType?: boolean;
 }
 
 interface IPostOptions {
   endpoint: string;
   body?: any;
-  authorization: string;
-  apiType?: boolean;
+  authorization?: string;
 }
 
 interface IDeleteOptions {
@@ -27,18 +28,18 @@ interface IDeleteOptions {
 
 const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) => {
   const headers: HeadersInit = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   };
 
   if (authorization) {
-    headers.Authorization = "Bearer " + authorization;
+    headers.Authorization = 'Bearer ' + authorization;
   }
 
   const requestOptions: RequestInit = {
     method,
     headers,
-    credentials: "include",
+    credentials: 'include',
   };
 
   if (body) {
@@ -46,9 +47,40 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
   }
 
   try {
-    const res = await fetch(process.env.PROXY_URL as string + endpoint, requestOptions);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
 
     if (!res.ok) {
+      if (res.status === 401) {
+        const { refreshToken } = getStoredLoginState();
+        if (refreshToken) {
+          const newToken = await postRefresh(refreshToken);
+          if (newToken) {
+            useAuthStore.setState({
+              isLogin: true,
+              accessToken: newToken.tokens.accessToken,
+              refreshToken: refreshToken,
+            });
+            headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
+            const retryRequestOptions: RequestInit = {
+              ...requestOptions,
+              headers,
+            };
+            const retryRes = await fetch(
+              `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+              retryRequestOptions,
+            );
+            if (!retryRes.ok) {
+              const retryErrorData = await retryRes.json();
+              throw new Error(retryErrorData.message);
+            }
+            return await retryRes.json();
+          } else {
+            // refreshToken 만료시
+            refreshTokenExpired();
+            throw new Error('Session expired. Please log in again.');
+          }
+        }
+      }
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
@@ -59,24 +91,24 @@ const _fetch = async ({ method, endpoint, body, authorization }: IFetchOptions) 
   }
 };
 
-const _get = async ({ endpoint, authorization, apiType }: IGetOptions) => {
-  return _fetch({ method: "GET", endpoint, authorization, apiType });
+const _get = async ({ endpoint, authorization }: IGetOptions) => {
+  return _fetch({ method: 'GET', endpoint, authorization });
 };
 
-const _post = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "POST", endpoint, body, authorization, apiType });
+const _post = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: 'POST', endpoint, body, authorization });
 };
 
-const _patch = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "PATCH", endpoint, body, authorization, apiType });
+const _patch = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: 'PATCH', endpoint, body, authorization });
 };
 
-const _put = async ({ endpoint, body, authorization, apiType }: IPostOptions) => {
-  return _fetch({ method: "PUT", endpoint, body, authorization, apiType });
+const _put = async ({ endpoint, body, authorization }: IPostOptions) => {
+  return _fetch({ method: 'PUT', endpoint, body, authorization });
 };
 
 const _delete = async ({ endpoint, authorization }: IDeleteOptions) => {
-  return _fetch({ method: "DELETE", authorization, endpoint });
+  return _fetch({ method: 'DELETE', authorization, endpoint });
 };
 
 const api = {

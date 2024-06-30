@@ -1,10 +1,11 @@
-type GetPostListType = {
+// 메인 페이지
+type IGetPostListType = {
   resultCode: number;
   resultMsg: string;
   postDTO: GetPostDTOType[];
 };
 
-type GetPostDTOType = {
+type IGetPostDTOType = {
   id: number;
   title: string;
   content: string;
@@ -15,23 +16,24 @@ type GetPostDTOType = {
   memberDTO: GetMemberDTOType;
   createdAt: string;
   updatedAt: string;
-  hashtagList: GetHashTagListType[];
+  hashtagList: IHashTagListType[];
+  inGameInfoList: IGetGameInfoType[];
   isVote: boolean;
 };
 
-type GetVideoType = {
+type IGetVideoType = {
   url: string;
   type: string;
 };
 
-type GetMemberDTOType = {
-  token: string;
+type IGetMemberDTOType = {
+  token: string | null;
   email: string;
   nickname: string;
   age: string;
   gender: string;
   mobile: string;
-  profileImage: string;
+  profileImage: string | null;
   tier: string;
   agreeAge: boolean;
   agreeTerms: boolean;
@@ -39,55 +41,69 @@ type GetMemberDTOType = {
   agreePromotion: boolean;
 };
 
-type GetHashTagListType = {
+type IHashTagListType = {
   id: number;
   name: string;
 };
 
-type GetPostItemType = {
-  resultCode: number;
-  resultMsg: string;
-  postDTO: GetPostDTOType[];
-  inGameInfo: GetGameInfoType[];
-};
-
-type GetGameInfoType = {
+type IGetGameInfoType = {
   inGameInfoId: number;
   tier: string;
   position: string;
   championName: string;
 };
 
-type GetCommentListType = {
+// 게시물 상세 조회 페이지
+type IGetPostItemType = {
+  resultCode: number;
+  resultMsg: string;
+  postDTO: GetPostDTOType;
+};
+
+// 댓글 조회 (게시물 상세 조회 페이지)
+type IGetCommentListType = {
   resultCode: number;
   resultMsg: string;
   comments: GetCommentItemType[];
 };
 
-type GetCommentItemType = {
+interface ICommentType {
   id: number;
   content: string;
   member: GetMemberDTOType;
+}
+
+type IGetCommentItemType = {
+  id: number;
+  content: string;
+  member: GetMemberDTOType;
+  children?: ICommentType[];
 };
 
-type GetVoteType = {
+type IGetVoteType = {
   ingameInfoId: number;
   ratio: number;
 };
 
-type GetAVGType = {
+type IGetAVGType = {
   championName: string;
   averageValue: number;
   position: string;
   tier: string;
 };
 
-type GetAlarmConfirmType = {
-  createdDateTime: string;
-  modifyDateTime: string;
-  id: number;
-  memberName: string;
-  memberTier: string;
+// 알람 확인
+type IGetAlarmConfirmType = {
+  resultCode: number;
+  resultMsg: string;
+  alarmDTOList: IAlarmsType[];
+};
+
+type IAlarmsType = {
+  alarmId: number;
   alarmContents: string;
-  alarmType: string;
+  postId: number;
+  alarmType: 'POST' | 'COMMENT';
+  isRead: boolean;
+  createDateTime: string;
 };

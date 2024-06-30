@@ -1,14 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import topWSVG from '../../../../public/svg/top-w.svg';
-import midWSVG from '../../../../public/svg/mid-w.svg';
-import jungleWSVG from '../../../../public/svg/jungle-w.svg';
-import onedealWSVG from '../../../../public/svg/onedeal-w.svg';
-import supportWSVG from '../../../../public/svg/supporter-w.svg';
 import DoughnutChart from '@/components/DoughnutChart';
+import usePostIdStore from '../[postId]/store/usePostIdStore';
+import { voteColors, positionInfo } from '@/data/championData';
+import { useEffect } from 'react';
 
-export const inGameInfo: GetAVGType[] = [
+export const inGameInfo: IGetAVGType[] = [
   {
     championName: '가렌',
     averageValue: 20.5,
@@ -31,107 +29,58 @@ export const inGameInfo: GetAVGType[] = [
 
 interface IVoteResultProps {
   postId: number;
-  voteInfos: GetAVGType[];
+  voteInfos: IGetAVGType[];
 }
 
 export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
-  const changeIngameInfoColor = (index: number) => {
-    switch (index) {
-      case 0:
-        return 'bg-[#000000]';
-      case 1:
-        return 'bg-[#9D2A2C]';
-      case 2:
-        return 'bg-[#CACACA]';
-      case 3:
-        return 'bg-[#656565]';
-      case 4:
-        return 'bg-[#6C0000]';
-    }
-  };
+  const { voteResult, setVoteResult } = usePostIdStore();
 
-  const changeVoteInfoBorderColor = (index: number) => {
-    switch (index) {
-      case 0:
-        return 'border-[#000000]';
-      case 1:
-        return 'border-[#9D2A2C]';
-      case 2:
-        return 'border-[#CACACA]';
-      case 3:
-        return 'border-[#656565]';
-      case 4:
-        return 'border-[#6C0000]';
-    }
-  };
-
-  const changePositionName = (position: string) => {
-    
-  };
-
-
-  const changePostionSVG = (position: string) => {
-    switch (position) {
-      case 'TOP':
-        return <Image alt='top' src={topWSVG} />;
-      case 'ADCARRY':
-        return <Image alt='top' src={onedealWSVG} />;
-      case 'MID':
-        return <Image alt='top' src={midWSVG} />;
-      case 'JUNGLE':
-        return <Image alt='JUNGLE' src={jungleWSVG} />;
-      case 'SUPPORT':
-        return <Image alt='top' src={supportWSVG} />;
-    }
+  const getPositionSrc = (position: string) => {
+    return positionInfo.find((pos) => pos.name === position)?.src ?? '';
   };
 
   return (
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
-      <div className='flex items-center'>
-        <div className='flex w-[40%] flex-col'>
-          {voteInfos.map((gameInfo, index: number) => (
-            <div key={index} className='flex w-full items-center '>
-              <label
-                className={'v-label ' + changeVoteInfoBorderColor(index)}
+      <div className='relative flex w-full justify-between'>
+        <div className='flex flex-col mx-10'>
+          {voteInfos.map((champion, index) => (
+            <div key={index} className='relative group'>
+              <div
+                className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
               >
-                <div
-                  className={
-                    changeIngameInfoColor(index) +
-                    ' flex h-[48px] w-[48px] items-center justify-center rounded-full'
-                  }
-                >
-                  {changePostionSVG(gameInfo.position)}
-                  {/* {changePostionSVG('TOP')} */}
-                </div>
-                <div className='mx-[10px] text-[16px] font-semibold text-[#8A1F21]'>
-                  positionName
-                  {/* {changePositionName('TOP')} */}
-                </div>
+                <Image
+                  src={getPositionSrc(champion.position)}
+                  alt='position'
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <div
+                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible : invisible`}
+              >
+                <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
+                  {champion.position}
+                </p>
                 <div className='w-[50%]'>
-                  <div className='text=[#33333] text-[14px] font-semibold'>
-                    {gameInfo.championName}
-                  </div>
-                  <div className='text=[#33333] text-[12px]'>
-                    changeTierName(gameInfo.tier)
-                    {/* {'DIAMOND'} */}
-                  </div>
+                  <p className='text=[#33333] text-[14px] font-semibold'>{champion.championName}</p>
+                  <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
                 </div>
-              </label>
-              <div className='text-[#8A1F21]'>과실 voteInfos.averageValue</div>
+              </div>
             </div>
           ))}
         </div>
         <div className='flex flex-col items-center justify-center'>
-          <div className='mb-[50px]  flex text-[20px] '>
-            이 게임의 과실은 몇 대 몇 ~?
-            <div className='ml-[10px] text-[#8f8f8f]'>(전체 평균)</div>
-          </div>
-
+          <div className='mb-[50px] flex text-[20px] '>이 게임의 과실은 몇 대 몇 ~?</div>
           {voteInfos.length === 0 ? (
             <div className='flex justify-center'>아직 투표한 사람이 없는 게시글입니다.</div>
           ) : (
-            <DoughnutChart voteAVGInfos={voteInfos} />
+            <DoughnutChart voteAVGInfos={voteInfos} size='post' />
           )}
+        </div>
+        <div className='flex flex-col justify-end'>
+          <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+            제출완료
+          </button>
         </div>
       </div>
     </div>

@@ -4,16 +4,21 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
+import { usePathname, useRouter } from 'next/navigation';
+import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
 
 export default function Header() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const { isLogin } = getStoredLoginState();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
+  const currentUrl = usePathname();
+  const email = String(localStorage.getItem('email'));
+  const nickname = String(localStorage.getItem('nickname'));
+  const profileImage = String(localStorage.getItem('profileImage'));
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {
@@ -30,13 +35,14 @@ export default function Header() {
   };
 
   const handleLoginBtnClick = (): void => {
-    setIsLogin(true);
+    router.push('/login');
   };
 
   const handleLogoutBtnClick = (): void => {
     // 로그아웃 기능 후 페이지는 제자리
     setIsProfileModalOpen(false);
-    setIsLogin(false);
+    useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+    localStorage.clear();
     return;
   };
 
@@ -50,13 +56,10 @@ export default function Header() {
         <div className='flex flex-row items-center gap-6'>
           {isLogin ? (
             <>
-              <div className='hd-items cursor-pointer'>
-                <Image
-                  className='h-[32px] w-[32px]'
-                  src={writeSVG}
-                  alt='writeIcon'
-                  onClick={handleGoPostBtnClick}
-                />
+              <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
+                {currentUrl !== '/post/write' && (
+                  <Image className='h-[32px] w-[32px]' src={writeSVG} alt='writeIcon' />
+                )}
               </div>
 
               <button
@@ -79,7 +82,14 @@ export default function Header() {
               >
                 <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
               </button>
-              {isProfileModalOpen && <ProfileModal handleLogoutClick={handleLogoutBtnClick} />}
+              {isProfileModalOpen && (
+                <ProfileModal
+                  handleLogoutClick={handleLogoutBtnClick}
+                  email={email}
+                  profileImage={profileImage}
+                  nickname={nickname}
+                />
+              )}
             </>
           ) : (
             <>

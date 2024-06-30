@@ -1,8 +1,8 @@
 'use client';
 import Logo from '@/components/Logo';
-import PostForm from '../_component/PostForm';
 import Header from '@/components/Header';
 import Link from 'next/link';
+import PostWriteForm from './_component/PostWriteForm';
 
 export default function PostWrite() {
   return (
@@ -28,7 +28,7 @@ export default function PostWrite() {
                 {' > '}게시글
               </div>
             </header>
-            <PostForm />
+            <PostWriteForm />
           </div>
         </section>
       </main>

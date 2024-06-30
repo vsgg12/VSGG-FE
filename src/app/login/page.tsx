@@ -1,15 +1,25 @@
 'use client';
 
 import { SiNaver } from 'react-icons/si';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import LoadingFull from '@/components/LoadingFull';
+import { useQuery } from '@tanstack/react-query';
+import getNaverURL from '@/api/naver/getNaverURL';
 
-export default function SignIn() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const handleLogin = (): void => {
-    router.push('/');
+export default function Login() {
+  const { data: NAVER_AUTH_URL, isLoading } = useQuery({
+    queryKey: ['NAVER_URL'],
+    queryFn: async () => getNaverURL(),
+  });
+
+  useEffect(() => {
+    console.log(NAVER_AUTH_URL);
+  }, [NAVER_AUTH_URL]);
+
+  const NaverLogin = () => {
+    if (NAVER_AUTH_URL) {
+      window.location.href = NAVER_AUTH_URL.naverLoginUrl;
+    }
   };
 
   return (
@@ -21,7 +31,7 @@ export default function SignIn() {
       <div>
         <div className='mb-3 flex items-center justify-center gap-2 rounded-3xl bg-black p-2 px-32 '>
           <SiNaver color='white' />
-          <button className='text-white' onClick={handleLogin}>
+          <button className='text-white' onClick={NaverLogin}>
             네이버로 3초만에 시작하기
           </button>
         </div>

@@ -1,27 +1,16 @@
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 interface AlarmListProps {
-  alarms: GetAlarmConfirmType[];
+  alarms: IAlarmsType[];
 }
 
 export default function AlarmList({ alarms }: AlarmListProps) {
   const router = useRouter();
-  const [alarmData, setAlarmData] = useState<GetAlarmConfirmType[]>(alarms);
-
+  const nickname = localStorage.getItem('nickname');
   const handleAlarmItemClick = (id: number) => {
-    // 해당 알림의 게시글로 이동해야 함(postId 필요)
-    //   router.push(`/post/${postId}`)
+    // 해당 알림 읽음 api 호출
+    router.push(`/post/${id}`);
   };
-
-  // Group alarms by memberName
-  const groupedAlarms = alarms.reduce<{ [key: string]: GetAlarmConfirmType[] }>((acc, alarm) => {
-    if (!acc[alarm.memberName]) {
-      acc[alarm.memberName] = [];
-    }
-    acc[alarm.memberName].push(alarm);
-    return acc;
-  }, {});
 
   const truncateText = (comment: string) => {
     if (comment.length > 44) {
@@ -36,44 +25,36 @@ export default function AlarmList({ alarms }: AlarmListProps) {
 
   return (
     <div className='pb-2 overflow-y-auto h-[348px]'>
-      {Object.keys(groupedAlarms).map((memberName) => (
-        <div key={memberName} className='flex flex-col gap-[4px] mb-[10px]'>
-          <div className='flex items-center gap-[5px]'>
-            <span className='font-medium text-[#828282] text-[10px]'>@ {memberName}</span>
-            <span className='text-[#828282] font-medium text-[10px]'>
-              {groupedAlarms[memberName][0].memberTier}
-            </span>
-          </div>
-          <div className='flex flex-col gap-[5px] cursor-pointer'>
-            {groupedAlarms[memberName].map((alarm) => (
-              <>
-                <div
-                  key={alarm.id}
-                  className='flex flex-col gap-[3px] px-[5px] w-[305px] relative'
-                  onClick={() => handleAlarmItemClick(alarm.id)}
-                >
-                  <p className='text-[12px] text-[#555555] pr-[50px]'>
-                    {truncateText(alarm.alarmContents)}
-                  </p>
-                  <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createdDateTime)}</p>
-                  {alarm.alarmType === 'true' && (
-                    <span
-                      className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
-                      style={{
-                        position: 'absolute',
-                        right: '25px',
-                        top: '30%',
-                        transform: 'translateY(-10%)',
-                      }}
-                    ></span>
-                  )}
-                  <hr className='border-[#8A1F21] my-[10px]' />
-                </div>
-              </>
-            ))}
-          </div>
-        </div>
-      ))}
+      <div className='flex flex-col gap-[5px] cursor-pointer'>
+        {alarms.map((alarm) => (
+          <>
+            <div
+              key={alarm.alarmId}
+              className='flex flex-col gap-[3px] px-[5px] w-[305px] relative'
+              onClick={() => handleAlarmItemClick(alarm.postId)}
+            >
+              <p className='text-[12px] text-[#555555] pr-[50px]'>
+                {alarm.alarmType === 'POST'
+                  ? `[${nickname}]님이 작성한 게시글의 판결 결과를 확인하세요!`
+                  : `[댓글 단 유저 닉네임]님이 글에 댓글을 남겼습니다. \n ${truncateText(alarm.alarmContents)}`}
+              </p>
+              <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createDateTime)}</p>
+              {alarm.isRead === true && (
+                <span
+                  className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
+                  style={{
+                    position: 'absolute',
+                    right: '25px',
+                    top: '30%',
+                    transform: 'translateY(-10%)',
+                  }}
+                ></span>
+              )}
+              <hr className='border-[#8A1F21] my-[10px]' />
+            </div>
+          </>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-export const post: GetPostDTOType[] = [
+export const post: IGetPostDTOType[] = [
   {
     id: 1,
     title: '이건 title',
@@ -32,11 +32,37 @@ export const post: GetPostDTOType[] = [
         name: '정재호',
       },
     ],
+    inGameInfoList: [
+      {
+        inGameInfoId: 20,
+        tier: 'PLATINUM',
+        position: 'TOP',
+        championName: '그라가스',
+      },
+      {
+        inGameInfoId: 21,
+        tier: 'IRON',
+        position: 'ADCARRY',
+        championName: '그레이브즈',
+      },
+      {
+        inGameInfoId: 22,
+        tier: 'SILVER',
+        position: 'MID',
+        championName: '가렌',
+      },
+      {
+        inGameInfoId: 23,
+        tier: 'BRONZE',
+        position: 'JUNGLE',
+        championName: '루시안',
+      },
+    ],
     isVote: true,
   },
 ];
 
-export const commentData: GetCommentItemType[] = [
+export const commentData: IGetCommentItemType[] = [
   {
     id: 0,
     content: '이건 내용',

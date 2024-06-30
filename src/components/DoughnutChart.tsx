@@ -5,10 +5,11 @@ import { Doughnut } from 'react-chartjs-2';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartProps {
-  voteAVGInfos: GetAVGType[];
+  voteAVGInfos: IGetAVGType[];
+  size: 'home' | 'post';
 }
 
-const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
+const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos, size }) => {
   const championNames = voteAVGInfos?.map((info) => info.championName);
   const averageValues = voteAVGInfos?.map((info) => info.averageValue);
 
@@ -24,7 +25,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
     ],
   };
 
-  const options: any = {
+  const options = {
     responsive: true,
     plugins: {
       legend: {
@@ -44,7 +45,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos }) => {
   };
 
   return (
-    <div className='flex h-[110px] w-[110px] flex-col items-center justify-center'>
+    <div
+      className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} flex-col items-center justify-center`}
+    >
       <Doughnut data={data} options={options} />
     </div>
   );
