@@ -7,18 +7,16 @@ interface IPatchAlarm {
 
 export async function patchPostAlarm({ accessToken, alarmId }: IPatchAlarm) {
   const data = await api.patch({
-    endpoint: '/alarm/post',
+    endpoint: `/alarm/post/${alarmId}`,
     authorization: accessToken,
-    body: alarmId,
   });
   return data;
 }
 
 export async function patchCommentAlarm({ accessToken, alarmId }: IPatchAlarm) {
   const data = await api.patch({
-    endpoint: '/alarm/comment',
+    endpoint: `/alarm/comment/${alarmId}`,
     authorization: accessToken,
-    body: alarmId,
   });
   return data;
 }

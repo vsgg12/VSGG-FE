@@ -9,6 +9,8 @@ import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
 import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import { useQuery } from '@tanstack/react-query';
+import getAlarms from '@/api/getAlarms';
 
 export default function Header() {
   const router = useRouter();
@@ -19,6 +21,12 @@ export default function Header() {
   const email = String(localStorage.getItem('email'));
   const nickname = String(localStorage.getItem('nickname'));
   const profileImage = String(localStorage.getItem('profileImage'));
+
+  const { accessToken } = getStoredLoginState();
+  const { data } = useQuery<IGetAlarmConfirmType>({
+    queryKey: ['alarms'],
+    queryFn: () => getAlarms(accessToken),
+  });
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {
@@ -68,13 +76,13 @@ export default function Header() {
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className='text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white'
+                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${data?.alarmList.length === undefined && 'invisible'}`}
                   style={{ position: 'absolute', transform: 'translate(-50%,-190%)' }}
                 >
-                  99+
+                  {data && data.alarmList.length > 99 ? '99+' : `${data?.alarmList.length}`}
                 </span>
               </button>
-              {isAlarmModalOpen && <AlarmModal />}
+              {isAlarmModalOpen && <AlarmModal alarms={data?.alarmList} />}
 
               <button
                 className={`hd-items flex items-center justify-center overflow-hidden rounded-full ${isProfileModalOpen && 'rounded-full bg-white'}`}
