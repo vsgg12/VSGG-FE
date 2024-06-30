@@ -10,13 +10,15 @@ import Search from '@/components/Search';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import moment from 'moment';
 import PostComment from '@/api/postComment';
 import DOMPurify from 'dompurify';
 import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
+import ReplyInput from '../_component/ReplyInput';
+import DeleteComment from '@/api/deleteComment';
 
 const voteAVGInfos: IGetAVGType[] = [
   {
@@ -56,59 +58,78 @@ export default function PostRead() {
   const id: string = postId as string;
   const queryClient = useQueryClient();
   const { accessToken } = useAuthStore();
+  const router = useRouter();
   const {
     isCommentInProgress,
     setIsCommentInProgress,
-    parentId,
     commentContent,
     setCommentContent,
+    showReply,
+    setShowReply,
   } = useCommentStore();
 
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [votingStatus, setVotingStatus] = useState<string>('');
   const [isVote, setIsVote] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
-  const [showReply, setShowReply] = useState<number | null>(null);
 
   const { data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
-    queryFn: () => getPostItem(id),
+    queryFn: async () => getPostItem(id),
   });
 
   const { data: commentData } = useQuery<IGetCommentListType>({
     queryKey: ['COMMENTS', id],
-    queryFn: () => getComments(id),
+    queryFn: async () => getComments(id),
   });
 
   useEffect(() => {
     if (post) {
       console.log(post);
-      console.log(commentData);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
       setIsVote(post.postDTO.isVote);
     }
+
+    if (commentData) {
+      console.log('comment', commentData);
+    }
   }, [post, commentData]);
 
   const { mutate: writeComment } = useMutation({
-    mutationFn: () => PostComment(id, { parentId: parentId, content: commentContent }, accessToken),
-    onSuccess: () => {
-      setCommentContent('');
-      queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+    mutationFn: () =>
+      PostComment(id, { parentId: showReply, content: commentContent }, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
+      setCommentContent('');
+      setShowReply(null);
     },
     onError: (error) => console.log(error),
   });
 
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+    },
+    onError: (err) => console.log(err),
+  });
+
   const handleCommentSubmit = async () => {
-    if (isCommentInProgress || commentContent === '') {
+    console.log(commentContent);
+    if (isCommentInProgress) {
       return;
     }
     setIsCommentInProgress(true);
 
     writeComment();
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    deleteComment(commentId);
   };
 
   return (
@@ -127,7 +148,12 @@ export default function PostRead() {
               >
                 <div className='text-[13px]'>글 목록</div>
               </button>
-              <div className='text-xs text-[#909090]'>홈{' > '}게시글</div>
+              <div className='text-xs text-[#909090]'>
+                <span className='cursor-pointer' onClick={() => router.push('/home')}>
+                  홈
+                </span>
+                {' > '}게시글
+              </div>
             </header>
             <div className='flex flex-row'>
               {post && (
@@ -169,7 +195,7 @@ export default function PostRead() {
               )}
 
               <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
-                <div className='sticky top-[-1px] bg-[#ffffff] pt-[44px]'>
+                <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
                   <div className='p-content-s-mb text-lg'>댓글</div>
                   <div className='flex flex-row'>
                     <PostCommentInput handleSubmit={handleCommentSubmit} />
@@ -184,7 +210,10 @@ export default function PostRead() {
                     {commentData &&
                       commentData?.comments.map((comment, index) => (
                         <div key={index} className='mb-[20px] text-[13px]'>
-                          <Comment comment={comment} />
+                          <Comment
+                            comment={comment}
+                            deleteComment={() => handleDeleteComment(comment.id)}
+                          />
                           <button
                             key={index}
                             type='button'
@@ -201,13 +230,16 @@ export default function PostRead() {
                           </button>
                           {showReply === comment.id && (
                             <div className='text-[12px]'>
-                              <PostCommentInput handleSubmit={handleCommentSubmit} />
+                              <ReplyInput handleSubmit={handleCommentSubmit} />
                             </div>
                           )}
                           <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
                             {comment.children?.map((reply: ICommentType, index: number) => (
                               <div key={index} className='mb-[10px]'>
-                                <Comment comment={reply} />
+                                <Comment
+                                  comment={reply}
+                                  deleteComment={() => handleDeleteComment(reply.id)}
+                                />
                               </div>
                             ))}
                           </div>
