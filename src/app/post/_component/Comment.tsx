@@ -1,17 +1,10 @@
-import { useEffect, useState } from 'react';
-
 interface ICommentProps {
   comment: IGetCommentItemType;
   deleteComment: () => void;
   isReply?: boolean;
   targetComment?: IGetCommentItemType;
 }
-export default function Comment({
-  comment,
-  deleteComment,
-  targetComment,
-  isReply = false,
-}: ICommentProps) {
+export default function Comment({ comment, targetComment, isReply = false }: ICommentProps) {
   return (
     <>
       <div>

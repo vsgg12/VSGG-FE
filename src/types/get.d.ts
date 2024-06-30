@@ -80,7 +80,7 @@ type IGetCommentItemType = {
   children?: ICommentType[];
 };
 
-type IGetVoteType = {
+type IVoteType = {
   ingameInfoId: number;
   ratio: number;
 };
