@@ -2,9 +2,8 @@
 
 import Image from 'next/image';
 import DoughnutChart from '@/components/DoughnutChart';
-import usePostIdStore from '../[postId]/store/usePostIdStore';
+// import usePostIdStore from '../[postId]/store/usePostIdStore';
 import { voteColors, positionInfo } from '@/data/championData';
-import { useEffect } from 'react';
 
 export const inGameInfo: IGetAVGType[] = [
   {
@@ -32,8 +31,8 @@ interface IVoteResultProps {
   voteInfos: IGetAVGType[];
 }
 
-export default function VoteResult({ postId, voteInfos }: IVoteResultProps) {
-  const { voteResult, setVoteResult } = usePostIdStore();
+export default function VoteResult({ voteInfos }: IVoteResultProps) {
+  // const { voteResult, setVoteResult } = usePostIdStore();
 
   const getPositionSrc = (position: string) => {
     return positionInfo.find((pos) => pos.name === position)?.src ?? '';

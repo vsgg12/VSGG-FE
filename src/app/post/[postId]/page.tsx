@@ -19,6 +19,9 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
 import ReplyInput from '../_component/ReplyInput';
 import DeleteComment from '@/api/deleteComment';
+import PostVote from '@/api/postVote';
+import usePostIdStore from './store/usePostIdStore';
+import Loading from '@/components/Loading';
 
 const voteAVGInfos: IGetAVGType[] = [
   {
@@ -67,13 +70,14 @@ export default function PostRead() {
     showReply,
     setShowReply,
   } = useCommentStore();
+  const { postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
 
   const [formattedDate, setFormattedDate] = useState<string>('');
-  const [votingStatus, setVotingStatus] = useState<string>('');
+  // const [votingStatus, setVotingStatus] = useState<string>('');
   const [isVote, setIsVote] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
-  const { data: post } = useQuery<IGetPostItemType>({
+  const { isLoading, data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id),
   });
@@ -87,7 +91,7 @@ export default function PostRead() {
     if (post) {
       console.log(post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
-      setVotingStatus(post.postDTO.status);
+      // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
       setIsVote(post.postDTO.isVote);
@@ -110,10 +114,22 @@ export default function PostRead() {
     onError: (error) => console.log(error),
   });
 
+  const { mutate: postVote } = useMutation({
+    mutationFn: () => PostVote(id, postVoteResult, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
+      console.log('투표 성공');
+    },
+    onError: (err) => console.log(err),
+  });
+
+  //댓글 삭제
   const { mutate: deleteComment } = useMutation({
     mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+      setIsNotAbleSubmit(true);
+      setPostVoteResult([]);
     },
     onError: (err) => console.log(err),
   });
@@ -128,6 +144,11 @@ export default function PostRead() {
     writeComment();
   };
 
+  const handleVoteSubmit = () => {
+    console.log(postVoteResult);
+    postVote();
+  };
+
   const handleDeleteComment = (commentId: number) => {
     deleteComment(commentId);
   };
@@ -137,133 +158,139 @@ export default function PostRead() {
       <Header />
       <main>
         <Search />
-        <section className='flex justify-center'>
-          <div className='w-[100%] mx-28'>
-            <header className='flex flex-row items-center justify-between'>
-              <button
-                onClick={() => {
-                  history.back();
-                }}
-                className='mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
-              >
-                <div className='text-[13px]'>글 목록</div>
-              </button>
-              <div className='text-xs text-[#909090]'>
-                <span className='cursor-pointer' onClick={() => router.push('/home')}>
-                  홈
-                </span>
-                {' > '}게시글
-              </div>
-            </header>
-            <div className='flex flex-row'>
-              {post && (
-                <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white px-[63px] pb-[44px]'>
-                  <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-                    <div className='flex w-full flex-row place-items-start justify-between font-medium'>
-                      <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
-                      <div className='text-[12px] text-[#C8C8C8]'>
-                        조회수 {post.postDTO.viewCount}
-                      </div>
-                    </div>
-                    <div className='flex flex-row items-center justify-start font-medium '>
-                      <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
-                      <div>
-                        <div className='flex flex-row'>
-                          <div className=' mr-[6px] text-[12px] text-[#333333]'>
-                            {post.postDTO.memberDTO.nickname}
-                          </div>
-                          <div className='text-[12px] text-[#909090]'>
-                            {post.postDTO.memberDTO.tier}
-                          </div>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <section className='flex justify-center'>
+            <div className='w-[100%] mx-28'>
+              <header className='flex flex-row items-center justify-between'>
+                <button
+                  onClick={() => {
+                    history.back();
+                  }}
+                  className='mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
+                >
+                  <div className='text-[13px]'>글 목록</div>
+                </button>
+                <div className='text-xs text-[#909090]'>
+                  <span className='cursor-pointer' onClick={() => router.push('/home')}>
+                    홈
+                  </span>
+                  {' > '}게시글
+                </div>
+              </header>
+              <div className='flex flex-row'>
+                {post && (
+                  <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white px-[63px] pb-[44px]'>
+                    <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
+                      <div className='flex w-full flex-row place-items-start justify-between font-medium'>
+                        <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
+                        <div className='text-[12px] text-[#C8C8C8]'>
+                          조회수 {post.postDTO.viewCount}
                         </div>
-                        <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                       </div>
-                    </div>
-                  </div>
-                  <video
-                    controls
-                    className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px] mt-5'
-                  >
-                    <source src={post.postDTO.video.url} type='video/webm' />
-                  </video>
-                  <PostTag hashtags={post.postDTO.hashtagList} />
-                  <div
-                    className='w-full mt-10'
-                    dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
-                  ></div>
-                </div>
-              )}
-
-              <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
-                <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
-                  <div className='p-content-s-mb text-lg'>댓글</div>
-                  <div className='flex flex-row'>
-                    <PostCommentInput handleSubmit={handleCommentSubmit} />
-                  </div>
-                </div>
-                {commentData?.comments.length === 0 ? (
-                  <div className='flex justify-center'>
-                    <div>아직 댓글이 없습니다.</div>
-                  </div>
-                ) : (
-                  <>
-                    {commentData &&
-                      commentData?.comments.map((comment, index) => (
-                        <div key={index} className='mb-[20px] text-[13px]'>
-                          <Comment
-                            comment={comment}
-                            deleteComment={() => handleDeleteComment(comment.id)}
-                          />
-                          <button
-                            key={index}
-                            type='button'
-                            onClick={() => {
-                              if (showReply) {
-                                setShowReply(null);
-                              } else {
-                                setShowReply(comment.id);
-                              }
-                            }}
-                            className='mb-[10px] text-[10px] font-medium text-[#8A1F21]'
-                          >
-                            {showReply === comment.id ? '닫기' : '답글'}
-                          </button>
-                          {showReply === comment.id && (
-                            <div className='text-[12px]'>
-                              <ReplyInput handleSubmit={handleCommentSubmit} />
+                      <div className='flex flex-row items-center justify-start font-medium '>
+                        <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
+                        <div>
+                          <div className='flex flex-row'>
+                            <div className=' mr-[6px] text-[12px] text-[#333333]'>
+                              {post.postDTO.memberDTO.nickname}
                             </div>
-                          )}
-                          <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
-                            {comment.children?.map((reply: ICommentType, index: number) => (
-                              <div key={index} className='mb-[10px]'>
-                                <Comment
-                                  comment={reply}
-                                  deleteComment={() => handleDeleteComment(reply.id)}
-                                />
-                              </div>
-                            ))}
+                            <div className='text-[12px] text-[#909090]'>
+                              {post.postDTO.memberDTO.tier}
+                            </div>
                           </div>
+                          <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                         </div>
-                      ))}
-                  </>
+                      </div>
+                    </div>
+                    <video
+                      controls
+                      className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px] mt-5'
+                    >
+                      <source src={post.postDTO.video.url} type='video/webm' />
+                    </video>
+                    <PostTag hashtags={post.postDTO.hashtagList} />
+                    <div
+                      className='w-full mt-10'
+                      dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+                    ></div>
+                  </div>
                 )}
+
+                <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
+                  <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
+                    <div className='p-content-s-mb text-lg'>댓글</div>
+                    <div className='flex flex-row'>
+                      <PostCommentInput handleSubmit={handleCommentSubmit} />
+                    </div>
+                  </div>
+                  {commentData?.comments.length === 0 ? (
+                    <div className='flex justify-center'>
+                      <div>아직 댓글이 없습니다.</div>
+                    </div>
+                  ) : (
+                    <>
+                      {commentData &&
+                        commentData?.comments.map((comment, index) => (
+                          <div key={index} className='mb-[20px] text-[13px]'>
+                            <Comment
+                              comment={comment}
+                              deleteComment={() => handleDeleteComment(comment.id)}
+                            />
+                            <button
+                              key={index}
+                              type='button'
+                              onClick={() => {
+                                if (showReply && showReply === comment.id) {
+                                  setShowReply(null);
+                                } else {
+                                  setShowReply(comment.id);
+                                }
+                              }}
+                              className='mb-[10px] text-[10px] font-medium text-[#8A1F21]'
+                            >
+                              {showReply === comment.id ? '닫기' : '답글'}
+                            </button>
+                            {showReply === comment.id && (
+                              <div className='text-[12px]'>
+                                <ReplyInput handleSubmit={handleCommentSubmit} />
+                              </div>
+                            )}
+                            <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
+                              {comment.children?.map((reply: ICommentType, index: number) => (
+                                <div key={index} className='mb-[10px]'>
+                                  <Comment
+                                    comment={reply}
+                                    isReply={true}
+                                    targetComment={comment}
+                                    deleteComment={() => handleDeleteComment(reply.id)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-            {post && post.postDTO.isVote ? (
-              <VoteResult postId={3} voteInfos={voteAVGInfos} />
-            ) : (
-              post && (
+              {post && post.postDTO.isVote ? (
+                <VoteResult postId={3} voteInfos={voteAVGInfos} />
+              ) : post && !isVote ? (
                 <VoteForm
                   setIsVoted={() => {
                     return;
                   }}
                   voteInfo={post.postDTO.inGameInfoList}
+                  handleVoteSubmit={handleVoteSubmit}
                 />
-              )
-            )}
-            <VoteResult postId={3} voteInfos={voteAVGInfos} />
-          </div>
-        </section>
+              ) : (
+                post && <VoteResult postId={3} voteInfos={voteAVGInfos} />
+              )}
+            </div>
+          </section>
+        )}
       </main>
     </>
   );

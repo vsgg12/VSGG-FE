@@ -29,5 +29,9 @@ type IPostRefreshType = {
   tokens: {
     accessToken: string;
     refreshToken: string;
-  }
-}
+  };
+};
+type IVoteType = {
+  ingameInfoId: number;
+  ratio: number;
+};
