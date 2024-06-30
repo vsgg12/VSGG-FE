@@ -96,13 +96,14 @@ type IGetAVGType = {
 type IGetAlarmConfirmType = {
   resultCode: number;
   resultMsg: string;
-  alarmDTOList: IAlarmsType[];
+  alarmList: IAlarmsType[];
 };
 
 type IAlarmsType = {
   alarmId: number;
   alarmContents: string;
   postId: number;
+  commentContent: string;
   alarmType: 'POST' | 'COMMENT';
   isRead: boolean;
   createDateTime: string;
