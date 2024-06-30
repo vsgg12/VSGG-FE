@@ -5,6 +5,11 @@ import { useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
 
+interface ImageResizeModule {
+  parchment: unknown;
+  modules: string[]
+}
+
 const ReactQuillBase = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
@@ -19,7 +24,7 @@ const ReactQuillBase = dynamic(
           imageResize: {
             parchment: RQ.Quill.import('parchment'),
             modules: ['Resize'],
-          },
+          } as ImageResizeModule,
         },
       };
       return <RQ ref={forwardedRef} {...newProps} />;
