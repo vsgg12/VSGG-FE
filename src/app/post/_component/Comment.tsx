@@ -1,9 +1,17 @@
-export default function Comment({
-  comment,
-}: {
+import { useEffect, useState } from 'react';
+
+interface ICommentProps {
   comment: IGetCommentItemType;
   deleteComment: () => void;
-}) {
+  isReply?: boolean;
+  targetComment?: IGetCommentItemType;
+}
+export default function Comment({
+  comment,
+  deleteComment,
+  targetComment,
+  isReply = false,
+}: ICommentProps) {
   return (
     <>
       <div>
@@ -19,7 +27,7 @@ export default function Comment({
         </div>
 
         <div>
-          {/* {  <p className='text=[8A1F21]'>{comment.member.nickname}</p>} */}
+          {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
           {comment.content}
         </div>
       </div>

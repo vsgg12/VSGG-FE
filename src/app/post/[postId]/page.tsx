@@ -218,7 +218,7 @@ export default function PostRead() {
                             key={index}
                             type='button'
                             onClick={() => {
-                              if (showReply) {
+                              if (showReply && showReply === comment.id) {
                                 setShowReply(null);
                               } else {
                                 setShowReply(comment.id);
@@ -238,6 +238,8 @@ export default function PostRead() {
                               <div key={index} className='mb-[10px]'>
                                 <Comment
                                   comment={reply}
+                                  isReply={true}
+                                  targetComment={comment}
                                   deleteComment={() => handleDeleteComment(reply.id)}
                                 />
                               </div>
