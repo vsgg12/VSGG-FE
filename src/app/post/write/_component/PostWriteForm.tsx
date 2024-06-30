@@ -9,8 +9,6 @@ import PostUploadFile from './PostUploadFile';
 import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
 import PostJudgeParticipants from './PostJudgeParticipants';
-import { useMutation } from '@tanstack/react-query';
-import postPostWrite from '@/api/postPostWrite';
 import { getStoredLoginState } from '@/app/login/store/useAuthStore';
 
 const intialInGameInfoRequest: IIngameInfoRequestType[] = [
@@ -19,17 +17,14 @@ const intialInGameInfoRequest: IIngameInfoRequestType[] = [
 ];
 
 export default function PostWriteForm() {
-  const isLogin = true;
+  const { isLogin } = getStoredLoginState();
   const router = useRouter();
   const [uploadedVideos, setUploadedVideos] = useState<any>(null);
   const [thumbnail, setThumbnail] = useState<Blob>();
-  const [uploadedThumbnail, setUploadedThumbnail] = useState<any>(null);
-  const [content, setContent] = useState('');
-  const [contentUrls, setContentImgUrls] = useState<string[]>([]);
-  const [hashtags, setHashtags] = useState<string[]>([]);
-  const [InGameInfoRequest, setInGameInfoRequest] =
-    useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
-  const { accessToken } = getStoredLoginState();
+  console.log('thumbnail', thumbnail);
+  const [content] = useState('');
+  const [hashtags] = useState<string[]>([]);
+  const [InGameInfoRequest] = useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
   const postCreated = false;
   const { handleSubmit } = useForm<ICreatePostFormProps>();
 
@@ -103,15 +98,7 @@ export default function PostWriteForm() {
     //   },
     // });
 
-    if (!uploadedThumbnail) {
-      if (thumbnail) {
-        postFormData.append('thumbnailImage', thumbnail);
-      } else {
-        postFormData.append('thumbnailImage', emptyFile);
-      }
-    } else {
-      postFormData.append('thumbnailImage', uploadedThumbnail);
-    }
+    // 업로드된 썸네일이 없을떄랑 있을때 처리해야함
 
     postFormData.append('content', contentData, 'content.html');
 
@@ -129,7 +116,7 @@ export default function PostWriteForm() {
     }
   }, []);
 
-  const handlePopState = useCallback(async () => {
+  const handlePopState = useCallback(() => {
     if (isLogin || !postCreated) {
       const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
       if (!confirm(message)) {
@@ -137,7 +124,6 @@ export default function PostWriteForm() {
         return;
       }
 
-      await handleDelete();
       history.back();
     }
   }, []);
@@ -145,10 +131,9 @@ export default function PostWriteForm() {
   useEffect(() => {
     const originalPush = router.push;
 
-    const newPush = async (href: string): Promise<void> => {
+    const newPush = (href: string) => {
       const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
       if (confirm(message)) {
-        await handleDelete();
         originalPush(href);
       }
     };
@@ -168,11 +153,6 @@ export default function PostWriteForm() {
       window.removeEventListener('popstate', handlePopState);
     };
   }, [handlePopState]);
-
-  const handleDelete = async () => {
-    const deleteData = { imageUrl: contentUrls };
-    // const data = await sendDeleteRequestToS3(deleteData);
-  };
 
   return (
     <>

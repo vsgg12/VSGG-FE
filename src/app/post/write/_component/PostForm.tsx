@@ -7,7 +7,7 @@ import ReactQuill from 'react-quill';
 
 interface ImageResizeModule {
   parchment: unknown;
-  modules: string[]
+  modules: string[];
 }
 
 const ReactQuillBase = dynamic(
@@ -63,7 +63,7 @@ export default function PostForm() {
     /*이미지를 선택하게 될 시*/
     input.onchange = async () => {
       /*이미지 선택에 따른 조건을 다시 한번 하게 된다.*/
-      const file: any = input.files ? input.files[0] : null;
+      const file = input.files ? input.files[0] : null;
       /*선택을 안하면 취소버튼처럼 수행하게 된다.*/
       if (!file) return;
       /*서버에서 FormData형식으로 받기 때문에 이에 맞는 데이터형식으로 만들어준다.*/

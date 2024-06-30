@@ -13,34 +13,34 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const { accessToken } = getStoredLoginState();
   const queryClient = useQueryClient();
 
+const { mutate: postAlarm } = useMutation({
+  mutationFn: (id: number) => patchPostAlarm({ accessToken, alarmId: id }),
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ['alarms'],
+    });
+  },
+});
+
+const { mutate: commentAlarm } = useMutation({
+  mutationFn: (id:number) =>
+    patchCommentAlarm({
+      accessToken,
+      alarmId: id,
+    }),
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ['alarms'],
+    });
+  },
+});
+
   const handleAlarmItemClick = (id: number, alarmType: string) => {
-
-    const { mutate: postAlarm } = useMutation({
-      mutationFn: () => patchPostAlarm({ accessToken, alarmId: id }),
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['alarms'],
-        });
-      },
-    });
-
-    const { mutate: commentAlarm } = useMutation({
-      mutationFn: () =>
-        patchCommentAlarm({
-          accessToken,
-          alarmId: id,
-        }),
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['alarms'],
-        });
-      },
-    });
     // 해당 알림 읽음 api 호출
     if (alarmType === 'POST') {
-      postAlarm();
+      postAlarm(id);
     } else {
-      commentAlarm();
+      commentAlarm(id);
     }
     router.push(`/post/${id}`);
   };

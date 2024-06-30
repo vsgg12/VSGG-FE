@@ -23,7 +23,7 @@ export default function Header() {
   const profileImage = String(localStorage.getItem('profileImage'));
 
   const { accessToken } = getStoredLoginState();
-  const { data } = useQuery<IGetAlarmConfirmType>({
+  const { data } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });

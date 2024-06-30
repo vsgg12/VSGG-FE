@@ -5,7 +5,17 @@ interface INaverLogin {
   state: string | null;
 }
 
+type IPostLoginType = {
+  resultCode: number;
+  resultMsg: string;
+  email: string;
+  profileImage: string;
+  accessToken: string;
+  refreshToken: string;
+  nickname: string;
+};
+
 export default async function NaverLogin(body: INaverLogin) {
-  const data = await api.post({ endpoint: `/oauth/signin`, body });
+  const data = await api.post<INaverLogin, IPostLoginType>({ endpoint: `/oauth/signin`, body });
   return data;
 }

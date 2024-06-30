@@ -22,3 +22,12 @@ type IInGameInfoType = {
   position: string;
   tier: string;
 };
+
+type IPostRefreshType = {
+  resultCode: number;
+  resultMsg: string;
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  }
+}

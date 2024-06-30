@@ -5,6 +5,9 @@ interface IPostRefresh {
 }
 
 export default async function postRefresh(refreshToken: IPostRefresh) {
-  const data = await api.post({ endpoint: '/users/token/refresh', body: refreshToken });
+  const data = await api.post<IPostRefresh, IPostRefreshType>({
+    endpoint: '/users/token/refresh',
+    body: refreshToken,
+  });
   return data;
 }
