@@ -10,7 +10,7 @@ import Search from '@/components/Search';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import moment from 'moment';
 import PostComment from '@/api/postComment';
 import DOMPurify from 'dompurify';
@@ -58,6 +58,7 @@ export default function PostRead() {
   const id: string = postId as string;
   const queryClient = useQueryClient();
   const { accessToken } = useAuthStore();
+  const router = useRouter();
   const {
     isCommentInProgress,
     setIsCommentInProgress,
@@ -147,7 +148,12 @@ export default function PostRead() {
               >
                 <div className='text-[13px]'>글 목록</div>
               </button>
-              <div className='text-xs text-[#909090]'>홈{' > '}게시글</div>
+              <div className='text-xs text-[#909090]'>
+                <span className='cursor-pointer' onClick={() => router.push('/home')}>
+                  홈
+                </span>
+                {' > '}게시글
+              </div>
             </header>
             <div className='flex flex-row'>
               {post && (
@@ -189,7 +195,7 @@ export default function PostRead() {
               )}
 
               <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
-                <div className='sticky top-[-1px] bg-[#ffffff] pt-[44px]'>
+                <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
                   <div className='p-content-s-mb text-lg'>댓글</div>
                   <div className='flex flex-row'>
                     <PostCommentInput handleSubmit={handleCommentSubmit} />
@@ -230,7 +236,10 @@ export default function PostRead() {
                           <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
                             {comment.children?.map((reply: ICommentType, index: number) => (
                               <div key={index} className='mb-[10px]'>
-                                <Comment comment={reply} />
+                                <Comment
+                                  comment={reply}
+                                  deleteComment={() => handleDeleteComment(reply.id)}
+                                />
                               </div>
                             ))}
                           </div>

@@ -1,6 +1,5 @@
 export default function Comment({
   comment,
-  deleteComment,
 }: {
   comment: IGetCommentItemType;
   deleteComment: () => void;
@@ -18,7 +17,11 @@ export default function Comment({
             삭제
           </p> */}
         </div>
-        <div>{comment.content}</div>
+
+        <div>
+          {/* {  <p className='text=[8A1F21]'>{comment.member.nickname}</p>} */}
+          {comment.content}
+        </div>
       </div>
     </>
   );

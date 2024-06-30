@@ -35,7 +35,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
           <BsArrowUpCircle />
         </button>
       </div>
-      {isCommentInProgress && <Loading />}
+      {isCommentInProgress && !showReply && <Loading />}
     </div>
   );
 }
