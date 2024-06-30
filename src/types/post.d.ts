@@ -15,3 +15,8 @@ type IPostWriteType = {
   }[];
   videoUrl: string;
 };
+
+type IVoteType = {
+  ingameInfoId: number;
+  ratio: number;
+};

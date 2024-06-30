@@ -4,7 +4,7 @@ import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 export default function VotingGraph() {
   const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));
-  const { voteResult, setVoteResult, selectedChampIdx } = usePostIdStore();
+  const { voteResult, setVoteResult, selectedChampIdx, setPostVoteResult } = usePostIdStore();
 
   const handleClick = (index: number) => {
     const lastCheckedIndex = findLastCheckedIndex(votingGraph);
@@ -36,8 +36,12 @@ export default function VotingGraph() {
       setVotingGraph(newGraph);
       setVoteResult(newVoteResult);
     }
-    console.log(votingGraph);
-    console.log('vote', newVoteResult);
+    const newPostVoteResult = newVoteResult.map((value, idx) => ({
+      ingameInfoId: idx,
+      ratio: value,
+    }));
+
+    setPostVoteResult(newPostVoteResult);
   };
 
   const findLastCheckedIndex = (arr: number[]) => {
