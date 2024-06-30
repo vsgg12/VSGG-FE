@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useEffect } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { voteColors, positionInfo } from '../../../data/championData';
 import VotingGraph from './VotingGraph';
@@ -13,6 +13,7 @@ interface IVoteFormProps {
 
 export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
   const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx } = usePostIdStore();
+  const [isAbleSubmit, setIsAbleSubmit] = useState<boolean>(false);
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -22,7 +23,17 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
     return positionInfo.find((pos) => pos.name === position)?.src ?? '';
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const sum = voteResult.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue;
+    }, 0);
+
+    if (sum === 10) {
+      setIsAbleSubmit(true);
+    } else {
+      return;
+    }
+  };
 
   return (
     //  <div className='p-content-pd p-content-rounded p-last-mb flex flex h-[313px] w-full items-center bg-white'>
@@ -88,8 +99,9 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
         </div>
         <div className='flex flex-col justify-end'>
           <button
-            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800'
+            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800 disabled:bg-slate-50'
             onClick={handleSubmit}
+            disabled={isAbleSubmit}
           >
             제출하기
           </button>
