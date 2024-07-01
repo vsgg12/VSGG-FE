@@ -10,12 +10,19 @@ import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import { getStoredLoginState } from '../login/store/useAuthStore';
 
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-
+  const { isLogin } = getStoredLoginState();
+  
   const handleWriteClick = (): void => {
+    if (!isLogin) {
+      alert('로그인이 필요합니다.');
+      router.push('/login');
+      return;
+    }
     router.push('/post/write');
   };
 

@@ -1,8 +1,9 @@
 import { ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import dynamic from 'next/dynamic';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
+import { ImageResize } from 'quill-image-resize-module-ts';
 // import 'react-quill/dist/quill.snow.css';
 
 interface ImageResizeModule {
@@ -12,11 +13,10 @@ interface ImageResizeModule {
 
 const ReactQuillBase = dynamic(
   async () => {
-    const { default: RQ } = await import('react-quill');
-    const { ImageResize } = await import('quill-image-resize-module-ts');
+    const { default: RQ } = (await import('react-quill')) as typeof import('react-quill');
     RQ.Quill.register('modules/imageResize', ImageResize);
 
-    return function forwardRef({ forwardedRef, ...props }: IWrappedComponent) {
+    function forwardRef({ forwardedRef, ...props }: IWrappedComponent) {
       const newProps = {
         ...props,
         modules: {
@@ -28,7 +28,8 @@ const ReactQuillBase = dynamic(
         },
       };
       return <RQ ref={forwardedRef} {...newProps} />;
-    };
+    }
+    return forwardRef;
   },
   { ssr: false },
 );
@@ -48,6 +49,13 @@ export default function PostForm() {
 
   const { register } = useForm<ICreatePostFormProps>();
   const [content, setContent] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && quillRef.current) {
+      const quill = quillRef.current.getEditor();
+      quill.register('modules/imageResize', ImageResize);
+    }
+  }, []);
 
   const handleChange = (value: string) => {
     setContent(value);

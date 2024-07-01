@@ -28,12 +28,10 @@ export default function Login() {
       <div className="mb-10 mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21] md:text-8xl">
         <div>VS.GG</div>
       </div>
-      <div>
+      <div onClick={NaverLogin} className='cursor-pointer'>
         <div className='mb-3 flex items-center justify-center gap-2 rounded-3xl bg-black p-2 px-32 '>
           <SiNaver color='white' />
-          <button className='text-white' onClick={NaverLogin}>
-            네이버로 3초만에 시작하기
-          </button>
+          <button className='text-white'>네이버로 3초만에 시작하기</button>
         </div>
       </div>
       <div className='mb-20 mt-auto flex gap-5'>

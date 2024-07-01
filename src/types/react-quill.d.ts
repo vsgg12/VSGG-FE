@@ -30,6 +30,7 @@ declare module 'react-quill' {
   export type QuillOptions = QuillOptionsStatic;
 
   interface UnprivilegedEditor {
+    register(arg0: string, ImageResize: typeof import('quill-image-resize-module-ts')): unknown;
     getLength(): number;
     getText(index?: number, length?: number): string;
     getContents(index?: number, length?: number): Delta;
@@ -71,17 +72,19 @@ declare module 'react-quill' {
     length: number;
   }
 
-  class Quill extends React.Component<QuillEditorProps> {
-    static Quill: {
-      find(element: HTMLElement): Quill | null;
-      register(path: string, def: unknown, suppressWarning?: boolean): unknown;
-      import(path: string): unknown;
-      sources: {
-        API: 'api';
-        SILENT: 'silent';
-        USER: 'user';
-      };
+  interface QuillStatic {
+    find(element: HTMLElement): Quill | null;
+    register(path: string, def: unknown, suppressWarning?: boolean): unknown;
+    import(path: string): unknown;
+    sources: {
+      API: 'api';
+      SILENT: 'silent';
+      USER: 'user';
     };
+  }
+
+  class Quill extends React.Component<QuillEditorProps> {
+    static Quill: QuillStatic;
     focus(): void;
     blur(): void;
     getEditor(): UnprivilegedEditor;

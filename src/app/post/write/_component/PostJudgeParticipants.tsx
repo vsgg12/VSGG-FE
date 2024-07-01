@@ -82,8 +82,7 @@ export default function PostJudgeParticipants() {
   const isClickedFirst = useRef(false); //뒤로가기 방지용
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
 
-  const changePositionRadioStyle = (index: number, checked: boolean) => {
-    console.log(index);
+  const changePositionRadioStyle = (checked: boolean) => {
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
 
@@ -194,7 +193,6 @@ export default function PostJudgeParticipants() {
                   <label
                     htmlFor={`${pos.id}-${ingameInfo.id}`}
                     className={changePositionRadioStyle(
-                      index,
                       selectedPos[ingameInfo.id] === index,
                     )}
                   >

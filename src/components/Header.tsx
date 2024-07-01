@@ -67,7 +67,12 @@ export default function Header() {
   };
 
   const handleGoPostBtnClick = (): void => {
-    isLogin && router.push('/post/write');
+    if (!isLogin) {
+      alert('로그인이 필요합니다.');
+      router.push('/login');
+      return;
+    }
+    router.push('/post/write');
   };
 
   return (

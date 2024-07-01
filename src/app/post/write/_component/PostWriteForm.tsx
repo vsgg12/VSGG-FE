@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,6 @@ const intialInGameInfoRequest: IIngameInfoRequestType[] = [
 ];
 
 export default function PostWriteForm() {
-  const { isLogin } = getStoredLoginState();
   const router = useRouter();
   const [uploadedVideos, setUploadedVideos] = useState<File | null | undefined>(undefined);
   const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
@@ -25,8 +24,13 @@ export default function PostWriteForm() {
   const [content] = useState('');
   const [hashtags] = useState<string[]>([]);
   const [InGameInfoRequest] = useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
-  const postCreated = false;
+  const { isLogin } = getStoredLoginState();
+  // const postCreated = false;
   const { handleSubmit } = useForm<ICreatePostFormProps>();
+
+  useEffect(() => {
+    !isLogin && router.push('/login');
+  }, []);
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
     if (!uploadedVideos) {
@@ -105,28 +109,21 @@ export default function PostWriteForm() {
     }
   };
 
-  useEffect(() => {
-const beforeUnloadHandler = (event: BeforeUnloadEvent) => {
-  if (isLogin || !postCreated) {
-    const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+  const beforeUnloadHandler = useCallback((event: BeforeUnloadEvent) => {
     event.preventDefault();
-    return message;
-  }
-};
-  },[])
-  
+    event.returnValue = '페이지를 떠나면 작성된 내용이 사라집니다.';
+  }, []);
 
-  const handlePopState = () => {
-    if (isLogin || !postCreated) {
-      const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
-      if (!confirm(message)) {
-        history.pushState(null, '', '');
-        return;
-      }
-
-      history.back();
+  const handlePopState = useCallback(() => {
+    const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+    if (confirm(message)) {
+      router.back();
+    } else {
+      // 현재 경로와 쿼리 매개변수를 포함한 전체 경로를 생성합니다.
+      const fullPath = window.location.pathname + window.location.search;
+      router.push(fullPath);
     }
-  };
+  }, [router]);
 
   useEffect(() => {
     const originalPush = router.push;
