@@ -112,8 +112,6 @@ export default function PostWriteForm() {
       },
     });
 
-    // 업로드된 썸네일이 없을떄랑 있을때 처리해야함
-
     postFormData.append('content', contentData, 'content.html');
 
     const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
