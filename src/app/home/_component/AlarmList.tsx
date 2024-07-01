@@ -1,4 +1,4 @@
-import { patchCommentAlarm, patchPostAlarm } from '@/api/patchAlarm';
+import { IPatchAlarm, patchAlarm } from '@/api/patchAlarm';
 import { getStoredLoginState } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
@@ -13,36 +13,19 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const { accessToken } = getStoredLoginState();
   const queryClient = useQueryClient();
 
-const { mutate: postAlarm } = useMutation({
-  mutationFn: (id: number) => patchPostAlarm({ accessToken, alarmId: id }),
-  onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: ['alarms'],
-    });
-  },
-});
+  const { mutate: postAlarm } = useMutation({
+    mutationFn: (params: IPatchAlarm) => patchAlarm(params),
+    onSuccess: () => {
+      console.log('알람 업데이트 성공');
+      queryClient.invalidateQueries({
+        queryKey: ['alarms'],
+      });
+    },
+  });
 
-const { mutate: commentAlarm } = useMutation({
-  mutationFn: (id:number) =>
-    patchCommentAlarm({
-      accessToken,
-      alarmId: id,
-    }),
-  onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: ['alarms'],
-    });
-  },
-});
-
-  const handleAlarmItemClick = (id: number, alarmType: string) => {
-    // 해당 알림 읽음 api 호출
-    if (alarmType === 'POST') {
-      postAlarm(id);
-    } else {
-      commentAlarm(id);
-    }
-    router.push(`/post/${id}`);
+  const handleAlarmItemClick = (alarmId: number, alarmType: string, postId: number) => {
+    postAlarm({ accessToken, alarmId, alarmType });
+    router.push(`/post/${postId}`);
   };
 
   const truncateText = (comment: string) => {
@@ -71,7 +54,9 @@ const { mutate: commentAlarm } = useMutation({
                   <div
                     key={alarm.alarmId}
                     className='flex flex-col gap-[3px] px-[5px] w-[305px] relative'
-                    onClick={() => handleAlarmItemClick(alarm.postId, alarm.alarmType)}
+                    onClick={() =>
+                      handleAlarmItemClick(alarm.alarmId, alarm.alarmType, alarm.postId)
+                    }
                   >
                     <p className='text-[12px] text-[#555555] pr-[50px]'>
                       {alarm.alarmType === 'POST'

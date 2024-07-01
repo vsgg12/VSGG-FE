@@ -1,21 +1,19 @@
 import api from '@/_lib/fetcher';
 
-interface IPatchAlarm {
+export interface IPatchAlarm {
   accessToken: string;
   alarmId: number;
+  alarmType: string;
 }
 
-export async function patchPostAlarm({ accessToken, alarmId }: IPatchAlarm) {
-  const data = await api.patch({
-    endpoint: `/alarm/post/${alarmId}`,
-    authorization: accessToken,
-  });
-  return data;
-}
+type IPatchAlarmType = {
+  resultCode: number;
+  resultMsg: string;
+};
 
-export async function patchCommentAlarm({ accessToken, alarmId }: IPatchAlarm) {
-  const data = await api.patch({
-    endpoint: `/alarm/comment/${alarmId}`,
+export async function patchAlarm({ accessToken, alarmId, alarmType }: IPatchAlarm) {
+  const data = await api.patch<IPatchAlarmType>({
+    endpoint: `/alarm/${alarmType}/${alarmId}`,
     authorization: accessToken,
   });
   return data;

@@ -89,7 +89,7 @@ export default function PostRead() {
 
   useEffect(() => {
     if (post) {
-      console.log(post);
+      console.log('게시글 상세 조회 : ', post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);

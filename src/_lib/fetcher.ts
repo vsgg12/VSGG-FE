@@ -1,6 +1,6 @@
 import postRefresh from '@/api/postRefresh';
 import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
-import refreshTokenExpired from './refreshTokenExpired';
+import RefreshTokenExpired from './refreshTokenExpired';
 
 interface IFetchOptions<T = unknown> {
   endpoint: string;
@@ -80,7 +80,7 @@ const _fetch = async <T = unknown, R = unknown>({
             }
             return await retryRes.json();
           } else {
-            refreshTokenExpired();
+            RefreshTokenExpired();
             throw new Error('Session expired. Please log in again.');
           }
         }
@@ -95,7 +95,7 @@ const _fetch = async <T = unknown, R = unknown>({
   }
 };
 
-// T: 요청 body의 타입, 
+// T: 요청 body의 타입,
 // R: 응답 body의 타입
 
 const _get = async <R = unknown>({ endpoint, authorization }: IGetOptions): Promise<R> => {

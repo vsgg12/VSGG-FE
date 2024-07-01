@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
@@ -19,8 +19,8 @@ const intialInGameInfoRequest: IIngameInfoRequestType[] = [
 export default function PostWriteForm() {
   const { isLogin } = getStoredLoginState();
   const router = useRouter();
-  const [uploadedVideos, setUploadedVideos] = useState<any>(null);
-  const [thumbnail, setThumbnail] = useState<Blob>();
+  const [uploadedVideos, setUploadedVideos] = useState<File | null | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
   console.log('thumbnail', thumbnail);
   const [content] = useState('');
   const [hashtags] = useState<string[]>([]);
@@ -82,9 +82,6 @@ export default function PostWriteForm() {
     } else {
       postFormData.append('uploadVideos', emptyFile);
     }
-    useEffect(() => {
-      console.log(postFormData);
-    }, [postFormData]);
 
     // const { mutate: postWirte } = useMutation({
     //   mutationFn: () => postPostWrite({ body: '', authorization: accessToken }),
@@ -108,15 +105,18 @@ export default function PostWriteForm() {
     }
   };
 
-  const beforeUnloadHandler = useCallback((event: BeforeUnloadEvent) => {
-    if (isLogin || !postCreated) {
-      const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
-      event.preventDefault();
-      return message;
-    }
-  }, []);
+  useEffect(() => {
+const beforeUnloadHandler = (event: BeforeUnloadEvent) => {
+  if (isLogin || !postCreated) {
+    const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+    event.preventDefault();
+    return message;
+  }
+};
+  },[])
+  
 
-  const handlePopState = useCallback(() => {
+  const handlePopState = () => {
     if (isLogin || !postCreated) {
       const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
       if (!confirm(message)) {
@@ -126,7 +126,7 @@ export default function PostWriteForm() {
 
       history.back();
     }
-  }, []);
+  };
 
   useEffect(() => {
     const originalPush = router.push;
