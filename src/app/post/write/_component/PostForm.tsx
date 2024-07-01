@@ -22,13 +22,6 @@ export default function PostForm() {
   const { register } = useForm<ICreatePostFormProps>();
   const [content, setContent] = useState('');
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && quillRef.current) {
-      const quill = quillRef.current.getEditor();
-      quill.register('modules/imageResize', ImageResize);
-    }
-  }, []);
-
   const handleChange = (value: string) => {
     setContent(value);
   };
