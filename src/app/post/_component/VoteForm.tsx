@@ -8,7 +8,6 @@ import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
   voteInfo: IGetGameInfoType[];
-  setIsVoted: React.Dispatch<SetStateAction<boolean>>;
   handleVoteSubmit: () => void;
 }
 
