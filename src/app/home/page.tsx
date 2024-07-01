@@ -21,18 +21,17 @@ export default function Home() {
 
   const { data: postData, isLoading } = useQuery<IGetPostListType>({
     queryKey: ['POST_LIST', activeButton],
-    queryFn: async () => {
-      if (activeButton === 'createdatetime') {
-        return await getPostList(activeButton, '');
-      } else if (activeButton === 'view') {
-        return await getPostList(activeButton, '');
+    queryFn: () => {
+      if (activeButton === 'createdatetime' || activeButton === 'view') {
+        return getPostList(activeButton, '');
       }
+      throw new Error('Invalid activeButton value');
     },
   });
 
   useEffect(() => {
     if (postData) {
-      console.log(postData);
+      console.log("home's postData", postData);
     }
   }, [postData]);
 

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,19 +14,31 @@ import getAlarms from '@/api/getAlarms';
 
 export default function Header() {
   const router = useRouter();
-  const { isLogin } = getStoredLoginState();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const email = String(localStorage.getItem('email'));
-  const nickname = String(localStorage.getItem('nickname'));
-  const profileImage = String(localStorage.getItem('profileImage'));
 
-  const { accessToken } = getStoredLoginState();
-  const { data } = useQuery<IGetAlarmConfirmType>({
+  const [email, setEmail] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
+  const { isLogin, accessToken } = getStoredLoginState();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setEmail(String(localStorage.getItem('email')));
+      setNickname(String(localStorage.getItem('nickname')));
+      setProfileImage(String(localStorage.getItem('profileImage')));
+    }
+  }, []);
+
+  const { data } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });
+
+  useEffect(() => {
+    data && console.log('alarms: ', data);
+  }, [data]);
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {

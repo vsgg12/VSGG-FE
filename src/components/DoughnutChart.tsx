@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 Chart.register(ArcElement, Tooltip, Legend);
@@ -34,9 +34,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos, size }) => 
       tooltip: {
         enabled: true,
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'doughnut'>) {
             const label = context.label || '';
-            const value = context.raw || '';
+            const value = context.raw as number;
             return `${label}: ${value}`;
           },
         },

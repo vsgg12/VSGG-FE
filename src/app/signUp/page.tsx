@@ -7,7 +7,7 @@ import deleteIcon from '../../../public/svg/deleteIcon.svg';
 import { useMutation } from '@tanstack/react-query';
 import PostSignUp from '@/api/PostSignUp';
 import { useAuthStore } from '../login/store/useAuthStore';
-import getNicknameCheck from '@/api/getNicknameCheck';
+import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
 
 export default function SignUp() {
   const router = useRouter();
@@ -54,7 +54,7 @@ export default function SignUp() {
   const { mutate: nicknameCheck } = useMutation({
     mutationFn: () => getNicknameCheck(nickname),
     mutationKey: ['nickNameCheck', isSameNickname],
-    onSuccess: (data) => {
+    onSuccess: (data: IGetNickNameCheckType) => {
       if (data.nicknameCheck) {
         setErrorMessage('중복된 닉네임입니다.');
       } else {

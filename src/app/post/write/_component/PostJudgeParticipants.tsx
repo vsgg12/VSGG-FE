@@ -68,9 +68,9 @@ const tiers = [
   { id: 'challenger', value: 'CHALLENGER', content: '챌린저' },
 ];
 
-const intialIngameInfos: IIngameInfoRequestType[] = [
-  { id: 0, position: 'TOP', champion: '', tier: '' },
-  { id: 1, position: 'TOP', champion: '', tier: '' },
+const intialIngameInfos: IInGameInfoType[] = [
+  { id: 0, position: 'TOP', championName: '', tier: '' },
+  { id: 1, position: 'TOP', championName: '', tier: '' },
 ];
 
 export default function PostJudgeParticipants() {
@@ -78,11 +78,12 @@ export default function PostJudgeParticipants() {
     0: 0,
     1: 0,
   });
-  const [ingameInfos, setIngameInfos] = useState<IIngameInfoRequestType[]>(intialIngameInfos);
+  const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>(intialIngameInfos);
   const isClickedFirst = useRef(false); //뒤로가기 방지용
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
 
   const changePositionRadioStyle = (index: number, checked: boolean) => {
+    console.log(index);
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
 
@@ -91,7 +92,7 @@ export default function PostJudgeParticipants() {
     const newInfo = {
       id: ingameInfos.length,
       position: 'TOP',
-      champion: '',
+      championName: '',
       tier: '',
     };
     setIngameInfos(ingameInfos.concat(newInfo));

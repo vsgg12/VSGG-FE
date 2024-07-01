@@ -1,11 +1,7 @@
 // import { ICreatePostFormProps } from '@/types/form';
-import { SetStateAction, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 // import { useForm } from 'react-hook-form';
-import {
-  IoDocumentOutline,
-  IoEaselOutline,
-  IoVideocamOutline,
-} from 'react-icons/io5';
+import { IoDocumentOutline, IoEaselOutline, IoVideocamOutline } from 'react-icons/io5';
 
 const tabs = [
   { id: 0, title: '파일 불러오기' },
@@ -14,9 +10,9 @@ const tabs = [
 ];
 
 interface IPostUploadFileProps {
-  uploadedVideo: any;
-  setUploadedVideo: React.Dispatch<any>;
-  setThumbnail: React.Dispatch<SetStateAction<Blob | undefined>>;
+  uploadedVideo: File | null | undefined;
+  setUploadedVideo: React.Dispatch<React.SetStateAction<File | null | undefined>>;
+  setThumbnail: React.Dispatch<React.SetStateAction<Blob | undefined>>;
 }
 
 export default function PostUploadFile({
@@ -26,7 +22,7 @@ export default function PostUploadFile({
 }: IPostUploadFileProps) {
   // const { register, watch, setValue } = useForm<ICreatePostFormProps>();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [uploadedThumbnail, setUploadedThumbnail] = useState<any>(null);
+  const [uploadedThumbnail, setUploadedThumbnail] = useState<File>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
