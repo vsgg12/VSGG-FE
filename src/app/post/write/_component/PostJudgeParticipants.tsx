@@ -83,7 +83,6 @@ export default function PostJudgeParticipants() {
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
 
   const changePositionRadioStyle = (index: number, checked: boolean) => {
-    console.log(index);
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
 
