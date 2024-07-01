@@ -42,9 +42,9 @@ export default function Home() {
   const handleWriteClick = (): void => {
     if (!isLogin) {
       router.push('/login');
-    } else {
-      router.push('/post/write');
+      return;
     }
+    router.push('/post/write');
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} />
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>

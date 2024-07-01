@@ -28,20 +28,3 @@ export const useAuthStore = create<LoginState>(
     },
   ) as (set: (fn: (state: LoginState) => LoginState) => void) => LoginState,
 );
-
-export const getStoredLoginState = () => {
-  if (typeof window === 'undefined') {
-    return { isLogin: false, accessToken: '', refreshToken: '' };
-  }
-  const storedDataString = localStorage.getItem('login-storage');
-  const storedData = storedDataString && JSON.parse(storedDataString);
-
-  if (storedData) {
-    const isLogin = storedData.state.isLogin;
-    const accessToken = storedData.state.accessToken;
-    const refreshToken = storedData.state.refreshToken;
-    return { isLogin, accessToken, refreshToken };
-  } else {
-    return { isLogin: false, accessToken: '', refreshToken: '' };
-  }
-};

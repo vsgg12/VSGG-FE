@@ -1,12 +1,19 @@
 'use client';
 import { ICreatePostFormProps } from '@/types/form';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import React, { SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-export default function PostForm() {
+interface IPostFormProps {
+  content: string;
+  setContent: React.Dispatch<SetStateAction<string>>;
+  title: string;
+  setTitle: React.Dispatch<SetStateAction<string>>;
+}
+
+export default function PostForm({ content, setContent, title, setTitle }: IPostFormProps) {
   const quillPlaceHolder =
     '[게시글 내용 작성 가이드]\n\n' +
     '1. 리플레이 영상 업로드는 필수! 판결을 받고 싶은 부분만 편집해 업로드 하기\n' +
@@ -18,12 +25,13 @@ export default function PostForm() {
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
     '- 문자 수 제한 : 1000자 이내\n';
 
-  const { register } = useForm<ICreatePostFormProps>();
-  const [content, setContent] = useState('');
-
   const handleChange = (value: string) => {
     setContent(value);
   };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+  }
 
   return (
     <>
@@ -35,13 +43,15 @@ export default function PostForm() {
           maxLength={35}
           className=' grow rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[15px] text-[22px] font-medium outline-none'
           placeholder='최대 35글자 입력 가능합니다.'
-          {...register('title')}
+          onChange={handleTitleChange}
+          value={title}
         />
       </div>
       <div className='p-content-mb h-[882px] overflow-hidden  rounded-[30px] border-[1.5px] border-[#828282]'>
         <ReactQuill
           className=' h-[100%] w-full whitespace-pre-wrap outline-none text-[16px] font-medium'
           onChange={handleChange}
+          theme='snow'
           value={content}
           placeholder={quillPlaceHolder}
           modules={{

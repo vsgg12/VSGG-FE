@@ -5,7 +5,16 @@ interface IPostPostWrite {
   authorization: string;
 }
 
+type IPostResult = {
+  resultCode: number;
+  resultMsg: string;
+};
+
 export default async function postPostWrite({ body, authorization }: IPostPostWrite) {
-  const data = await api.post({ endpoint: '/post', body, authorization });
+  const data = await api.post<IPostWriteType, IPostResult>({
+    endpoint: '/post',
+    body,
+    authorization,
+  });
   return data;
 }

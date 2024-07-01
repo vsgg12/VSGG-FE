@@ -34,22 +34,27 @@ export const voteColors = [
 export const positionInfo = [
   {
     name: '탑',
-    src: '/svg/top-w.svg',
+    svgw: '/svg/top-w.svg',
+    svg: '/svg/top.svg',
   },
   {
     name: '원딜',
-    src: '/svg/onedeal-w.svg',
+    svgw: '/svg/onedeal-w.svg',
+    svg: '/svg/onedeal.svg',
   },
   {
     name: '미드',
-    src: '/svg/mid-w.svg',
+    svgw: '/svg/mid-w.svg',
+    svg: '/svg/mid.svg',
   },
   {
     name: '정글',
-    src: '/svg/jungle-w.svg',
+    svgw: '/svg/jungle-w.svg',
+    svg: '/svg/jungle.svg',
   },
   {
     name: '서폿',
-    src: '/svg/supporter-w.svg',
+    svgw: '/svg/supporter-w.svg',
+    svg: '/svg/supporter.svg',
   },
 ];

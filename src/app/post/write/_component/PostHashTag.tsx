@@ -1,8 +1,13 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, SetStateAction, useState } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
 
-export default function PostHashTag() {
-  const [hashtags, setHashtags] = useState<string[]>([]);
+interface IPostHashTagProps {
+  hashtag: string[];
+  setHashtag: React.Dispatch<SetStateAction<string[]>>;
+}
+
+export default function PostHashTag({hashtag, setHashtag} : IPostHashTagProps) {
+
   const [tagInput, setTagInput] = useState('');
 
   const handleTagInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -10,17 +15,17 @@ export default function PostHashTag() {
   };
 
   const removeTag = (index: number) => {
-    setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
+    setHashtag(hashtag.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
-  //hashtags
+  //hashtag
   const handleTagInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
       event.preventDefault(); // 폼 제출 방지
       const newTag = event.currentTarget.value.trim();
-      if (newTag && !hashtags.includes(newTag) && hashtags.length < 5) {
+      if (newTag && !hashtag.includes(newTag) && hashtag.length < 5) {
         // 중복 및 빈 문자열 검사
-        setHashtags([...hashtags, newTag]);
+        setHashtag([...hashtag, newTag]);
         setTagInput(''); // 입력 필드 초기화
       }
     }
@@ -37,7 +42,7 @@ export default function PostHashTag() {
         onKeyDown={handleTagInput}
       />
       <div className='ml-4 flex flex-wrap '>
-        {hashtags.map((hashtag, index) => (
+        {hashtag.map((hashtag, index) => (
           <div
             key={index}
             className='mb-1 mr-3 flex w-fit flex-row items-center justify-center rounded-[150px] border-[1.5px] border-[#333333] px-[15px] py-[5px]'

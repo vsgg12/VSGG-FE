@@ -1,5 +1,5 @@
 import { IPatchAlarm, patchAlarm } from '@/api/patchAlarm';
-import { getStoredLoginState } from '@/app/login/store/useAuthStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,7 @@ interface IAlarmListProps {
 
 export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const router = useRouter();
-  const { accessToken } = getStoredLoginState();
+  const { accessToken } = useAuthStore();
   const queryClient = useQueryClient();
 
   const { mutate: postAlarm } = useMutation({
