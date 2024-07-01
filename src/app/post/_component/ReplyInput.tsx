@@ -9,7 +9,7 @@ interface IPostCommentProps {
 
 export default function ReplyInput({ handleSubmit }: IPostCommentProps) {
   const { isCommentInProgress, setCommentContent, showReply } = useCommentStore();
-  const [replyContent, setReplyContent] = useState<string>();
+  const [replyContent, setReplyContent] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentContent(e.target.value);
@@ -32,6 +32,7 @@ export default function ReplyInput({ handleSubmit }: IPostCommentProps) {
           className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
           type='submit'
           onClick={handleSubmit}
+          disabled={replyContent === ''}
         >
           <p className='mr-[4px]'>등록</p>
           <BsArrowUpCircle />

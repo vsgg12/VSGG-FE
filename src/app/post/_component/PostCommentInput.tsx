@@ -38,6 +38,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
           className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
           type='submit'
           onClick={handleSubmit}
+          disabled={commentContent === ''}
         >
           <p className='mr-[4px]'>등록</p>
           <BsArrowUpCircle />
