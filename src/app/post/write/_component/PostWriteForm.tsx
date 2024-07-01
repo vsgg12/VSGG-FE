@@ -9,31 +9,30 @@ import PostUploadFile from './PostUploadFile';
 import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
 import PostJudgeParticipants from './PostJudgeParticipants';
-import { getStoredLoginState } from '@/app/login/store/useAuthStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useMutation } from '@tanstack/react-query';
+import postPostWrite from '@/api/postPostWrite';
 
 const intialInGameInfoRequest: IIngameInfoRequestType[] = [
-  { position: 'TOP', champion: '', tier: '' },
-  { position: 'TOP', champion: '', tier: '' },
+  { position: 'TOP', championName: '', tier: '' },
+  { position: 'TOP', championName: '', tier: '' },
 ];
 
 export default function PostWriteForm() {
   const router = useRouter();
-  const [uploadedVideos, setUploadedVideos] = useState<File | null | undefined>(undefined);
-  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
-  console.log('thumbnail', thumbnail);
-  const [content] = useState('');
-  const [hashtags] = useState<string[]>([]);
-  const [InGameInfoRequest] = useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
-  const { isLogin } = getStoredLoginState();
+  const [uploadVideos, setUploadVideos] = useState<File | null | undefined>(undefined);
+  const [thumbnailImage, setThumbnailImage] = useState<File | undefined>(undefined);
+  const [hashtag, setHashtag] = useState<string[]>([]);
+  const [content, setContent] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [InGameInfoRequest, setInGameInfoRequest] =
+    useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
+  const {  accessToken } = useAuthStore();
   // const postCreated = false;
   const { handleSubmit } = useForm<ICreatePostFormProps>();
 
-  useEffect(() => {
-    !isLogin && router.push('/login');
-  }, []);
-
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
-    if (!uploadedVideos) {
+    if (!uploadVideos) {
       alert('영상을 업로드 해주세요');
       return;
     }
@@ -43,8 +42,8 @@ export default function PostWriteForm() {
       return;
     }
 
-    const inGameInfoRequests = InGameInfoRequest.map(({ champion, ...rest }) => ({
-      championName: champion,
+    const inGameInfoRequests = InGameInfoRequest.map(({ championName, ...rest }) => ({
+      championName: championName,
       ...rest,
     }));
 
@@ -60,7 +59,7 @@ export default function PostWriteForm() {
     const postRequestData = {
       title: data.title,
       type: 'FILE',
-      hashtag: hashtags,
+      hashtag: hashtag,
       inGameInfoRequests: inGameInfoRequests,
       videoUrl: data.link,
     };
@@ -81,23 +80,37 @@ export default function PostWriteForm() {
       'postAddRequest',
       new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
     );
-    if (uploadedVideos) {
-      postFormData.append('uploadVideos', uploadedVideos);
+    if (uploadVideos) {
+      postFormData.append('uploadVideos', uploadVideos);
     } else {
       postFormData.append('uploadVideos', emptyFile);
     }
 
-    // const { mutate: postWirte } = useMutation({
-    //   mutationFn: () => postPostWrite({ body: '', authorization: accessToken }),
-    //   onError: (error) => {
-    //     console.log(error);
-    //     alert('게시물 등록에 실패하셨습니다.');
-    //   },
-    //   onSuccess: () => {
-    //     alert('게시물 등록이 완료되었습니다!');
-    //     router.push('/');
-    //   },
-    // });
+    const { mutate: postWirte } = useMutation({
+      mutationFn: () =>
+        postPostWrite({
+          body: {
+            uploadVideos,
+            thumbnailImage,
+            postAddRequest: {
+              title,
+              content,
+              hashtag,
+            },
+            InGameInfoRequest,
+            videoUrl: '',
+          },
+          authorization: accessToken,
+        }),
+      onError: (error) => {
+        console.log(error);
+        alert('게시물 등록에 실패하셨습니다.');
+      },
+      onSuccess: () => {
+        alert('게시물 등록이 완료되었습니다!');
+        router.push('/');
+      },
+    });
 
     // 업로드된 썸네일이 없을떄랑 있을때 처리해야함
 
@@ -105,7 +118,7 @@ export default function PostWriteForm() {
 
     const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
     if (postComfirm) {
-      // postWirte();
+      postWirte();
     }
   };
 
@@ -152,6 +165,15 @@ export default function PostWriteForm() {
   }, [router, beforeUnloadHandler]);
 
   useEffect(() => {
+    console.log('썸네일 : ', thumbnailImage);
+    console.log('비디오 영상: ', uploadVideos);
+    console.log('해쉬태그', hashtag);
+    console.log('제목 : ', title);
+    console.log('내용 : ', content);
+    console.log('챔피언 정보: ', InGameInfoRequest);
+  }, [uploadVideos, thumbnailImage, hashtag, title, content, InGameInfoRequest]);
+
+  useEffect(() => {
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
@@ -160,25 +182,25 @@ export default function PostWriteForm() {
 
   return (
     <>
-      {/* {isLoading && <LoadingFull />} */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
             <PostUploadFile
-              uploadedVideo={uploadedVideos}
-              setUploadedVideo={setUploadedVideos}
-              setThumbnail={setThumbnail}
+              uploadedVideo={uploadVideos}
+              setUploadedVideo={setUploadVideos}
+              setThumbnailImage={setThumbnailImage}
+              thumbnailImage={thumbnailImage}
             />
           </div>
         </div>
 
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
-          <PostForm />
+          <PostForm content={content} setContent={setContent} title={title} setTitle={setTitle} />
           <div className='mx-[30px] mb-[30px] text-[20px] font-semibold  text-[#8A1F21]'>
             해시태그
           </div>
-          <PostHashTag />
+          <PostHashTag hashtag={hashtag} setHashtag={setHashtag} />
         </div>
 
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
@@ -190,7 +212,9 @@ export default function PostWriteForm() {
               본인을 포함해 판결에 참여할 대상의 정보를 입력해주세요
             </div>
           </div>
-          <PostJudgeParticipants />
+          <PostJudgeParticipants
+            setInGameInfoRequest={setInGameInfoRequest}
+          />
           <div className='flex flex-row justify-end'>
             <button
               type='submit'

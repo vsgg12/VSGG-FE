@@ -166,7 +166,7 @@ export default function PostRead() {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} />
       <main>
         <Search handleSearch={handleSearch} />
         <section className='flex justify-center'>

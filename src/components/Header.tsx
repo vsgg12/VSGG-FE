@@ -8,11 +8,15 @@ import { useEffect, useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
-import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/getAlarms';
 
-export default function Header() {
+interface HeaderProps {
+  isLogin: boolean;
+}
+
+export default function Header({ isLogin }: HeaderProps) {
   const router = useRouter();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
@@ -21,7 +25,7 @@ export default function Header() {
   const [email, setEmail] = useState<string>('');
   const [nickname, setNickname] = useState<string>('');
   const [profileImage, setProfileImage] = useState<string>('');
-  const { isLogin, accessToken } = getStoredLoginState();
+  const { accessToken } = useAuthStore();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -68,7 +72,6 @@ export default function Header() {
 
   const handleGoPostBtnClick = (): void => {
     if (!isLogin) {
-      alert('로그인이 필요합니다.');
       router.push('/login');
       return;
     }

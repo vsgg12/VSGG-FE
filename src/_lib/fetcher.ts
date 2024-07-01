@@ -1,5 +1,5 @@
 import postRefresh from '@/api/postRefresh';
-import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 import RefreshTokenExpired from './refreshTokenExpired';
 
 interface IFetchOptions<T = unknown> {
@@ -56,7 +56,7 @@ const _fetch = async <T = unknown, R = unknown>({
 
     if (!res.ok) {
       if (res.status === 401) {
-        const { refreshToken } = getStoredLoginState();
+        const { refreshToken } = useAuthStore();
         if (refreshToken) {
           const newToken = await postRefresh(refreshToken);
           if (newToken) {

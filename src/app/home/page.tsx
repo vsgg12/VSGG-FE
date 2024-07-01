@@ -10,16 +10,15 @@ import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
-import { getStoredLoginState } from '../login/store/useAuthStore';
+import { useAuthStore } from '../login/store/useAuthStore';
 
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin } = getStoredLoginState();
-  
+  const { isLogin } = useAuthStore();
+
   const handleWriteClick = (): void => {
     if (!isLogin) {
-      alert('로그인이 필요합니다.');
       router.push('/login');
       return;
     }
@@ -44,7 +43,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} />
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} />
         <section className='flex justify-center'>
