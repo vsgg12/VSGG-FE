@@ -1,8 +1,6 @@
 'use client';
-import { ICreatePostFormProps } from '@/types/form';
 import dynamic from 'next/dynamic';
 import React, { SetStateAction } from 'react';
-import { useForm } from 'react-hook-form';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 

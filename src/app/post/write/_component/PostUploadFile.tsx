@@ -11,7 +11,7 @@ const tabs = [
 
 interface IPostUploadFileProps {
   uploadedVideo: File | null | undefined;
-  setUploadedVideo: React.Dispatch<React.SetStateAction<File | null | undefined>>;
+  setUploadedVideo: React.Dispatch<React.SetStateAction<File | undefined>>;
   setThumbnailImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   thumbnailImage: File | undefined;
 }

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { ChampionDataProps } from '@/types/form';
@@ -32,10 +32,10 @@ export default function PostJudgeParticipants({
     1: 0,
   });
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
-    { id: 0, position: 'TOP', championName: '', tier: '' },
-    { id: 1, position: 'TOP', championName: '', tier: '' },
+    { id: 0, position: '탑', championName: '', tier: '' },
+    { id: 1, position: '탑', championName: '', tier: '' },
   ]);
-  const isClickedFirst = useRef(false); //뒤로가기 방지용
+
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
 
   const changePositionRadioStyle = (checked: boolean) => {
@@ -64,11 +64,6 @@ export default function PostJudgeParticipants({
 
   // 챔피언 선택 부분에 들어갈 챔피언 이름 데이터 받아오기
   useEffect(() => {
-    if (!isClickedFirst.current) {
-      history.pushState(null, '', '');
-      isClickedFirst.current = true;
-    }
-
     fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
       .then((response) => response.json())
       .then((data: ChampionDataProps) => {
@@ -150,6 +145,7 @@ export default function PostJudgeParticipants({
                     type='radio'
                     name={`${pos.name}-${ingameInfo.id}`}
                     value={pos.name}
+                    id={`${pos.name}-${ingameInfo.id}`}
                     className='p-input-hidden'
                     onChange={() => handlePositionChange(index, ingameInfo.id)}
                     checked={selectedPos[ingameInfo.id] === index}
