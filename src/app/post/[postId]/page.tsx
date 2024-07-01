@@ -59,7 +59,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken } = useAuthStore();
+  const { accessToken, isLogin } = useAuthStore();
   const router = useRouter();
   const {
     isCommentInProgress,
@@ -147,6 +147,9 @@ export default function PostRead() {
   };
 
   const handleVoteSubmit = () => {
+    if (!isLogin) {
+      router.push('/login');
+    }
     console.log(postVoteResult);
     postVote();
   };
@@ -241,7 +244,9 @@ export default function PostRead() {
                             key={index}
                             type='button'
                             onClick={() => {
-                              if (showReply && showReply === comment.id) {
+                              if (!isLogin) {
+                                router.push('/login');
+                              } else if (showReply && showReply === comment.id) {
                                 setShowReply(null);
                               } else {
                                 setShowReply(comment.id);
@@ -278,9 +283,6 @@ export default function PostRead() {
               <VoteResult postId={3} voteInfos={voteAVGInfos} />
             ) : post && !isVote ? (
               <VoteForm
-                setIsVoted={() => {
-                  return;
-                }}
                 voteInfo={post.postDTO.inGameInfoList}
                 handleVoteSubmit={handleVoteSubmit}
               />

@@ -5,18 +5,24 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from '@/components/Search';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../login/store/useAuthStore';
 
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
+  const { isLogin } = useAuthStore();
 
   const handleWriteClick = (): void => {
-    router.push('/post/write');
+    if (!isLogin) {
+      router.push('/login');
+    } else {
+      router.push('/post/write');
+    }
   };
 
   const { data: postData, isLoading } = useQuery<IGetPostListType>({
@@ -29,17 +35,17 @@ export default function Home() {
     },
   });
 
-  useEffect(() => {
-    if (postData) {
-      console.log("home's postData", postData);
+  const handleSearch = () => {
+    if (!isLogin) {
+      router.push('/login');
     }
-  }, [postData]);
+  };
 
   return (
     <>
       <Header />
       <main className='px-[50px]'>
-        <Search />
+        <Search handleSearch={handleSearch} />
         <section className='flex justify-center'>
           <div className='relative w-[100%] mx-28'>
             <button
