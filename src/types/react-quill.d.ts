@@ -30,8 +30,10 @@ declare module 'react-quill' {
   export type QuillOptions = QuillOptionsStatic;
 
   interface UnprivilegedEditor {
+    insertEmbed(range: number, image: string, imgUrl: string);
     register(arg0: string, ImageResize: typeof import('quill-image-resize-module-ts')): unknown;
     getLength(): number;
+    setSelection(index1: number, index2: number);
     getText(index?: number, length?: number): string;
     getContents(index?: number, length?: number): Delta;
     getSelection(focus?: boolean): Range | null;
