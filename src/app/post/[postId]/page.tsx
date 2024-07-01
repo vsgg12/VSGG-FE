@@ -94,9 +94,9 @@ export default function PostRead() {
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
       setIsVote(post.postDTO.isVote);
-      const newPostVoteResult = post.postDTO.ingameInfoList.map(
-        (ingameInfo: { id: number }, idx: number) => ({
-          ingameInfoId: ingameInfo.id,
+      const newPostVoteResult = post.postDTO.inGameInfoList.map(
+        (ingameInfo: IGetGameInfoType, idx: number) => ({
+          ingameInfoId: ingameInfo.inGameInfoId,
           ratio: voteResult[idx] || 0, // newVoteResult의 각 값을 ratio로 설정
         }),
       );
