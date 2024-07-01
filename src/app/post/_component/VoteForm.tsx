@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { voteColors, positionInfo } from '../../../data/championData';
 import VotingGraph from './VotingGraph';

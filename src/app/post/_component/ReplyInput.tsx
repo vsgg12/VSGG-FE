@@ -2,8 +2,6 @@ import { BsArrowUpCircle } from 'react-icons/bs';
 import Loading from '@/components/Loading';
 import useCommentStore from '../[postId]/store/useCommentStore';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 interface IPostCommentProps {
   handleSubmit: () => void;
