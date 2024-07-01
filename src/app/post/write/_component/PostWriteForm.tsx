@@ -113,6 +113,13 @@ export default function PostWriteForm() {
     event.preventDefault();
     event.returnValue = '페이지를 떠나면 작성된 내용이 사라집니다.';
   }, []);
+  // const beforeUnloadHandler = (event: BeforeUnloadEvent) => {
+  //   if (isLogin || !postCreated) {
+  //     const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+  //     event.preventDefault();
+  //     return message;
+  //   }
+  // };
 
   const handlePopState = useCallback(() => {
     const message = '페이지를 떠나면 작성된 내용이 사라집니다.';

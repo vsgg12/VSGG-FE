@@ -90,7 +90,11 @@ export default function Home() {
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
             {postData ? (
-              postData.postDTO.map((post) => <HomePostItems post={post} />)
+              postData.postDTO.map((post, idx) => (
+                <div key={idx}>
+                  <HomePostItems post={post} />
+                </div>
+              ))
             ) : isLoading ? (
               <Loading />
             ) : (
