@@ -48,13 +48,14 @@ export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
                 <video
                   muted
                   controls
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-[362px] w-[50%] max-w-[37.875rem]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
                 >
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : (
+                //외부영상 첨부할 때 사용
                 <iframe
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-[362px] w-[50%] max-w-[37.875rem]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
                   src={post.video.url}
                   title={post.title}
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
@@ -62,7 +63,7 @@ export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
                   allowFullScreen
                 ></iframe>
               )}
-              <div className='flex w-full flex-col overflow-hidden'>
+              <div className='flex flex-col overflow-hidden w-[50%] mb-5'>
                 <div className='mb-1 line-clamp-[8] h-[50%] cursor-pointer overflow-hidden text-ellipsis decoration-solid'>
                   {contentsArr.pTags.map((content, idx) => (
                     <p key={idx}>{content}</p>

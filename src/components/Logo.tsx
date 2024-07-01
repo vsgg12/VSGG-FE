@@ -1,11 +1,21 @@
-import Link from 'next/link';
+import useSearchStore from '@/app/home/store/useSearchStore';
+import { useRouter } from 'next/navigation';
 
 export default function Logo() {
+  const { setKeyword } = useSearchStore();
+  const router = useRouter();
+
   return (
     <>
-      <Link href='/home'>
-        <div className="font-['SBAggroB'] text-[52px] text-[#8A1F21]">VS.GG</div>
-      </Link>
+      <div
+        className="font-['SBAggroB'] text-[52px] text-[#8A1F21] cursor-pointer"
+        onClick={() => {
+          router.push('/home');
+          setKeyword('');
+        }}
+      >
+        VS.GG
+      </div>
     </>
   );
 }

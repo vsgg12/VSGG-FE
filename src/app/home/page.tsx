@@ -4,18 +4,40 @@ import HomePostItems from './_component/HomePostItems';
 import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
-import Search from '@/components/Search';
-import { useState } from 'react';
+import Search from './_component/Search';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
+import useSearchStore from './store/useSearchStore';
 
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { isLogin } = useAuthStore();
+  const { keyword } = useSearchStore();
+
+  const {
+    data: postData,
+    isLoading,
+    refetch,
+  } = useQuery<IGetPostListType>({
+    queryKey: ['POST_LIST', activeButton],
+    queryFn: () => {
+      if (activeButton === 'createdatetime' || activeButton === 'view') {
+        return getPostList(activeButton, keyword);
+      }
+      throw new Error('Invalid activeButton value');
+    },
+  });
+
+  useEffect(() => {
+    if (keyword === '') {
+      refetch();
+    }
+  }, [keyword, refetch]);
 
   const handleWriteClick = (): void => {
     if (!isLogin) {
@@ -25,19 +47,18 @@ export default function Home() {
     router.push('/post/write');
   };
 
-  const { data: postData, isLoading } = useQuery<IGetPostListType>({
-    queryKey: ['POST_LIST', activeButton],
-    queryFn: () => {
-      if (activeButton === 'createdatetime' || activeButton === 'view') {
-        return getPostList(activeButton, '');
-      }
-      throw new Error('Invalid activeButton value');
-    },
-  });
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && keyword.trim() !== '' && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      refetch();
+    }
+  };
 
   const handleSearch = () => {
     if (!isLogin) {
       router.push('/login');
+    } else if (keyword.trim() !== '') {
+      refetch();
     }
   };
 
@@ -45,7 +66,7 @@ export default function Home() {
     <>
       <Header isLogin={isLogin} />
       <main className='px-[50px]'>
-        <Search handleSearch={handleSearch} />
+        <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
           <div className='relative w-[100%] mx-28'>
             <button
