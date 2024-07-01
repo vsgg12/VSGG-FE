@@ -31,7 +31,7 @@ export default function Header() {
     }
   }, []);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });
@@ -113,12 +113,14 @@ export default function Header() {
             </>
           ) : (
             <>
-              <button
-                className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
-                onClick={handleLoginBtnClick}
-              >
-                로그인
-              </button>
+              {!isLogin && !isLoading && (
+                <button
+                  className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+                  onClick={handleLoginBtnClick}
+                >
+                  로그인
+                </button>
+              )}
             </>
           )}
         </div>

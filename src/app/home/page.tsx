@@ -17,7 +17,7 @@ export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { isLogin } = useAuthStore();
-  const { keyword, setKeyword } = useSearchStore();
+  const { keyword } = useSearchStore();
 
   const {
     data: postData,
