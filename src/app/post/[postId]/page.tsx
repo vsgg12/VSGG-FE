@@ -158,11 +158,17 @@ export default function PostRead() {
     deleteComment(commentId);
   };
 
+  const handleSearch = () => {
+    if (!isLogin) {
+      router.push('/login');
+    }
+  };
+
   return (
     <>
       <Header />
       <main>
-        <Search />
+        <Search handleSearch={handleSearch} />
         <section className='flex justify-center'>
           <div className='w-[100%] mx-28'>
             <header className='flex flex-row items-center justify-between'>
