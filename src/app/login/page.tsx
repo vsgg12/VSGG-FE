@@ -5,12 +5,20 @@ import { useEffect } from 'react';
 import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
+import { useAuthStore } from './store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const { isLogin } = useAuthStore();
+  const router = useRouter();
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
     queryFn: async () => getNaverURL(),
   });
+
+  useEffect(() => {
+    if (isLogin) router.push('/home');
+  }, [isLogin, router]);
 
   useEffect(() => {
     console.log(NAVER_AUTH_URL);

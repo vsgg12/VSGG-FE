@@ -31,7 +31,7 @@ export default function Header() {
     }
   }, []);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });
@@ -74,7 +74,7 @@ export default function Header() {
     <>
       <div className='p-right-20 absolute right-10 top-10 flex flex-row items-center justify-end'>
         <div className='flex flex-row items-center gap-6'>
-          {isLogin ? (
+          {!isLoading && isLogin ? (
             <>
               <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
                 {currentUrl !== '/post/write' && (
@@ -112,14 +112,18 @@ export default function Header() {
               )}
             </>
           ) : (
-            <>
-              <button
-                className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
-                onClick={handleLoginBtnClick}
-              >
-                로그인
-              </button>
-            </>
+            !isLoading && (
+              <>
+                (
+                <button
+                  className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+                  onClick={handleLoginBtnClick}
+                >
+                  로그인
+                </button>
+                )
+              </>
+            )
           )}
         </div>
       </div>

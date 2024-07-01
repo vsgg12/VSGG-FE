@@ -6,7 +6,6 @@ import VoteForm from '../_component/VoteForm';
 import { IoPersonCircleSharp } from 'react-icons/io5';
 import VoteResult from '../_component/VoteResult';
 import Header from '@/components/Header';
-import Search from '@/components/Search';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
@@ -21,6 +20,7 @@ import ReplyInput from '../_component/ReplyInput';
 import DeleteComment from '@/api/deleteComment';
 import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
+import Logo from '@/components/Logo';
 
 const voteAVGInfos: IGetAVGType[] = [
   {
@@ -158,17 +158,13 @@ export default function PostRead() {
     deleteComment(commentId);
   };
 
-  const handleSearch = () => {
-    if (!isLogin) {
-      router.push('/login');
-    }
-  };
-
   return (
     <>
       <Header />
+      <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
+        <Logo />
+      </div>
       <main>
-        <Search handleSearch={handleSearch} />
         <section className='flex justify-center'>
           <div className='w-[100%] mx-28'>
             <header className='flex flex-row items-center justify-between'>
@@ -214,7 +210,7 @@ export default function PostRead() {
                   </div>
                   <video
                     controls
-                    className='p-content-s-mb h-[50%] w-full overflow-hidden rounded-[30px] mt-5'
+                    className='p-content-s-mb h-fit w-full max-h-[25rem] overflow-hidden rounded-[30px]'
                   >
                     <source src={post.postDTO.video.url} type='video/webm' />
                   </video>
