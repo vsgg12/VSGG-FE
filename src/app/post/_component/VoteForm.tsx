@@ -38,7 +38,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
   }, [voteResult, setIsNotAbleSubmit]);
 
   const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name === position)?.src ?? '';
+    return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
   };
 
   return (

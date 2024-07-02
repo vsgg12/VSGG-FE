@@ -12,8 +12,8 @@ import { useMutation } from '@tanstack/react-query';
 import postPostWrite from '@/api/postPostWrite';
 
 const intialInGameInfoRequest: IIngameInfoRequestType[] = [
-  { position: 'TOP', championName: '', tier: '' },
-  { position: 'TOP', championName: '', tier: '' },
+  { position: '탑', championName: '', tier: '' },
+  { position: '탑', championName: '', tier: '' },
 ];
 
 export default function PostWriteForm() {
