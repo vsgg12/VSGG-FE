@@ -48,11 +48,10 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
       ) : (
         <>
           <div className='pb-2 overflow-y-auto h-[348px]'>
-            <div className='flex flex-col gap-[5px] cursor-pointer'>
-              {alarms.map((alarm) => (
-                <>
+            <div>
+              {alarms.map((alarm, index) => (
+                <div className='flex flex-col gap-[5px] cursor-pointer' key={index}>
                   <div
-                    key={alarm.alarmId}
                     className='flex flex-col gap-[3px] px-[5px] w-[305px] relative'
                     onClick={() =>
                       handleAlarmItemClick(alarm.alarmId, alarm.alarmType, alarm.postId)
@@ -77,7 +76,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
                     )}
                     <hr className='border-[#8A1F21] my-[10px]' />
                   </div>
-                </>
+                </div>
               ))}
             </div>
           </div>
