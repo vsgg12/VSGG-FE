@@ -60,6 +60,7 @@ const _fetch = async <T = unknown, R = unknown>({
         if (refreshToken) {
           const newToken = await postRefresh(refreshToken);
           if (newToken) {
+            console.log('토큰 재발급 완료');
             useAuthStore.setState({
               isLogin: true,
               accessToken: newToken.tokens.accessToken,
@@ -74,6 +75,7 @@ const _fetch = async <T = unknown, R = unknown>({
               `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
               retryRequestOptions,
             );
+
             if (!retryRes.ok) {
               const retryErrorData = await retryRes.json();
               throw new Error(retryErrorData.message);
