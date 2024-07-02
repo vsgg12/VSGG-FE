@@ -1,128 +1,61 @@
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import topSVG from '../../../../../public/svg/top.svg';
-import midSVG from '../../../../../public/svg/mid.svg';
-import jungleSVG from '../../../../../public/svg/jungle.svg';
-import onedealSVG from '../../../../../public/svg/onedeal.svg';
-import supportSVG from '../../../../../public/svg/supporter.svg';
-
-import topWSVG from '../../../../../public/svg/top-w.svg';
-import midWSVG from '../../../../../public/svg/mid-w.svg';
-import jungleWSVG from '../../../../../public/svg/jungle-w.svg';
-import onedealWSVG from '../../../../../public/svg/onedeal-w.svg';
-import supportWSVG from '../../../../../public/svg/supporter-w.svg';
 import { ChampionDataProps } from '@/types/form';
-
-const positions = [
-  {
-    id: 'TOP',
-    value: 'TOP',
-    content: '탑',
-    svg: <Image alt='TOP' src={topSVG} />,
-    svgW: <Image alt='TOP' src={topWSVG} />,
-  },
-  {
-    id: 'jungle',
-    value: 'JUNGLE',
-    content: '정글',
-    svg: <Image alt='jungle' src={jungleSVG} />,
-    svgW: <Image alt='jungle' src={jungleWSVG} />,
-  },
-  {
-    id: 'mid',
-    value: 'MID',
-    content: '미드',
-    svg: <Image alt='mid' src={midSVG} />,
-    svgW: <Image alt='mid' src={midWSVG} />,
-  },
-  {
-    id: 'onedeal',
-    value: 'ADCARRY',
-    content: '원딜',
-    svg: <Image alt='onedeal' src={onedealSVG} />,
-    svgW: <Image alt='onedeal' src={onedealWSVG} />,
-  },
-  {
-    id: 'support',
-    value: 'SUPPORT',
-    content: '서폿',
-    svg: <Image alt='support' src={supportSVG} />,
-    svgW: <Image alt='support' src={supportWSVG} />,
-  },
-];
+import { positionInfo } from '@/data/championData';
 
 const tiers = [
-  { id: undefined, value: undefined, content: '티어 선택' },
-  { id: 'unrank', value: 'UNRANK', content: '언랭' },
-  { id: 'iron', value: 'IRON', content: '아이언' },
-  { id: 'bronze', value: 'BRONZE', content: '브론즈' },
-  { id: 'silver', value: 'SILVER', content: '실버' },
-  { id: 'gold', value: 'GOLD', content: '골드' },
-  { id: 'platinum', value: 'PLATINUM', content: '플래티넘' },
-  { id: 'emerald', value: 'EMERALD', content: '에메랄드' },
-  { id: 'diamond', value: 'DIAMOND', content: '다이아' },
-  { id: 'master', value: 'MASTER', content: '마스터' },
-  { id: 'grand_master', value: 'GRANDMASTER', content: '그랜드마스터' },
-  { id: 'challenger', value: 'CHALLENGER', content: '챌린저' },
+  { content: '티어 선택' },
+  { content: '언랭' },
+  { content: '아이언' },
+  { content: '브론즈' },
+  { content: '실버' },
+  { content: '골드' },
+  { content: '플래티넘' },
+  { content: '에메랄드' },
+  { content: '다이아' },
+  { content: '마스터' },
+  { content: '그랜드마스터' },
+  { content: '챌린저' },
 ];
 
-const intialIngameInfos: IIngameInfoRequestType[] = [
-  { id: 0, position: 'TOP', champion: '', tier: '' },
-  { id: 1, position: 'TOP', champion: '', tier: '' },
-];
+interface IPostJedgeParticipantsProps {
+  setInGameInfoRequest: React.Dispatch<SetStateAction<IIngameInfoRequestType[]>>;
+}
 
-export default function PostJudgeParticipants() {
+export default function PostJudgeParticipants({
+  setInGameInfoRequest,
+}: IPostJedgeParticipantsProps) {
   const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>({
     0: 0,
     1: 0,
   });
-  const [ingameInfos, setIngameInfos] = useState<IIngameInfoRequestType[]>(intialIngameInfos);
-  const isClickedFirst = useRef(false); //뒤로가기 방지용
+  const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
+    { id: 0, position: '탑', championName: '', tier: '' },
+    { id: 1, position: '탑', championName: '', tier: '' },
+  ]);
+
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
 
-  const changePositionRadioStyle = (index: number, checked: boolean) => {
+  const changePositionRadioStyle = (checked: boolean) => {
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
 
-  //ingameInfos
   const addIngameInfo = (): void => {
     const newInfo = {
       id: ingameInfos.length,
       position: 'TOP',
-      champion: '',
+      championName: '',
       tier: '',
     };
     setIngameInfos(ingameInfos.concat(newInfo));
 
-    // Setting the default position for the newly added game info
     const updatedSelectedPos = {
       ...selectedPos,
-      [newInfo.id]: 0, // Defaulting to the first position for the new entry
+      [newInfo.id]: 0,
     };
     setSelectedPos(updatedSelectedPos);
-  };
-
-  const handlePositionChange = (position: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
-      idx === index ? { ...info, position } : info,
-    );
-    setIngameInfos(updatedIngameInfos);
-  };
-
-  const handleChampionChange = (champion: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
-      idx === index ? { ...info, champion } : info,
-    );
-    setIngameInfos(updatedIngameInfos);
-  };
-
-  const handleTierChange = (tier: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
-      idx === index ? { ...info, tier } : info,
-    );
-    setIngameInfos(updatedIngameInfos);
   };
 
   const removeIngameInfo = (index: number): void => {
@@ -131,11 +64,6 @@ export default function PostJudgeParticipants() {
 
   // 챔피언 선택 부분에 들어갈 챔피언 이름 데이터 받아오기
   useEffect(() => {
-    if (!isClickedFirst.current) {
-      history.pushState(null, '', '');
-      isClickedFirst.current = true;
-    }
-
     fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
       .then((response) => response.json())
       .then((data: ChampionDataProps) => {
@@ -149,6 +77,44 @@ export default function PostJudgeParticipants() {
       })
       .catch((error) => console.error('Error loading the champions:', error));
   }, []);
+
+  const handlePositionChange = (index: number, ingameInfoId: number) => {
+    const newPosition = positionInfo[index].name;
+    setIngameInfos((prevInfos) =>
+      prevInfos.map((info) =>
+        info.id === ingameInfoId ? { ...info, position: newPosition } : info,
+      ),
+    );
+
+    const updatedSelectedPos = { ...selectedPos };
+    updatedSelectedPos[ingameInfoId] = index;
+    setSelectedPos(updatedSelectedPos);
+  };
+
+  const handleChampionChange = (event: ChangeEvent<HTMLSelectElement>, ingameInfoId: number) => {
+    const newChampionName = event.target.value;
+    setIngameInfos((prevInfos) =>
+      prevInfos.map((info) =>
+        info.id === ingameInfoId ? { ...info, championName: newChampionName } : info,
+      ),
+    );
+  };
+
+  const handleTierChange = (event: ChangeEvent<HTMLSelectElement>, ingameInfoId: number) => {
+    const newTier = event.target.value;
+    setIngameInfos((prevInfos) =>
+      prevInfos.map((info) => (info.id === ingameInfoId ? { ...info, tier: newTier } : info)),
+    );
+  };
+
+  useEffect(() => {
+    const updatedInGameInfoRequest = ingameInfos.map((info) => ({
+      championName: info.championName,
+      position: info.position,
+      tier: info.tier,
+    }));
+    setInGameInfoRequest(updatedInGameInfoRequest);
+  }, [ingameInfos, setInGameInfoRequest]);
 
   return (
     <>
@@ -173,42 +139,37 @@ export default function PostJudgeParticipants() {
 
           <div className='relative mb-[20px] flex flex-col overflow-hidden rounded-[30px] border-2 border-[#8A1F21] p-[20px]'>
             <div className='flex w-[100%] items-center'>
-              {positions.map((pos, index) => (
+              {positionInfo.map((pos, index) => (
                 <div key={index}>
                   <input
                     type='radio'
-                    name={`position-${ingameInfo.id}`}
-                    id={`${pos.id}-${ingameInfo.id}`}
-                    value={pos.value}
+                    name={`${pos.name}-${ingameInfo.id}`}
+                    value={pos.name}
+                    id={`${pos.name}-${ingameInfo.id}`}
                     className='p-input-hidden'
-                    onChange={() => {
-                      const updatedSelectedPos = { ...selectedPos };
-                      updatedSelectedPos[ingameInfo.id] = index;
-                      setSelectedPos(updatedSelectedPos);
-
-                      handlePositionChange(pos.value, ingameInfo.id);
-                    }}
+                    onChange={() => handlePositionChange(index, ingameInfo.id)}
                     checked={selectedPos[ingameInfo.id] === index}
                   />
                   <label
-                    htmlFor={`${pos.id}-${ingameInfo.id}`}
-                    className={changePositionRadioStyle(
-                      index,
-                      selectedPos[ingameInfo.id] === index,
-                    )}
+                    htmlFor={`${pos.name}-${ingameInfo.id}`}
+                    className={changePositionRadioStyle(selectedPos[ingameInfo.id] === index)}
                   >
                     <div className='mr-1 py-1'>
                       {' '}
-                      {selectedPos[ingameInfo.id] === index ? pos.svgW : pos.svg}
+                      {selectedPos[ingameInfo.id] === index ? (
+                        <Image alt='position svgw' width={24} height={24} src={pos.svgw} />
+                      ) : (
+                        <Image alt='position svg' width={24} height={24} src={pos.svg} />
+                      )}
                     </div>
-                    <div>{pos.content}</div>
+                    <div>{pos.name}</div>
                   </label>
                 </div>
               ))}
               <select
                 id='champions-select'
                 className='p-select'
-                onChange={(e) => handleChampionChange(e.target.value, index)}
+                onChange={(e) => handleChampionChange(e, ingameInfo.id)}
               >
                 {champions.map((champion, index) => (
                   <option key={index} value={champion}>
@@ -219,10 +180,10 @@ export default function PostJudgeParticipants() {
               <select
                 id='tiers-select'
                 className='p-select'
-                onChange={(e) => handleTierChange(e.target.value, index)}
+                onChange={(e) => handleTierChange(e, ingameInfo.id)}
               >
                 {tiers.map((tier, index) => (
-                  <option key={index} id={tier.id} value={tier.value}>
+                  <option key={index} value={tier.content}>
                     {tier.content}
                   </option>
                 ))}

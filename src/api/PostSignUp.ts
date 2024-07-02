@@ -12,8 +12,15 @@ interface IPostSignUp {
   };
 }
 
+type IPostSignUpType = {
+  resultCode: number;
+  resultMsg: string;
+  accessToken: string;
+  refreshToken: string;
+};
+
 export default async function PostSignUp(body: IPostSignUp) {
-  const data = await api.post({
+  const data = await api.post<IPostSignUp, IPostSignUpType>({
     endpoint: '/users/signup',
     body,
   });

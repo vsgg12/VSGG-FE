@@ -4,43 +4,102 @@ import HomePostItems from './_component/HomePostItems';
 import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
-import Search from '@/components/Search';
+import Search from './_component/Search';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../login/store/useAuthStore';
+import useSearchStore from './store/useSearchStore';
+
+const voteInfos: IGetVoteType[] = [
+  {
+    championName: '뽀삐',
+    votedRatio: 3,
+    position: '탑',
+    tier: '플래티넘',
+  },
+  {
+    championName: '티모',
+    votedRatio: 4.5,
+    position: '정글',
+    tier: '골드',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+];
 
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
+  const { isLogin } = useAuthStore();
+  const { keyword } = useSearchStore();
 
-  const handleWriteClick = (): void => {
-    router.push('/post/write');
-  };
-
-  const { data: postData, isLoading } = useQuery<IGetPostListType>({
+  const {
+    data: postData,
+    isLoading,
+    refetch,
+  } = useQuery<IGetPostListType>({
     queryKey: ['POST_LIST', activeButton],
-    queryFn: async () => {
-      if (activeButton === 'createdatetime') {
-        return await getPostList(activeButton, '');
-      } else if (activeButton === 'view') {
-        return await getPostList(activeButton, '');
+    queryFn: () => {
+      if (activeButton === 'createdatetime' || activeButton === 'view') {
+        return getPostList(activeButton, keyword);
       }
+      throw new Error('Invalid activeButton value');
     },
   });
 
   useEffect(() => {
-    if (postData) {
-      console.log(postData);
+    if (keyword === '') {
+      refetch();
     }
-  }, [postData]);
+  }, [keyword, refetch]);
+
+  const handleWriteClick = (): void => {
+    if (!isLogin) {
+      router.push('/login');
+      return;
+    }
+    router.push('/post/write');
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && keyword.trim() !== '' && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      refetch();
+    }
+  };
+
+  const handleSearch = () => {
+    if (!isLogin) {
+      router.push('/login');
+    } else if (keyword.trim() !== '') {
+      refetch();
+    }
+  };
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} />
       <main className='px-[50px]'>
-        <Search />
+        <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
           <div className='relative w-[100%] mx-28'>
             <button
@@ -84,7 +143,11 @@ export default function Home() {
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
             {postData ? (
-              postData.postDTO.map((post) => <HomePostItems post={post} />)
+              postData.postDTO.map((post, idx) => (
+                <div key={idx}>
+                  <HomePostItems post={post} voteInfos={voteInfos} />
+                </div>
+              ))
             ) : isLoading ? (
               <Loading />
             ) : (

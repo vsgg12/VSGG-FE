@@ -8,7 +8,13 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
 
-export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
+export default function HomePostItems({
+  post,
+  voteInfos,
+}: {
+  post: IGetPostDTOType;
+  voteInfos: IGetVoteType[];
+}) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
@@ -48,13 +54,14 @@ export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
                 <video
                   muted
                   controls
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-[362px] w-[50%] max-w-[37.875rem]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
                 >
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : (
+                //외부영상 첨부할 때 사용
                 <iframe
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-[362px] w-[50%] max-w-[37.875rem]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
                   src={post.video.url}
                   title={post.title}
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
@@ -62,14 +69,18 @@ export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
                   allowFullScreen
                 ></iframe>
               )}
-              <div className='flex w-full flex-col overflow-hidden'>
+              <div className='flex flex-col overflow-hidden w-[50%] mb-5'>
                 <div className='mb-1 line-clamp-[8] h-[50%] cursor-pointer overflow-hidden text-ellipsis decoration-solid'>
                   {contentsArr.pTags.map((content, idx) => (
                     <p key={idx}>{content}</p>
                   ))}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ? <HomeVoted /> : <HomeNotVoted />}
+                  {post.isVote ? (
+                    <HomeVoted voteInfos={voteInfos} />
+                  ) : (
+                    <HomeNotVoted voteInfos={voteInfos} />
+                  )}
                 </div>
               </div>
             </div>

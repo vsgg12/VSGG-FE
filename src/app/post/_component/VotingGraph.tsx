@@ -36,8 +36,6 @@ export default function VotingGraph() {
       setVotingGraph(newGraph);
       setVoteResult(newVoteResult);
     }
-    console.log(votingGraph);
-    console.log('vote', newVoteResult);
   };
 
   const findLastCheckedIndex = (arr: number[]) => {

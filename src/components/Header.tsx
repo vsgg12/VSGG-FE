@@ -4,29 +4,45 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
-import { getStoredLoginState, useAuthStore } from '@/app/login/store/useAuthStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/getAlarms';
 
-export default function Header() {
+interface HeaderProps {
+  isLogin: boolean;
+}
+
+export default function Header({ isLogin }: HeaderProps) {
   const router = useRouter();
-  const { isLogin } = getStoredLoginState();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const email = String(localStorage.getItem('email'));
-  const nickname = String(localStorage.getItem('nickname'));
-  const profileImage = String(localStorage.getItem('profileImage'));
 
-  const { accessToken } = getStoredLoginState();
-  const { data } = useQuery<IGetAlarmConfirmType>({
+  const [email, setEmail] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
+  const { accessToken } = useAuthStore();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setEmail(String(localStorage.getItem('email')));
+      setNickname(String(localStorage.getItem('nickname')));
+      setProfileImage(String(localStorage.getItem('profileImage')));
+    }
+  }, []);
+
+  const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });
+
+  useEffect(() => {
+    data && console.log('alarms: ', data);
+  }, [data]);
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {
@@ -55,14 +71,18 @@ export default function Header() {
   };
 
   const handleGoPostBtnClick = (): void => {
-    isLogin && router.push('/post/write');
+    if (!isLogin) {
+      router.push('/login');
+      return;
+    }
+    router.push('/post/write');
   };
 
   return (
     <>
       <div className='p-right-20 absolute right-10 top-10 flex flex-row items-center justify-end'>
         <div className='flex flex-row items-center gap-6'>
-          {isLogin ? (
+          {!isLoading && isLogin ? (
             <>
               <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
                 {currentUrl !== '/post/write' && (
@@ -76,7 +96,7 @@ export default function Header() {
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${data?.alarmList.length === undefined && 'invisible'}`}
+                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${(data?.alarmList.length === undefined || data?.alarmList.length === 0) && 'invisible'}`}
                   style={{ position: 'absolute', transform: 'translate(-50%,-190%)' }}
                 >
                   {data && data.alarmList.length > 99 ? '99+' : `${data?.alarmList.length}`}
@@ -100,14 +120,16 @@ export default function Header() {
               )}
             </>
           ) : (
-            <>
-              <button
-                className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
-                onClick={handleLoginBtnClick}
-              >
-                로그인
-              </button>
-            </>
+            !isLoading && (
+              <>
+                <button
+                  className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+                  onClick={handleLoginBtnClick}
+                >
+                  로그인
+                </button>
+              </>
+            )
           )}
         </div>
       </div>

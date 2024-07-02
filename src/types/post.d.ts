@@ -1,17 +1,41 @@
 type IIngameInfoRequestType = {
-  champion: string;
+  championName: string;
   position: string;
   tier: string;
 };
 
 type IPostWriteType = {
-  uploadVideos: File;
-  thumbnailImage: File;
-  postAddRequest: IIngameInfoRequestType[];
+  uploadVideos: File | undefined;
+  thumbnailImage: File | undefined;
+  postAddRequest: {
+    title: string;
+    content: string;
+    hashtag: string[];
+  };
   InGameInfoRequest: {
     championName: string;
     position: string;
     tier: string;
   }[];
   videoUrl: string;
+};
+
+type IInGameInfoType = {
+  id: number;
+  championName: string;
+  position: string;
+  tier: string;
+};
+
+type IPostRefreshType = {
+  resultCode: number;
+  resultMsg: string;
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
+};
+type IVoteType = {
+  ingameInfoId: number;
+  ratio: number;
 };

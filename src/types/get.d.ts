@@ -81,13 +81,8 @@ type IGetCommentItemType = {
 };
 
 type IGetVoteType = {
-  ingameInfoId: number;
-  ratio: number;
-};
-
-type IGetAVGType = {
   championName: string;
-  averageValue: number;
+  votedRatio: number;
   position: string;
   tier: string;
 };

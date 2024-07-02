@@ -40,7 +40,7 @@ export default function Naver() {
 
   useEffect(() => {
     login();
-  }, []);
+  });
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>

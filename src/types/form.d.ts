@@ -1,4 +1,4 @@
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 
 //회원가입 - 백엔드로 보내는 용
 export interface ICreateMemberProps {

@@ -1,6 +1,6 @@
 'use client';
 
-import { SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { voteColors, positionInfo } from '../../../data/championData';
 import VotingGraph from './VotingGraph';
@@ -8,31 +8,43 @@ import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
   voteInfo: IGetGameInfoType[];
-  setIsVoted: React.Dispatch<SetStateAction<boolean>>;
+  handleVoteSubmit: () => void;
 }
 
-export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
-  const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx } = usePostIdStore();
+export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps) {
+  const {
+    voteResult,
+    setVoteResult,
+    selectedChampIdx,
+    setSelectedChampIdx,
+    isNotAbleSubmit,
+    setIsNotAbleSubmit,
+  } = usePostIdStore();
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
-  }, []);
+  }, [setVoteResult, voteInfo.length]);
+
+  useEffect(() => {
+    const sum = voteResult.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue;
+    }, 0);
+
+    if (sum === 10) {
+      setIsNotAbleSubmit(false);
+    } else {
+      setIsNotAbleSubmit(true);
+    }
+  }, [voteResult, setIsNotAbleSubmit]);
 
   const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name === position)?.src ?? '';
+    return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
   };
 
-  const handleSubmit = () => {};
-
   return (
-    //  <div className='p-content-pd p-content-rounded p-last-mb flex flex h-[313px] w-full items-center bg-white'>
-    //     <div className='relative flex w-full flex-row items-center'>
-    //       <Loading />
-    //     </div>
-    //   </div>
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
       <div className='relative flex w-full flex-row justify-around'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col justify-around'>
           {voteInfo.map((champion, index) => (
             <div
               key={index}
@@ -65,8 +77,8 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
             </div>
           ))}
         </div>
-        <div className='flex flex-col items-center justify-center'>
-          <div className='mb-[3rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
+        <div className='flex flex-col items-center '>
+          <div className='mb-[5rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
           <div className='flex flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
               {voteResult.map((vote, index) => (
@@ -88,8 +100,9 @@ export default function VoteForm({ voteInfo, setIsVoted }: IVoteFormProps) {
         </div>
         <div className='flex flex-col justify-end'>
           <button
-            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800'
-            onClick={handleSubmit}
+            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
+            onClick={handleVoteSubmit}
+            disabled={isNotAbleSubmit}
           >
             제출하기
           </button>

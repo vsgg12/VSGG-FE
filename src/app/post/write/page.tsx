@@ -3,18 +3,21 @@ import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import PostWriteForm from './_component/PostWriteForm';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 export default function PostWrite() {
+  const { isLogin } = useAuthStore();
+
   return (
     <>
-      <Header />
-      <main>
+      <Header isLogin={isLogin} />
+      <div>
         <div className='flex items-center justify-center p-[100px]'>
           <Logo />
         </div>
         <section className='flex justify-center'>
           <div className='w-4/5 max-w-[1400px]'>
-            <header className='mb-[44px] flex flex-row items-center justify-between'>
+            <div className='mb-[44px] flex flex-row items-center justify-between'>
               <button
                 onClick={() => {
                   history.back();
@@ -27,11 +30,11 @@ export default function PostWrite() {
                 <Link href='/'>홈</Link>
                 {' > '}게시글
               </div>
-            </header>
+            </div>
             <PostWriteForm />
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 }
