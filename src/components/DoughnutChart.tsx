@@ -5,13 +5,13 @@ import { Doughnut } from 'react-chartjs-2';
 Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartProps {
-  voteAVGInfos: IGetAVGType[];
+  voteInfos: IGetVoteType[] | undefined;
   size: 'home' | 'post';
 }
 
-const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteAVGInfos, size }) => {
-  const championNames = voteAVGInfos?.map((info) => info.championName);
-  const averageValues = voteAVGInfos?.map((info) => info.averageValue);
+const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteInfos, size }) => {
+  const championNames = voteInfos?.map((info) => info.championName);
+  const averageValues = voteInfos?.map((info) => info.votedRatio);
 
   const data = {
     labels: championNames,

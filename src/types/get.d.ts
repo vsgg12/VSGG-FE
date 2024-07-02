@@ -2,7 +2,7 @@
 type IGetPostListType = {
   resultCode: number;
   resultMsg: string;
-  postDTO: IGetPostDTOType[];
+  postDTO: GetPostDTOType[];
 };
 
 type IGetPostDTOType = {
@@ -12,8 +12,8 @@ type IGetPostDTOType = {
   thumbnailURL: string;
   viewCount: number;
   status: string;
-  video: IGetVideoType;
-  memberDTO: IGetMemberDTOType;
+  video: GetVideoType;
+  memberDTO: GetMemberDTOType;
   createdAt: string;
   updatedAt: string;
   hashtagList: IHashTagListType[];
@@ -57,37 +57,32 @@ type IGetGameInfoType = {
 type IGetPostItemType = {
   resultCode: number;
   resultMsg: string;
-  postDTO: IGetPostDTOType;
+  postDTO: GetPostDTOType;
 };
 
 // 댓글 조회 (게시물 상세 조회 페이지)
 type IGetCommentListType = {
   resultCode: number;
   resultMsg: string;
-  comments: IGetCommentItemType[];
+  comments: GetCommentItemType[];
 };
 
 interface ICommentType {
   id: number;
   content: string;
-  member: IGetMemberDTOType;
+  member: GetMemberDTOType;
 }
 
 type IGetCommentItemType = {
   id: number;
   content: string;
-  member: IGetMemberDTOType;
+  member: GetMemberDTOType;
   children?: ICommentType[];
 };
 
-type IVoteType = {
-  ingameInfoId: number;
-  ratio: number;
-};
-
-type IGetAVGType = {
+type IGetVoteType = {
   championName: string;
-  averageValue: number;
+  votedRatio: number;
   position: string;
   tier: string;
 };
