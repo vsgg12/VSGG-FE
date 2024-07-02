@@ -13,6 +13,39 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 
+const voteInfos: IGetVoteType[] = [
+  {
+    championName: '뽀삐',
+    votedRatio: 3,
+    position: '탑',
+    tier: '플래티넘',
+  },
+  {
+    championName: '티모',
+    votedRatio: 4.5,
+    position: '정글',
+    tier: '골드',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+  {
+    championName: '문도박사',
+    votedRatio: 5,
+    position: '원딜',
+    tier: '실버',
+  },
+];
+
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -112,7 +145,7 @@ export default function Home() {
             {postData ? (
               postData.postDTO.map((post, idx) => (
                 <div key={idx}>
-                  <HomePostItems post={post} />
+                  <HomePostItems post={post} voteInfos={voteInfos} />
                 </div>
               ))
             ) : isLoading ? (
