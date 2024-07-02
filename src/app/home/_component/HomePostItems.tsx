@@ -76,7 +76,11 @@ export default function HomePostItems({
                   ))}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ? <HomeVoted /> : <HomeNotVoted voteInfos={voteInfos} />}
+                  {post.isVote ? (
+                    <HomeVoted voteInfos={voteInfos} />
+                  ) : (
+                    <HomeNotVoted voteInfos={voteInfos} />
+                  )}
                 </div>
               </div>
             </div>

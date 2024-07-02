@@ -139,7 +139,7 @@ export default function PostWriteForm() {
       hashtag : ${hashtag}
     }`);
     console.log('InGameInfoRequest: ', InGameInfoRequest);
-    console.log("videoUrl : ' '");
+    console.log("videoUrl : ''");
   }, [uploadVideos, thumbnailImage, hashtag, title, content, InGameInfoRequest]);
 
   useEffect(() => {
