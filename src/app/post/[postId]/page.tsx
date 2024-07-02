@@ -260,7 +260,6 @@ export default function PostRead() {
                   )}
                 </div>
               </div>
-              <VoteResult postId={3} voteInfos={voteResultData?.results} />
               {voteResultData && isVote ? (
                 <VoteResult postId={3} voteInfos={voteResultData?.results} />
               ) : (

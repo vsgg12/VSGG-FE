@@ -8,7 +8,13 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
 
-export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
+export default function HomePostItems({
+  post,
+  voteInfos,
+}: {
+  post: IGetPostDTOType;
+  voteInfos: IGetVoteType[];
+}) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
@@ -70,7 +76,7 @@ export default function HomePostItems({ post }: { post: IGetPostDTOType }) {
                   ))}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ? <HomeVoted /> : <HomeNotVoted />}
+                  {post.isVote ? <HomeVoted /> : <HomeNotVoted voteInfos={voteInfos} />}
                 </div>
               </div>
             </div>
