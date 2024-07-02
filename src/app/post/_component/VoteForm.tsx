@@ -44,7 +44,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
   return (
     <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
       <div className='relative flex w-full flex-row justify-around'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col justify-around'>
           {voteInfo.map((champion, index) => (
             <div
               key={index}
@@ -77,8 +77,8 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
             </div>
           ))}
         </div>
-        <div className='flex flex-col items-center justify-center'>
-          <div className='mb-[3rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
+        <div className='flex flex-col items-center '>
+          <div className='mb-[5rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
           <div className='flex flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
               {voteResult.map((vote, index) => (
