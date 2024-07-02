@@ -1,10 +1,8 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
 import { IoSaveOutline } from 'react-icons/io5';
-import { ICreatePostFormProps } from '@/types/form';
 import PostUploadFile from './PostUploadFile';
 import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
@@ -133,12 +131,15 @@ export default function PostWriteForm() {
   }, [router, beforeUnloadHandler]);
 
   useEffect(() => {
-    console.log('썸네일 : ', thumbnailImage);
-    console.log('비디오 영상: ', uploadVideos);
-    console.log('해쉬태그', hashtag);
-    console.log('제목 : ', title);
-    console.log('내용 : ', content);
-    console.log('챔피언 정보: ', InGameInfoRequest);
+    console.log('thumbnailImage : ', thumbnailImage);
+    console.log('uploadVideos : ', uploadVideos);
+    console.log(`postAddRequest: {
+      title : ${title},
+      content : ${content},
+      hashtag : ${hashtag}
+    }`);
+    console.log('InGameInfoRequest: ', InGameInfoRequest);
+    console.log("videoUrl : ' '");
   }, [uploadVideos, thumbnailImage, hashtag, title, content, InGameInfoRequest]);
 
   useEffect(() => {

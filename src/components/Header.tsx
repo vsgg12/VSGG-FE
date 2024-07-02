@@ -96,7 +96,7 @@ export default function Header({ isLogin }: HeaderProps) {
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${data?.alarmList.length === undefined && 'invisible'}`}
+                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${(data?.alarmList.length === undefined || data?.alarmList.length === 0) && 'invisible'}`}
                   style={{ position: 'absolute', transform: 'translate(-50%,-190%)' }}
                 >
                   {data && data.alarmList.length > 99 ? '99+' : `${data?.alarmList.length}`}
@@ -122,14 +122,12 @@ export default function Header({ isLogin }: HeaderProps) {
           ) : (
             !isLoading && (
               <>
-                (
                 <button
                   className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
                   onClick={handleLoginBtnClick}
                 >
                   로그인
                 </button>
-                )
               </>
             )
           )}
