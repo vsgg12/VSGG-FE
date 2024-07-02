@@ -21,8 +21,14 @@ export default function SignUp() {
     agreePrivacy: false,
     agreePromotion: false,
   });
-  const email = String(localStorage.getItem('email'));
-  const profileImage = String(localStorage.getItem('profileImage'));
+  const [email, setEmail] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
+
+  useEffect(() => {
+    // 클라이언트 사이드에서만 localStorage 값을 가져옴
+    setEmail(String(localStorage.getItem('email')));
+    setProfileImage(String(localStorage.getItem('profileImage')));
+  }, []);
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
