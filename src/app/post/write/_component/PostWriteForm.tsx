@@ -1,10 +1,8 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
 import { IoSaveOutline } from 'react-icons/io5';
-import { ICreatePostFormProps } from '@/types/form';
 import PostUploadFile from './PostUploadFile';
 import PostForm from './PostForm';
 import PostHashTag from './PostHashTag';
@@ -14,8 +12,8 @@ import { useMutation } from '@tanstack/react-query';
 import postPostWrite from '@/api/postPostWrite';
 
 const intialInGameInfoRequest: IIngameInfoRequestType[] = [
-  { position: 'TOP', championName: '', tier: '' },
-  { position: 'TOP', championName: '', tier: '' },
+  { position: '탑', championName: '', tier: '' },
+  { position: '탑', championName: '', tier: '' },
 ];
 
 export default function PostWriteForm() {
