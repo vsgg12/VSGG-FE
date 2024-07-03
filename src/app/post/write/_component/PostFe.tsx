@@ -116,7 +116,7 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-
+  const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
   const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
@@ -135,7 +135,7 @@ export default function PostForm() {
     1: 0,
   });
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const postCreated = useState<boolean>(false);
+  const [postCreated, setPostCreated] = useState<boolean>(false);
 
   const isClickedFirst = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -230,7 +230,8 @@ export default function PostForm() {
         console.log(res);
         if (res.status === 200) {
           alert('게시글 작성이 완료되었습니다!');
-          router.push('/home');
+          setPostCreated(true);
+          setRedirect(true);
         } else if (res.status === 500) {
           alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
         } else if (res.status === 400) {
@@ -475,16 +476,39 @@ export default function PostForm() {
     };
   }, []);
 
-  const beforeUnloadHandler = useCallback((event: BeforeUnloadEvent) => {
-    if (isLogin || !postCreated) {
-      const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
-      event.preventDefault();
-      return message;
+  useEffect(() => {
+    if (!isClickedFirst.current) {
+      history.pushState(null, '', '');
+      isClickedFirst.current = true;
     }
+
+    fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
+      .then((response) => response.json())
+      .then((data: ChampionDataProps) => {
+        const loadedChampions = Object.keys(data.data).map((key) => data.data[key].name);
+
+        const sortedChampions = loadedChampions.sort(function (a, b) {
+          return a.localeCompare(b);
+        });
+
+        setChampions((prev) => [...prev, ...sortedChampions]);
+      })
+      .catch((error) => console.error('Error loading the champions:', error));
   }, []);
 
+  const beforeUnloadHandler = useCallback(
+    (event: BeforeUnloadEvent) => {
+      if (isLogin && !postCreated) {
+        const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+        event.preventDefault();
+        return message;
+      }
+    },
+    [isLogin, postCreated],
+  );
+
   const handlePopState = useCallback(async () => {
-    if (isLogin || !postCreated) {
+    if (isLogin && !postCreated) {
       const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
       if (!confirm(message)) {
         history.pushState(null, '', '');
@@ -494,55 +518,17 @@ export default function PostForm() {
       await handleDelete();
       history.back();
     }
-  }, []);
-
-  useEffect(() => {
-    if (!isClickedFirst.current) {
-      history.pushState(null, '', '');
-      isClickedFirst.current = true;
-    }
-
-    fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
-      .then((response) => response.json())
-      .then((data: ChampionDataProps) => {
-        const loadedChampions = Object.keys(data.data).map((key) => data.data[key].name);
-
-        const sortedChampions = loadedChampions.sort(function (a, b) {
-          return a.localeCompare(b);
-        });
-
-        setChampions((prev) => [...prev, ...sortedChampions]);
-      })
-      .catch((error) => console.error('Error loading the champions:', error));
-  }, []);
-
-  useEffect(() => {
-    if (!isClickedFirst.current) {
-      history.pushState(null, '', '');
-      isClickedFirst.current = true;
-    }
-
-    fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
-      .then((response) => response.json())
-      .then((data: ChampionDataProps) => {
-        const loadedChampions = Object.keys(data.data).map((key) => data.data[key].name);
-
-        const sortedChampions = loadedChampions.sort(function (a, b) {
-          return a.localeCompare(b);
-        });
-
-        setChampions((prev) => [...prev, ...sortedChampions]);
-      })
-      .catch((error) => console.error('Error loading the champions:', error));
-  }, []);
+  }, [isLogin, postCreated]);
 
   useEffect(() => {
     const originalPush = router.push;
 
     const newPush = async (href: string): Promise<void> => {
       const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
-      if (confirm(message)) {
+      if (isLogin && !postCreated && confirm(message)) {
         await handleDelete();
+        originalPush(href);
+      } else {
         originalPush(href);
       }
     };
@@ -554,7 +540,7 @@ export default function PostForm() {
       router.push = originalPush;
       window.onbeforeunload = null;
     };
-  }, [beforeUnloadHandler]);
+  }, [isLogin, postCreated, beforeUnloadHandler, router]);
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
@@ -580,9 +566,17 @@ export default function PostForm() {
 
   const handleDelete = async () => {
     const deleteData = { imageUrl: contentUrls };
-    const data = await sendDeleteRequestToS3(deleteData, accessToken);
-    console.log('이미지 삭제: ', data);
+    if (!postCreated) {
+      const data = await sendDeleteRequestToS3(deleteData, accessToken);
+      console.log('이미지 삭제: ', data);
+    }
   };
+  useEffect(() => {
+    if (redirect) {
+      setRedirect(false); // 리디렉션 상태 초기화
+      router.push('/home');
+    }
+  }, [redirect, router]);
 
   return (
     <>
