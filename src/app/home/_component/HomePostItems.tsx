@@ -7,6 +7,7 @@ import HomeVoted from './HomeVoted';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 export default function HomePostItems({
   post,
@@ -18,6 +19,7 @@ export default function HomePostItems({
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
+  const { user } = useAuthStore.getState();
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
@@ -81,7 +83,7 @@ export default function HomePostItems({
                   ))}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ? (
+                  {post.isVote || post.memberDTO.nickname === user?.nickname ? (
                     <HomeVoted voteInfos={voteInfos} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />
