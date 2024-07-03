@@ -17,7 +17,7 @@ const data = [
 ];
 
 export default function JudgeRecord() {
-  const [judgeList] = useState([]);
+  const [judgeList] = useState<IJudgeType[]>([]);
   const [currentJudge] = useState(judgeList);
   const [page, setPage] = useState<number>(1);
 
@@ -60,10 +60,10 @@ export default function JudgeRecord() {
                 <div>게시자</div>
                 <div>작성일</div>
               </div>
-              {currentJudge.map((judge: any, index: number) => {
+              {currentJudge.map((judge: IJudgeType, index: number) => {
                 return (
                   <>
-                    <div className='flex justify-between'>
+                    <div className='flex justify-between' key={index}>
                       <div>{judge.title}</div>
                       <div className='flex gap-2 text-sm'>
                         <div>{judge.writer}</div>
