@@ -6,7 +6,6 @@ export async function createPost(body: FormData, authorization: string) {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${authorization}`,
       },
       body,

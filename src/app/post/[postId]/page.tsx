@@ -28,7 +28,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken, isLogin, user } = useAuthStore();
+  const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const {
     isCommentInProgress,

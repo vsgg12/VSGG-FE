@@ -25,7 +25,7 @@ export default function PostWriteForm() {
   const [title, setTitle] = useState<string>('');
   const [InGameInfoRequest, setInGameInfoRequest] =
     useState<IIngameInfoRequestType[]>(intialInGameInfoRequest);
-  const { accessToken } = useAuthStore();
+  const { accessToken } = useAuthStore.getState();
   // const postCreated = false;
 
   const { mutate: postWirte } = useMutation({

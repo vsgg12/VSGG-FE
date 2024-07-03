@@ -9,7 +9,7 @@ import { useAuthStore } from './store/useAuthStore';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const { isLogin } = useAuthStore();
+  const { isLogin } = useAuthStore.getState();
   const router = useRouter();
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
