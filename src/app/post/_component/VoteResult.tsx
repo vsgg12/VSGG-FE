@@ -6,11 +6,11 @@ import DoughnutChart from '@/components/DoughnutChart';
 import { voteColors, positionInfo } from '@/data/championData';
 
 interface IVoteResultProps {
-  postId: number;
   voteInfos: IGetVoteType[] | undefined;
+  isOwner: boolean;
 }
 
-export default function VoteResult({ voteInfos }: IVoteResultProps) {
+export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
   const getPositionSrc = (position: string) => {
     return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
   };
@@ -52,16 +52,18 @@ export default function VoteResult({ voteInfos }: IVoteResultProps) {
         </div>
         <div className='flex flex-col items-center justify-center mr-5'>
           <div className='mb-[20px] flex text-[20px] '>이 게임의 과실은 몇 대 몇 ~?</div>
-          {voteInfos?.length === 0 ? (
+          {isOwner && voteInfos?.length === 0 ? (
             <div className='flex justify-center'>아직 투표한 사람이 없는 게시글입니다.</div>
           ) : (
             <DoughnutChart voteInfos={voteInfos} size='post' />
           )}
         </div>
         <div className='flex flex-col justify-end mr-10'>
-          <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
-            제출완료
-          </button>
+          {!isOwner && (
+            <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+              제출완료
+            </button>
+          )}
         </div>
       </div>
     </div>
