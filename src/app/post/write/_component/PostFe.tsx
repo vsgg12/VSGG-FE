@@ -107,14 +107,14 @@ const tiers = [
   { id: 'gold', value: 'GOLD', content: '골드' },
   { id: 'platinum', value: 'PLATINUM', content: '플래티넘' },
   { id: 'emerald', value: 'EMERALD', content: '에메랄드' },
-  { id: 'diamond', value: 'DIAMOND', content: '다이아' },
+  { id: 'diamond', value: 'DIAMOND', content: '다이아몬드' },
   { id: 'master', value: 'MASTER', content: '마스터' },
   { id: 'grand_master', value: 'GRANDMASTER', content: '그랜드마스터' },
   { id: 'challenger', value: 'CHALLENGER', content: '챌린저' },
 ];
 
 export default function PostForm() {
-  const { isLogin } = useAuthStore();
+  const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -126,10 +126,9 @@ export default function PostForm() {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
-    { id: 0, position: 'TOP', championName: '', tier: '' },
-    { id: 1, position: 'TOP', championName: '', tier: '' },
+    { id: 0, position: '탑', championName: '', tier: '' },
+    { id: 1, position: '탑', championName: '', tier: '' },
   ]);
-  const { accessToken } = useAuthStore();
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
   const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>({
     0: 0,
@@ -459,13 +458,17 @@ export default function PostForm() {
       const range = quillObj?.getSelection()!;
       try {
         const res = await saveImageAndRequestUrlToS3(formData, accessToken);
-        console.log('이미지 업로드 성공', res);
-        const imgUrl = res.images[0];
-        setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
-
-        /*에디터의 커서 위치에 이미지 요소를 넣어준다.*/
-        quillObj?.insertEmbed(range.index, 'image', `${imgUrl}`);
-        quillObj?.setSelection(range.index + 2, 0);
+        if (res.resultCode === 200) {
+          console.log('이미지 업로드 성공', res);
+          const imgUrl = res.images[0];
+          setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
+          /*에디터의 커서 위치에 이미지 요소를 넣어준다.*/
+          quillObj?.insertEmbed(range.index, 'image', `${imgUrl}`);
+          quillObj?.setSelection(range.index + 2, 0);
+        } else {
+          alert('이미지 업로드에 실패하셨습니다.');
+          console.log(res);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -757,14 +760,14 @@ export default function PostForm() {
                         type='radio'
                         name={`position-${ingameInfo.id}`}
                         id={`${pos.id}-${ingameInfo.id}`}
-                        value={pos.value}
+                        value={pos.content}
                         className='p-input-hidden'
                         onChange={() => {
                           const updatedSelectedPos = { ...selectedPos };
                           updatedSelectedPos[ingameInfo.id] = index;
                           setSelectedPos(updatedSelectedPos);
 
-                          handlePositionChange(pos.value, ingameInfo.id);
+                          handlePositionChange(pos.content, ingameInfo.id);
                         }}
                         checked={selectedPos[ingameInfo.id] === index}
                       />
@@ -797,7 +800,7 @@ export default function PostForm() {
                     onChange={(e) => handleTierChange(e.target.value, index)}
                   >
                     {tiers.map((tier, index) => (
-                      <option key={index} id={tier.id} value={tier.value}>
+                      <option key={index} id={tier.id} value={tier.content}>
                         {tier.content}
                       </option>
                     ))}

@@ -12,7 +12,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
   const { isCommentInProgress, setCommentContent, commentContent, showReply, setShowReply } =
     useCommentStore();
 
-  const { isLogin } = useAuthStore();
+  const { isLogin } = useAuthStore.getState();
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

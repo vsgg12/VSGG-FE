@@ -49,7 +49,7 @@ const voteInfos: IGetVoteType[] = [
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin, accessToken } = useAuthStore();
+  const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
 
   const {

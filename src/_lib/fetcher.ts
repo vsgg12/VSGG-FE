@@ -49,7 +49,7 @@ const _fetch = async <T = unknown, R = unknown>({
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
-
+    
     if (!res.ok) {
       // if (res.status === 401) {
       //   const { refreshToken } = useAuthStore();
@@ -86,7 +86,6 @@ const _fetch = async <T = unknown, R = unknown>({
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
-
     return await res.json();
   } catch (error) {
     throw error;

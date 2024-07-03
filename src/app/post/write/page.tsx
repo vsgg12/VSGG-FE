@@ -6,7 +6,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import PostFe from './_component/PostFe';
 
 export default function PostWrite() {
-  const { isLogin } = useAuthStore();
+  const { isLogin } = useAuthStore.getState();
 
   return (
     <>
