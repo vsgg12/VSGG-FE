@@ -203,10 +203,10 @@ export default function Home() {
                 </div>
               ))
             )}
+            <div ref={loaderRef} />
           </div>
         </section>
       </main>
-      <div ref={loaderRef} />
     </>
   );
 }
