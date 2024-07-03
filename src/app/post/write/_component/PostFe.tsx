@@ -119,7 +119,7 @@ export default function PostForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
-  const [thumbnail, setThumbnail] = useState<any | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
   const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
   const [content, setContent] = useState<string>('');
   const [contentUrls, setContentImgUrls] = useState<string[]>([]);
@@ -168,9 +168,10 @@ export default function PostForm() {
       return;
     }
 
-    const inGameInfoRequests = ingameInfos.map(({ id, championName, ...rest }) => ({
+    const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
       championName: championName,
-      ...rest,
+      position: position,
+      tier: tier,
     }));
 
     for (const info of inGameInfoRequests) {
@@ -184,10 +185,9 @@ export default function PostForm() {
 
     const postRequestData = {
       title: data.title,
-      type: 'FILE',
+      videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      videoUrl: '',
     };
     console.log('postRequestData', postRequestData);
     //아무것도 없을 때 보내는거
@@ -201,9 +201,9 @@ export default function PostForm() {
       new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
     );
     if (uploadedVideo) {
-      postFormData.append('uploadVideo', uploadedVideo);
+      postFormData.append('uploadVideos', uploadedVideo);
     } else {
-      postFormData.append('uploadVideo', emptyFile);
+      postFormData.append('uploadVideos', emptyFile);
     }
 
     if (!uploadedThumbnail) {
@@ -275,7 +275,6 @@ export default function PostForm() {
     }
 
     if (file) {
-      // Check file size (500MB) and type (mp4)
       const maxSizeMB = 500;
       const maxSizeBytes = maxSizeMB * 1024 * 1024;
       const fileType = 'video/mp4';
@@ -455,12 +454,12 @@ export default function PostForm() {
       const formData = new FormData();
       formData.append('file', file);
       /*에디터 정보를 가져온다.*/
-      let quillObj = quillRef.current?.getEditor();
+      const quillObj = quillRef.current?.getEditor();
       /*에디터 커서 위치를 가져온다.*/
       const range = quillObj?.getSelection()!;
       try {
         const res = await saveImageAndRequestUrlToS3(formData, accessToken);
-        console.log(res);
+        console.log('이미지 업로드 성공', res);
         const imgUrl = res.images[0];
         setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
 
