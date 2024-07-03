@@ -28,6 +28,12 @@ jobs:
       - run: touch ./.env.local
       - run: echo "${{ secrets.ENV_LOCAL }}" > ./.env.local
 
+      - name: Install dependencies
+        run: npm ci
+
+      # 프로젝트 빌드
+      - name: Build next app
+        run: npm run build
  
  
  # 프로젝트 압축
