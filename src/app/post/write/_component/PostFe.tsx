@@ -26,7 +26,6 @@ import { IoIosClose } from 'react-icons/io';
 import {
   IoVideocamOutline,
   IoEaselOutline,
-  IoLinkOutline,
   IoAddCircleOutline,
   IoSaveOutline,
   IoDocumentOutline,
@@ -119,13 +118,13 @@ export default function PostForm() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedVideo, setUploadedVideo] = useState<any>(null);
-  const [thumbnail, setThumbnail] = useState<any>(null);
-  const [uploadedThumbnail, setUploadedThumbnail] = useState<any>(null);
-  const [content, setContent] = useState('');
+  const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<any | undefined>(undefined);
+  const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
+  const [content, setContent] = useState<string>('');
   const [contentUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState('');
+  const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
     { id: 0, position: 'TOP', championName: '', tier: '' },
     { id: 1, position: 'TOP', championName: '', tier: '' },
@@ -188,29 +187,23 @@ export default function PostForm() {
       type: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      videoUrl: data.link,
+      videoUrl: '',
     };
-
-    for (const info of inGameInfoRequests) {
-      if (!info.championName || !info.position || !info.tier) {
-        alert('모든 챔피언, 포지션 및 티어를 입력해주세요.');
-        return;
-      }
-    }
-
+    console.log('postRequestData', postRequestData);
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
     const emptyFile = new File([emptyBlob], '');
 
     const postFormData = new FormData();
+
     postFormData.append(
       'postAddRequest',
       new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
     );
     if (uploadedVideo) {
-      postFormData.append('uploadVideos', uploadedVideo);
+      postFormData.append('uploadVideo', uploadedVideo);
     } else {
-      postFormData.append('uploadVideos', emptyFile);
+      postFormData.append('uploadVideo', emptyFile);
     }
 
     if (!uploadedThumbnail) {
@@ -225,31 +218,29 @@ export default function PostForm() {
 
     postFormData.append('content', contentData, 'content.html');
 
-    useEffect(() => {
-      console.log('postFormData', postFormData);
-      console.log('uploadedVideo', uploadedVideo);
-      console.log('uploadedThumbnail', uploadedThumbnail);
-      console.log('thumbnail', thumbnail);
-      console.log('content', content);
-      console.log('ingameInfos', ingameInfos);
-      console.log('hashtags', hashtags);
-    }, [postFormData, uploadedThumbnail, uploadedVideo, thumbnail, content, ingameInfos, hashtags]);
-
     const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
     if (postComfirm) {
+      postFormData.forEach((value, key) => {
+        console.log(key, value);
+      });
+
       setIsLoading(true);
-      const res = await createPost(postFormData, accessToken);
-      console.log(res);
-      if (res.resultMsg === 'CREATED') {
-        if (typeof window !== 'undefined') {
-          alert('게시글 작성이 완료되었습니다.');
-          setIsLoading(false);
+
+      try {
+        const res = await createPost(postFormData, accessToken);
+        console.log(res);
+        if (res.status === 200) {
+          alert('게시글 작성이 완료되었습니다!');
           router.push('/home');
+        } else if (res.status === 500) {
+          alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
+        } else if (res.status === 400) {
+          alert('영상을 업로드 해주세요!');
         }
-      }
-      if (res.status === 500) {
-        alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
-        return;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       return;
@@ -299,7 +290,7 @@ export default function PostForm() {
         return;
       }
 
-      setUploadedVideo(file);
+      setUploadedVideo(file); // 확인 완료
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -406,7 +397,6 @@ export default function PostForm() {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
-  //ingameInfos
   const addIngameInfo = (): void => {
     const newInfo = {
       id: ingameInfos.length,
@@ -430,9 +420,9 @@ export default function PostForm() {
     setIngameInfos(updatedIngameInfos);
   };
 
-  const handleChampionChange = (champion: string, index: number) => {
+  const handleChampionChange = (championName: string, index: number) => {
     const updatedIngameInfos = ingameInfos.map((info, idx) =>
-      idx === index ? { ...info, champion } : info,
+      idx === index ? { ...info, championName } : info,
     );
     setIngameInfos(updatedIngameInfos);
   };
@@ -458,7 +448,7 @@ export default function PostForm() {
     /*이미지를 선택하게 될 시*/
     input.onchange = async () => {
       /*이미지 선택에 따른 조건을 다시 한번 하게 된다.*/
-      const file: any = input.files ? input.files[0] : null;
+      const file = input.files ? input.files[0] : null;
       /*선택을 안하면 취소버튼처럼 수행하게 된다.*/
       if (!file) return;
       /*서버에서 FormData형식으로 받기 때문에 이에 맞는 데이터형식으로 만들어준다.*/
@@ -562,7 +552,7 @@ export default function PostForm() {
       router.push = originalPush;
       window.onbeforeunload = null;
     };
-  }, [router, beforeUnloadHandler]);
+  }, [beforeUnloadHandler]);
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
@@ -609,13 +599,7 @@ export default function PostForm() {
                 >
                   <div className='flex flex-col items-center justify-center'>
                     <div className='text-[30px]'>
-                      {index === 0 ? (
-                        <IoVideocamOutline />
-                      ) : index === 1 ? (
-                        <IoLinkOutline />
-                      ) : index === 2 ? (
-                        <IoEaselOutline />
-                      ) : null}
+                      {index === 0 ? <IoVideocamOutline /> : index === 1 && <IoEaselOutline />}
                     </div>
                     <div className=''>{tab.title}</div>
                   </div>
