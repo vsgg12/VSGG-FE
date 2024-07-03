@@ -456,7 +456,7 @@ export default function PostForm() {
       /*에디터 정보를 가져온다.*/
       const quillObj = quillRef.current?.getEditor();
       /*에디터 커서 위치를 가져온다.*/
-      const range = quillObj?.getSelection()!;
+      const range = quillObj?.getSelection();
       try {
         const res = await saveImageAndRequestUrlToS3(formData, accessToken);
         if (res.resultCode === 200) {
@@ -464,8 +464,10 @@ export default function PostForm() {
           const imgUrl = res.images[0];
           setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
           /*에디터의 커서 위치에 이미지 요소를 넣어준다.*/
-          quillObj?.insertEmbed(range.index, 'image', `${imgUrl}`);
-          quillObj?.setSelection(range.index + 2, 0);
+          if (range) {
+            quillObj?.insertEmbed(range.index, 'image', `${imgUrl}`);
+            quillObj?.setSelection(range.index + 2, 0);
+          }
         } else {
           alert('이미지 업로드에 실패하셨습니다.');
           console.log(res);
