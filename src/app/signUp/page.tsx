@@ -11,6 +11,7 @@ import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck'
 
 export default function SignUp() {
   const router = useRouter();
+  const { user } = useAuthStore();
   const [nickname, setNickname] = useState<string>('');
   const [isSameNickname, setIsSameNickname] = useState<boolean>(true); // 닉네임 중복인지 아닌지
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -21,14 +22,6 @@ export default function SignUp() {
     agreePrivacy: false,
     agreePromotion: false,
   });
-  const [email, setEmail] = useState<string>('');
-  const [profileImage, setProfileImage] = useState<string>('');
-
-  useEffect(() => {
-    // 클라이언트 사이드에서만 localStorage 값을 가져옴
-    setEmail(String(localStorage.getItem('email')));
-    setProfileImage(String(localStorage.getItem('profileImage')));
-  }, []);
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
@@ -97,8 +90,8 @@ export default function SignUp() {
   const { mutate: signUp } = useMutation({
     mutationFn: () =>
       PostSignUp({
-        email,
-        profileImage,
+        email: user?.email,
+        profileImage: user?.profile_image,
         nickname,
         agrees: {
           agreeAge: checkboxes.agreeAge,
@@ -117,6 +110,11 @@ export default function SignUp() {
         isLogin: true,
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
+        user: {
+          email: user ? user.email : '',
+          nickname,
+          profile_image: user ? user.profile_image : '',
+        },
       });
       localStorage.setItem('nickname', nickname);
       alert('회원가입이 완료되었습니다.');
@@ -146,7 +144,7 @@ export default function SignUp() {
         <div className='flex flex-col gap-10 w-[530px]'>
           <div className='flex flex-col gap-2'>
             <p>이메일</p>
-            <input type='text' readOnly value={email} className='su-i-blocked' />
+            <input type='text' readOnly value={user?.email} className='su-i-blocked' />
           </div>
 
           <div className='flex flex-col gap-2'>

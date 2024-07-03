@@ -3,11 +3,19 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+interface IUserState {
+  email: string;
+  nickname: string;
+  profile_image: string;
+}
+
 type LoginState = {
   isLogin: boolean;
   accessToken: string;
   refreshToken: string;
   setLoginState: (isLogin: boolean, accessToken: string, refreshToken: string) => void;
+  user: IUserState | null;
+  setUser: (user: IUserState | null) => void;
 };
 
 export const useAuthStore = create<LoginState>(
@@ -22,9 +30,11 @@ export const useAuthStore = create<LoginState>(
           accessToken,
           refreshToken,
         }),
+      user: null,
+      setUser: (user: IUserState | null) => set({ user }),
     }),
     {
-      name: 'login-storage',
+      name: 'user-storage',
     },
   ) as (set: (fn: (state: LoginState) => LoginState) => void) => LoginState,
 );

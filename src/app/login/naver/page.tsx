@@ -22,13 +22,11 @@ export default function Naver() {
         // alert(data.resultMsg) 두번 경고창 나오는 오류
         router.push('/signUp');
       } else if (data.resultCode === 200) {
-        localStorage.setItem('email', data.email);
-        localStorage.setItem('profileImage', data.profileImage);
-        localStorage.setItem('nickname', data.nickname);
         useAuthStore.setState({
           isLogin: true,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
+          user: { email: data.email, nickname: data.nickname, profile_image: data.profileImage },
         });
         // alert(data.resultMsg);
         router.push('/home');

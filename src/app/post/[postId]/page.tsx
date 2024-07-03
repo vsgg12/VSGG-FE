@@ -28,7 +28,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken, isLogin } = useAuthStore();
+  const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const {
     isCommentInProgress,
@@ -42,12 +42,12 @@ export default function PostRead() {
 
   const [formattedDate, setFormattedDate] = useState<string>('');
   // const [votingStatus, setVotingStatus] = useState<string>('');
-  const [isVote, setIsVote] = useState<boolean>(false);
+  // const [isVote, setIsVote] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
   const { data: post, isLoading } = useQuery({
     queryKey: ['POST_ITEM', id],
-    queryFn: async () => getPostItem(id),
+    queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
 
   const { data: commentData } = useQuery({
@@ -62,12 +62,11 @@ export default function PostRead() {
 
   useEffect(() => {
     if (post) {
-      console.log('게시글 상세 조회 : ', post);
+      console.log(user);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
-      setIsVote(post.postDTO.isVote);
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
         (ingameInfo: IGetGameInfoType, idx: number) => ({
@@ -260,7 +259,7 @@ export default function PostRead() {
                   )}
                 </div>
               </div>
-              {voteResultData && isVote ? (
+              {voteResultData && post?.postDTO.isVote ? (
                 <VoteResult postId={3} voteInfos={voteResultData?.results} />
               ) : (
                 post && (
