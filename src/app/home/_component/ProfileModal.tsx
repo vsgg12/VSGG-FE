@@ -4,7 +4,7 @@ import myJudgeIcon from '../../../../public/svg/gomyjudge.svg';
 import myPostIcon from '../../../../public/svg/gomypost.svg';
 import myPageIcon from '../../../../public/svg/gomypage.svg';
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface IProfileModalProps {
   handleLogoutClick: () => void;
@@ -19,21 +19,18 @@ export default function ProfileModal({
   email,
   profileImage,
 }: IProfileModalProps) {
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleMyPageBtnClick = (): void => {
-    return;
-    // router.push('/myPage');
+    router.push('/servicePreparing');
   };
 
   const handleMyJudgeBtnClick = (): void => {
-    // 내가 내린 판결 페이지로 이동
-    return;
+    router.push('/servicePreparing');
   };
 
   const handleMyPostBtnClick = (): void => {
-    // 내가 쓴 글 목록 페이지로 이동
-    return;
+    router.push('/servicePreparing');
   };
 
   return (
