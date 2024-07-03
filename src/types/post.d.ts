@@ -12,7 +12,7 @@ type IPostWriteType = {
     type: string;
     hashtag: string[];
   };
-  content: File | undefined;
+  content: string;
   inGameInfoRequest: {
     championName: string;
     position: string;

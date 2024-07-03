@@ -36,7 +36,7 @@ export default function PostWriteForm() {
           thumbnailImage,
           postAddRequest: {
             title,
-            type: "FILE",
+            type: 'FILE',
             hashtag,
           },
           content,

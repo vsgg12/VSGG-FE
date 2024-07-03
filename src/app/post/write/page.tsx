@@ -2,7 +2,6 @@
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import Link from 'next/link';
-import PostWriteForm from './_component/PostWriteForm';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import PostFe from './_component/PostFe';
 
