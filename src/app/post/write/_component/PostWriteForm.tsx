@@ -36,10 +36,11 @@ export default function PostWriteForm() {
           thumbnailImage,
           postAddRequest: {
             title,
-            content,
+            type: "FILE",
             hashtag,
           },
-          InGameInfoRequest,
+          content,
+          inGameInfoRequest: InGameInfoRequest,
           videoUrl: '',
         },
         accessToken,

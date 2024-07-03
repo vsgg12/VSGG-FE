@@ -9,10 +9,11 @@ type IPostWriteType = {
   thumbnailImage: File | undefined;
   postAddRequest: {
     title: string;
-    content: string;
+    type: string;
     hashtag: string[];
   };
-  InGameInfoRequest: {
+  content: File | undefined;
+  inGameInfoRequest: {
     championName: string;
     position: string;
     tier: string;

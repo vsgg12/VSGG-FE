@@ -70,7 +70,8 @@ export default function Home() {
     if (keyword === '') {
       refetch();
     }
-  }, [keyword, refetch]);
+    console.log('postData: ', postData);
+  }, [keyword, refetch, postData]);
 
   const handleWriteClick = (): void => {
     if (!isLogin) {

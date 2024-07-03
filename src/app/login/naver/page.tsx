@@ -32,8 +32,6 @@ export default function Naver() {
         router.push('/home');
       }
     },
-    onError: (error) => console.log(error),
-    onSettled: (data) => console.log(data),
   });
 
   useEffect(() => {

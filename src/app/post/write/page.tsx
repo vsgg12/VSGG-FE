@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 import PostWriteForm from './_component/PostWriteForm';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import PostFe from './_component/PostFe';
 
 export default function PostWrite() {
   const { isLogin } = useAuthStore();
@@ -31,7 +32,7 @@ export default function PostWrite() {
                 {' > '}게시글
               </div>
             </div>
-            <PostWriteForm />
+            <PostFe />
           </div>
         </section>
       </div>

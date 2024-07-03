@@ -1,8 +1,10 @@
-import { IPatchAlarm, patchAlarm } from '@/api/patchAlarm';
+import { patchAlarm } from '@/api/patchAlarm';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { access } from 'fs';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface IAlarmListProps {
   alarms: IAlarmsType[] | undefined;
@@ -12,20 +14,29 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const router = useRouter();
   const { accessToken } = useAuthStore();
   const queryClient = useQueryClient();
+  const [postId, setPostId] = useState<number>();
 
   const { mutate: postAlarm } = useMutation({
-    mutationFn: (params: IPatchAlarm) => patchAlarm(params),
+    mutationFn: ({
+      alarmId,
+      alarmType,
+      accessToken,
+    }: {
+      alarmId: number;
+      alarmType: string;
+      accessToken: string;
+    }) => patchAlarm(accessToken, alarmId, alarmType),
     onSuccess: () => {
-      console.log('알람 업데이트 성공');
       queryClient.invalidateQueries({
         queryKey: ['alarms'],
       });
+      router.push(`/post/${postId}`);
     },
   });
 
-  const handleAlarmItemClick = (alarmId: number, alarmType: string, postId: number) => {
+  const handleAlarmItemClick = (alarmId: number, alarmType: string, id: number) => {
+    setPostId(id);
     postAlarm({ accessToken, alarmId, alarmType });
-    router.push(`/post/${postId}`);
   };
 
   const truncateText = (comment: string) => {
