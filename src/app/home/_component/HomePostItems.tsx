@@ -7,6 +7,7 @@ import HomeVoted from './HomeVoted';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 export default function HomePostItems({
   post,
@@ -18,17 +19,25 @@ export default function HomePostItems({
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
+  const { user } = useAuthStore.getState();
+  const [isImageClick, setIsImageClick] = useState<boolean>(false);
+
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
   }, [post]);
+
+  const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
+    event.stopPropagation();
+    setIsImageClick(true);
+  };
 
   return (
     <div className='min-h-[calc(100vh-504px)] flex flex-col'>
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff]'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}
@@ -50,10 +59,20 @@ export default function HomePostItems({
               </div>
             </div>
             <div className='flex h-fit flex-row'>
-              {post.thumbnailURL ? (
+              {isImageClick ? (
+                <video
+                  muted
+                  controls
+                  autoPlay
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                >
+                  <source src={post.video.url} type='video/webm' />
+                </video>
+              ) : post.thumbnailURL ? (
                 <img
                   className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
                   src={post.thumbnailURL}
+                  onClick={handleImageClick}
                 />
               ) : post.video.type === 'FILE' ? (
                 <video
@@ -75,13 +94,13 @@ export default function HomePostItems({
                 ></iframe>
               )}
               <div className='flex flex-col overflow-hidden w-[50%] mb-5'>
-                <div className='mb-1 line-clamp-[8] h-[50%] cursor-pointer overflow-hidden text-ellipsis decoration-solid'>
+                <div className='mb-1 line-clamp-[8] h-[50%] overflow-hidden text-ellipsis decoration-solid'>
                   {contentsArr.pTags.map((content, idx) => (
                     <p key={idx}>{content}</p>
                   ))}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ? (
+                  {post.isVote || post.memberDTO.nickname === user?.nickname ? (
                     <HomeVoted voteInfos={voteInfos} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />

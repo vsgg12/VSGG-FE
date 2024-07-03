@@ -5,7 +5,7 @@ import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
 import Search from './_component/Search';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
 import Loading from '@/components/Loading';
@@ -51,6 +51,9 @@ export default function Home() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
+  const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
+  const [postIndex, setPostIndex] = useState(5);
+  const loaderRef = useRef(null);
 
   const {
     data: postData,
@@ -72,6 +75,13 @@ export default function Home() {
     }
     console.log('postData: ', postData);
   }, [keyword, refetch, postData]);
+
+  useEffect(() => {
+    if (postData?.postDTO) {
+      setVisiblePosts(postData.postDTO.slice(0, 5));
+      setPostIndex(5); // 초기 로드 후 인덱스를 다시 설정해야 함
+    }
+  }, [postData]);
 
   const handleWriteClick = (): void => {
     if (!isLogin) {
@@ -95,6 +105,51 @@ export default function Home() {
       refetch();
     }
   };
+
+  const getPostData = useCallback(() => postData, [postData]);
+  const getPostIndex = useCallback(() => postIndex, [postIndex]);
+
+  const loadMore = useCallback(() => {
+    const currentPostData = getPostData();
+    const currentPostIndex = getPostIndex();
+    if (currentPostData) {
+      const newPosts = currentPostData.postDTO.slice(currentPostIndex, currentPostIndex + 5);
+      setVisiblePosts((prev) => [...prev, ...newPosts]);
+      setPostIndex((prev) => prev + 5);
+    }
+  }, [getPostData, getPostIndex]);
+
+  useEffect(() => {
+    console.log('visiblePosts: ', visiblePosts);
+    console.log('postIndex: ', postIndex);
+  }, [postIndex, visiblePosts]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const currentPostIndex = getPostIndex();
+            const currentPostData = getPostData();
+            if (currentPostData && currentPostIndex < currentPostData.postDTO.length) {
+              loadMore();
+            }
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loaderRef, loadMore, getPostIndex, getPostData]);
 
   return (
     <>
@@ -145,18 +200,18 @@ export default function Home() {
             </div>
             {isLoading ? (
               <Loading />
-            ) : postData?.postDTO.length === 0 ? (
+            ) : visiblePosts.length === 0 ? (
               <div className='flex flex-col flex-grow items-center justify-center'>
                 현재 작성된 게시물이 없습니다.
               </div>
             ) : (
-              postData &&
-              postData.postDTO.map((post, idx) => (
+              visiblePosts.map((post, idx) => (
                 <div key={idx}>
                   <HomePostItems post={post} voteInfos={voteInfos} />
                 </div>
               ))
             )}
+            <div ref={loaderRef} style={{ minHeight: '30px' }} />
           </div>
         </section>
       </main>
