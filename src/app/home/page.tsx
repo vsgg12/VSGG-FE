@@ -106,14 +106,18 @@ export default function Home() {
     }
   };
 
+  const getPostData = useCallback(() => postData, [postData]);
+  const getPostIndex = useCallback(() => postIndex, [postIndex]);
+
   const loadMore = useCallback(() => {
-    if (postData) {
-      const newPosts = postData.postDTO.slice(postIndex, postIndex + 5);
-      console.log('newPosts:', newPosts);
+    const currentPostData = getPostData();
+    const currentPostIndex = getPostIndex();
+    if (currentPostData) {
+      const newPosts = currentPostData.postDTO.slice(currentPostIndex, currentPostIndex + 5);
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
-  }, [postData, postIndex]);
+  }, [getPostData, getPostIndex]);
 
   useEffect(() => {
     console.log('visiblePosts: ', visiblePosts);
@@ -124,12 +128,16 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && postData && postIndex < postData.postDTO.length) {
-            loadMore();
+          if (entry.isIntersecting) {
+            const currentPostIndex = getPostIndex();
+            const currentPostData = getPostData();
+            if (currentPostData && currentPostIndex < currentPostData.postDTO.length) {
+              loadMore();
+            }
           }
         });
       },
-      { threshold: 0.8 },
+      { threshold: 0.1 },
     );
 
     if (loaderRef.current) {
@@ -141,7 +149,7 @@ export default function Home() {
         observer.unobserve(loaderRef.current);
       }
     };
-  }, [loaderRef, loadMore, postIndex, postData]);
+  }, [loaderRef, loadMore, getPostIndex, getPostData]);
 
   return (
     <>
@@ -203,10 +211,10 @@ export default function Home() {
                 </div>
               ))
             )}
+            <div ref={loaderRef} style={{ minHeight: '30px' }} />
           </div>
         </section>
       </main>
-      <div ref={loaderRef} />
     </>
   );
 }
