@@ -27,7 +27,8 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[#ECECEC];
+  @apply bg-[black];
+  /* @apply bg-[#ECECEC]; */
   /* rounded-[0.625rem] */
 }
 
