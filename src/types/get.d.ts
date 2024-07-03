@@ -103,3 +103,10 @@ type IAlarmsType = {
   isRead: boolean;
   createDateTime: string;
 };
+
+type IJudgeType = {
+  title: string;
+  writer: string;
+  grade: string;
+  date: string;
+}
