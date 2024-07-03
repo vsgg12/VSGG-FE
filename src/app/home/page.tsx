@@ -49,7 +49,7 @@ const voteInfos: IGetVoteType[] = [
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin } = useAuthStore();
+  const { isLogin, accessToken } = useAuthStore();
   const { keyword } = useSearchStore();
 
   const {
@@ -60,7 +60,7 @@ export default function Home() {
     queryKey: ['POST_LIST', activeButton],
     queryFn: () => {
       if (activeButton === 'createdatetime' || activeButton === 'view') {
-        return getPostList(activeButton, keyword);
+        return getPostList(activeButton, keyword, isLogin ? accessToken : '');
       }
       throw new Error('Invalid activeButton value');
     },
@@ -142,18 +142,19 @@ export default function Home() {
 
               <div className='text-xs text-[#909090]'>홈</div>
             </div>
-            {postData ? (
+            {isLoading ? (
+              <Loading />
+            ) : postData?.postDTO.length === 0 ? (
+              <div className='flex flex-col flex-grow items-center justify-center'>
+                현재 작성된 게시물이 없습니다.
+              </div>
+            ) : (
+              postData &&
               postData.postDTO.map((post, idx) => (
                 <div key={idx}>
                   <HomePostItems post={post} voteInfos={voteInfos} />
                 </div>
               ))
-            ) : isLoading ? (
-              <Loading />
-            ) : (
-              <div className='flex flex-col flex-grow items-center justify-center'>
-                현재 작성된 게시물이 없습니다.
-              </div>
             )}
           </div>
         </section>

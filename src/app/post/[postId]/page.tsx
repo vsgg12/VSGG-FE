@@ -28,7 +28,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken, isLogin } = useAuthStore();
+  const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const {
     isCommentInProgress,
@@ -39,15 +39,14 @@ export default function PostRead() {
     setShowReply,
   } = useCommentStore();
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
-
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
   // const [votingStatus, setVotingStatus] = useState<string>('');
-  const [isVote, setIsVote] = useState<boolean>(false);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
 
-  const { data: post, isLoading } = useQuery({
+  const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
-    queryFn: async () => getPostItem(id),
+    queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
 
   const { data: commentData } = useQuery({
@@ -62,12 +61,10 @@ export default function PostRead() {
 
   useEffect(() => {
     if (post) {
-      console.log('게시글 상세 조회 : ', post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
-      setIsVote(post.postDTO.isVote);
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
         (ingameInfo: IGetGameInfoType, idx: number) => ({
@@ -76,8 +73,10 @@ export default function PostRead() {
         }),
       );
       setPostVoteResult(newPostVoteResult);
+
+      if (user?.nickname === post.postDTO.memberDTO.nickname) setIsOwner(true);
     }
-  }, [post, voteResult, setPostVoteResult]);
+  }, [post, voteResult, setPostVoteResult, user]);
 
   const { mutate: writeComment } = useMutation({
     mutationFn: () =>
@@ -260,10 +259,11 @@ export default function PostRead() {
                   )}
                 </div>
               </div>
-              {voteResultData && isVote ? (
-                <VoteResult postId={3} voteInfos={voteResultData?.results} />
+              {(voteResultData && isOwner) || post?.postDTO.isVote ? (
+                <VoteResult voteInfos={voteResultData?.results} isOwner={isOwner} />
               ) : (
-                post && (
+                post &&
+                !isOwner && (
                   <VoteForm
                     voteInfo={post.postDTO.inGameInfoList}
                     handleVoteSubmit={handleVoteSubmit}
