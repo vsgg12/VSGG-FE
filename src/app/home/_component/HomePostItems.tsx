@@ -50,7 +50,12 @@ export default function HomePostItems({
               </div>
             </div>
             <div className='flex h-fit flex-row'>
-              {post.video.type === 'FILE' ? (
+              {post.thumbnailURL ? (
+                <img
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                  src={post.thumbnailURL}
+                />
+              ) : post.video.type === 'FILE' ? (
                 <video
                   muted
                   controls
