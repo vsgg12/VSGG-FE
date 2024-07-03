@@ -21,19 +21,7 @@ export default function Header({ isLogin }: HeaderProps) {
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-
-  const [email, setEmail] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
-  const [profileImage, setProfileImage] = useState<string>('');
-  const { accessToken } = useAuthStore();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setEmail(String(localStorage.getItem('email')));
-      setNickname(String(localStorage.getItem('nickname')));
-      setProfileImage(String(localStorage.getItem('profileImage')));
-    }
-  }, []);
+  const { accessToken, user } = useAuthStore.getState();
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
@@ -110,12 +98,12 @@ export default function Header({ isLogin }: HeaderProps) {
               >
                 <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
               </button>
-              {isProfileModalOpen && (
+              {isProfileModalOpen && user && (
                 <ProfileModal
                   handleLogoutClick={handleLogoutBtnClick}
-                  email={email}
-                  profileImage={profileImage}
-                  nickname={nickname}
+                  email={user.email}
+                  profileImage={user.profile_image}
+                  nickname={user.nickname}
                 />
               )}
             </>

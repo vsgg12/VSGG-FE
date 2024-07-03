@@ -1,8 +1,8 @@
 import api from '@/_lib/fetcher';
 
 interface IPostSignUp {
-  email: string;
-  profileImage: string | null;
+  email: string | undefined;
+  profileImage: string | undefined;
   nickname: string;
   agrees: {
     agreeAge: boolean;
