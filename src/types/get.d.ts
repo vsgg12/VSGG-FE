@@ -17,7 +17,7 @@ type IGetPostDTOType = {
   createdAt: string;
   updatedAt: string;
   hashtagList: IHashTagListType[];
-  inGameInfoList: IGetGameInfoType[];
+  inGameInfoList: IGetInGameInfoListType[];
   isVote: boolean;
 };
 
@@ -87,6 +87,14 @@ type IGetVoteType = {
   tier: string;
 };
 
+type IGetInGameInfoListType = {
+  averageRatio: number | null;
+  championName: string;
+  inGameInfoId: number;
+  position: string;
+  tier: string;
+};
+
 // 알람 확인
 type IGetAlarmConfirmType = {
   resultCode: number;
@@ -109,4 +117,4 @@ type IJudgeType = {
   writer: string;
   grade: string;
   date: string;
-}
+};
