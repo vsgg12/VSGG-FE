@@ -1,4 +1,4 @@
-export default function PostTag({ hashtags }: { hashtags: IHashTagListType[] }) {
+export default function PostTag({ hashtags }: { hashtags: IHashTagListType[]}) {
   const changeIngameInfoColor = (index: number) => {
     switch (index) {
       case 0:

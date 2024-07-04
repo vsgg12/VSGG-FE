@@ -21,9 +21,23 @@ export default function HomePostItems({
   const contentsArr = useConvertHTML(post.content);
   const { user } = useAuthStore.getState();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
+  const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
+
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
+    if (post.hashtagList.length === 0) {
+      setNoHashTag([
+        {
+          id: 0,
+          name: post.inGameInfoList[0].championName,
+        },
+        {
+          id: 1,
+          name: post.inGameInfoList[0].tier,
+        },
+      ]);
+    }
   }, [post]);
 
   const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -107,7 +121,7 @@ export default function HomePostItems({
                 </div>
               </div>
             </div>
-            <PostTag hashtags={post.hashtagList} />
+            <PostTag hashtags={post.hashtagList.length !== 0 ? post.hashtagList : noHashTag} />
           </div>
         )}
       </div>
