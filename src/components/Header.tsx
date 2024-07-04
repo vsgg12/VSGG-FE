@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
@@ -27,10 +27,6 @@ export default function Header({ isLogin }: HeaderProps) {
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
   });
-
-  useEffect(() => {
-    data && console.log('alarms: ', data);
-  }, [data]);
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {

@@ -35,8 +35,6 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
     }
   }, [voteInfos, size]);
 
-  console.log(championNames, averageValues);
-
   const data = {
     labels: championNames,
     datasets: [
