@@ -36,7 +36,7 @@ jobs:
 
       - name: Build
         run: |
-          npm run build:dev
+          npm run build
 
       - name: zip create
         run: |
