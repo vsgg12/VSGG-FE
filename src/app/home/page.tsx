@@ -40,7 +40,6 @@ export default function Home() {
     if (keyword === '') {
       refetch();
     }
-    console.log('postData: ', postData);
   }, [keyword, refetch, postData]);
 
   useEffect(() => {
@@ -89,11 +88,6 @@ export default function Home() {
       setPostIndex((prev) => prev + 5);
     }
   }, [getPostData, getPostIndex]);
-
-  useEffect(() => {
-    console.log('visiblePosts: ', visiblePosts);
-    console.log('postIndex: ', postIndex);
-  }, [postIndex, visiblePosts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
