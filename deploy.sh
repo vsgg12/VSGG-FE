@@ -8,7 +8,7 @@ echo "DEPLOYMENT_GROUP_NAME: ${DEPLOYMENT_GROUP_NAME}"
 echo "개발 서버 배포"
 cd "${REPOSITORY}"
 sudo npm install
-pm2 describe vsgg > /dev/null
+sudo pm2 describe vsgg > /dev/null
 if [ $? -eq 0 ]; then
     # 실행 중인 경우
     echo "vsgg 프로세스가 실행 중입니다."
