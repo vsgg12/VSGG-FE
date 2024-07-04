@@ -132,18 +132,6 @@ export default function PostWriteForm() {
   }, [router, beforeUnloadHandler]);
 
   useEffect(() => {
-    console.log('thumbnailImage : ', thumbnailImage);
-    console.log('uploadVideos : ', uploadVideos);
-    console.log(`postAddRequest: {
-      title : ${title},
-      content : ${content},
-      hashtag : ${hashtag}
-    }`);
-    console.log('InGameInfoRequest: ', InGameInfoRequest);
-    console.log("videoUrl : ''");
-  }, [uploadVideos, thumbnailImage, hashtag, title, content, InGameInfoRequest]);
-
-  useEffect(() => {
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);

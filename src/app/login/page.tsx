@@ -20,10 +20,6 @@ export default function Login() {
     if (isLogin) router.push('/home');
   }, [isLogin, router]);
 
-  useEffect(() => {
-    console.log(NAVER_AUTH_URL);
-  }, [NAVER_AUTH_URL]);
-
   const NaverLogin = () => {
     if (NAVER_AUTH_URL) {
       window.location.href = NAVER_AUTH_URL.naverLoginUrl;

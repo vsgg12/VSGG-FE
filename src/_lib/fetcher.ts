@@ -60,7 +60,6 @@ const _fetch = async <T = unknown, R = unknown>({
         if (refreshToken) {
           const newToken = await postRefresh({ refreshToken: `Bearer ${refreshToken}` });
           if (newToken) {
-            console.log('토큰 재발급 완료');
             useAuthStore.setState({
               isLogin: true,
               accessToken: newToken.tokens?.accessToken,

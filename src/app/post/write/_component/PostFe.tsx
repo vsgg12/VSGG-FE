@@ -188,7 +188,6 @@ export default function PostForm() {
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
     };
-    console.log('postRequestData', postRequestData);
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
     const emptyFile = new File([emptyBlob], '');
@@ -219,15 +218,9 @@ export default function PostForm() {
 
     const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
     if (postComfirm) {
-      postFormData.forEach((value, key) => {
-        console.log(key, value);
-      });
-
       setIsLoading(true);
-
       try {
         const res = await createPost(postFormData, accessToken);
-        console.log(res);
         if (res.status === 200) {
           alert('게시글 작성이 완료되었습니다!');
           setPostCreated(true);
@@ -460,7 +453,6 @@ export default function PostForm() {
       try {
         const res = await saveImageAndRequestUrlToS3(formData, accessToken);
         if (res.resultCode === 200) {
-          console.log('이미지 업로드 성공', res);
           const imgUrl = res.images[0];
           setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
           /*에디터의 커서 위치에 이미지 요소를 넣어준다.*/
@@ -470,7 +462,6 @@ export default function PostForm() {
           }
         } else {
           alert('이미지 업로드에 실패하셨습니다.');
-          console.log(res);
         }
       } catch (error) {
         console.log(error);
@@ -569,8 +560,7 @@ export default function PostForm() {
   const handleDelete = async () => {
     const deleteData = { imageUrl: contentUrls };
     if (!postCreated) {
-      const data = await sendDeleteRequestToS3(deleteData, accessToken);
-      console.log('이미지 삭제: ', data);
+      return await sendDeleteRequestToS3(deleteData, accessToken);
     }
   };
   useEffect(() => {
