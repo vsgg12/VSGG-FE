@@ -19,7 +19,6 @@ export default function Naver() {
       if (data.resultCode === 409) {
         localStorage.setItem('email', data.email);
         localStorage.setItem('profileImage', data.profileImage);
-        // alert(data.resultMsg) 두번 경고창 나오는 오류
         router.push('/signUp');
       } else if (data.resultCode === 200) {
         useAuthStore.setState({
@@ -28,7 +27,6 @@ export default function Naver() {
           refreshToken: data.refreshToken,
           user: { email: data.email, nickname: data.nickname, profile_image: data.profileImage },
         });
-        // alert(data.resultMsg);
         router.push('/home');
       }
     },
@@ -36,7 +34,7 @@ export default function Naver() {
 
   useEffect(() => {
     login();
-  });
+  }, []);
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>
