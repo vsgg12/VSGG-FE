@@ -1,4 +1,5 @@
 name: Deploy
+
 on:
   push:
     branches:
@@ -8,39 +9,39 @@ env:
   S3_BUCKET_NAME: vsgg
   CODE_DEPLOY_APPLICATION_NAME: vsgg-code-deploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: vsgg-group
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code.
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Check Node v
+      - name: Check Node version
         run: node -v
 
-      -  run: touch ./.env.local
-      -  run: echo "${{ secrets.ENV_LOCAL }}" > ./.env.local
+      - run: touch ./.env.local
+      - run: echo "${{ secrets.ENV_LOCAL }}" > ./.env.local
 
       - name: Cache node modules
         uses: actions/cache@v3
         id: cache
         with:
-          # node_modules라는 폴더를 검사하여
           path: node_modules
-          # 아래 키값으로 cache가 돼있는지 확인합니다.
           key: npm-packages-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Build
-        run: |
-          npm run build
+      - name: Clean build directory
+        run: rm -rf .next
 
-      - name: zip create
-        run: |
-          zip -qq -r --symlinks  ./vsgg.zip .
+      - name: Build
+        run: npm run build
+
+      - name: Create zip file
+        run: zip -qq -r --symlinks ./vsgg.zip .
         shell: bash
 
       - name: Configure AWS credentials
@@ -51,10 +52,9 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: |
-          aws s3 cp --region ap-northeast-2 ./vsgg.zip s3://$S3_BUCKET_NAME/vsgg.zip
+        run: aws s3 cp --region ap-northeast-2 ./vsgg.zip s3://$S3_BUCKET_NAME/vsgg.zip
 
-      - name: Deploy For Development
+      - name: Deploy for Development
         run: |
           aws deploy create-deployment \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
