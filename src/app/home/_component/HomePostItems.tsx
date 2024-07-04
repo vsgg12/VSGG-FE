@@ -23,20 +23,23 @@ export default function HomePostItems({
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
 
-
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
-    if (post.hashtagList.length === 0) {
-      setNoHashTag([
-        {
-          id: 0,
-          name: post.inGameInfoList[0].championName,
-        },
-        {
-          id: 1,
-          name: post.inGameInfoList[0].tier,
-        },
-      ]);
+    if (post) {
+      const inGameInfo = post.inGameInfoList[0] || { championName: 'Unknown', tier: 'Unknown' };
+
+      if (post.hashtagList.length === 0) {
+        setNoHashTag([
+          {
+            id: 0,
+            name: inGameInfo.championName,
+          },
+          {
+            id: 1,
+            name: inGameInfo.tier,
+          },
+        ]);
+      }
     }
   }, [post]);
 

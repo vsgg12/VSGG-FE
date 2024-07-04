@@ -21,7 +21,6 @@ export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
-  const [voteInfos, setVoteInfos] = useState<IGetInGameInfoListType[]>([]);
 
   const {
     data: postData,
@@ -46,8 +45,6 @@ export default function Home() {
 
   useEffect(() => {
     if (postData?.postDTO) {
-      const filterVoteInfos = postData.postDTO.flatMap((item) => item.inGameInfoList);
-      setVoteInfos(filterVoteInfos);
       setVisiblePosts(postData.postDTO.slice(0, 5));
       setPostIndex(5); // 초기 로드 후 인덱스를 다시 설정해야 함
     }
@@ -80,10 +77,14 @@ export default function Home() {
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
 
   const loadMore = useCallback(() => {
+    const postLength = postData ? postData.postDTO.length : 0;
     const currentPostData = getPostData();
     const currentPostIndex = getPostIndex();
     if (currentPostData) {
-      const newPosts = currentPostData.postDTO.slice(currentPostIndex, currentPostIndex + 5);
+      const newPosts = currentPostData.postDTO.slice(
+        currentPostIndex,
+        currentPostIndex + 5 < postLength ? currentPostIndex + 5 : postLength,
+      );
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
@@ -177,7 +178,7 @@ export default function Home() {
             ) : (
               visiblePosts.map((post, idx) => (
                 <div key={idx}>
-                  <HomePostItems post={post} voteInfos={voteInfos} />
+                  <HomePostItems post={post} voteInfos={post.inGameInfoList} />
                 </div>
               ))
             )}
