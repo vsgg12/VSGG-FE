@@ -560,7 +560,7 @@ export default function PostForm() {
   const handleDelete = async () => {
     const deleteData = { imageUrl: contentUrls };
     if (!postCreated) {
-      const data = await sendDeleteRequestToS3(deleteData, accessToken);
+      return await sendDeleteRequestToS3(deleteData, accessToken);
     }
   };
   useEffect(() => {
