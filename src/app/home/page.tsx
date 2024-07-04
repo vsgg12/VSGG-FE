@@ -13,39 +13,6 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 
-const voteInfos: IGetVoteType[] = [
-  {
-    championName: '뽀삐',
-    votedRatio: 3,
-    position: '탑',
-    tier: '플래티넘',
-  },
-  {
-    championName: '티모',
-    votedRatio: 4.5,
-    position: '정글',
-    tier: '골드',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-];
-
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -73,7 +40,6 @@ export default function Home() {
     if (keyword === '') {
       refetch();
     }
-    console.log('postData: ', postData);
   }, [keyword, refetch, postData]);
 
   useEffect(() => {
@@ -110,19 +76,18 @@ export default function Home() {
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
 
   const loadMore = useCallback(() => {
+    const postLength = postData ? postData.postDTO.length : 0;
     const currentPostData = getPostData();
     const currentPostIndex = getPostIndex();
     if (currentPostData) {
-      const newPosts = currentPostData.postDTO.slice(currentPostIndex, currentPostIndex + 5);
+      const newPosts = currentPostData.postDTO.slice(
+        currentPostIndex,
+        currentPostIndex + 5 < postLength ? currentPostIndex + 5 : postLength,
+      );
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
   }, [getPostData, getPostIndex]);
-
-  useEffect(() => {
-    console.log('visiblePosts: ', visiblePosts);
-    console.log('postIndex: ', postIndex);
-  }, [postIndex, visiblePosts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -137,7 +102,7 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.8 },
     );
 
     if (loaderRef.current) {
@@ -207,7 +172,7 @@ export default function Home() {
             ) : (
               visiblePosts.map((post, idx) => (
                 <div key={idx}>
-                  <HomePostItems post={post} voteInfos={voteInfos} />
+                  <HomePostItems post={post} voteInfos={post.inGameInfoList} />
                 </div>
               ))
             )}

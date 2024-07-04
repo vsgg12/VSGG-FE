@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chart, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-interface DoughnutChartProps {
-  voteInfos: IGetVoteType[] | undefined;
+interface DoughnutChartPropsHome {
   size: 'home' | 'post';
+  voteInfos: IGetVoteType[] | IGetInGameInfoListType[];
 }
 
-const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteInfos, size }) => {
-  const championNames = voteInfos?.map((info) => info.championName);
-  const averageValues = voteInfos?.map((info) => info.votedRatio);
+const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
+  voteInfos,
+  size,
+}: DoughnutChartPropsHome) => {
+  const [championNames, setChampionNames] = useState<string[]>([]);
+  const [averageValues, setAverageValues] = useState<(number | null)[]>([]);
+
+  useEffect(() => {
+    if (voteInfos) {
+      const newChampionNames: string[] = [];
+      const newAverageValues: (number | null)[] = [];
+
+      voteInfos.forEach((info) => {
+        newChampionNames.push(info.championName);
+        if (size === 'post') {
+          newAverageValues.push((info as IGetVoteType).votedRatio);
+        } else {
+          newAverageValues.push((info as IGetInGameInfoListType).averageRatio);
+        }
+      });
+
+      setChampionNames(newChampionNames);
+      setAverageValues(newAverageValues);
+    }
+  }, [voteInfos, size]);
+
+  console.log(championNames, averageValues);
 
   const data = {
     labels: championNames,
