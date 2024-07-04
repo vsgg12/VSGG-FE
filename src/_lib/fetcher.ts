@@ -1,3 +1,7 @@
+import postRefresh from '@/api/postRefresh';
+import RefreshTokenExpired from './refreshTokenExpired';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+
 interface IFetchOptions<T = unknown> {
   endpoint: string;
   body?: T;
@@ -49,40 +53,40 @@ const _fetch = async <T = unknown, R = unknown>({
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
-    
-    if (!res.ok) {
-      // if (res.status === 401) {
-      //   const { refreshToken } = useAuthStore();
-      //   if (refreshToken) {
-      //     const newToken = await postRefresh(refreshToken);
-      //     if (newToken) {
-      //       console.log('토큰 재발급 완료');
-      //       useAuthStore.setState({
-      //         isLogin: true,
-      //         accessToken: newToken.tokens.accessToken,
-      //         refreshToken: refreshToken,
-      //       });
-      //       headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
-      //       const retryRequestOptions: RequestInit = {
-      //         ...requestOptions,
-      //         headers,
-      //       };
-      //       const retryRes = await fetch(
-      //         `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
-      //         retryRequestOptions,
-      //       );
 
-      //       if (!retryRes.ok) {
-      //         const retryErrorData = await retryRes.json();
-      //         throw new Error(retryErrorData.message);
-      //       }
-      //       return await retryRes.json();
-      //     } else {
-      //       RefreshTokenExpired();
-      //       throw new Error('Session expired. Please log in again.');
-      //     }
-      //   }
-      // }
+    if (!res.ok) {
+      if (res.status === 401) {
+        const { refreshToken } = useAuthStore.getState();
+        if (refreshToken) {
+          const newToken = await postRefresh({ refreshToken: `Bearer ${refreshToken}` });
+          if (newToken) {
+            console.log('토큰 재발급 완료');
+            useAuthStore.setState({
+              isLogin: true,
+              accessToken: newToken.tokens?.accessToken,
+              refreshToken: refreshToken,
+            });
+            headers.Authorization = 'Bearer ' + newToken.tokens?.accessToken;
+            const retryRequestOptions: RequestInit = {
+              ...requestOptions,
+              headers,
+            };
+            const retryRes = await fetch(
+              `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+              retryRequestOptions,
+            );
+
+            if (!retryRes.ok) {
+              const retryErrorData = await retryRes.json();
+              throw new Error(retryErrorData.message);
+            }
+            return await retryRes.json();
+          } else {
+            RefreshTokenExpired();
+            throw new Error('Session expired. Please log in again.');
+          }
+        }
+      }
       const errorData = await res.json();
       throw new Error(errorData.message);
     }
