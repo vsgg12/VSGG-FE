@@ -1,4 +1,11 @@
-export const voteColors = [
+interface IVoteColorsType {
+  background: string;
+  text: string;
+  hover: string;
+  border: string;
+}
+
+export const voteColors: IVoteColorsType[] = [
   {
     background: 'bg-[#000000]',
     text: 'text-[#000000]',

@@ -14,14 +14,13 @@ export default function HomePostItems({
   voteInfos,
 }: {
   post: IGetPostDTOType;
-  voteInfos: IGetVoteType[];
+  voteInfos: IGetInGameInfoListType[];
 }) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
   const { user } = useAuthStore.getState();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
-
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));

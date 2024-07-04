@@ -13,39 +13,6 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 
-const voteInfos: IGetVoteType[] = [
-  {
-    championName: '뽀삐',
-    votedRatio: 3,
-    position: '탑',
-    tier: '플래티넘',
-  },
-  {
-    championName: '티모',
-    votedRatio: 4.5,
-    position: '정글',
-    tier: '골드',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-  {
-    championName: '문도박사',
-    votedRatio: 5,
-    position: '원딜',
-    tier: '실버',
-  },
-];
-
 export default function Home() {
   const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -54,6 +21,7 @@ export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
+  const [voteInfos, setVoteInfos] = useState<IGetInGameInfoListType[]>([]);
 
   const {
     data: postData,
@@ -78,6 +46,8 @@ export default function Home() {
 
   useEffect(() => {
     if (postData?.postDTO) {
+      const filterVoteInfos = postData.postDTO.flatMap((item) => item.inGameInfoList);
+      setVoteInfos(filterVoteInfos);
       setVisiblePosts(postData.postDTO.slice(0, 5));
       setPostIndex(5); // 초기 로드 후 인덱스를 다시 설정해야 함
     }

@@ -4,14 +4,25 @@ import { Doughnut } from 'react-chartjs-2';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-interface DoughnutChartProps {
-  voteInfos: IGetVoteType[] | undefined;
+interface DoughnutChartPropsHome {
   size: 'home' | 'post';
+  voteInfos: IGetVoteType[] | undefined;
 }
+
+interface DoughnutChartPropsPost {
+  size: 'home' | 'post';
+  voteInfos: IGetInGameInfoListType[] | undefined;
+}
+
+type DoughnutChartProps = DoughnutChartPropsHome | DoughnutChartPropsPost;
 
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ voteInfos, size }) => {
   const championNames = voteInfos?.map((info) => info.championName);
-  const averageValues = voteInfos?.map((info) => info.votedRatio);
+  const averageValues = voteInfos?.map((info) =>
+    size === 'post'
+      ? (info as IGetInGameInfoListType).averageRatio
+      : (info as IGetVoteType).votedRatio,
+  );
 
   const data = {
     labels: championNames,
