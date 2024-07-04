@@ -95,7 +95,6 @@ export default function PostRead() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
-      console.log('투표 성공');
     },
     onError: (err) => console.log(err),
   });
@@ -112,7 +111,6 @@ export default function PostRead() {
   });
 
   const handleCommentSubmit = async () => {
-    console.log(commentContent);
     if (isCommentInProgress) {
       return;
     }
@@ -125,7 +123,6 @@ export default function PostRead() {
     if (!isLogin) {
       router.push('/login');
     }
-    console.log(postVoteResult);
     postVote();
   };
 
