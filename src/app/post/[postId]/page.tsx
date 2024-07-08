@@ -88,7 +88,7 @@ export default function PostRead() {
   });
 
   const { mutate: postVote } = useMutation({
-    mutationFn: () => PostVote(id, postVoteResult, accessToken),
+    mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
