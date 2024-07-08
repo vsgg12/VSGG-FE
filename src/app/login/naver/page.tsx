@@ -17,8 +17,7 @@ export default function Naver() {
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
-        localStorage.setItem('email', data.email);
-        localStorage.setItem('profileImage', data.profileImage);
+        useAuthStore.setState({ user: { email: data.email, nickname: '', profile_image: data.profileImage } }),
         router.push('/signUp');
       } else if (data.resultCode === 200) {
         useAuthStore.setState({
