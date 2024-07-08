@@ -2,15 +2,13 @@
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import Link from 'next/link';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
 import PostFe from './_component/PostFe';
 
 export default function PostWrite() {
-  const { isLogin } = useAuthStore.getState();
 
   return (
     <>
-      <Header isLogin={isLogin} />
+      <Header  />
       <div>
         <div className='flex items-center justify-center p-[100px]'>
           <Logo />

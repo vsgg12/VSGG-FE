@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <>
-      <Header isLogin={isLogin} />
+      <Header />
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
