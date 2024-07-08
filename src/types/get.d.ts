@@ -46,13 +46,6 @@ type IHashTagListType = {
   name: string;
 };
 
-type IGetGameInfoType = {
-  inGameInfoId: number;
-  tier: string;
-  position: string;
-  championName: string;
-};
-
 // 게시물 상세 조회 페이지
 type IGetPostItemType = {
   resultCode: number;
@@ -87,7 +80,7 @@ type IGetVoteType = {
   tier: string;
 };
 
-type IGetInGameInfoListType = {
+type IGetInGameInfoType = {
   averageRatio: number | null;
   championName: string;
   inGameInfoId: number;

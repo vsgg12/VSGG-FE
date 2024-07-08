@@ -7,7 +7,7 @@ import VotingGraph from './VotingGraph';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
-  voteInfo: IGetGameInfoType[];
+  voteInfo: IGetInGameInfoType[];
   handleVoteSubmit: () => void;
 }
 
@@ -78,7 +78,8 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
           ))}
         </div>
         <div className='flex flex-col items-center '>
-          <div className='mb-[5rem] text-[20px]'>이 게임의 과실은 몇 대 몇~?</div>
+          <div className='text-[20px] mb-[5rem]'>이 게임의 과실은 몇 대 몇~?</div>
+
           <div className='flex flex-col items-center'>
             <div className='p-content-s-mb flex flex-row'>
               {voteResult.map((vote, index) => (
@@ -93,9 +94,9 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
             <div className='p-content-s-mb flex flex-row'>
               <VotingGraph />
             </div>
-          </div>
-          <div className='text-[12px] text-[#7B7B7B]'>
-            {voteInfo[selectedChampIdx].championName}의 과실을 선택해주세요
+            <div className='text-[12px] text-[#7B7B7B] mb-[2rem]'>
+              {voteInfo[selectedChampIdx]?.championName}의 과실을 선택해주세요
+            </div>
           </div>
         </div>
         <div className='flex flex-col justify-end'>

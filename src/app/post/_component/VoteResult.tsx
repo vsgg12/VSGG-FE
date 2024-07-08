@@ -6,7 +6,7 @@ import DoughnutChart from '@/components/DoughnutChart';
 import { voteColors, positionInfo } from '@/data/championData';
 
 interface IVoteResultProps {
-  voteInfos: IGetVoteType[] | IGetInGameInfoListType[] | undefined;
+  voteInfos: IGetInGameInfoType[] | undefined;
   isOwner: boolean;
 }
 
@@ -22,7 +22,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
           <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
             <div className='relative flex w-full justify-between'>
               <div className='flex flex-col ml-10 justify-around'>
-                {(voteInfos as IGetVoteType[]).map((champion, index) => (
+                {voteInfos.map((champion, index) => (
                   <div key={index} className='relative group'>
                     <div
                       className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
@@ -49,7 +49,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
                         </div>
                       </div>
                       <p className={`text-[#8A1F21] gitd self-center mb-1 font-[14px]`}>
-                        과실 {champion.votedRatio}
+                        과실 {champion.averageRatio}
                       </p>
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
 import DoughnutChart from '@/components/DoughnutChart';
 
-export default function HomeNotVoted({ voteInfos }: { voteInfos: IGetInGameInfoListType[] }) {
+export default function HomeNotVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
   return (
     <>
       <div className='flex h-full rounded-[1.875em] items-center'>

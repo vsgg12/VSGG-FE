@@ -70,7 +70,13 @@ export default function Header({ isLogin }: HeaderProps) {
             <>
               <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
                 {currentUrl !== '/post/write' && (
-                  <Image className='h-[32px] w-[32px]' src={writeSVG} alt='writeIcon' />
+                  <Image
+                    className='h-[32px] w-[32px]'
+                    src={writeSVG}
+                    alt='writeIcon'
+                    width={32}
+                    height={32}
+                  />
                 )}
               </div>
 
