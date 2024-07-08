@@ -12,16 +12,12 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/getAlarms';
 
-interface HeaderProps {
-  isLogin: boolean;
-}
-
-export default function Header({ isLogin }: HeaderProps) {
+export default function Header() {
   const router = useRouter();
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const { accessToken, user } = useAuthStore.getState();
+  const { accessToken, user, isLogin } = useAuthStore.getState();
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
@@ -57,7 +53,6 @@ export default function Header({ isLogin }: HeaderProps) {
     setIsProfileModalOpen(false);
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     localStorage.clear();
-    return;
   };
 
   const handleGoPostBtnClick = (): void => {
@@ -116,7 +111,8 @@ export default function Header({ isLogin }: HeaderProps) {
               )}
             </>
           ) : (
-            !isLoading && (
+            !isLoading &&
+            !isLogin && (
               <>
                 <button
                   className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
