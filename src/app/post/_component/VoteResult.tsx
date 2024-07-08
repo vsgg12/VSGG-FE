@@ -57,7 +57,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
               </div>
               <div className='flex flex-col items-center justify-center mr-5'>
                 <div className='mb-[20px] flex text-[20px] '>이 게임의 과실은 몇 대 몇 ~?</div>
-                {isOwner && voteInfos?.length === 0 ? (
+                {isOwner && voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0) ? (
                   <div className='flex justify-center text-[#828282] mt-8 mb-10'>
                     아직 투표한 사람이 없는 게시글입니다.
                   </div>

@@ -132,7 +132,7 @@ export default function PostRead() {
 
   return (
     <>
-      <Header isLogin={isLogin} />
+      <Header />
       <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>

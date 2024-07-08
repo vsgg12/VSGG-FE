@@ -4,7 +4,6 @@ import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
-import { useAuthStore } from '../login/store/useAuthStore';
 
 const data = [
   {
@@ -20,10 +19,10 @@ const data = [
 ];
 
 export default function MyPage() {
-  const { isLogin } = useAuthStore.getState();
+
   return (
     <div>
-      <Header isLogin={isLogin} />
+      <Header />
       <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>
