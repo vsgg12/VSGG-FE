@@ -14,7 +14,7 @@ export default function HomePostItems({
   voteInfos,
 }: {
   post: IGetPostDTOType;
-  voteInfos: IGetInGameInfoListType[];
+  voteInfos: IGetInGameInfoType[];
 }) {
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();

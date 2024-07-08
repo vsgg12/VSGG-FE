@@ -127,7 +127,13 @@ export default function Home() {
               onClick={handleWriteClick}
               className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
             >
-              <Image className='h-[32px] w-[32px]' src={writeSVG} alt='writeIcon' />
+              <Image
+                className='h-[32px] w-[32px]'
+                width={48}
+                height={48}
+                src={writeSVG}
+                alt='writeIcon'
+              />
               <div className='text-[0.875rem]'>글쓰기</div>
             </button>
             <div className='mb-[40px] flex flex-row items-center justify-between'>

@@ -6,7 +6,7 @@ Chart.register(ArcElement, Tooltip, Legend);
 
 interface DoughnutChartPropsHome {
   size: 'home' | 'post';
-  voteInfos: IGetVoteType[] | IGetInGameInfoListType[];
+  voteInfos: IGetInGameInfoType[];
 }
 
 const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
@@ -17,23 +17,17 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   const [averageValues, setAverageValues] = useState<(number | null)[]>([]);
 
   useEffect(() => {
-    if (voteInfos) {
-      const newChampionNames: string[] = [];
-      const newAverageValues: (number | null)[] = [];
+    const newChampionNames: string[] = [];
+    const newAverageValues: (number | null)[] = [];
 
-      voteInfos.forEach((info) => {
-        newChampionNames.push(info.championName);
-        if (size === 'post') {
-          newAverageValues.push((info as IGetVoteType).votedRatio);
-        } else {
-          newAverageValues.push((info as IGetInGameInfoListType).averageRatio);
-        }
-      });
+    voteInfos.forEach((info) => {
+      newChampionNames.push(info.championName);
+      newAverageValues.push(info.averageRatio);
+    });
 
-      setChampionNames(newChampionNames);
-      setAverageValues(newAverageValues);
-    }
-  }, [voteInfos, size]);
+    setChampionNames(newChampionNames);
+    setAverageValues(newAverageValues);
+  }, [voteInfos]);
 
   const data = {
     labels: championNames,

@@ -53,7 +53,7 @@ export default function ProfileModal({
           </div>
 
           <div className='flex flex-row gap-[10px] pl-[11.5px]'>
-            <Image alt='myPageIcon' src={myPageIcon} />
+            <Image alt='myPageIcon' src={myPageIcon} width={16} height={16} />
             <span
               className='text-[14px] text-[#828282] cursor-pointer'
               onClick={handleMyPageBtnClick}
@@ -63,7 +63,7 @@ export default function ProfileModal({
           </div>
           <hr />
           <div className='flex flex-row gap-[10px] pl-[11.5px]'>
-            <Image alt='myPostIcon' src={myPostIcon} />
+            <Image alt='myPostIcon' src={myPostIcon} width={16} height={16} />
             <span
               className='text-[12px] text-[#828282] cursor-pointer'
               onClick={handleMyPostBtnClick}
@@ -72,7 +72,7 @@ export default function ProfileModal({
             </span>
           </div>
           <div className='flex flex-row gap-[10px] pl-[11.5px]'>
-            <Image alt='myJudgeIcon' src={myJudgeIcon} />
+            <Image alt='myJudgeIcon' src={myJudgeIcon} width={16} height={16} />
             <span
               className='text-[12px] text-[#828282] cursor-pointer'
               onClick={handleMyJudgeBtnClick}
@@ -82,7 +82,7 @@ export default function ProfileModal({
           </div>
           <hr />
           <div className='flex flex-row gap-[10px] pl-[11.5px]'>
-            <Image alt='logoutIcon' src={logoutIcon} />
+            <Image alt='logoutIcon' src={logoutIcon} width={16} height={16} />
             <span className='text-[14px] text-[#828282] cursor-pointer' onClick={handleLogoutClick}>
               로그아웃
             </span>
