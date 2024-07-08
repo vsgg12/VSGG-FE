@@ -1,8 +1,4 @@
-export default function PostVotingChampList({
-  voteInfos,
-}: {
-  voteInfos: IGetInGameInfoListType[];
-}) {
+export default function PostVotingChampList({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
   return (
     <>
       {voteInfos && voteInfos.length === 0 ? (

@@ -1,7 +1,7 @@
 import DoughnutChart from '@/components/DoughnutChart';
 import { voteColors } from '@/data/championData';
 
-export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoListType[] }) {
+export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
   return (
     <>
       <div className='flex h-full rounded-[1.875em] items-center'>

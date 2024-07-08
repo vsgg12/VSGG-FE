@@ -21,7 +21,6 @@ import DeleteComment from '@/api/deleteComment';
 import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
 import Logo from '@/components/Logo';
-import GetVoteResult from '@/api/getVoteResult';
 import Loading from '@/components/Loading';
 
 export default function PostRead() {
@@ -43,6 +42,7 @@ export default function PostRead() {
   const [formattedDate, setFormattedDate] = useState<string>('');
   // const [votingStatus, setVotingStatus] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
+  const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
@@ -54,21 +54,18 @@ export default function PostRead() {
     queryFn: async () => getComments(id),
   });
 
-  const { data: voteResultData, isLoading: isVoteLoading } = useQuery({
-    queryKey: ['VOTE_RESULT', id],
-    queryFn: async () => GetVoteResult(id, accessToken),
-  });
-
   useEffect(() => {
     if (post) {
+      console.log('post', post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
+      setVoteData(post.postDTO.inGameInfoList);
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
-        (ingameInfo: IGetGameInfoType, idx: number) => ({
-          ingameInfoId: ingameInfo.inGameInfoId,
+        (ingameInfo: IGetInGameInfoType, idx: number) => ({
+          inGameInfoId: ingameInfo.inGameInfoId,
           ratio: voteResult[idx] || 0,
         }),
       );
@@ -91,10 +88,11 @@ export default function PostRead() {
   });
 
   const { mutate: postVote } = useMutation({
-    mutationFn: () => PostVote(id, postVoteResult, accessToken),
+    mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
+      console.log('투표 성공');
     },
     onError: (err) => console.log(err),
   });
@@ -111,6 +109,7 @@ export default function PostRead() {
   });
 
   const handleCommentSubmit = async () => {
+    console.log(commentContent);
     if (isCommentInProgress) {
       return;
     }
@@ -123,6 +122,7 @@ export default function PostRead() {
     if (!isLogin) {
       router.push('/login');
     }
+    console.log(postVoteResult);
     postVote();
   };
 
@@ -136,7 +136,7 @@ export default function PostRead() {
       <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>
-      {isLoading || isVoteLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <main>
@@ -256,16 +256,11 @@ export default function PostRead() {
                   )}
                 </div>
               </div>
-              {(voteResultData && isOwner) || post?.postDTO.isVote ? (
-                <VoteResult voteInfos={voteResultData?.results} isOwner={isOwner} />
+              {(voteData && isOwner) || post?.postDTO.isVote ? (
+                <VoteResult voteInfos={voteData} isOwner={isOwner} />
               ) : (
                 post &&
-                !isOwner && (
-                  <VoteForm
-                    voteInfo={post.postDTO.inGameInfoList}
-                    handleVoteSubmit={handleVoteSubmit}
-                  />
-                )
+                !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
               )}
             </div>
           </section>

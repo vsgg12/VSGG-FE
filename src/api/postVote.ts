@@ -5,8 +5,12 @@ type IResultType = {
   resultMsg: string;
 };
 
-export default async function PostVote(postId: string, body: IVoteType[], token: string) {
-  const data = await api.post<IVoteType[], IResultType>({
+interface IBodyType {
+  voteList: IVoteType[];
+}
+
+export default async function PostVote(postId: string, body: IBodyType, token: string) {
+  const data = await api.post<IBodyType, IResultType>({
     endpoint: `/post/${postId}/vote`,
     body,
     authorization: token,

@@ -158,6 +158,8 @@ export default function SignUp() {
                 />
                 <Image
                   alt='deleteIcon'
+                  width={16}
+                  height={16}
                   src={deleteIcon}
                   style={{
                     position: 'absolute',
