@@ -25,7 +25,13 @@ export default function Header({ isLogin }: HeaderProps) {
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
+    queryFn: () => {
+      if (isLogin) {
+        return getAlarms(accessToken);
+      } else {
+        return Promise.resolve(null);
+      }
+    },
   });
 
   const handleAlarmBtnClick = (): void => {

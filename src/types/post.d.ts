@@ -37,6 +37,6 @@ type IPostRefreshType = {
   };
 };
 type IVoteType = {
-  ingameInfoId: number;
+  inGameInfoId: number;
   ratio: number;
 };

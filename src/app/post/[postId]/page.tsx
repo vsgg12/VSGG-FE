@@ -65,7 +65,7 @@ export default function PostRead() {
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
         (ingameInfo: IGetInGameInfoType, idx: number) => ({
-          ingameInfoId: ingameInfo.inGameInfoId,
+          inGameInfoId: ingameInfo.inGameInfoId,
           ratio: voteResult[idx] || 0,
         }),
       );
