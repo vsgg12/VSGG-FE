@@ -69,7 +69,10 @@ export default function Header() {
         <div className='flex flex-row items-center gap-6'>
           {!isLoading && isLogin ? (
             <>
-              <div className='hd-items cursor-pointer' onClick={handleGoPostBtnClick}>
+              <div
+                className='group/write hd-items cursor-pointer relative'
+                onClick={handleGoPostBtnClick}
+              >
                 {currentUrl !== '/post/write' && (
                   <Image
                     className='h-[32px] w-[32px]'
@@ -79,27 +82,36 @@ export default function Header() {
                     height={32}
                   />
                 )}
+                <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/write:visible'>
+                  글쓰기
+                </span>
               </div>
 
               <button
-                className={`hd-items cursor-pointer ${isAlarmModalOpen && 'rounded-full bg-white'}`}
+                className={`relative group/alarm hd-items cursor-pointer ${isAlarmModalOpen && 'rounded-full bg-white'}`}
                 onClick={handleAlarmBtnClick}
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className={`text-[#8A1F21] text-[11px] font-medium w-[20px] h-[12px] p-0 m-0 bg-white ${(data?.alarmList.length === undefined || data?.alarmList.length === 0) && 'invisible'}`}
-                  style={{ position: 'absolute', transform: 'translate(-50%,-190%)' }}
+                  className={`text-[#8A1F21] text-[11px] font-medium flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 bg-white ${(data?.alarmList.length === undefined || data?.alarmList.length === 0) && 'invisible'}`}
+                  style={{ position: 'absolute', transform: 'translate(6.5px,-22px)' }}
                 >
                   {data && data.alarmList.length > 99 ? '99+' : `${data?.alarmList.length}`}
+                </span>
+                <span className='absolute top-[50px]  flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
+                  알림
                 </span>
               </button>
               {isAlarmModalOpen && <AlarmModal alarms={data?.alarmList} />}
 
               <button
-                className={`hd-items flex items-center justify-center overflow-hidden rounded-full ${isProfileModalOpen && 'rounded-full bg-white'}`}
+                className={`relative group/profile hd-items flex items-center justify-center  rounded-full ${isProfileModalOpen && 'rounded-full bg-white'}`}
                 onClick={handleProfileBtnClick}
               >
                 <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
+                <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
+                  프로필
+                </span>
               </button>
               {isProfileModalOpen && user && (
                 <ProfileModal
