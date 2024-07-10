@@ -100,10 +100,24 @@ export default function Header() {
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className={`text-[#8A1F21] text-[11px] font-medium flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 bg-white ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
-                  style={{ position: 'absolute', transform: 'translate(6.5px,-22px)' }}
+                  className={`text-[#8A1F21] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+                  style={{
+                    position: 'absolute',
+                    transform: 'translate(6.5px,-22px)',
+                  }}
                 >
                   {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
+                  <span
+                    className={`text-[#8A1F21]  text-[12px] font-bold flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 text-stroke ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+                    style={{
+                      position: 'absolute',
+                      left: '0',
+                      top: '0',
+                      zIndex: '-1',
+                    }}
+                  >
+                    {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
+                  </span>
                 </span>
                 <span className='absolute top-[50px]  flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
                   알림
