@@ -129,7 +129,11 @@ export default function Header() {
                 className={`relative group/profile hd-items flex items-center justify-center  rounded-full ${isProfileModalOpen && 'rounded-full bg-white'}`}
                 onClick={handleProfileBtnClick}
               >
-                <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
+                <img
+                  src={user?.profile_image}
+                  alt='profileImage'
+                  className='h-[36px] w-[36px] rounded-full border-[#8A1F21] border-[2px]'
+                />
                 <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
                   프로필
                 </span>
