@@ -43,11 +43,33 @@ export default function PostRead() {
   // const [votingStatus, setVotingStatus] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
+  const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
+
+ 
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+   useEffect(() => {
+     if (post) {
+       const inGameInfo = post.postDTO.inGameInfoList[0] || { championName: 'Unknown', tier: 'Unknown' };
+
+       if (post.postDTO.hashtagList.length === 0) {
+         setNoHashTag([
+           {
+             id: 0,
+             name: inGameInfo.championName,
+           },
+           {
+             id: 1,
+             name: inGameInfo.tier,
+           },
+         ]);
+       }
+     }
+   }, [post]);
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS', id],
@@ -189,7 +211,9 @@ export default function PostRead() {
                     >
                       <source src={post.postDTO.video.url} type='video/webm' />
                     </video>
-                    <PostTag hashtags={post.postDTO.hashtagList} />
+                    <PostTag
+                      hashtags={post.postDTO.hashtagList.length !== 0 ? post.postDTO.hashtagList : noHashTag}
+                    />
                     <div
                       className='w-full mt-10'
                       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}

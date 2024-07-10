@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
 import AlarmModal from '@/app/home/_component/AlarmModal';
 import { usePathname, useRouter } from 'next/navigation';
@@ -18,6 +18,7 @@ export default function Header() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
   const { accessToken, user, isLogin } = useAuthStore.getState();
+  const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
@@ -29,6 +30,12 @@ export default function Header() {
       }
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setNoReadAlarms(data.alarmList.filter((alarm) => alarm.isRead === false).length);
+    }
+  }, [data]);
 
   const handleAlarmBtnClick = (): void => {
     if (isProfileModalOpen) {
@@ -93,10 +100,24 @@ export default function Header() {
               >
                 <IoMdNotificationsOutline />
                 <span
-                  className={`text-[#8A1F21] text-[11px] font-medium flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 bg-white ${(data?.alarmList.length === undefined || data?.alarmList.length === 0) && 'invisible'}`}
-                  style={{ position: 'absolute', transform: 'translate(6.5px,-22px)' }}
+                  className={`text-[#8A1F21] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+                  style={{
+                    position: 'absolute',
+                    transform: 'translate(6.5px,-22px)',
+                  }}
                 >
-                  {data && data.alarmList.length > 99 ? '99+' : `${data?.alarmList.length}`}
+                  {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
+                  <span
+                    className={`text-[#8A1F21]  text-[12px] font-bold flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 text-stroke ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+                    style={{
+                      position: 'absolute',
+                      left: '0',
+                      top: '0',
+                      zIndex: '-1',
+                    }}
+                  >
+                    {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
+                  </span>
                 </span>
                 <span className='absolute top-[50px]  flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
                   알림
@@ -108,7 +129,11 @@ export default function Header() {
                 className={`relative group/profile hd-items flex items-center justify-center  rounded-full ${isProfileModalOpen && 'rounded-full bg-white'}`}
                 onClick={handleProfileBtnClick}
               >
-                <IoPersonCircle className='h-[2.2rem] w-[2.2rem]' />
+                <img
+                  src={user?.profile_image}
+                  alt='profileImage'
+                  className='h-[36px] w-[36px] rounded-full border-[#8A1F21] border-[2px]'
+                />
                 <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
                   프로필
                 </span>

@@ -1,5 +1,8 @@
 import { nextui } from '@nextui-org/theme';
 import type { Config } from 'tailwindcss';
+import { PluginAPI } from 'tailwindcss/types/config';
+
+const plugin = require('tailwindcss/plugin');
 
 const config: Config = {
   content: [
@@ -12,6 +15,15 @@ const config: Config = {
   theme: {
     extend: {},
   },
-  plugins: [nextui()],
+  plugins: [
+    nextui(),
+    plugin(function ({ addUtilities }: PluginAPI) {
+      addUtilities({
+        '.text-stroke': {
+          '-webkit-text-stroke': '2px #fff',
+        },
+      });
+    }),
+  ],
 };
 export default config;

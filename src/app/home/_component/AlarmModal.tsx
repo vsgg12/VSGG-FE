@@ -25,7 +25,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
     <>
       <div
         className='w-[354px] h-[443px] border border-[#8A1F21] rounded-[18px] p-[15px] bg-[#FFFFFF] '
-        style={{ position: 'absolute', transform: 'translate(-55%,58%)', zIndex: 100 }}
+        style={{ position: 'absolute', transform: 'translate(-195px,250px)', zIndex: 100 }}
       >
         <div className='flex flex-col flex-grow'>
           <p className='text-[#8A1F21] text-[14px] font-semibold mb-[10px]'>알림</p>
