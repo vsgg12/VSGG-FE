@@ -43,25 +43,30 @@ export const positionInfo = [
     name: '탑',
     svgw: '/svg/top-w.svg',
     svg: '/svg/top.svg',
+    svgDisabled: '/svg/disabled/Top_disabled.svg',
   },
   {
     name: '원딜',
     svgw: '/svg/onedeal-w.svg',
     svg: '/svg/onedeal.svg',
+    svgDisabled: '/svg/disabled/Onedeal_disabled.svg',
   },
   {
     name: '미드',
     svgw: '/svg/mid-w.svg',
     svg: '/svg/mid.svg',
+    svgDisabled: '/svg/disabled/Mid_disabled.svg',
   },
   {
     name: '정글',
     svgw: '/svg/jungle-w.svg',
     svg: '/svg/jungle.svg',
+    svgDisabled: '/svg/disabled/Jungle_disabled.svg',
   },
   {
     name: '서폿',
     svgw: '/svg/supporter-w.svg',
     svg: '/svg/supporter.svg',
+    svgDisabled: '/svg/disabled/Support_disabled.svg',
   },
 ];
