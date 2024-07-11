@@ -167,6 +167,10 @@ export default function PostForm() {
       return;
     }
 
+    if (content === '') {
+      alert('본문 작성은 필수입니다');
+    }
+
     const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
       championName: championName,
       position: position,
@@ -394,7 +398,7 @@ export default function PostForm() {
   const addIngameInfo = (): void => {
     const newInfo = {
       id: ingameInfos.length,
-      position: 'TOP',
+      position: '탑',
       championName: '',
       tier: '',
     };
