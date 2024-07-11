@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -154,7 +154,14 @@ export default function PostForm() {
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
     '- 문자 수 제한 : 1000자 이내\n';
 
-  const { register, handleSubmit } = useForm<ICreatePostFormProps>();
+  const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length > 35) {
+      setValue('title', value.slice(0, 35));
+    }
+  };
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
     if (!uploadedVideo) {
@@ -169,6 +176,7 @@ export default function PostForm() {
 
     if (content === '') {
       alert('본문 작성은 필수입니다');
+      return;
     }
 
     const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
@@ -673,6 +681,7 @@ export default function PostForm() {
             <input
               type='text'
               maxLength={35}
+              onInput={handleTitleChange}
               className=' grow rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[15px] text-[20px]  outline-none'
               placeholder='최대 35글자 입력 가능합니다.'
               {...register('title')}
