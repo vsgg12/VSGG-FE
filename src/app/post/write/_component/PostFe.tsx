@@ -704,7 +704,7 @@ export default function PostForm() {
           <input
             type='text'
             className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
-            placeholder='#해시태그를 등록하세요 (최대 5개)'
+            placeholder='해시태그를 입력하고 엔터를 눌러주세요! (최대 5개)'
             value={tagInput}
             onChange={handleTagInputChange}
             onKeyDown={handleTagInput}
