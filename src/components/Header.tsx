@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { IoMdNotificationsOutline } from 'react-icons/io';
-import { IoPersonCircle } from 'react-icons/io5';
 import writeSVG from '../../public/svg/writing.svg';
 import { useEffect, useState } from 'react';
 import ProfileModal from '@/app/home/_component/ProfileModal';
