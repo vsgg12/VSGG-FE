@@ -182,6 +182,8 @@ export default function PostForm() {
 
     const contentData = new Blob([content], { type: 'text/html' });
 
+    hashtags.length === 0 &&
+      setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
     const postRequestData = {
       title: data.title,
       videoType: 'FILE',
