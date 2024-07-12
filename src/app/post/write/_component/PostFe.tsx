@@ -395,9 +395,21 @@ export default function PostForm() {
     setTagInput(event.target.value);
   };
 
-  const handleChange = (value: string) => {
-    setContent(value);
-  };
+   const handleChange = (value:string) => {
+     if (quillRef.current) {
+       const editor = quillRef.current.getEditor();
+       const textLength = editor.getText().trim().length;
+
+       if (textLength > 1000) {
+         editor.deleteText(1000, textLength);
+         alert('본문은 1000자까지만 가능합니다!');
+       } else {
+         setContent(value);
+       }
+     } else {
+       setContent(value);
+     }
+   };
 
   const removeTag = (index: number) => {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
