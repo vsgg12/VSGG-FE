@@ -30,6 +30,7 @@ declare module 'react-quill' {
   export type QuillOptions = QuillOptionsStatic;
 
   interface UnprivilegedEditor {
+    deleteText(arg0: number, textLength: number): unknown;
     insertEmbed(range: number, image: string, imgUrl: string);
     register(arg0: string, ImageResize: typeof import('quill-image-resize-module-ts')): unknown;
     getLength(): number;

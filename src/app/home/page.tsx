@@ -122,7 +122,7 @@ export default function Home() {
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
-          <div className='relative w-[100%] mx-28'>
+          <div className='relative w-[1205px] mx-28'>
             <button
               onClick={handleWriteClick}
               className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
@@ -160,7 +160,7 @@ export default function Home() {
                   style={{
                     zIndex: activeButton === 'view' ? 2 : 1,
                     position: 'absolute',
-                    left: '48%',
+                    left: '87.55px',
                   }}
                 >
                   인기순

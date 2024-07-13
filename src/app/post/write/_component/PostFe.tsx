@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -154,7 +154,14 @@ export default function PostForm() {
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
     '- 문자 수 제한 : 1000자 이내\n';
 
-  const { register, handleSubmit } = useForm<ICreatePostFormProps>();
+  const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length > 35) {
+      setValue('title', value.slice(0, 35));
+    }
+  };
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
     if (!uploadedVideo) {
@@ -165,6 +172,15 @@ export default function PostForm() {
     if (data.title === '') {
       alert('제목을 입력해주세요');
       return;
+    }
+
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const textLength = editor.getText().length - 1;
+      if (textLength === 0) {
+        alert('본문 작성은 필수입니다');
+        return;
+      }
     }
 
     const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
@@ -384,7 +400,18 @@ export default function PostForm() {
   };
 
   const handleChange = (value: string) => {
-    setContent(value);
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const textLength = editor.getText().trim().length;
+      if (textLength > 1000) {
+        editor.deleteText(1000, textLength);
+        alert('본문은 1000자까지만 가능합니다!');
+      } else {
+        setContent(value);
+      }
+    } else {
+      setContent(value);
+    }
   };
 
   const removeTag = (index: number) => {
@@ -394,7 +421,7 @@ export default function PostForm() {
   const addIngameInfo = (): void => {
     const newInfo = {
       id: ingameInfos.length,
-      position: 'TOP',
+      position: '탑',
       championName: '',
       tier: '',
     };
@@ -437,7 +464,7 @@ export default function PostForm() {
     //input type= file DOM을 만든다.
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
+    input.setAttribute('accept', 'image/jpeg, image/jpg, image/png');
     input.click(); //toolbar 이미지를 누르게 되면 이 부분이 실행된다.
     /*이미지를 선택하게 될 시*/
     input.onchange = async () => {
@@ -445,6 +472,23 @@ export default function PostForm() {
       const file = input.files ? input.files[0] : null;
       /*선택을 안하면 취소버튼처럼 수행하게 된다.*/
       if (!file) return;
+
+      const fileType = file.type;
+      const fileSize = file.size;
+
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+
+      if (!validTypes.includes(fileType)) {
+        alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
+        return;
+      }
+
+      if (fileSize > maxSize) {
+        alert('파일 크기는 최대 2MB까지 업로드 가능합니다.');
+        return;
+      }
+
       /*서버에서 FormData형식으로 받기 때문에 이에 맞는 데이터형식으로 만들어준다.*/
       const formData = new FormData();
       formData.append('file', file);
@@ -669,6 +713,7 @@ export default function PostForm() {
             <input
               type='text'
               maxLength={35}
+              onInput={handleTitleChange}
               className=' grow rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[15px] text-[20px]  outline-none'
               placeholder='최대 35글자 입력 가능합니다.'
               {...register('title')}
@@ -691,7 +736,7 @@ export default function PostForm() {
           <input
             type='text'
             className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
-            placeholder='#해시태그를 등록하세요 (최대 5개)'
+            placeholder='해시태그를 입력하고 엔터를 눌러주세요! (최대 5개)'
             value={tagInput}
             onChange={handleTagInputChange}
             onKeyDown={handleTagInput}

@@ -59,6 +59,7 @@ export default function Header() {
     setIsProfileModalOpen(false);
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     localStorage.clear();
+    router.push('/')
   };
 
   const handleGoPostBtnClick = (): void => {

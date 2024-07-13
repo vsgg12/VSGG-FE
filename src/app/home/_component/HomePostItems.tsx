@@ -53,7 +53,7 @@ export default function HomePostItems({
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit w-[1205px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}
@@ -111,9 +111,11 @@ export default function HomePostItems({
               )}
               <div className='flex flex-col overflow-hidden w-[50%] mb-5'>
                 <div className='mb-1 line-clamp-[8] h-[50%] overflow-hidden text-ellipsis decoration-solid'>
-                  {contentsArr.pTags.map((content, idx) => (
-                    <p key={idx}>{content}</p>
-                  ))}
+                  {contentsArr.pTags.map((content, idx) => {
+                    const displayContent =
+                      content.length > 150 ? `${content.slice(0, 150)}...더보기` : content;
+                    return <p key={idx}>{displayContent}</p>;
+                  })}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
                   {post.isVote || post.memberDTO.nickname === user?.nickname ? (
