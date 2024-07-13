@@ -22,6 +22,7 @@ export default function SignUp() {
     agreePrivacy: false,
     agreePromotion: false,
   });
+  const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(false);
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
@@ -44,6 +45,7 @@ export default function SignUp() {
     const inputValue = event.target.value;
     if (inputValue !== nickname) {
       setIsSameNickname(true);
+      setIsNickNameCheck(false);
     }
     setNickname(inputValue);
     inputValue.length > 1 && inputValue.length <= 20
@@ -59,6 +61,7 @@ export default function SignUp() {
       } else {
         setErrorMessage('사용 가능한 닉네임입니다.');
         setIsSameNickname(false);
+        setIsNickNameCheck(true);
       }
     },
     onError: (error) => console.log(error),
@@ -121,7 +124,8 @@ export default function SignUp() {
   });
 
   const handleSignUpBtnClick = (): void => {
-    if (!isAllValid) {
+    if (!isAllValid || isNickNameCheck === false) {
+      alert('닉네임 중복 확인이 필요합니다.')
       return;
     }
     signUp();

@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -154,7 +154,14 @@ export default function PostForm() {
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
     '- 문자 수 제한 : 1000자 이내\n';
 
-  const { register, handleSubmit } = useForm<ICreatePostFormProps>();
+  const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length > 35) {
+      setValue('title', value.slice(0, 35));
+    }
+  };
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
     if (!uploadedVideo) {
@@ -164,6 +171,11 @@ export default function PostForm() {
 
     if (data.title === '') {
       alert('제목을 입력해주세요');
+      return;
+    }
+
+    if (content === '') {
+      alert('본문 작성은 필수입니다');
       return;
     }
 
@@ -383,9 +395,21 @@ export default function PostForm() {
     setTagInput(event.target.value);
   };
 
-  const handleChange = (value: string) => {
-    setContent(value);
-  };
+   const handleChange = (value:string) => {
+     if (quillRef.current) {
+       const editor = quillRef.current.getEditor();
+       const textLength = editor.getText().trim().length;
+
+       if (textLength > 1000) {
+         editor.deleteText(1000, textLength);
+         alert('본문은 1000자까지만 가능합니다!');
+       } else {
+         setContent(value);
+       }
+     } else {
+       setContent(value);
+     }
+   };
 
   const removeTag = (index: number) => {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
@@ -394,7 +418,7 @@ export default function PostForm() {
   const addIngameInfo = (): void => {
     const newInfo = {
       id: ingameInfos.length,
-      position: 'TOP',
+      position: '탑',
       championName: '',
       tier: '',
     };
@@ -669,6 +693,7 @@ export default function PostForm() {
             <input
               type='text'
               maxLength={35}
+              onInput={handleTitleChange}
               className=' grow rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[15px] text-[20px]  outline-none'
               placeholder='최대 35글자 입력 가능합니다.'
               {...register('title')}
@@ -691,7 +716,7 @@ export default function PostForm() {
           <input
             type='text'
             className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
-            placeholder='#해시태그를 등록하세요 (최대 5개)'
+            placeholder='해시태그를 입력하고 엔터를 눌러주세요! (최대 5개)'
             value={tagInput}
             onChange={handleTagInputChange}
             onKeyDown={handleTagInput}
