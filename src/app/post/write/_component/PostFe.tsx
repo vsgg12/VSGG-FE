@@ -174,9 +174,13 @@ export default function PostForm() {
       return;
     }
 
-    if (content === '') {
-      alert('본문 작성은 필수입니다');
-      return;
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const textLength = editor.getText().length - 1;
+      if (textLength === 0) {
+        alert('본문 작성은 필수입니다');
+        return;
+      }
     }
 
     const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
@@ -395,21 +399,20 @@ export default function PostForm() {
     setTagInput(event.target.value);
   };
 
-   const handleChange = (value:string) => {
-     if (quillRef.current) {
-       const editor = quillRef.current.getEditor();
-       const textLength = editor.getText().trim().length;
-
-       if (textLength > 1000) {
-         editor.deleteText(1000, textLength);
-         alert('본문은 1000자까지만 가능합니다!');
-       } else {
-         setContent(value);
-       }
-     } else {
-       setContent(value);
-     }
-   };
+  const handleChange = (value: string) => {
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const textLength = editor.getText().trim().length;
+      if (textLength > 1000) {
+        editor.deleteText(1000, textLength);
+        alert('본문은 1000자까지만 가능합니다!');
+      } else {
+        setContent(value);
+      }
+    } else {
+      setContent(value);
+    }
+  };
 
   const removeTag = (index: number) => {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
@@ -461,7 +464,7 @@ export default function PostForm() {
     //input type= file DOM을 만든다.
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
+    input.setAttribute('accept', 'image/jpeg, image/jpg, image/png');
     input.click(); //toolbar 이미지를 누르게 되면 이 부분이 실행된다.
     /*이미지를 선택하게 될 시*/
     input.onchange = async () => {
@@ -469,6 +472,23 @@ export default function PostForm() {
       const file = input.files ? input.files[0] : null;
       /*선택을 안하면 취소버튼처럼 수행하게 된다.*/
       if (!file) return;
+
+      const fileType = file.type;
+      const fileSize = file.size;
+
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+
+      if (!validTypes.includes(fileType)) {
+        alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
+        return;
+      }
+
+      if (fileSize > maxSize) {
+        alert('파일 크기는 최대 2MB까지 업로드 가능합니다.');
+        return;
+      }
+
       /*서버에서 FormData형식으로 받기 때문에 이에 맞는 데이터형식으로 만들어준다.*/
       const formData = new FormData();
       formData.append('file', file);
