@@ -110,10 +110,10 @@ export default function HomePostItems({
                 ></iframe>
               )}
               <div className='flex flex-col overflow-hidden w-[50%] mb-5'>
-                <div className='mb-1 line-clamp-[8] h-[50%] overflow-hidden text-ellipsis decoration-solid'>
+                <div className='mb-3 line-clamp-[8] h-[140px] overflow-hidden text-ellipsis decoration-solid'>
                   {contentsArr.pTags.map((content, idx) => {
                     const displayContent =
-                      content.length > 150 ? `${content.slice(0, 150)}...더보기` : content;
+                      content.length > 150 ? `${content.slice(0, 144)}...더보기` : content;
                     return <p key={idx}>{displayContent}</p>;
                   })}
                 </div>
