@@ -473,10 +473,10 @@ export default function PostForm() {
     });
   };
 
-  useEffect(() => {
-    console.log('useCallback함수 밖에서의 contentImgUrls.length : ', contentImgUrls.length);
-    console.log('contentImgUrls: ', contentImgUrls);
-  }, [contentImgUrls]);
+  // useEffect(() => {
+    // console.log('useCallback함수 밖에서의 contentImgUrls.length : ', contentImgUrls.length);
+    // console.log('contentImgUrls: ', contentImgUrls);
+  // }, [contentImgUrls]);
 
   const contentImgUrlsRef = useRef<string[]>(contentImgUrls);
 
@@ -486,10 +486,10 @@ export default function PostForm() {
 
   //useCallback
   const imageHandler = useCallback(() => {
-    console.log(
-      'useCallback함수 안에서의 contentImgUrls.length : ',
-      contentImgUrlsRef.current.length,
-    );
+    // console.log(
+    //   'useCallback함수 안에서의 contentImgUrls.length : ',
+    //   contentImgUrlsRef.current.length,
+    // );
 
     if (contentImgUrlsRef.current.length >= 3) {
       alert(`최대 3개의 이미지만 업로드할 수 있습니다.`);
