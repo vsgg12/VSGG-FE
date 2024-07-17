@@ -122,7 +122,7 @@ export default function PostForm() {
   const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
   const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
   const [content, setContent] = useState<string>('');
-  const [contentUrls, setContentImgUrls] = useState<string[]>([]);
+  const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
@@ -149,6 +149,7 @@ export default function PostForm() {
     '- 파일 크기 제한 : 500MB\n' +
     '- 파일 형식: mp4\n' +
     "2. 게임 상황의 이해를 돕기 위해 '플레이 정보를 담은 전적 캡처 이미지'를 첨부하기\n" +
+    '- 이미지 개수 제한 : 3개 이내\n' +
     '- 파일 크기 제한 : 2MB\n' +
     '- 파일 형식: jpg, jpeg, png\n' +
     '3. 상황 설명은 자세하게 글로 작성하기\n' +
@@ -389,6 +390,10 @@ export default function PostForm() {
       event.preventDefault();
       const newTag = event.currentTarget.value.trim();
       if (newTag && !hashtags.includes(newTag) && hashtags.length < 5) {
+        if (newTag.length > 12) {
+          alert('해시태그는 띄어쓰기 포함 최대 12자입니다.');
+          return;
+        }
         setHashtags([...hashtags, newTag]);
         setTagInput('');
       }
@@ -459,8 +464,37 @@ export default function PostForm() {
     setIngameInfos(ingameInfos.filter((_, idx) => idx !== index));
   };
 
+  // 사용자가 업로드한 이미지 url 배열에 추가
+  // 문제점: 사용자가 사진을 삭제해도 delete가 안되고 그대로 있음
+  const updateContentImgUrls = (newUrl: string) => {
+    setContentImgUrls((prevUrls) => {
+      const newUrls = [...prevUrls, newUrl];
+      return newUrls;
+    });
+  };
+
+  useEffect(() => {
+    console.log('useCallback함수 밖에서의 contentImgUrls.length : ', contentImgUrls.length);
+    console.log('contentImgUrls: ', contentImgUrls);
+  }, [contentImgUrls]);
+
+  const contentImgUrlsRef = useRef<string[]>(contentImgUrls);
+
+  useEffect(() => {
+    contentImgUrlsRef.current = contentImgUrls;
+  }, [contentImgUrls]);
+
   //useCallback
   const imageHandler = useCallback(() => {
+    console.log(
+      'useCallback함수 안에서의 contentImgUrls.length : ',
+      contentImgUrlsRef.current.length,
+    );
+
+    if (contentImgUrlsRef.current.length >= 3) {
+      alert(`최대 3개의 이미지만 업로드할 수 있습니다.`);
+      return;
+    }
     //input type= file DOM을 만든다.
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -496,11 +530,12 @@ export default function PostForm() {
       const quillObj = quillRef.current?.getEditor();
       /*에디터 커서 위치를 가져온다.*/
       const range = quillObj?.getSelection();
+
       try {
         const res = await saveImageAndRequestUrlToS3(formData, accessToken);
         if (res.resultCode === 200) {
           const imgUrl = res.images[0];
-          setContentImgUrls((prevUrls) => [...prevUrls, imgUrl]);
+          updateContentImgUrls(imgUrl);
           /*에디터의 커서 위치에 이미지 요소를 넣어준다.*/
           if (range) {
             quillObj?.insertEmbed(range.index, 'image', `${imgUrl}`);
@@ -604,7 +639,7 @@ export default function PostForm() {
   );
 
   const handleDelete = async () => {
-    const deleteData = { imageUrl: contentUrls };
+    const deleteData = { imageUrl: contentImgUrls };
     if (!postCreated) {
       return await sendDeleteRequestToS3(deleteData, accessToken);
     }
