@@ -58,29 +58,31 @@ const _fetch = async <T = unknown, R = unknown>({
       if (res.status === 401) {
         const { refreshToken } = useAuthStore.getState();
         if (refreshToken) {
-          const newToken = await postRefresh({ refreshToken: `Bearer ${refreshToken}` });
-          if (newToken) {
-            useAuthStore.setState({
-              isLogin: true,
-              accessToken: newToken.tokens?.accessToken,
-              refreshToken: refreshToken,
-            });
-            headers.Authorization = 'Bearer ' + newToken.tokens?.accessToken;
-            const retryRequestOptions: RequestInit = {
-              ...requestOptions,
-              headers,
-            };
-            const retryRes = await fetch(
-              `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
-              retryRequestOptions,
-            );
+          try {
+            const newToken = await postRefresh({ refreshToken: `Bearer ${refreshToken}` });
+            if (newToken) {
+              useAuthStore.setState({
+                isLogin: true,
+                accessToken: newToken.tokens?.accessToken,
+                refreshToken: refreshToken,
+              });
+              headers.Authorization = 'Bearer ' + newToken.tokens?.accessToken;
+              const retryRequestOptions: RequestInit = {
+                ...requestOptions,
+                headers,
+              };
+              const retryRes = await fetch(
+                `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+                retryRequestOptions,
+              );
 
-            if (!retryRes.ok) {
-              const retryErrorData = await retryRes.json();
-              throw new Error(retryErrorData.message);
+              if (!retryRes.ok) {
+                const retryErrorData = await retryRes.json();
+                throw new Error(retryErrorData.message);
+              }
+              return await retryRes.json();
             }
-            return await retryRes.json();
-          } else {
+          } catch (err) {
             RefreshTokenExpired();
             throw new Error('Session expired. Please log in again.');
           }
