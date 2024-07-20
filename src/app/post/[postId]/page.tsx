@@ -40,7 +40,6 @@ export default function PostRead() {
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
-  // const [votingStatus, setVotingStatus] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
@@ -79,7 +78,6 @@ export default function PostRead() {
 
   useEffect(() => {
     if (post) {
-      console.log('post', post);
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       // setVotingStatus(post.postDTO.status);
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
@@ -115,7 +113,6 @@ export default function PostRead() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
-      console.log('투표 성공');
     },
     onError: (err) => console.log(err),
   });
@@ -132,7 +129,6 @@ export default function PostRead() {
   });
 
   const handleCommentSubmit = async () => {
-    console.log(commentContent);
     if (isCommentInProgress) {
       return;
     }
@@ -145,7 +141,6 @@ export default function PostRead() {
     if (!isLogin) {
       router.push('/login');
     }
-    console.log(postVoteResult);
     postVote();
   };
 
