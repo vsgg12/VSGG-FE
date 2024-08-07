@@ -1,6 +1,5 @@
 'use client';
 import postRefresh from '@/api/postRefresh';
-import RefreshTokenExpired from './refreshTokenExpired';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 interface IFetchOptions<T = unknown> {
@@ -59,6 +58,7 @@ const _fetch = async <T = unknown, R = unknown>({
   while (retryCount <= MAX_RETRY_COUNT) {
     console.log('retryCount:', retryCount);
     try {
+      console.log('API 호출 endPoint : ', endpoint);
       const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
       console.log('API 응답 상태:', res.status);
 
@@ -109,17 +109,23 @@ const _fetch = async <T = unknown, R = unknown>({
                 return await retryRes.json();
               } else {
                 console.log('새 토큰 응답 실패');
-                RefreshTokenExpired();
+                useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+                localStorage.clear();
+                window.location.href = `${window.location.origin}/login`;
                 throw new Error('Session expired. Please log in again.');
               }
             } catch (err) {
               console.log('토큰 재발급 오류 발생');
-              RefreshTokenExpired();
+              useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+              localStorage.clear();
+              window.location.href = `${window.location.origin}/login`;
               throw new Error('Session expired. Please log in again.');
             }
           } else {
             console.log('refreshToken 없음');
-            RefreshTokenExpired();
+            useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+            localStorage.clear();
+            window.location.href = `${window.location.origin}/login`;
             throw new Error('Session expired. Please log in again.');
           }
         }
