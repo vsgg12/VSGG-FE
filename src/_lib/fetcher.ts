@@ -25,8 +25,6 @@ interface IDeleteOptions {
   authorization: string;
 }
 
-const MAX_RETRY_COUNT = 1;
-
 const postRefresh = async (refreshToken: string) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}/users/token/refresh`, {
     method: 'POST',
@@ -73,83 +71,72 @@ const _fetch = async <T = unknown, R = unknown>({
     requestOptions.body = JSON.stringify(body);
   }
 
-  let retryCount = 0;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
 
-  while (retryCount <= MAX_RETRY_COUNT) {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
+    if (!res.ok) {
+      if (res.status === 401) {
+        const { refreshToken } = useAuthStore.getState();
+        if (refreshToken) {
+          try {
+            const newToken: IPostRefreshType = await postRefresh(refreshToken);
+            if (newToken.resultCode === 200) {
+              useAuthStore.setState({
+                isLogin: true,
+                accessToken: newToken.tokens.accessToken,
+                refreshToken: newToken.tokens.refreshToken,
+              });
+              headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
 
-      if (!res.ok) {
-        if (res.status === 401) {
-          const { refreshToken } = useAuthStore.getState();
-          if (refreshToken) {
-            try {
-              const newToken: IPostRefreshType = await postRefresh(refreshToken);
-              if (newToken.resultCode === 200) {
-                useAuthStore.setState({
-                  isLogin: true,
-                  accessToken: newToken.tokens.accessToken,
-                  refreshToken: newToken.tokens.refreshToken,
-                });
-                headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
+              // 새로운 요청 옵션을 생성하여 재시도
+              const retryRequestOptions: RequestInit = {
+                method,
+                headers,
+                credentials: 'include',
+              };
 
-                // 새로운 요청 옵션을 생성하여 재시도
-                const retryRequestOptions: RequestInit = {
-                  method,
-                  headers,
-                  credentials: 'include',
-                };
-
-                if (body) {
-                  retryRequestOptions.body = JSON.stringify(body);
-                }
-
-                // 재요청
-                const retryRes = await fetch(
-                  `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
-                  retryRequestOptions,
-                );
-
-                if (!retryRes.ok) {
-                  const retryErrorData = await retryRes.json();
-                  throw new Error(retryErrorData.message);
-                }
-                return await retryRes.json();
-              } else {
-                // refresh api 응답 코드 200 이외의 숫자일때
-                useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-                alert('세션이 만료되어 로그아웃 되었습니다.');
-                // window.location.href = `${window.location.origin}/login`;
-                throw new Error('Session expired. Please log in again.');
+              if (body) {
+                retryRequestOptions.body = JSON.stringify(body);
               }
-            } catch (err) {
-              // 토큰 재발급 오류
+
+              // 재요청
+              const retryRes = await fetch(
+                `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+                retryRequestOptions,
+              );
+
+              if (!retryRes.ok) {
+                const retryErrorData = await retryRes.json();
+                throw new Error(retryErrorData.message);
+              }
+              return await retryRes.json();
+            } else {
+              // refresh api 응답 코드 200 이외의 숫자일때
               useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-              alert('세션이 만료되어 로그아웃 되었습니다.');
               // window.location.href = `${window.location.origin}/login`;
               throw new Error('Session expired. Please log in again.');
             }
-          } else {
-            // 로컬에 refreshToken이 없을경우
+          } catch (err) {
+            // 토큰 재발급 오류
             useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-            alert('세션이 만료되어 로그아웃 되었습니다.');
             // window.location.href = `${window.location.origin}/login`;
             throw new Error('Session expired. Please log in again.');
           }
+        } else {
+          // 로컬에 refreshToken이 없을경우
+          useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+          alert('세션이 만료되어 로그아웃 되었습니다.');
+          // window.location.href = `${window.location.origin}/login`;
+          throw new Error('Session expired. Please log in again.');
         }
-        const errorData = await res.json();
-        throw new Error(errorData.message);
       }
-      return await res.json();
-    } catch (error) {
-      retryCount++;
-      if (retryCount > MAX_RETRY_COUNT) {
-        throw error;
-      }
+      const errorData = await res.json();
+      throw new Error(errorData.message);
     }
+    return await res.json();
+  } catch (error) {
+    throw error;
   }
-
-  throw new Error('Request failed after retry');
 };
 
 // T: 요청 body의 타입,
