@@ -73,10 +73,7 @@ const _fetch = async <T = unknown, R = unknown>({
             try {
               console.log('두번째 try안 진입 성공, refreshToken으로 토큰 재발급받는 api 호출시작');
               const newToken: IPostRefreshType = await postRefresh(refreshToken);
-              console.log(
-                'refresh api 호출 후의 응답인 newToken.resultCode : ',
-                newToken.resultCode,
-              );
+              console.log('refresh api 호출 후의 응답인 newToken : ', newToken);
               if (newToken.resultCode === 200) {
                 console.log('newToken.resultCode가 200일때 진입 성공');
                 useAuthStore.setState({
@@ -101,7 +98,7 @@ const _fetch = async <T = unknown, R = unknown>({
                   `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
                   retryRequestOptions,
                 );
-                console.log('재요청하는 응답 데이터 retryRes :', retryRes);
+                console.log('재요청하는 응답 데이터 retryRes.json() :', retryRes.json());
 
                 if (!retryRes.ok) {
                   console.log('retryRes가 ok가 아닐때');
@@ -109,6 +106,10 @@ const _fetch = async <T = unknown, R = unknown>({
                   throw new Error(retryErrorData.message);
                 }
                 return await retryRes.json();
+              } else {
+                console.log('newToken.resultCode가 200이 아닐 때');
+                RefreshTokenExpired();
+                throw new Error('Session expired. Please log in again.');
               }
             } catch (err) {
               console.log(
