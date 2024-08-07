@@ -27,6 +27,8 @@ interface IDeleteOptions {
   authorization: string;
 }
 
+const MAX_RETRY_COUNT = 1;
+
 const _fetch = async <T = unknown, R = unknown>({
   method,
   endpoint,
@@ -52,53 +54,89 @@ const _fetch = async <T = unknown, R = unknown>({
     requestOptions.body = JSON.stringify(body);
   }
 
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
+  let retryCount = 0;
 
-    if (!res.ok) {
-      if (res.status === 401) {
-        const { refreshToken } = useAuthStore.getState();
-        if (refreshToken) {
-          try {
-            const newToken: IPostRefreshType = await postRefresh(refreshToken);
-            if (newToken.resultCode === 200) {
-              useAuthStore.setState({
-                isLogin: true,
-                accessToken: newToken.tokens.accessToken,
-                refreshToken: newToken.tokens.refreshToken,
-              });
-              headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
-              const retryRequestOptions: RequestInit = {
-                ...requestOptions,
-                headers,
-              };
-              const retryRes = await fetch(
-                `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
-                retryRequestOptions,
+  while (retryCount <= MAX_RETRY_COUNT) {
+    console.log('retryCount : ', retryCount);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
+      console.log('원래 호출하려던 api 응답 res.status : ', res.status);
+      if (!res.ok) {
+        console.log('첫번째 try안의 첫번째 if문 진입 성공');
+        if (res.status === 401) {
+          console.log('첫번째 try안의 두번째 if문 진입 성공');
+          const { refreshToken } = useAuthStore.getState();
+          if (refreshToken) {
+            console.log(
+              '첫번째 try안의 첫번째 if문 진입, 로컬스토리지에 저장되어 있는 refreshToken이 빈문자열이 아닐경우',
+            );
+            try {
+              console.log('두번째 try안 진입 성공, refreshToken으로 토큰 재발급받는 api 호출시작');
+              const newToken: IPostRefreshType = await postRefresh(refreshToken);
+              console.log(
+                'refresh api 호출 후의 응답인 newToken.resultCode : ',
+                newToken.resultCode,
               );
+              if (newToken.resultCode === 200) {
+                console.log('newToken.resultCode가 200일때 진입 성공');
+                useAuthStore.setState({
+                  isLogin: true,
+                  accessToken: newToken.tokens.accessToken,
+                  refreshToken: newToken.tokens.refreshToken,
+                });
+                headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
+                // 새로운 요청 옵션을 생성하여 재시도
+                const retryRequestOptions: RequestInit = {
+                  method,
+                  headers,
+                  credentials: 'include',
+                };
 
-              if (!retryRes.ok) {
-                const retryErrorData = await retryRes.json();
-                throw new Error(retryErrorData.message);
+                if (body) {
+                  retryRequestOptions.body = JSON.stringify(body);
+                }
+
+                // 재요청
+                const retryRes = await fetch(
+                  `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
+                  retryRequestOptions,
+                );
+                console.log('재요청하는 응답 데이터 retryRes :', retryRes);
+
+                if (!retryRes.ok) {
+                  console.log('retryRes가 ok가 아닐때');
+                  const retryErrorData = await retryRes.json();
+                  throw new Error(retryErrorData.message);
+                }
+                return await retryRes.json();
               }
-              return await retryRes.json();
+            } catch (err) {
+              console.log(
+                '두번쨰 try문에 대한 catch문 진입 성공(refresh api에서 응답코드 200이 아닐경우), RefreshTokenExpired()함수 호출 전',
+              );
+              RefreshTokenExpired();
+              throw new Error('Session expired. Please log in again.');
             }
-          } catch (err) {
+          } else {
+            console.log(
+              'refreshToken값이 빈 문자열일때 또는 없을때 진입, RefreshTokenExpired()함수 호출 전',
+            );
             RefreshTokenExpired();
             throw new Error('Session expired. Please log in again.');
           }
-        } else {
-          RefreshTokenExpired();
-          throw new Error('Session expired. Please log in again.');
         }
+        const errorData = await res.json();
+        throw new Error(errorData.message);
       }
-      const errorData = await res.json();
-      throw new Error(errorData.message);
+      return await res.json();
+    } catch (error) {
+      retryCount++;
+      if (retryCount >= MAX_RETRY_COUNT) {
+        throw error;
+      }
     }
-    return await res.json();
-  } catch (error) {
-    throw error;
   }
+  throw new Error('Request failed after retry');
 };
 
 // T: 요청 body의 타입,
