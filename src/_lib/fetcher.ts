@@ -39,7 +39,6 @@ const postRefresh = async (refreshToken: string) => {
 
   if (!response.ok) {
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-    localStorage.clear();
     alert('세션이 만료되어 로그아웃 되었습니다.');
     // window.location.href = `${window.location.origin}/login`;
     throw new Error('Failed to refresh token');
@@ -119,7 +118,6 @@ const _fetch = async <T = unknown, R = unknown>({
               } else {
                 // refresh api 응답 코드 200 이외의 숫자일때
                 useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-                localStorage.clear();
                 alert('세션이 만료되어 로그아웃 되었습니다.');
                 // window.location.href = `${window.location.origin}/login`;
                 throw new Error('Session expired. Please log in again.');
@@ -127,7 +125,6 @@ const _fetch = async <T = unknown, R = unknown>({
             } catch (err) {
               // 토큰 재발급 오류
               useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-              localStorage.clear();
               alert('세션이 만료되어 로그아웃 되었습니다.');
               // window.location.href = `${window.location.origin}/login`;
               throw new Error('Session expired. Please log in again.');
@@ -135,7 +132,6 @@ const _fetch = async <T = unknown, R = unknown>({
           } else {
             // 로컬에 refreshToken이 없을경우
             useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-            localStorage.clear();
             alert('세션이 만료되어 로그아웃 되었습니다.');
             // window.location.href = `${window.location.origin}/login`;
             throw new Error('Session expired. Please log in again.');
@@ -146,10 +142,8 @@ const _fetch = async <T = unknown, R = unknown>({
       }
       return await res.json();
     } catch (error) {
-      console.log('요청 오류 발생:', error);
       retryCount++;
       if (retryCount > MAX_RETRY_COUNT) {
-        console.log('최대 재시도 횟수 초과');
         throw error;
       }
     }
