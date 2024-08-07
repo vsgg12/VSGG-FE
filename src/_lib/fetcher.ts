@@ -38,6 +38,7 @@ const postRefresh = async (refreshToken: string) => {
   if (!response.ok) {
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     alert('세션이 만료되어 로그아웃 되었습니다.');
+    window.location.reload();
     // window.location.href = `${window.location.origin}/login`;
     throw new Error('Failed to refresh token');
   }
@@ -113,19 +114,21 @@ const _fetch = async <T = unknown, R = unknown>({
             } else {
               // refresh api 응답 코드 200 이외의 숫자일때
               useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+              window.location.reload();
               // window.location.href = `${window.location.origin}/login`;
               throw new Error('Session expired. Please log in again.');
             }
           } catch (err) {
             // 토큰 재발급 오류
             useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+            window.location.reload();
             // window.location.href = `${window.location.origin}/login`;
             throw new Error('Session expired. Please log in again.');
           }
         } else {
           // 로컬에 refreshToken이 없을경우
           useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-          alert('세션이 만료되어 로그아웃 되었습니다.');
+          window.location.reload();
           // window.location.href = `${window.location.origin}/login`;
           throw new Error('Session expired. Please log in again.');
         }
