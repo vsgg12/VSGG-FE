@@ -1,22 +1,8 @@
 import api from '@/_lib/fetcher';
 
-interface IRefreshToken {
-  refreshToken: string;
-}
-
-interface IResponse {
-  resultCode: number;
-  resultMsg: string;
-  tokens?: {
-    accessToken: string;
-    refreshToken: string;
-  };
-}
-
-export default async function postRefresh(body: IRefreshToken) {
-  const data = await api.post<IRefreshToken, IResponse>({
+export default async function postRefresh(refreshToken: string): Promise<IPostRefreshType> {
+  return await api.post<{ refreshToken: string }, IPostRefreshType>({
     endpoint: '/users/token/refresh',
-    body,
+    body: { refreshToken: `Bearer ${refreshToken}` },
   });
-  return data;
 }
