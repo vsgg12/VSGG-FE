@@ -1,5 +1,4 @@
 'use client';
-import postRefresh from '@/api/postRefresh';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 interface IFetchOptions<T = unknown> {
@@ -27,6 +26,27 @@ interface IDeleteOptions {
 }
 
 const MAX_RETRY_COUNT = 1;
+
+const postRefresh = async (refreshToken: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}/users/token/refresh`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ refreshToken: `Bearer ${refreshToken}` }),
+  });
+
+  if (!response.ok) {
+    useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+    localStorage.clear();
+    window.location.href = `${window.location.origin}/login`;
+    throw new Error('Failed to refresh token');
+  }
+
+  const data = await response.json();
+  return data;
+};
 
 const _fetch = async <T = unknown, R = unknown>({
   method,
