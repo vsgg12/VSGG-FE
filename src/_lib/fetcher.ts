@@ -37,7 +37,6 @@ const postRefresh = async (refreshToken: string) => {
 
   if (!response.ok) {
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-    alert('세션이 만료되어 로그아웃 되었습니다.');
     window.location.reload();
     // window.location.href = `${window.location.origin}/login`;
     throw new Error('Failed to refresh token');
