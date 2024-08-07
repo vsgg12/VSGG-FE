@@ -142,10 +142,8 @@ const _fetch = async <T = unknown, R = unknown>({
       }
       return await res.json();
     } catch (error) {
-      console.log('요청 오류 발생:', error);
       retryCount++;
       if (retryCount > MAX_RETRY_COUNT) {
-        console.log('최대 재시도 횟수 초과');
         throw error;
       }
     }
