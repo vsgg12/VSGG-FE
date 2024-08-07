@@ -1,3 +1,4 @@
+'use client';
 import postRefresh from '@/api/postRefresh';
 import RefreshTokenExpired from './refreshTokenExpired';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -59,14 +60,14 @@ const _fetch = async <T = unknown, R = unknown>({
         const { refreshToken } = useAuthStore.getState();
         if (refreshToken) {
           try {
-            const newToken = await postRefresh({ refreshToken: `Bearer ${refreshToken}` });
-            if (newToken) {
+            const newToken: IPostRefreshType = await postRefresh(refreshToken);
+            if (newToken.resultCode === 200) {
               useAuthStore.setState({
                 isLogin: true,
-                accessToken: newToken.tokens?.accessToken,
-                refreshToken: refreshToken,
+                accessToken: newToken.tokens.accessToken,
+                refreshToken: newToken.tokens.refreshToken,
               });
-              headers.Authorization = 'Bearer ' + newToken.tokens?.accessToken;
+              headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
               const retryRequestOptions: RequestInit = {
                 ...requestOptions,
                 headers,
@@ -86,6 +87,9 @@ const _fetch = async <T = unknown, R = unknown>({
             RefreshTokenExpired();
             throw new Error('Session expired. Please log in again.');
           }
+        } else {
+          RefreshTokenExpired();
+          throw new Error('Session expired. Please log in again.');
         }
       }
       const errorData = await res.json();
