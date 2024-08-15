@@ -110,25 +110,17 @@ const _fetch = async <T = unknown, R = unknown>({
                 throw new Error(retryErrorData.message);
               }
               return await retryRes.json();
-            } else {
-              // refresh api 응답 코드 200 이외의 숫자일때
-              useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-              window.location.reload();
-              // window.location.href = `${window.location.origin}/login`;
-              throw new Error('Session expired. Please log in again.');
-            }
+            } 
           } catch (err) {
             // 토큰 재발급 오류
             useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
             window.location.reload();
-            // window.location.href = `${window.location.origin}/login`;
             throw new Error('Session expired. Please log in again.');
           }
         } else {
           // 로컬에 refreshToken이 없을경우
           useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
           window.location.reload();
-          // window.location.href = `${window.location.origin}/login`;
           throw new Error('Session expired. Please log in again.');
         }
       }
