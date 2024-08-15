@@ -9,6 +9,7 @@ const data = [
   {
     nickName: 'hide on bush',
     tier: '그랜드마스터',
+    point: '999,999',
     grade: '새싹',
     totalJudge: 100,
     winJudge: 30,
@@ -19,7 +20,6 @@ const data = [
 ];
 
 export default function MyPage() {
-
   return (
     <div>
       <Header />
@@ -29,18 +29,22 @@ export default function MyPage() {
       {data.map((user) => (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col gap-10 mb-20'>
-            <div className='flex flex-col items-center justify-center gap-5 rounded-xl bg-white px-10 py-5'>
-              <div className='text-[17px]'>{user.nickName} 님</div>
-              <div className='h-[7rem] w-[7rem] rounded-full bg-[#C3C3C3]'></div>
-              <div className='flex items-center justify-center gap-2'>
-                <div className='h-[1rem] w-[1rem] border-black bg-[#C3C3C3]'></div>
-                <div className='text-sm'>{user.tier}</div>
+            <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[30px] rounded-xl bg-white px-10 py-5'>
+              <div className='flex gap-3 items-center'>
+                <div className='text-[20px] font-semibold'>{user.nickName} 님</div>
+                <div className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'>수정</div>
               </div>
+              <div className='h-[180px] w-[120px] rounded-full bg-[#C3C3C3]'></div>
+              <div className='text-[20px]  font-semibold'>{user.tier}</div>
+              <div className='text-[16px] font-semibold'>보유 포인트 : {user.point}P</div>
               <div className='h-0.5 w-full bg-[#8A1F21]' />
-              <div className='flex flex-col items-center'>
-                <div className='self-start text-[17px]'>판결 승률</div>
-                <HalfDoughnutChart win={user.winJudge} lose={user.loseJudge} />
-                <div className='text-[#C3C3C3] text-[17px]'>
+              <div className='h-[310px] flex flex-col items-center relative'>
+                <div className='text-[17px]'>판결 승률</div>
+                <div className='absolute w-[250px] top-[-20px]'>
+                  <HalfDoughnutChart win={user.winJudge} lose={user.loseJudge} />
+                </div>
+
+                <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[-10px]'>
                   {user.totalJudge}전 {user.winJudge}승 {user.loseJudge}패
                 </div>
               </div>
@@ -62,17 +66,17 @@ export default function MyPage() {
             </div>
           </div>
           <div className='flex w-1/2 flex-col gap-10 mb-20'>
-            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 h-[50%]'>
-              <div className='flex justify-between'>
+            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px]'>
+              <div className='flex justify-between font-semibold'>
                 <div>판결 전적</div>
                 <div className='text-xs cursor-pointer'>더보기</div>
               </div>
               <div className='flex text-xs text-[#C3C3C3]'>
-                <div className='self-start mr-[380px]'>제목</div>
-                <div className='flex-grow'>게시자</div>
-                <div className='self-end'>작성일</div>
+                <div className='self-start mr-[415px]'>제목</div>
+                <div className='mr-[170px]'>게시자</div>
+                <div>작성일</div>
               </div>
-              <div className='flex justify-between'>
+              <div className='flex justify-between whitespace-nowrap'>
                 <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
                 <div className='flex gap-2 text-sm'>
                   <div>{user.nickName}</div>
@@ -91,15 +95,15 @@ export default function MyPage() {
               </div>
               <div className='h-0.5 w-full bg-[#8A1F21]'></div>
             </div>
-            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 h-[50%]'>
+            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px] font-semibold'>
               <div className='flex justify-between'>
                 <div>내가 쓴 글</div>
                 <div className='text-xs cursor-pointer'>더보기</div>
               </div>
               <div className='flex text-xs text-[#C3C3C3]'>
-                <div className='self-start mr-[385px]'>제목</div>
-                <div className='flex-grow'>댓글수</div>
-                <div className='self-end'>작성일</div>
+                <div className='self-start mr-[415px]'>제목</div>
+                <div className='mr-[170px]'>댓글수</div>
+                <div>작성일</div>
               </div>
               <div className='flex justify-between'>
                 <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
