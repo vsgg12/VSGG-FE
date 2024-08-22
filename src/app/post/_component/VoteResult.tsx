@@ -64,7 +64,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
                             height={24}
                           />
                         </div>
-                        <div className={`group-hover:visible : invisible flex`}>
+                        <div className={`flex`}>
                           <div
                             className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
                           >
