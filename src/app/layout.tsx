@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='ko' className='root-bg'>
       <head>
+        <meta name='naver-site-verification' content='6f47895aa61798532c99334cbb3786cb9e28a25e' />
         <link rel='stylesheet' href='https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css' />
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
       </head>

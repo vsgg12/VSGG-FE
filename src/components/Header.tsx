@@ -72,7 +72,7 @@ export default function Header() {
 
   return (
     <>
-      <div className='p-right-20 absolute right-10 top-10 flex flex-row items-center justify-end'>
+      <div className='p-right-20 fixed right-10 top-10 flex flex-row items-center justify-end'>
         <div className='flex flex-row items-center gap-6'>
           {!isLoading && isLogin ? (
             <>
