@@ -22,20 +22,23 @@ function generateSiteMap(posts: IGetPostDTOType[]) {
     </urlset>`;
 }
 
-export async function GET() {
+function SiteMap() {
+  
+}
+
+export async function getServerSideProps({res}: {res:any}) {
   try {
-    // API 호출로 데이터를 가져옵니다.
     const request = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}`);
     if (!request.ok) {
       throw new Error(`Failed to fetch posts: ${request.statusText}`);
     }
 
     const posts: IGetPostDTOType[] = await request.json();
+    console.log('Fetched posts:', posts);
 
-    // 사이트맵 XML을 생성합니다.
     const sitemap = generateSiteMap(posts);
+    console.log('Generated Sitemap:', sitemap);
 
-    // XML을 반환합니다.
     return new NextResponse(sitemap, {
       headers: {
         'Content-Type': 'application/xml',

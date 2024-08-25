@@ -5,6 +5,10 @@ import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ModalLayout from '@/components/modals/ModalLayout';
+import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
+import { useAuthStore } from '../login/store/useAuthStore';
 
 const data = [
   {
@@ -21,7 +25,10 @@ const data = [
 ];
 
 export default function MyPage() {
+
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const user = useAuthStore((state) => state.user);
 
   return (
     <div>
@@ -29,37 +36,44 @@ export default function MyPage() {
       <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>
-      {data.map((user) => (
+      {user && data.map((userInfo) => (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col gap-10 mb-20'>
             <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[30px] rounded-xl bg-white px-10 py-5'>
               <div className='flex gap-3 items-center'>
-                <div className='text-[20px] font-semibold'>{user.nickName} 님</div>
-                <div className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'>수정</div>
+                <div className='text-[20px] font-semibold'>{userInfo.nickName} 님</div>
+                <div
+                  className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  수정
+                </div>
               </div>
-              <div className='h-[180px] w-[120px] rounded-full bg-[#C3C3C3]'></div>
-              <div className='text-[20px]  font-semibold'>{user.tier}</div>
-              <div className='text-[16px] font-semibold'>보유 포인트 : {user.point}P</div>
+              <div className='h-[180px] w-[120px] rounded-full'>
+                <img src={user.profile_image} alt="profileImage" className="h-full w-full rounded-full" />
+              </div>
+              <div className='text-[20px]  font-semibold'>{userInfo.tier}</div>
+              <div className='text-[16px] font-semibold'>보유 포인트 : {userInfo.point}P</div>
               <div className='h-0.5 w-full bg-[#8A1F21]' />
               <div className='h-[310px] flex flex-col items-center relative'>
                 <div className='text-[17px]'>판결 승률</div>
                 <div className='absolute w-[250px] top-[-20px]'>
-                  <HalfDoughnutChart win={user.winJudge} lose={user.loseJudge} />
+                  <HalfDoughnutChart win={userInfo.winJudge} lose={userInfo.loseJudge} />
                 </div>
 
                 <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[-10px]'>
-                  {user.totalJudge}전 {user.winJudge}승 {user.loseJudge}패
+                  {userInfo.totalJudge}전 {userInfo.winJudge}승 {userInfo.loseJudge}패
                 </div>
               </div>
               <div className='h-0.5 w-full bg-[#8A1F21]'></div>
               <div className='flex w-full flex-col justify-center gap-4'>
                 <div className='text-[17px]'>다음 등급까지</div>
                 <div className='flex flex-col items-center justify-center gap-2'>
-                  <BarChart num={user.judgeCount} />
+                  <BarChart num={userInfo.judgeCount} />
                   <div className='text-[17px] text-[#C3C3C3]'>판결 50 / 100</div>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
-                  <BarChart num={user.winjudgeCount} />
+                  <BarChart num={userInfo.winjudgeCount} />
                   <div className='text-[17px] text-[#C3C3C3]'>승리한 판결 10 / 40</div>
                 </div>
               </div>
@@ -89,8 +103,8 @@ export default function MyPage() {
               <div className='flex justify-between whitespace-nowrap'>
                 <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
                 <div className='flex gap-2 text-sm'>
-                  <div>{user.nickName}</div>
-                  <div className='text-[#C3C3C3]'>{user.grade}</div>
+                  <div>{userInfo.nickName}</div>
+                  <div className='text-[#C3C3C3]'>{userInfo.grade}</div>
                 </div>
                 <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
               </div>
@@ -98,8 +112,8 @@ export default function MyPage() {
               <div className='flex justify-between'>
                 <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
                 <div className='flex gap-2 text-sm'>
-                  <div>{user.nickName}</div>
-                  <div className='text-[#C3C3C3]'>{user.grade}</div>
+                  <div>{userInfo.nickName}</div>
+                  <div className='text-[#C3C3C3]'>{userInfo.grade}</div>
                 </div>
                 <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
               </div>
@@ -142,6 +156,15 @@ export default function MyPage() {
           </div>
         </div>
       ))}
+      {isModalOpen && user && (
+        <ModalLayout setIsModalOpen={setIsModalOpen}>
+          <ChangeProfileModal
+            setIsModalOpen={setIsModalOpen}
+            userName={user.nickname}
+            userProfileImage={user.profile_image}
+          />
+        </ModalLayout>
+      )}
     </div>
   );
 }
