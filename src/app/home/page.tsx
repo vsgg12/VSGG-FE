@@ -12,6 +12,8 @@ import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
+import ModalLayout from '@/components/modals/ModalLayout';
+import AlertLoginModal from '@/components/modals/AlertLoginModal';
 
 export default function Home() {
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const {
     data: postData,
@@ -51,7 +54,7 @@ export default function Home() {
 
   const handleWriteClick = (): void => {
     if (!isLogin) {
-      router.push('/login');
+      setIsLoginModalOpen(true);
       return;
     }
     router.push('/post/write');
@@ -186,6 +189,11 @@ export default function Home() {
           </div>
         </section>
       </main>
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
+      )}
     </>
   );
 }
