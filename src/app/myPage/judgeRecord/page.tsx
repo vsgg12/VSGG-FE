@@ -4,6 +4,7 @@ import Pagination from 'react-js-pagination';
 import { useState } from 'react';
 import Logo from '@/components/Logo';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
+import Header from '@/components/Header';
 
 const data = [
   {
@@ -30,20 +31,21 @@ export default function JudgeRecord() {
   };
 
   return (
-    <div key=''>
-      <div className='mt-12 text-center'>
+    <div>
+      <Header />
+      <div className='my-[100px] text-center'>
         <Logo />
       </div>
       {data.map((user) => (
         <div className='flex justify-center gap-10'>
-          <div className='flex flex-col gap-10'>
-            <div className='flex flex-col items-center justify-center gap-5 rounded-xl bg-white px-10 py-5'>
-              <div className='flex flex-col items-center justify-center gap-2'>
-                <div className='self-start text-xs'>판결 승률</div>
+          <div className='flex flex-col'>
+            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-xl bg-white'>
+              <p className='self-start text-xs flex-grow ml-5 mt-5'>판결 승률</p>
+              <div className='absolute top-[370px] w-[250px]'>
                 <HalfDoughnutChart win={30} lose={70} />
-                <div className='text-xs text-[#C3C3C3]'>
-                  {user.totalJudge}전 {user.winJudge}승 {user.loseJudge}패
-                </div>
+              </div>
+              <div className=' text-xs text-[#C3C3C3]'>
+                {user.totalJudge}전 {user.winJudge}승 {user.loseJudge}패
               </div>
             </div>
           </div>
@@ -56,7 +58,7 @@ export default function JudgeRecord() {
                 </div>
               </div>
               <div className='flex justify-between text-xs text-[#C3C3C3]'>
-                <div>제목</div>
+                <div className='self-start'>제목</div>
                 <div>게시자</div>
                 <div>작성일</div>
               </div>
