@@ -108,6 +108,6 @@ type IAlarmsType = {
 type IJudgeType = {
   title: string;
   writer: string;
-  grade: string;
+  grade: number;
   date: string;
 };

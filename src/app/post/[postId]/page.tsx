@@ -151,7 +151,7 @@ export default function PostRead() {
   return (
     <>
       <Header />
-      <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
+      <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>
       {isLoading ? (

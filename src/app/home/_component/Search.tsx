@@ -21,7 +21,7 @@ export default function Search({
 
   return (
     <>
-      <div className='mb-[150px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
+      <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
         <div className='relative flex flex-row'>
           <input
