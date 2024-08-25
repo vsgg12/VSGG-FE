@@ -17,7 +17,7 @@ type IGetPostDTOType = {
   createdAt: string;
   updatedAt: string;
   hashtagList: IHashTagListType[];
-  inGameInfoList: IGetInGameInfoListType[];
+  inGameInfoList: IGetInGameInfoType[];
   isVote: boolean;
 };
 
