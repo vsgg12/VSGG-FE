@@ -15,7 +15,7 @@ function ChangeProfileModal({
 }: ChangeProgileModalProps) {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSameNickName, setIsSameNickName] = useState<boolean>(false);
-  const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(false);
+  const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(true);
   const [profileImage, setProfileImage] = useState<string>(userProfileImage);
   const [nickName, setNickName] = useState<string>(userName);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -90,8 +90,16 @@ function ChangeProfileModal({
   };
 
   const handleSave = () => {
-    // 닉네임, 프로필 이미지 수정하는 api 호출
-    setIsModalOpen(false);
+    if (isNickNameCheck || userName === nickName) {
+      // 닉네임, 프로필 이미지 수정하는 api 호출
+      setIsModalOpen(false);
+      return;
+    }
+    if (isSameNickName) {
+      alert('닉네임 중복확인이 필요합니다.');
+      return;
+    }
+    
   };
 
   return (
