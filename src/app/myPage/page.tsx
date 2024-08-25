@@ -4,6 +4,7 @@ import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
+import { useRouter } from 'next/navigation';
 
 const data = [
   {
@@ -20,6 +21,8 @@ const data = [
 ];
 
 export default function MyPage() {
+  const router = useRouter();
+
   return (
     <div>
       <Header />
@@ -69,12 +72,19 @@ export default function MyPage() {
             <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px]'>
               <div className='flex justify-between font-semibold'>
                 <div>판결 전적</div>
-                <div className='text-xs cursor-pointer'>더보기</div>
+                <div
+                  className='text-xs cursor-pointer'
+                  onClick={() => {
+                    router.push('/myPage/judgeRecord');
+                  }}
+                >
+                  더보기
+                </div>
               </div>
               <div className='flex text-xs text-[#C3C3C3]'>
-                <div className='self-start mr-[415px]'>제목</div>
-                <div className='mr-[170px]'>게시자</div>
-                <div>작성일</div>
+                <p className='self-start mr-[415px]'>제목</p>
+                <p className='mr-[170px]'>게시자</p>
+                <p>작성일</p>
               </div>
               <div className='flex justify-between whitespace-nowrap'>
                 <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
@@ -98,7 +108,14 @@ export default function MyPage() {
             <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px] font-semibold'>
               <div className='flex justify-between'>
                 <div>내가 쓴 글</div>
-                <div className='text-xs cursor-pointer'>더보기</div>
+                <div
+                  className='text-xs cursor-pointer'
+                  onClick={() => {
+                    router.push('/myPage/myPosts');
+                  }}
+                >
+                  더보기
+                </div>
               </div>
               <div className='flex text-xs text-[#C3C3C3]'>
                 <div className='self-start mr-[415px]'>제목</div>

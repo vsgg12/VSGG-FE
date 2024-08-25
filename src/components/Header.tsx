@@ -59,7 +59,7 @@ export default function Header() {
     setIsProfileModalOpen(false);
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     localStorage.clear();
-    router.push('/')
+    router.push('/');
   };
 
   const handleGoPostBtnClick = (): void => {
@@ -72,7 +72,7 @@ export default function Header() {
 
   return (
     <>
-      <div className='p-right-20 fixed right-10 top-10 flex flex-row items-center justify-end'>
+      <div className='w-full h-[100px] top-0 flex flex-row items-center justify-end bg-[#f3f3f3] z-100 px-24'>
         <div className='flex flex-row items-center gap-6'>
           {!isLoading && isLogin ? (
             <>
