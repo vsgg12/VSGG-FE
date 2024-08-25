@@ -41,7 +41,7 @@ export default function MyPage() {
           <div className='flex flex-col gap-10 mb-20'>
             <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[30px] rounded-xl bg-white px-10 py-5'>
               <div className='flex gap-3 items-center'>
-                <div className='text-[20px] font-semibold'>{userInfo.nickName} 님</div>
+                <div className='text-[20px] font-semibold'>{user.nickname} 님</div>
                 <div
                   className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'
                   onClick={() => setIsModalOpen(true)}
