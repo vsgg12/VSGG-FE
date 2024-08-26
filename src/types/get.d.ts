@@ -17,7 +17,7 @@ type IGetPostDTOType = {
   createdAt: string;
   updatedAt: string;
   hashtagList: IHashTagListType[];
-  inGameInfoList: IGetInGameInfoListType[];
+  inGameInfoList: IGetInGameInfoType[];
   isVote: boolean;
 };
 
@@ -108,6 +108,6 @@ type IAlarmsType = {
 type IJudgeType = {
   title: string;
   writer: string;
-  grade: string;
+  grade: number;
   date: string;
 };

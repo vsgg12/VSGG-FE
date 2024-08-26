@@ -12,6 +12,8 @@ import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
+import ModalLayout from '@/components/modals/ModalLayout';
+import AlertLoginModal from '@/components/modals/AlertLoginModal';
 
 export default function Home() {
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const {
     data: postData,
@@ -51,7 +54,7 @@ export default function Home() {
 
   const handleWriteClick = (): void => {
     if (!isLogin) {
-      router.push('/login');
+      setIsLoginModalOpen(true);
       return;
     }
     router.push('/post/write');
@@ -122,7 +125,7 @@ export default function Home() {
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
-          <div className='relative w-[1205px] mx-28'>
+          <div className='relative w-full mx-28'>
             <button
               onClick={handleWriteClick}
               className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
@@ -186,6 +189,11 @@ export default function Home() {
           </div>
         </section>
       </main>
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
+      )}
     </>
   );
 }

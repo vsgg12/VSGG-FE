@@ -14,6 +14,7 @@ const BarChart: React.FC<BarChartProps> = ({ num }) => {
         labelColor='#8A1F21'
         baseBgColor='#FFF'
         borderRadius='15px'
+        animateOnRender
       />
     </div>
   );
