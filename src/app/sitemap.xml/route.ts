@@ -31,7 +31,6 @@ export async function GET() {
     if (!request.ok) {
       throw new Error(`Failed to fetch posts: ${request.statusText}`);
     }
-    console.log(3);
     const posts: IGetPostListType = await request.json();
     // 사이트맵 XML을 생성합니다.
     const sitemap = generateSiteMap(posts.postDTO, baseUrl);
