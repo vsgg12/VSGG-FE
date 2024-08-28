@@ -119,15 +119,8 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-  const [nowDate, setNowDate] = useState(moment().format('YYYY/MM/DD h:mm'));
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNowDate(moment().format('YYYY/MM/DD h:mm'));
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  const [nowDate] = useState(moment().format('YYYY/MM/DD'));
+  const [endDate] = useState(moment().add(72, 'hours').format('YYYY/MM/DD'));
 
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -903,7 +896,8 @@ export default function PostForm() {
           </div>
           <div className='flex items-end gap-3'>
             <Image src={Icon_calendar} width={32} height={32} alt='calendar' />
-            <p className='text-[20px] text-[#828282]'>{nowDate}</p>
+            <p className='text-[20px] text-black'>{nowDate}</p>
+            <p className='text-[20px] text-[#828282]'>- {endDate}</p>
           </div>
         </div>
         <div className='flex flex-row justify-end'>
