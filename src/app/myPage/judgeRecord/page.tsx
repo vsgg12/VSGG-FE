@@ -49,8 +49,8 @@ export default function JudgeRecord() {
               </div>
             </div>
           </div>
-          <div className='flex w-1/2 flex-col gap-10'>
-            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8'>
+          <div className='flex w-1/2 flex-col mb-[100px]'>
+            <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 min-h-[700px]'>
               <div className='flex items-center gap-5'>
                 <div>판결 전적</div>
                 <div className='text-xs text-[#C3C3C3]'>
