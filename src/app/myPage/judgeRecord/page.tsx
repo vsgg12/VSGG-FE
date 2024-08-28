@@ -105,8 +105,8 @@ export default function JudgeRecord() {
       {userData.map((user) => (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col'>
-            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-xl bg-white'>
-              <p className='self-start text-xs flex-grow ml-5 mt-5'>판결 승률</p>
+            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-xl bg-white p-[15px]'>
+              <p className='self-start text-xs flex-grow ml-5 mt-2'>판결 승률</p>
               <div className='absolute top-[370px] w-[250px]'>
                 <HalfDoughnutChart win={30} lose={70} />
               </div>
@@ -153,6 +153,7 @@ export default function JudgeRecord() {
                   prevPageText={'<'}
                   nextPageText={'>'}
                   onChange={handlePageChange}
+                  activeLinkClass='active-page'
                 />
               </div>
             </div>
