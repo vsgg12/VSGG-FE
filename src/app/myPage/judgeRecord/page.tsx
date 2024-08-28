@@ -8,23 +8,89 @@ import Header from '@/components/Header';
 
 const data = [
   {
-    nickName: 'hide on bush',
-    tier: '그랜드마스터',
-    grade: '새싹',
-    totalJudge: 100,
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 1,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 2,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 3,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 4,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 5,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 6,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 7,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 8,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 가지 말아야한다.',
+    writer: '이슈딩',
+    grade: 9,
+    date: '2024.07.25',
+  },
+  {
+    title: '바로 앞 한타 갔어야한다 .',
+    writer: '이슈딩',
+    grade: 10,
+    date: '2024.07.25',
+  },
+  {
+    title: '시러리시러시러실.',
+    writer: '이슈딩',
+    grade: 11,
+    date: '2024.07.25',
+  },
+];
+
+const userData = [
+  {
+    totalJudge: 50,
     winJudge: 30,
-    loseJudge: 70,
+    loseJudge: 20,
   },
 ];
 
 export default function JudgeRecord() {
-  const [judgeList] = useState<IJudgeType[]>([]);
-  const [currentJudge] = useState(judgeList);
   const [page, setPage] = useState<number>(1);
+  const itemsPerPage = 9;
 
-  const judgePerPage: number = 5;
-  //   const indexOfLastJudge: number = page * judgePerPage;
-  //   const indexOfFirstJudge: number = indexOfLastJudge - judgePerPage;
+  // 현재 페이지에서 보여줄 데이터 계산
+  const indexOfLastJudge: number = page * itemsPerPage;
+  const indexOfFirstJudge: number = indexOfLastJudge - itemsPerPage;
+  const currentJudges = data.slice(indexOfFirstJudge, indexOfLastJudge);
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -36,11 +102,11 @@ export default function JudgeRecord() {
       <div className='my-[100px] text-center'>
         <Logo />
       </div>
-      {data.map((user) => (
+      {userData.map((user) => (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col'>
-            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-xl bg-white'>
-              <p className='self-start text-xs flex-grow ml-5 mt-5'>판결 승률</p>
+            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-xl bg-white p-[15px]'>
+              <p className='self-start text-xs flex-grow ml-5 mt-2'>판결 승률</p>
               <div className='absolute top-[370px] w-[250px]'>
                 <HalfDoughnutChart win={30} lose={70} />
               </div>
@@ -59,33 +125,35 @@ export default function JudgeRecord() {
               </div>
               <div className='flex justify-between text-xs text-[#C3C3C3]'>
                 <div className='self-start'>제목</div>
-                <div>게시자</div>
-                <div>작성일</div>
+                <div className='ml-[325px]'>게시자</div>
+                <div className='mr-[25px]'>작성일</div>
               </div>
-              {currentJudge.map((judge: IJudgeType, index: number) => {
-                return (
-                  <>
-                    <div className='flex justify-between' key={index}>
-                      <div>{judge.title}</div>
-                      <div className='flex gap-2 text-sm'>
-                        <div>{judge.writer}</div>
-                        <div className='text-[#C3C3C3]'>{judge.grade}</div>
+              <div className='h-full flex-grow'>
+                {currentJudges.map((judge: IJudgeType, index: number) => (
+                  <div key={index}>
+                    <div className='flex justify-between'>
+                      <p>{judge.title}</p>
+                      <div className='flex text-sm'>
+                        <p className='text-black ml-[100px]'>
+                          {judge.writer} <span className='text-[#C3C3C3]'>새싹</span>
+                        </p>
                       </div>
-                      <div className='text-sm text-[#C3C3C3]'>{judge.date}</div>
+                      <p className='text-sm text-[#C3C3C3]'>{judge.date}</p>
                     </div>
-                    <div className='h-0.5 w-full bg-[#8A1F21]'></div>
-                  </>
-                );
-              })}
-              <div className='flex items-center justify-center'>
+                    <div className='h-0.5 w-full bg-[#8A1F21] mb-5 mt-3'></div>
+                  </div>
+                ))}
+              </div>
+              <div className='flex justify-center pb-4'>
                 <Pagination
                   activePage={page}
-                  itemsCountPerPage={judgePerPage}
-                  totalItemsCount={judgeList.length}
+                  itemsCountPerPage={itemsPerPage}
+                  totalItemsCount={data.length}
                   pageRangeDisplayed={5}
                   prevPageText={'<'}
                   nextPageText={'>'}
                   onChange={handlePageChange}
+                  activeLinkClass='active-page'
                 />
               </div>
             </div>

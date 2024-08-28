@@ -141,7 +141,7 @@ export default function MyPage() {
                   <div>작성일</div>
                 </div>
                 <div className='flex justify-between'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
+                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
                   <div className='flex text-sm text-[#C3C3C3]'>
                     <div>5</div>
                   </div>
@@ -149,7 +149,7 @@ export default function MyPage() {
                 </div>
                 <div className='h-0.5 w-full bg-[#8A1F21]'></div>
                 <div className='flex justify-between'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
+                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
                   <div className='flex text-sm text-[#C3C3C3]'>
                     <div>5</div>
                   </div>

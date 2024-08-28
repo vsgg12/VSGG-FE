@@ -184,6 +184,11 @@ button {
 .pagination {
   display: flex;
   gap: 1rem;
+  @apply items-center justify-center;
+}
+
+.active-page {
+  @apply bg-[#8A1F21] text-white rounded-full w-[34px] h-[34px] flex items-center justify-center;
 }
 
 /* HTML: <div class="loader"></div> */
