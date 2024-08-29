@@ -5,10 +5,12 @@ import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
+import { useQuery } from '@tanstack/react-query';
+import getMyPostLists from '@/api/getMyPostLists';
 
 const data = [
   {
@@ -28,6 +30,16 @@ export default function MyPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
+  const { accessToken } = useAuthStore.getState();
+
+  const { data: myPostLists } = useQuery({
+    queryKey: ['MY_POST_LISTS'],
+    queryFn: () => getMyPostLists(accessToken),
+  });
+
+  useEffect(() => {
+    console.log(myPostLists);
+  }, [myPostLists]);
 
   return (
     <div>
