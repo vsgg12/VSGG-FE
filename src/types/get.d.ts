@@ -115,7 +115,7 @@ type IJudgeType = {
 type IGetMyPostsType = {
   resultCode: number;
   resultMsg: string;
-  postLists: IGetMyPostItemsType[];
+  postList: IGetMyPostItemsType[];
 }
 
 type IGetMyPostItemsType = {
@@ -123,5 +123,5 @@ type IGetMyPostItemsType = {
   title: string;
   commentNum: number;
   voteStatus: string;
-  createdDate: number;
+  createdDate: string;
 }
