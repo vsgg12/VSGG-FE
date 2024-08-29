@@ -5,10 +5,12 @@ import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
+import { useQuery } from '@tanstack/react-query';
+import getMyPostLists from '@/api/getMyPostLists';
 
 const data = [
   {
@@ -28,6 +30,16 @@ export default function MyPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
+  const { accessToken } = useAuthStore.getState();
+
+  const { data: myPostLists } = useQuery({
+    queryKey: ['MY_POST_LISTS'],
+    queryFn: () => getMyPostLists(accessToken),
+  });
+
+  useEffect(() => {
+    console.log(myPostLists);
+  }, [myPostLists]);
 
   return (
     <div>
@@ -141,7 +153,7 @@ export default function MyPage() {
                   <div>작성일</div>
                 </div>
                 <div className='flex justify-between'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
+                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
                   <div className='flex text-sm text-[#C3C3C3]'>
                     <div>5</div>
                   </div>
@@ -149,7 +161,7 @@ export default function MyPage() {
                 </div>
                 <div className='h-0.5 w-full bg-[#8A1F21]'></div>
                 <div className='flex justify-between'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
+                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
                   <div className='flex text-sm text-[#C3C3C3]'>
                     <div>5</div>
                   </div>

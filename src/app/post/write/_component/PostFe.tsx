@@ -21,6 +21,9 @@ import jungleWSVG from '../../../../../public/svg/jungle-w.svg';
 import onedealWSVG from '../../../../../public/svg/onedeal-w.svg';
 import supportWSVG from '../../../../../public/svg/supporter-w.svg';
 
+import Icon_calendar from '../../../../../public/svg/Icon_calendar.svg';
+import moment from 'moment';
+
 import { IoIosClose } from 'react-icons/io';
 
 import {
@@ -116,6 +119,9 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
+  const [nowDate, setNowDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [postVoteEndDate, setPostVoteEndDate] = useState<string>('');
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
@@ -156,6 +162,18 @@ export default function PostForm() {
     '- 문자 수 제한 : 1000자 이내\n';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const formattedNowDate = moment().format('YYYY/MM/DD');
+      const formattedEndDate = moment().add(72, 'hours').format('YYYY/MM/DD');
+      const formattedPostVoteEndDate = moment().add(72, 'hours').format('YYYYMMDD');
+
+      setNowDate(formattedNowDate);
+      setEndDate(formattedEndDate);
+      setPostVoteEndDate(formattedPostVoteEndDate);
+    }
+  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -206,6 +224,7 @@ export default function PostForm() {
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
+      voteEndDate: postVoteEndDate,
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -239,6 +258,18 @@ export default function PostForm() {
     if (postComfirm) {
       setIsLoading(true);
       try {
+        // for (const [key, value] of postFormData.entries()) {
+        //   console.log(key, value);
+        //   if (key === 'postAddRequest') {
+        //     const fileReader = new FileReader();
+        //     fileReader.onload = function (event) {
+        //       console.log(`Decoded JSON data for ${key}:`, event.target?.result);
+        //     };
+        //     fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
+        //   } else {
+        //     console.log(`${key}:`, value);
+        //   }
+        // }
         const res = await createPost(postFormData, accessToken);
         if (res.status === 200) {
           alert('게시글 작성이 완료되었습니다!');
@@ -247,7 +278,7 @@ export default function PostForm() {
         } else if (res.status === 500) {
           alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
         } else if (res.status === 400) {
-          alert('영상을 업로드 해주세요!');
+          alert('영상을 업로드 또는 판결 종료 기간 설정을 다시 확인해주세요!');
         }
       } catch (err) {
         console.log(err);
@@ -481,7 +512,6 @@ export default function PostForm() {
 
   //useCallback
   const imageHandler = useCallback(() => {
-
     if (contentImgUrlsRef.current.length >= 3) {
       alert(`최대 3개의 이미지만 업로드할 수 있습니다.`);
       return;
@@ -645,7 +675,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className='mb-[20px]'>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
@@ -729,13 +759,10 @@ export default function PostForm() {
             </div>
           </div>
         </div>
-
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
-          <div className='p-content-mb mx-[30px] text-[20px] font-semibold text-[#8A1F21]'>
-            글 작성
-          </div>
+          <div className='p-content-mb  text-[20px] font-semibold text-[#8A1F21]'>글 작성</div>
           <div className='p-content-mb p-font-color-default flex flex-row items-center justify-center'>
-            <div className='mx-[30px] text-[20px]'>제목</div>
+            <div className='mr-[30px] text-[20px]'>제목</div>
             <input
               type='text'
               maxLength={35}
@@ -745,7 +772,7 @@ export default function PostForm() {
               {...register('title')}
             />
           </div>
-          <div className='p-content-mb h-[882px] overflow-hidden  rounded-[30px] border-[1.5px] border-[#828282]'>
+          <div className='p-content-mb h-[700px] overflow-hidden  rounded-[30px] border-[1.5px] border-[#828282]'>
             <ReactQuillBase
               theme='snow'
               forwardedRef={quillRef}
@@ -756,9 +783,7 @@ export default function PostForm() {
               placeholder={quillPlaceHolder}
             />
           </div>
-          <div className='mx-[30px] mb-[30px] text-[20px] font-semibold  text-[#8A1F21]'>
-            해시태그
-          </div>
+          <div className=' mb-[30px] text-[20px] font-semibold  text-[#8A1F21]'>해시태그</div>
           <input
             type='text'
             className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
@@ -885,16 +910,31 @@ export default function PostForm() {
               <IoAddCircleOutline className='text-[#8A1F21]' />
             </div>
           )}
+        </div>
 
-          <div className='flex flex-row justify-end'>
-            <button
-              type='submit'
-              className='flex flex-row items-center rounded-[50px] bg-[#8A1F21] px-[22px] py-[14px] text-[17px] text-white'
-            >
-              <IoSaveOutline className='mr-[5px]' />
-              작성완료
-            </button>
+        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
+          <p className='p-content-mb text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
+          <div className='flex items-center gap-5 mb-[55px]'>
+            <p className='text-[#333333] text-[16px]'>판결을 받고싶은 기간을 설정해주세요.</p>
+            <p className='text-[#828282] text-[12px]'>
+              오늘을 기준으로 30일 뒤까지 설정할 수 있습니다. (종료날 23시 59분 판결 종료)
+            </p>
           </div>
+          <div className='flex items-end gap-3'>
+            <Image src={Icon_calendar} width={32} height={32} alt='calendar' />
+            <p className='text-[20px] text-black'>{nowDate}</p>
+            <p className='text-[20px] text-[#828282]'>- {endDate}</p>
+          </div>
+        </div>
+
+        <div className='flex flex-row justify-end'>
+          <button
+            type='submit'
+            className='flex flex-row items-center rounded-[50px] bg-[#8A1F21] px-[22px] py-[14px] text-[17px] text-white'
+          >
+            <IoSaveOutline className='mr-[5px]' />
+            작성완료
+          </button>
         </div>
       </form>
     </>
