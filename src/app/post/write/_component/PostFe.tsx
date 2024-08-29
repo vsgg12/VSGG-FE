@@ -119,9 +119,9 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-  const [nowDate] = useState(moment().format('YYYY/MM/DD'));
-  const [endDate] = useState(moment().add(72, 'hours').format('YYYY/MM/DD'));
-
+  const [nowDate, setNowDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [postVoteEndDate, setPostVoteEndDate] = useState<string>('');
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
@@ -162,6 +162,18 @@ export default function PostForm() {
     '- 문자 수 제한 : 1000자 이내\n';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const formattedNowDate = moment().format('YYYY/MM/DD');
+      const formattedEndDate = moment().add(72, 'hours').format('YYYY/MM/DD');
+      const formattedPostVoteEndDate = moment().add(72, 'hours').format('YYYYMMDD');
+
+      setNowDate(formattedNowDate);
+      setEndDate(formattedEndDate);
+      setPostVoteEndDate(formattedPostVoteEndDate);
+    }
+  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -212,6 +224,7 @@ export default function PostForm() {
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
+      voteEndDate: postVoteEndDate,
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -245,6 +258,18 @@ export default function PostForm() {
     if (postComfirm) {
       setIsLoading(true);
       try {
+        // for (const [key, value] of postFormData.entries()) {
+        //   console.log(key, value);
+        //   if (key === 'postAddRequest') {
+        //     const fileReader = new FileReader();
+        //     fileReader.onload = function (event) {
+        //       console.log(`Decoded JSON data for ${key}:`, event.target?.result);
+        //     };
+        //     fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
+        //   } else {
+        //     console.log(`${key}:`, value);
+        //   }
+        // }
         const res = await createPost(postFormData, accessToken);
         if (res.status === 200) {
           alert('게시글 작성이 완료되었습니다!');
@@ -253,7 +278,7 @@ export default function PostForm() {
         } else if (res.status === 500) {
           alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
         } else if (res.status === 400) {
-          alert('영상을 업로드 해주세요!');
+          alert('영상을 업로드 또는 판결 종료 기간 설정을 다시 확인해주세요!');
         }
       } catch (err) {
         console.log(err);
@@ -650,7 +675,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className='mb-[20px]'>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
@@ -886,6 +911,7 @@ export default function PostForm() {
             </div>
           )}
         </div>
+
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <p className='p-content-mb text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
           <div className='flex items-center gap-5 mb-[55px]'>
@@ -900,6 +926,7 @@ export default function PostForm() {
             <p className='text-[20px] text-[#828282]'>- {endDate}</p>
           </div>
         </div>
+
         <div className='flex flex-row justify-end'>
           <button
             type='submit'

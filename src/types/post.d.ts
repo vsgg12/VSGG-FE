@@ -19,6 +19,7 @@ type IPostWriteType = {
     tier: string;
   }[];
   videoUrl: string;
+  voteEndDate: string;
 };
 
 type IInGameInfoType = {
