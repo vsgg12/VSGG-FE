@@ -120,7 +120,8 @@ export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
   const [nowDate] = useState(moment().format('YYYY/MM/DD'));
-  const [endDate] = useState(moment().add(72, 'hours').format('YYYY/MM/DD'));
+  const [selectedDate] = useState(moment().add(72, 'hours').format('YYYY/MM/DD'));
+  const [endDate] = useState(0);
 
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -894,10 +895,30 @@ export default function PostForm() {
               오늘을 기준으로 30일 뒤까지 설정할 수 있습니다. (종료날 23시 59분 판결 종료)
             </p>
           </div>
-          <div className='flex items-end gap-3'>
-            <Image src={Icon_calendar} width={32} height={32} alt='calendar' />
-            <p className='text-[20px] text-black'>{nowDate}</p>
-            <p className='text-[20px] text-[#828282]'>- {endDate}</p>
+          <div className='flex justify-between w-[653px] ml-[30px]'>
+            <div>
+              <p className='text-[18px] text-[#828282] font-semibold'>판결 시작 날짜</p>
+              <p className='text-[20px] text-[#333333] mt-[10px]'>{nowDate}</p>
+            </div>
+            <div className='flex border-t-1 border-black w-[236px] transform translate-y-1/2'>
+              <p className='text-[#8A1F21] text-[20px] ml-[130px] font-semibold'>판결 종료</p>
+            </div>
+            <div className='w-[88px] h-[88px] bg-[#8A1F21] rounded-full absolute flex justify-center items-center left-[420px]'>
+              <p className='text-[#FFFFFF] text-[20px]'>{endDate}일 뒤</p>
+            </div>
+            <div>
+              <p className='text-[18px] text-[#828282] font-semibold'>판결 종료 날짜</p>
+              <div className='bg-[#f8f8f8] flex p-[10px] rounded-full w-[204px] justify-center items-center'>
+                <p className='text-[20px] text-[#333333]'>{selectedDate}</p>
+                <Image
+                  src={Icon_calendar}
+                  width={24}
+                  height={24}
+                  alt='calendar'
+                  className='mx-[10px] cursor-pointer'
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div className='flex flex-row justify-end'>
