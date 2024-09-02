@@ -127,6 +127,7 @@ export default function JudgeRecord() {
                 prevPageText={'<'}
                 nextPageText={'>'}
                 onChange={handlePageChange}
+                activeLinkClass='active-page'
               />
             </div>
           </div>
