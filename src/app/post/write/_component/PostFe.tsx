@@ -40,6 +40,7 @@ import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/ty
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
+import Calendar from './Calendar';
 
 const ReactQuillBase = dynamic(
   async () => {
@@ -143,6 +144,7 @@ export default function PostForm() {
   });
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [postCreated, setPostCreated] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   const isClickedFirst = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -916,6 +918,7 @@ export default function PostForm() {
                   height={24}
                   alt='calendar'
                   className='mx-[10px] cursor-pointer'
+                  onClick={() => setIsCalendarOpen((prev) => !prev)}
                 />
               </div>
             </div>
@@ -930,6 +933,7 @@ export default function PostForm() {
             작성완료
           </button>
         </div>
+        {isCalendarOpen && <Calendar />}
       </form>
     </>
   );
