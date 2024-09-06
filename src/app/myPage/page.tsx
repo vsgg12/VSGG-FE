@@ -14,7 +14,7 @@ import getMyPostLists from '@/api/getMyPostLists';
 
 const data = [
   {
-    nickName: 'hide on bush',
+    nickName: 'faker',
     tier: '그랜드마스터',
     point: '999,999',
     grade: '새싹',
@@ -37,9 +37,17 @@ export default function MyPage() {
     queryFn: () => getMyPostLists(accessToken),
   });
 
-  useEffect(() => {
-    console.log(myPostLists);
-  }, [myPostLists]);
+  const formatDate = (dateString: string): string => {
+    if (dateString.length !== 8) {
+      throw new Error('Invalid date string. It must be in the format YYYYMMDD.');
+    }
+
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(4, 6);
+    const day = dateString.slice(6, 8);
+
+    return `${year}.${month}.${day}`;
+  };
 
   return (
     <div>
@@ -101,7 +109,7 @@ export default function MyPage() {
             <div className='flex w-1/2 flex-col gap-10 mb-20'>
               <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px]'>
                 <div className='flex justify-between font-semibold'>
-                  <div>판결 전적</div>
+                  <div className='text-[20px] mb-[20px]'>판결 전적</div>
                   <div
                     className='text-xs cursor-pointer'
                     onClick={() => {
@@ -111,33 +119,84 @@ export default function MyPage() {
                     더보기
                   </div>
                 </div>
-                <div className='flex text-xs text-[#C3C3C3]'>
-                  <p className='self-start mr-[415px]'>제목</p>
-                  <p className='mr-[170px]'>게시자</p>
-                  <p>작성일</p>
-                </div>
-                <div className='flex justify-between whitespace-nowrap'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
-                  <div className='flex gap-2 text-sm'>
-                    <div>{userInfo.nickName}</div>
-                    <div className='text-[#C3C3C3]'>{userInfo.grade}</div>
+                <div className='flex justify-between text-xs text-[#C3C3C3] mb-[12px]'>
+                  <div>제목</div>
+                  <div className='w-[250px] flex justify-between'>
+                    <div>게시자</div>
+                    <div className='mr-[20px]'>작성일</div>
                   </div>
-                  <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
                 </div>
-                <div className='h-0.5 w-full bg-[#8A1F21]'></div>
-                <div className='flex justify-between'>
-                  <div>바론 앞 한타 갔어야한다 가지 말아야한다.</div>
-                  <div className='flex gap-2 text-sm'>
-                    <div>{userInfo.nickName}</div>
-                    <div className='text-[#C3C3C3]'>{userInfo.grade}</div>
+
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+                  <div className='text-[#555555] font-medium text-[16px]'>
+                    바론 앞 한타 갔어야한다 가지 말아야한다.
                   </div>
-                  <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  <div className='flex justify-between items-center w-[260px]'>
+                    <div className='flex gap-2 text-sm'>
+                      <div className='text-[#555555]'>{userInfo.nickName}</div>
+                      <div>{userInfo.grade}</div>
+                    </div>
+                    <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  </div>
                 </div>
-                <div className='h-0.5 w-full bg-[#8A1F21]'></div>
+                <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+                  <div className='text-[#555555] font-medium text-[16px]'>
+                    바론 앞 한타 갔어야한다 가지 말아야한다.
+                  </div>
+                  <div className='flex justify-between items-center w-[260px]'>
+                    <div className='flex gap-2 text-sm'>
+                      <div className='text-[#555555]'>{userInfo.nickName}</div>
+                      <div>{userInfo.grade}</div>
+                    </div>
+                    <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  </div>
+                </div>
+                <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+                  <div className='text-[#555555] font-medium text-[16px]'>
+                    바론 앞 한타 갔어야한다 가지 말아야한다.
+                  </div>
+                  <div className='flex justify-between items-center w-[260px]'>
+                    <div className='flex gap-2 text-sm'>
+                      <div className='text-[#555555]'>{userInfo.nickName}</div>
+                      <div>{userInfo.grade}</div>
+                    </div>
+                    <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  </div>
+                </div>
+                <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+                  <div className='text-[#555555] font-medium text-[16px]'>
+                    바론 앞 한타 갔어야한다 가지 말아야한다.
+                  </div>
+                  <div className='flex justify-between items-center w-[260px]'>
+                    <div className='flex gap-2 text-sm'>
+                      <div className='text-[#555555]'>{userInfo.nickName}</div>
+                      <div>{userInfo.grade}</div>
+                    </div>
+                    <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  </div>
+                </div>
+                <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+                  <div className='text-[#555555] font-medium text-[16px]'>
+                    바론 앞 한타 갔어야한다 가지 말아야한다.
+                  </div>
+                  <div className='flex justify-between items-center w-[260px]'>
+                    <div className='flex gap-2 text-sm'>
+                      <div className='text-[#555555]'>{userInfo.nickName}</div>
+                      <div>{userInfo.grade}</div>
+                    </div>
+                    <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
+                  </div>
+                </div>
+                <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
               </div>
+
               <div className='flex flex-col gap-3 rounded-xl bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px] font-semibold'>
-                <div className='flex justify-between'>
-                  <div>내가 쓴 글</div>
+                <div className='flex justify-between items-center'>
+                  <div className='text-[20px] mb-[20px]'>내가 쓴 글</div>
                   <div
                     className='text-xs cursor-pointer'
                     onClick={() => {
@@ -147,27 +206,33 @@ export default function MyPage() {
                     더보기
                   </div>
                 </div>
-                <div className='flex text-xs text-[#C3C3C3]'>
-                  <div className='self-start mr-[415px]'>제목</div>
-                  <div className='mr-[170px]'>댓글수</div>
-                  <div>작성일</div>
-                </div>
-                <div className='flex justify-between'>
-                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
-                  <div className='flex text-sm text-[#C3C3C3]'>
-                    <div>5</div>
+
+                <div className='flex justify-between items-center text-xs text-[#C3C3C3] mb-[12px]'>
+                  <div>제목</div>
+                  <div className='w-[250px] flex justify-between'>
+                    <div>댓글수</div>
+                    <div className='mr-[20px]'>작성일</div>
                   </div>
-                  <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
                 </div>
-                <div className='h-0.5 w-full bg-[#8A1F21]'></div>
-                <div className='flex justify-between'>
-                  <p>바론 앞 한타 갔어야한다 가지 말아야한다.</p>
-                  <div className='flex text-sm text-[#C3C3C3]'>
-                    <div>5</div>
-                  </div>
-                  <div className='text-sm text-[#C3C3C3]'>2024.04.24</div>
-                </div>
-                <div className='h-0.5 w-full bg-[#8A1F21]'></div>
+
+                {myPostLists &&
+                  myPostLists.postList.slice(0, 5).map((myPostItem: IGetMyPostItemsType) => (
+                    <>
+                      <div
+                        className='flex justify-between items-center text-xs text-[#C3C3C3]'
+                        key={myPostItem.id}
+                      >
+                        <div className='text-[#555555] font-medium text-[16px]'>
+                          {myPostItem.title}
+                        </div>
+                        <div className='flex justify-between w-[235px]'>
+                          <div>{myPostItem.commentNum}</div>
+                          <div>{formatDate(myPostItem.createdDate)}</div>
+                        </div>
+                      </div>
+                      <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+                    </>
+                  ))}
               </div>
             </div>
           </div>
