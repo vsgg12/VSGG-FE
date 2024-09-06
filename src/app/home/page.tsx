@@ -14,6 +14,7 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import videoPostListsIcon from "../../../public/svg/videoPostListsIcon.svg"
 
 export default function Home() {
   const router = useRouter();
@@ -121,7 +122,10 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <div className='flex min-w-[1400px]'>
+        <Header />
+      </div>
+
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
@@ -139,7 +143,7 @@ export default function Home() {
               />
               <div className='text-[0.875rem]'>글쓰기</div>
             </button>
-            <div className='mb-[40px] flex flex-row items-center justify-between'>
+            <div className='mb-[40px] min-w-[1205px] flex flex-row items-center justify-between'>
               <div className='flex h-[34px] w-[184.5px] border-2 border-[#8A1F21] rounded-[150px] relative bg-[#FFFFFF]'>
                 <button
                   className={`toggle-button flex-1 h-full w-[94px] rounded-[150px] transition-all duration-300 ${
@@ -170,7 +174,9 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className='text-xs text-[#909090]'>홈</div>
+              <button>
+                <Image src={videoPostListsIcon} width={32} height={32} alt='영상게시글아이콘' />
+              </button>
             </div>
             {isLoading ? (
               <Loading />

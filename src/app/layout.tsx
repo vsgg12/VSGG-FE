@@ -25,6 +25,7 @@ export const metadata = {
     ],
     siteName: '롤 과실 판결 커뮤니티 VS.GG - 롤 플레이 영상을 공유하고 과실을 판결하세요.',
     type: 'website',
+    url: 'https://vsgg.co.kr',
   },
   icons: {
     icon: '/image/vsgg.png',
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel='stylesheet'
         />
         <link rel='icon' href='/image/vsgg.png' type='image/png' sizes='32x32' />
+        <link rel="canonical" href="https://vsgg.co.kr"/>
         <link rel='apple-touch-icon' href='/image/vsgg.png' type='image/png' sizes='32x32' />
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
         <Script src='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js'></Script>
