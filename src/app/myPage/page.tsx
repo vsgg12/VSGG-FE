@@ -5,7 +5,7 @@ import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
