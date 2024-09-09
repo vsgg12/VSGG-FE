@@ -122,7 +122,7 @@ export default function PostForm() {
   const router = useRouter();
   const [nowDate] = useState(moment().format('YYYY/MM/DD'));
   const [selectedDate, setSelectedDate] = useState<string | null>(
-    moment().add(72, 'hours').format('YYYYMMDD'),
+    moment().add(72, 'hours').format('YYYY/MM/DD'),
   );
   const [endDate] = useState(0);
 
@@ -217,7 +217,7 @@ export default function PostForm() {
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      voteEndDate: selectedDate,
+      voteEndDate: moment(selectedDate).format('YYYYMMDD'),
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -268,6 +268,7 @@ export default function PostForm() {
           alert('게시글 작성이 완료되었습니다!');
           setPostCreated(true);
           setRedirect(true);
+          setSelectedDate(null);
         } else if (res.status === 500) {
           alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
         } else if (res.status === 400) {
@@ -951,7 +952,11 @@ export default function PostForm() {
         {isCalendarOpen && (
           <div className='relative'>
             <div className='absolute z-40 bottom-[100px] right-[100px]'>
-              <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+              <Calendar
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                setIsCalendarOpen={setIsCalendarOpen}
+              />
             </div>
           </div>
         )}
