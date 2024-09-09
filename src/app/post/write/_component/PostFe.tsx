@@ -122,7 +122,7 @@ export default function PostForm() {
   const router = useRouter();
   const [nowDate] = useState(moment().format('YYYY/MM/DD'));
   const [selectedDate, setSelectedDate] = useState<string | null>(
-    moment().add(72, 'hours').format('YYYY/MM/DD'),
+    moment().add(72, 'hours').format('YYYYMMDD'),
   );
   const [endDate] = useState(0);
 
