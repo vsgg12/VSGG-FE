@@ -111,3 +111,17 @@ type IJudgeType = {
   grade: number;
   date: string;
 };
+
+type IGetMyPostsType = {
+  resultCode: number;
+  resultMsg: string;
+  postList: IGetMyPostItemsType[];
+}
+
+type IGetMyPostItemsType = {
+  id: number;
+  title: string;
+  commentNum: number;
+  voteStatus: string;
+  createdDate: string;
+}
