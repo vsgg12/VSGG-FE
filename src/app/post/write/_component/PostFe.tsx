@@ -120,18 +120,12 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-<<<<<<< HEAD
   const [nowDate] = useState(moment().format('YYYY/MM/DD'));
   const [selectedDate, setSelectedDate] = useState<string | null>(
     moment().add(72, 'hours').format('YYYY/MM/DD'),
   );
   const [endDate] = useState(0);
 
-=======
-  const [nowDate, setNowDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [postVoteEndDate, setPostVoteEndDate] = useState<string>('');
->>>>>>> dev
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
@@ -173,18 +167,6 @@ export default function PostForm() {
     '- 문자 수 제한 : 1000자 이내\n';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const formattedNowDate = moment().format('YYYY/MM/DD');
-      const formattedEndDate = moment().add(72, 'hours').format('YYYY/MM/DD');
-      const formattedPostVoteEndDate = moment().add(72, 'hours').format('YYYYMMDD');
-
-      setNowDate(formattedNowDate);
-      setEndDate(formattedEndDate);
-      setPostVoteEndDate(formattedPostVoteEndDate);
-    }
-  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -235,7 +217,7 @@ export default function PostForm() {
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      voteEndDate: postVoteEndDate,
+      voteEndDate: selectedDate,
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -686,7 +668,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)} className='mb-[20px]'>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
@@ -922,7 +904,6 @@ export default function PostForm() {
             </div>
           )}
         </div>
-
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <p className='p-content-mb text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
           <div className='flex items-center gap-5 mb-[55px]'>
@@ -958,7 +939,6 @@ export default function PostForm() {
             </div>
           </div>
         </div>
-
         <div className='flex flex-row justify-end'>
           <button
             type='submit'
