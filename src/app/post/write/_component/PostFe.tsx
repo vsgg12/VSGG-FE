@@ -121,7 +121,9 @@ export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
   const [nowDate] = useState(moment().format('YYYY/MM/DD'));
-  const [selectedDate] = useState(moment().add(72, 'hours').format('YYYY/MM/DD'));
+  const [selectedDate, setSelectedDate] = useState<string | null>(
+    moment().add(72, 'hours').format('YYYY/MM/DD'),
+  );
   const [endDate] = useState(0);
 
   const [redirect, setRedirect] = useState<boolean>(false);
@@ -933,7 +935,13 @@ export default function PostForm() {
             작성완료
           </button>
         </div>
-        {isCalendarOpen && <Calendar />}
+        {isCalendarOpen && (
+          <div className='relative'>
+            <div className='absolute z-40 bottom-[100px] right-[100px]'>
+              <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            </div>
+          </div>
+        )}
       </form>
     </>
   );
