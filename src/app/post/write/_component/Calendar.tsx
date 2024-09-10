@@ -8,9 +8,10 @@ import Btn_arrow_right from '../../../../../public/svg/calandar/Btn_arrow_right.
 interface ICalendarProps {
   selectedDate: string | null;
   setSelectedDate: React.Dispatch<React.SetStateAction<string | null>>;
+  setIsCalendarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Calendar = memo(({ selectedDate, setSelectedDate }: ICalendarProps) => {
+const Calendar = memo(({ selectedDate, setSelectedDate, setIsCalendarOpen }: ICalendarProps) => {
   const [currentDate, setCurrentDate] = useState(moment());
 
   const goToPreviousMonth = () => {
@@ -51,7 +52,7 @@ const Calendar = memo(({ selectedDate, setSelectedDate }: ICalendarProps) => {
     while (currentDay.isSameOrBefore(endOfLastWeek)) {
       const week: JSX.Element[] = [];
       for (let i = 0; i < 7; i++) {
-        const date = currentDay.format('YYYY-MM-DD');
+        const date = currentDay.format('YYYY/MM/DD');
         const isPastDate = currentDay.isBefore(moment(), 'day');
         const isSelected = date === selectedDate;
         const isToday = currentDay.isSame(moment(), 'day');
@@ -65,14 +66,14 @@ const Calendar = memo(({ selectedDate, setSelectedDate }: ICalendarProps) => {
             className={`relative flex justify-center items-center  text-[12px] font-medium leading-[30px] 
                       ${isToday ? 'text-white rounded-l-full ' : 'text-black'}
                       ${isSelected ? 'text-white rounded-r-full' : ''}
-                      ${isInRange ? 'bg-white' : ''}
+                      ${isInRange ? 'bg-[#8A1F21] bg-opacity-[50%]' : ''}
                       ${isSaturday ? 'rounded-r-full' : ''}
                       ${isSunday ? 'rounded-l-full' : ''}
                       ${isPastDate ? 'pointer-events-none opacity-20' : 'cursor-pointer'} w-full`}
             onClick={() => handleDateClick(date)}
           >
             <div
-              className={`absolute ${isToday || isSelected ? 'text-white bg-black rounded-full w-[30px] h-[30px] ' : ''}`}
+              className={`absolute ${isToday || isSelected ? 'text-white bg-[#8A1F21] rounded-full w-[30px] h-[30px] ' : ''}`}
             />
             <div className={`relative z-10 ${isToday || isSelected ? 'text-white' : 'text-black'}`}>
               {currentDay.month() === currentDate.month() ? currentDay.format('D') : ''}
@@ -119,11 +120,16 @@ const Calendar = memo(({ selectedDate, setSelectedDate }: ICalendarProps) => {
           />
         </button>
       </div>
-      <div className='flex justify-between leading-[32px] text-gray-400 px-[10px]'>
+      <div className='flex justify-between leading-[45px] text-gray-400 px-[10px]'>
         {renderDaysOfWeek()}
       </div>
-      <div className='flex flex-col justify-items-center px-[8px]'>{renderCalendarGrid()}</div>
-      <button className='text-center bg-[#8A1F21] bg-opacity-[50%] text-[#333333] w-[282px] rounded-[30px]'>
+      <div className='flex flex-col justify-items-center gap-2'>{renderCalendarGrid()}</div>
+      <button
+        className='text-center bg-[#333333] text-white w-[282px] h-[35px] rounded-[30px] translate-x-4 mt-4'
+        onClick={() => {
+          setIsCalendarOpen(false);
+        }}
+      >
         확인
       </button>
     </div>
