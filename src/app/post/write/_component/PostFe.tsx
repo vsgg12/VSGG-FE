@@ -120,11 +120,11 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-  const [nowDate] = useState(moment().format('YYYY/MM/DD'));
+  const [nowDate] = useState(moment().format('YYYY / MM / DD'));
   const [selectedDate, setSelectedDate] = useState<string | null>(
-    moment().add(72, 'hours').format('YYYY/MM/DD'),
+    moment().add(72, 'hours').format('YYYY / MM / DD'),
   );
-  const [endDate] = useState(0);
+  const [endDate,setEndDate] = useState<number>(3);
 
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -669,7 +669,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
@@ -949,18 +949,19 @@ export default function PostForm() {
             작성완료
           </button>
         </div>
-        {isCalendarOpen && (
-          <div className='relative'>
-            <div className='absolute z-40 bottom-[100px] right-[100px]'>
-              <Calendar
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-                setIsCalendarOpen={setIsCalendarOpen}
-              />
-            </div>
-          </div>
-        )}
       </form>
+      {isCalendarOpen && (
+        <div className='relative'>
+          <div className='absolute z-40 bottom-[100px] right-[100px]'>
+            <Calendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              setIsCalendarOpen={setIsCalendarOpen}
+              setEndDate={setEndDate}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
