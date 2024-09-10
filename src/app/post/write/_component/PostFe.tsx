@@ -40,6 +40,7 @@ import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/ty
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
+import Calendar from './Calendar';
 
 const ReactQuillBase = dynamic(
   async () => {
@@ -119,9 +120,12 @@ const tiers = [
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
-  const [nowDate, setNowDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [postVoteEndDate, setPostVoteEndDate] = useState<string>('');
+  const [nowDate] = useState(moment().format('YYYY / MM / DD'));
+  const [selectedDate, setSelectedDate] = useState<string | null>(
+    moment().add(72, 'hours').format('YYYY / MM / DD'),
+  );
+  const [endDate,setEndDate] = useState<number>(3);
+
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
@@ -142,6 +146,7 @@ export default function PostForm() {
   });
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [postCreated, setPostCreated] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   const isClickedFirst = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -162,18 +167,6 @@ export default function PostForm() {
     '- 문자 수 제한 : 1000자 이내\n';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const formattedNowDate = moment().format('YYYY/MM/DD');
-      const formattedEndDate = moment().add(72, 'hours').format('YYYY/MM/DD');
-      const formattedPostVoteEndDate = moment().add(72, 'hours').format('YYYYMMDD');
-
-      setNowDate(formattedNowDate);
-      setEndDate(formattedEndDate);
-      setPostVoteEndDate(formattedPostVoteEndDate);
-    }
-  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -224,7 +217,7 @@ export default function PostForm() {
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      voteEndDate: postVoteEndDate,
+      voteEndDate: moment(selectedDate).format('YYYYMMDD'),
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -275,6 +268,7 @@ export default function PostForm() {
           alert('게시글 작성이 완료되었습니다!');
           setPostCreated(true);
           setRedirect(true);
+          setSelectedDate(null);
         } else if (res.status === 500) {
           alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
         } else if (res.status === 400) {
@@ -675,7 +669,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)} className='mb-[20px]'>
+      <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
@@ -911,7 +905,6 @@ export default function PostForm() {
             </div>
           )}
         </div>
-
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <p className='p-content-mb text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
           <div className='flex items-center gap-5 mb-[55px]'>
@@ -920,13 +913,33 @@ export default function PostForm() {
               오늘을 기준으로 30일 뒤까지 설정할 수 있습니다. (종료날 23시 59분 판결 종료)
             </p>
           </div>
-          <div className='flex items-end gap-3'>
-            <Image src={Icon_calendar} width={32} height={32} alt='calendar' />
-            <p className='text-[20px] text-black'>{nowDate}</p>
-            <p className='text-[20px] text-[#828282]'>- {endDate}</p>
+          <div className='flex justify-between w-[653px] ml-[30px]'>
+            <div>
+              <p className='text-[18px] text-[#828282] font-semibold'>판결 시작 날짜</p>
+              <p className='text-[20px] text-[#333333] mt-[10px]'>{nowDate}</p>
+            </div>
+            <div className='flex border-t-1 border-black w-[236px] transform translate-y-1/2'>
+              <p className='text-[#8A1F21] text-[20px] ml-[130px] font-semibold'>판결 종료</p>
+            </div>
+            <div className='w-[88px] h-[88px] bg-[#8A1F21] rounded-full absolute flex justify-center items-center left-[420px]'>
+              <p className='text-[#FFFFFF] text-[20px]'>{endDate}일 뒤</p>
+            </div>
+            <div>
+              <p className='text-[18px] text-[#828282] font-semibold'>판결 종료 날짜</p>
+              <div className='bg-[#f8f8f8] flex p-[10px] rounded-full w-[204px] justify-center items-center'>
+                <p className='text-[20px] text-[#333333]'>{selectedDate}</p>
+                <Image
+                  src={Icon_calendar}
+                  width={24}
+                  height={24}
+                  alt='calendar'
+                  className='mx-[10px] cursor-pointer'
+                  onClick={() => setIsCalendarOpen((prev) => !prev)}
+                />
+              </div>
+            </div>
           </div>
         </div>
-
         <div className='flex flex-row justify-end'>
           <button
             type='submit'
@@ -937,6 +950,18 @@ export default function PostForm() {
           </button>
         </div>
       </form>
+      {isCalendarOpen && (
+        <div className='relative'>
+          <div className='absolute z-40 bottom-[100px] right-[100px]'>
+            <Calendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              setIsCalendarOpen={setIsCalendarOpen}
+              setEndDate={setEndDate}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
