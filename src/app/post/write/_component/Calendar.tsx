@@ -37,7 +37,7 @@ const Calendar = memo(
         const differenceInDays = selected.diff(today, 'days');
         setEndDate(differenceInDays + 1);
       } else {
-        alert('날짜는 오늘로부터 최대 30일까지만 선택할 수 있습니다.');
+        alert('날짜는 오늘로부터 최소 1일, 최대 30일까지만 선택할 수 있습니다.');
       }
     };
 
@@ -65,7 +65,7 @@ const Calendar = memo(
       while (currentDay.isSameOrBefore(endOfLastWeek)) {
         const week: JSX.Element[] = [];
         for (let i = 0; i < 7; i++) {
-          const date = currentDay.format('YYYY/MM/DD');
+          const date = currentDay.format('YYYY / MM / DD');
           const isPastDate = currentDay.isBefore(moment(), 'day');
           const isSelected = date === selectedDate;
           const isToday = currentDay.isSame(moment(), 'day');
@@ -87,9 +87,9 @@ const Calendar = memo(
               onClick={() => handleDateClick(date)}
             >
               <div
-                className={`absolute ${isToday || isSelected ? 'text-white bg-[#8A1F21] rounded-full w-[42px] h-[30px] z-10' : ''}`}
+                className={`absolute ${isToday || isSelected ? 'text-white bg-[#8A1F21] rounded-full w-[42px] h-[30px]' : ''}`}
               />
-              <div className={`relative z-20 ${isToday || isSelected ? 'text-white' : ''}`}>
+              <div className={`relative ${isToday || isSelected ? 'text-white' : ''}`}>
                 {currentDay.format('D')}
               </div>
             </div>,
