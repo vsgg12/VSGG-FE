@@ -669,7 +669,7 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
