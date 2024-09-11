@@ -14,7 +14,9 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
-import videoPostListsIcon from "../../../public/svg/videoPostListsIcon.svg"
+import videoPostListsIcon from '../../../public/svg/videoPostListsIcon.svg';
+import Icon_ListedIcon from '../../../public/svg/Icon_ListedPost.svg';
+import ListedPostItem from './_component/ListedPostItem';
 
 export default function Home() {
   const router = useRouter();
@@ -25,6 +27,7 @@ export default function Home() {
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isListed, setIsListed] = useState<boolean>(false);
 
   const {
     data: postData,
@@ -173,9 +176,13 @@ export default function Home() {
                   인기순
                 </button>
               </div>
-
-              <button>
-                <Image src={videoPostListsIcon} width={32} height={32} alt='영상게시글아이콘' />
+              <button onClick={() => setIsListed(!isListed)}>
+                <Image
+                  src={isListed ? Icon_ListedIcon : videoPostListsIcon}
+                  width={32}
+                  height={32}
+                  alt='영상게시글아이콘'
+                />
               </button>
             </div>
             {isLoading ? (
@@ -187,7 +194,11 @@ export default function Home() {
             ) : (
               visiblePosts.map((post, idx) => (
                 <div key={idx}>
-                  <HomePostItems post={post} voteInfos={post.inGameInfoList} />
+                  {isListed ? (
+                    <ListedPostItem post={post} />
+                  ) : (
+                    <HomePostItems post={post} voteInfos={post.inGameInfoList} />
+                  )}
                 </div>
               ))
             )}
