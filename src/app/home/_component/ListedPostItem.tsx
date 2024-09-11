@@ -1,14 +1,21 @@
 // import Image from 'next/image';
 // import Icon_timer from '../../../../public/svg/timer.svg';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
 
 interface IListedItem {
   post: IGetPostDTOType;
 }
 
 export default function ListedPostItem({ post }: IListedItem) {
+  const router = useRouter();
   return (
-    <div className='flex flex-col w-[1205px] h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px]'>
+    <div
+      className='flex flex-col w-[1205px] h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
+      onClick={() => {
+        router.push(`/post/${post.id}/`);
+      }}
+    >
       <div className='flex'>
         <div className='flex flex-grow gap-[8px]'>
           <p className='text-[12px]'>{post.memberDTO.nickname}</p>
