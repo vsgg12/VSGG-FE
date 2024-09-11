@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Icon_timer from '../../../../public/svg/timer.svg';
+// import Image from 'next/image';
+// import Icon_timer from '../../../../public/svg/timer.svg';
 import moment from 'moment';
 
 interface IListedItem {
@@ -19,10 +19,10 @@ export default function ListedPostItem({ post }: IListedItem) {
       <div className='flex justify-center items-center gap-[5px]'>
         <p className='text-black text-[25px]'>{post.title}</p>
         <p className='text-[#C8C8C8] flex-grow'>| 조회수 {post.viewCount}</p>
-        <div className='flex items-center justify-center gap-[5px] text-[18px] text-white w-[182px] h-[28px] rounded-[20px] bg-[#8A1F21]'>
+        {/* <div className='flex items-center justify-center gap-[5px] text-[18px] text-white w-[182px] h-[28px] rounded-[20px] bg-[#8A1F21]'>
           <Image src={Icon_timer} width={20} height={20} alt='timer' />
           투표 마감까지 일
-        </div>
+        </div> */}
       </div>
     </div>
   );
