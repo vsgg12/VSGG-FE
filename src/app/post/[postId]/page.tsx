@@ -22,6 +22,8 @@ import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
+import ModalLayout from '@/components/modals/ModalLayout';
+import AlertLoginModal from '@/components/modals/AlertLoginModal';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -43,6 +45,7 @@ export default function PostRead() {
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
@@ -139,7 +142,7 @@ export default function PostRead() {
 
   const handleVoteSubmit = () => {
     if (!isLogin) {
-      router.push('/login');
+      setIsLoginModalOpen(true);
     }
     postVote();
   };
@@ -292,6 +295,11 @@ export default function PostRead() {
             </div>
           </section>
         </main>
+      )}
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
       )}
     </>
   );
