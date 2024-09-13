@@ -125,3 +125,20 @@ type IGetMyPostItemsType = {
   voteStatus: string;
   createdDate: string;
 }
+
+type IGetMyPageType = {
+  resultCode: number;
+  resultMsg: string;
+  memberProfileDTO: IMemperProfileDTOType;
+};
+
+type IMemperProfileDTOType = {
+  id: number;
+  nickName: string;
+  point: number;
+  joinedResult: number;
+  nextJoinedResult: number;
+  predicateResult: number;
+  nextPredicateResult: number;
+  tier: string;
+}
