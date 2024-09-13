@@ -163,7 +163,7 @@ export default function PostRead() {
               <header className='flex flex-row items-center justify-between'>
                 <button
                   onClick={() => {
-                    history.back();
+                    router.push('/home');
                   }}
                   className='mb-[44px] box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
                 >
