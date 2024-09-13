@@ -32,7 +32,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
     <>
       {voteInfos && (
         <>
-          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full flex-col bg-white'>
+          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full min-w-[840px] flex-col bg-white'>
             <div className='relative flex w-full justify-between'>
               <div className='flex flex-col ml-10 justify-around'>
                 {isOwner && isNoOneVoted
@@ -85,7 +85,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
                       </div>
                     ))}
               </div>
-              <div className='flex flex-col items-center justify-center'>
+              <div className='flex flex-col items-center justify-center min-w-[230.5px]'>
                 <div className='mb-[20px] flex text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</div>
                 {isOwner && isNoOneVoted ? (
                   <div className='flex relative w-[340px] justify-center'>
