@@ -157,9 +157,9 @@ export default function PostRead() {
       {isLoading ? (
         <Loading />
       ) : (
-        <main>
+        <main className='px-[105px]'>
           <section className='flex justify-center'>
-            <div className='w-[100%] mx-28'>
+            <div className='w-[100%]'>
               <header className='flex flex-row items-center justify-between'>
                 <button
                   onClick={() => {
@@ -178,7 +178,7 @@ export default function PostRead() {
               </header>
               <div className='flex flex-row'>
                 {post && (
-                  <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 bg-white px-[63px] pb-[44px]'>
+                  <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[500px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
                       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                         <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
@@ -224,7 +224,7 @@ export default function PostRead() {
                   </div>
                 )}
 
-                <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 bg-white px-[63px] pb-[44px]'>
+                <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 min-w-[300px] bg-white px-[63px] pb-[44px]'>
                   <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
                     <div className='p-content-s-mb text-lg'>댓글</div>
                     <div className='flex flex-row'>
