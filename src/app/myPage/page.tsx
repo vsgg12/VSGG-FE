@@ -11,6 +11,7 @@ import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
+import getMyProfileDTO from '@/api/getMyProfileDTO';
 
 const data = [
   {
@@ -31,6 +32,11 @@ export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
   const { accessToken } = useAuthStore.getState();
+
+  const { data: userProfileData } = useQuery({
+    queryKey: ['MY_PROFILE_INFO'],
+    queryFn: () => getMyProfileDTO(accessToken),
+  });
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS'],
