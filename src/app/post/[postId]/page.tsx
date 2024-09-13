@@ -256,7 +256,7 @@ export default function PostRead() {
                                   setShowReply(comment.id);
                                 }
                               }}
-                              className='mb-[10px] text-[10px] font-medium text-[#8A1F21]'
+                              className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                             >
                               {showReply === comment.id ? '닫기' : '답글'}
                             </button>
