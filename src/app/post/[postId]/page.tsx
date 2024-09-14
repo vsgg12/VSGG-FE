@@ -153,14 +153,16 @@ export default function PostRead() {
 
   return (
     <>
-      <Header />
+      <div className='flex min-w-[1200px]'>
+        <Header />
+      </div>
       <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
       </div>
       {isLoading ? (
         <Loading />
       ) : (
-        <main className='px-[105px]'>
+        <main className='px-[105px] min-w-[1200px]'>
           <section className='flex justify-center'>
             <div className='w-full'>
               <header className='flex flex-row items-center justify-between'>
