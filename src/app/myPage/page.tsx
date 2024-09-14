@@ -58,9 +58,11 @@ export default function MyPage() {
   };
 
   return (
-    <div>
-      <Header />
-      <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px]'>
+    <div className='min-w-[1200px] '>
+      <div className='flex min-w-[1350px]'>
+        <Header />
+      </div>
+      <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
         <Logo />
       </div>
       {user &&
