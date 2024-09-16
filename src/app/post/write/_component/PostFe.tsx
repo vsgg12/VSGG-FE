@@ -925,7 +925,7 @@ export default function PostForm() {
               </div>
             </div>
 
-            <div className='relative'>
+            <div>
               <p className='text-[18px] text-[#828282] font-semibold'>판결 종료 날짜</p>
               <div className='bg-[#f8f8f8] flex p-[10px] rounded-full w-[204px] justify-center items-center'>
                 <p className='text-[20px] text-[#333333]'>{selectedDate}</p>
@@ -938,16 +938,6 @@ export default function PostForm() {
                   onClick={() => setIsCalendarOpen((prev) => !prev)}
                 />
               </div>
-              {isCalendarOpen && (
-                <div className='absolute z-40 translate-x-[230px] translate-y-[-340px]'>
-                  <Calendar
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    setIsCalendarOpen={setIsCalendarOpen}
-                    setEndDate={setEndDate}
-                  />
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -961,6 +951,16 @@ export default function PostForm() {
           </button>
         </div>
       </form>
+      {isCalendarOpen && (
+        <div className='absolute z-40 translate-x-[770px] translate-y-[-520px]'>
+          <Calendar
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            setIsCalendarOpen={setIsCalendarOpen}
+            setEndDate={setEndDate}
+          />
+        </div>
+      )}
     </>
   );
 }
