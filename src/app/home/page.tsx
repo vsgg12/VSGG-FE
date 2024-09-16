@@ -124,11 +124,8 @@ export default function Home() {
   }, [loaderRef, loadMore, getPostIndex, getPostData]);
 
   return (
-    <>
-      <div className='flex min-w-[1400px]'>
+    <div className="min-w-[1400px]">
         <Header />
-      </div>
-
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>
@@ -211,6 +208,6 @@ export default function Home() {
           <AlertLoginModal />
         </ModalLayout>
       )}
-    </>
+    </div>
   );
 }
