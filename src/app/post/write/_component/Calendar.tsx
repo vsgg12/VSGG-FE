@@ -36,9 +36,7 @@ const Calendar = memo(
         setSelectedDate(date);
         const differenceInDays = selected.diff(today, 'days');
         setEndDate(differenceInDays + 1);
-      } else {
-        alert('날짜는 오늘로부터 최소 1일, 최대 30일까지만 선택할 수 있습니다.');
-      }
+      } 
     };
 
     const renderDaysOfWeek = () => {
@@ -61,18 +59,20 @@ const Calendar = memo(
 
       const rangeStart = moment().startOf('day');
       const rangeEnd = moment(selectedDate).startOf('day');
+      const maxSelectableDate = moment().add(30, 'days'); // 최대 30일 이후 날짜
 
       while (currentDay.isSameOrBefore(endOfLastWeek)) {
         const week: JSX.Element[] = [];
         for (let i = 0; i < 7; i++) {
           const date = currentDay.format('YYYY / MM / DD');
           const isPastDate = currentDay.isBefore(moment(), 'day');
+          const isAfterMaxDate = currentDay.isAfter(maxSelectableDate, 'day'); // 30일 이후 날짜
           const isSelected = date === selectedDate;
           const isToday = currentDay.isSame(moment(), 'day');
           const isInRange = currentDay.isBetween(rangeStart, rangeEnd, 'day', '[]');
           const isCurrentMonth = currentDay.month() === currentDate.month(); // 현재 달과 같은지 확인
-          const isSaturday = currentDay.day() === 6; // Saturday
-          const isSunday = currentDay.day() === 0; // Sunday
+          const isSaturday = currentDay.day() === 6;
+          const isSunday = currentDay.day() === 0;
 
           week.push(
             <div
@@ -83,7 +83,7 @@ const Calendar = memo(
                     ${isInRange ? 'bg-[#8A1F21] bg-opacity-[50%]' : ''}
                     ${isSaturday ? 'rounded-r-full' : ''}
                     ${isSunday ? 'rounded-l-full' : ''}
-                    ${isPastDate && isCurrentMonth ? 'pointer-events-none opacity-20' : 'cursor-pointer'} w-full`}
+                    ${(isPastDate || isAfterMaxDate) && isCurrentMonth ? 'pointer-events-none opacity-20' : 'cursor-pointer'} w-full`}
               onClick={() => handleDateClick(date)}
             >
               <div
@@ -122,7 +122,7 @@ const Calendar = memo(
             />
           </button>
           <div className='text-[16px]  text-gray-400 leading-[32px]'>
-            {currentDate.format('MM월')}
+            {currentDate.format('M월')}
           </div>
           <button className='bg-none border-none cursor-pointer'>
             <Image

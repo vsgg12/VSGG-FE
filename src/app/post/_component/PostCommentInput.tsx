@@ -2,7 +2,9 @@ import { BsArrowUpCircle } from 'react-icons/bs';
 import Loading from '@/components/Loading';
 import useCommentStore from '../[postId]/store/useCommentStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import ModalLayout from '@/components/modals/ModalLayout';
+import AlertLoginModal from '@/components/modals/AlertLoginModal';
 
 interface IPostCommentProps {
   handleSubmit: () => void;
@@ -13,7 +15,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
     useCommentStore();
 
   const { isLogin } = useAuthStore.getState();
-  const router = useRouter();
+   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCommentContent(e.target.value);
@@ -26,7 +28,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
         onChange={handleInputChange}
         onFocus={() => {
           if (!isLogin) {
-            router.push('/login');
+            setIsLoginModalOpen(true);
           }
           setCommentContent('');
           setShowReply(null);
@@ -45,6 +47,11 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
         </button>
       </div>
       {isCommentInProgress && !showReply && <Loading />}
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
+      )}
     </div>
   );
 }
