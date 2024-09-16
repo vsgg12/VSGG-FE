@@ -124,7 +124,7 @@ export default function PostForm() {
   const [selectedDate, setSelectedDate] = useState<string | null>(
     moment().add(72, 'hours').format('YYYY / MM / DD'),
   );
-  const [endDate,setEndDate] = useState<number>(3);
+  const [endDate, setEndDate] = useState<number>(3);
 
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -669,8 +669,8 @@ export default function PostForm() {
   return (
     <>
       {isLoading && <LoadingFull />}
-      <form onSubmit={handleSubmit(onSubmit)} className="p-[20px]">
-        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
+      <form onSubmit={handleSubmit(onSubmit)} className='py-[30px] min-w-[1230px]'>
+        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full bg-[#ffffff]'>
           <PostUploadDesc />
           <div className='p-content-mb relative h-[150px]'>
             <div className='absolute z-10 ml-[30px] '>
@@ -753,7 +753,7 @@ export default function PostForm() {
             </div>
           </div>
         </div>
-        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
+        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full bg-[#ffffff]'>
           <div className='p-content-mb  text-[20px] font-semibold text-[#8A1F21]'>글 작성</div>
           <div className='p-content-mb p-font-color-default flex flex-row items-center justify-center'>
             <div className='mr-[30px] text-[20px]'>제목</div>
@@ -905,9 +905,9 @@ export default function PostForm() {
             </div>
           )}
         </div>
-        <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full  bg-[#ffffff]'>
-          <p className='p-content-mb text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
-          <div className='flex items-center gap-5 mb-[55px]'>
+        <div className='p-content-pd p-content-rounded mb-[44px] h-[360px] w-full relative bg-[#ffffff]'>
+          <p className='mb-[70px] text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
+          <div className='flex items-center gap-5 mb-[70px]'>
             <p className='text-[#333333] text-[16px]'>판결을 받고싶은 기간을 설정해주세요.</p>
             <p className='text-[#828282] text-[12px]'>
               오늘을 기준으로 30일 뒤까지 설정할 수 있습니다. (종료날 23시 59분 판결 종료)
@@ -918,13 +918,14 @@ export default function PostForm() {
               <p className='text-[18px] text-[#828282] font-semibold'>판결 시작 날짜</p>
               <p className='text-[20px] text-[#333333] mt-[10px]'>{nowDate}</p>
             </div>
-            <div className='flex border-t-1 border-black w-[236px] transform translate-y-1/2'>
+            <div className='relative flex border-t-1 border-black w-[236px] transform translate-y-1/2'>
               <p className='text-[#8A1F21] text-[20px] ml-[130px] font-semibold'>판결 종료</p>
+              <div className='w-[88px] h-[88px] bg-[#8A1F21] rounded-full absolute flex justify-center items-center translate-y-[-40px] translate-x-[30px]'>
+                <p className='text-[#FFFFFF] text-[20px]'>{endDate}일 뒤</p>
+              </div>
             </div>
-            <div className='w-[88px] h-[88px] bg-[#8A1F21] rounded-full absolute flex justify-center items-center left-[420px]'>
-              <p className='text-[#FFFFFF] text-[20px]'>{endDate}일 뒤</p>
-            </div>
-            <div>
+
+            <div className='relative'>
               <p className='text-[18px] text-[#828282] font-semibold'>판결 종료 날짜</p>
               <div className='bg-[#f8f8f8] flex p-[10px] rounded-full w-[204px] justify-center items-center'>
                 <p className='text-[20px] text-[#333333]'>{selectedDate}</p>
@@ -937,6 +938,16 @@ export default function PostForm() {
                   onClick={() => setIsCalendarOpen((prev) => !prev)}
                 />
               </div>
+              {isCalendarOpen && (
+                <div className='absolute z-40 translate-x-[230px] translate-y-[-340px]'>
+                  <Calendar
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                    setIsCalendarOpen={setIsCalendarOpen}
+                    setEndDate={setEndDate}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -950,18 +961,6 @@ export default function PostForm() {
           </button>
         </div>
       </form>
-      {isCalendarOpen && (
-        <div className='relative'>
-          <div className='absolute z-40 bottom-[100px] right-[100px]'>
-            <Calendar
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              setIsCalendarOpen={setIsCalendarOpen}
-              setEndDate={setEndDate}
-            />
-          </div>
-        </div>
-      )}
     </>
   );
 }

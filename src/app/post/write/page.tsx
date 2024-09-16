@@ -7,15 +7,15 @@ import PostFe from './_component/PostFe';
 export default function PostWrite() {
 
   return (
-    <>
-      <Header  />
+    <div className='min-w-[1400px]'>
+      <Header />
       <div>
-        <div className='flex items-center justify-center p-[100px]'>
+        <div className='flex items-center justify-center w-full'>
           <Logo />
         </div>
         <section className='flex justify-center'>
-          <div className='w-4/5 max-w-[1400px]'>
-            <div className='mb-[44px] flex flex-row items-center justify-between'>
+          <div className='min-w-[1300px] w-full px-[80px]'>
+            <div className='mb-[44px] flex items-center justify-between min-w-[1200px]'>
               <button
                 onClick={() => {
                   history.back();
@@ -33,6 +33,6 @@ export default function PostWrite() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }
