@@ -121,7 +121,7 @@ const Calendar = memo(
               onClick={goToPreviousMonth}
             />
           </button>
-          <div className='text-[16px]  text-gray-400 leading-[32px]'>
+          <div className='text-[16px] text-[#8A1F21] leading-[32px]'>
             {currentDate.format('M월')}
           </div>
           <button className='bg-none border-none cursor-pointer'>
