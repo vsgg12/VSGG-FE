@@ -152,8 +152,8 @@ export default function PostRead() {
   };
 
   return (
-    <>
-      <div className='flex min-w-[1200px]'>
+    <div className="min-w-[1200px]">
+      <div className='flex'>
         <Header />
       </div>
       <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
@@ -223,7 +223,7 @@ export default function PostRead() {
                     </div>
 
                     <div
-                      className='w-full mt-10'
+                      className='w-full mt-7 p-1 break-words'
                       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
                     ></div>
                   </div>
@@ -254,7 +254,7 @@ export default function PostRead() {
                               type='button'
                               onClick={() => {
                                 if (!isLogin) {
-                                  router.push('/login');
+                                  setIsLoginModalOpen(true);
                                 } else if (showReply && showReply === comment.id) {
                                   setShowReply(null);
                                 } else {
@@ -303,6 +303,6 @@ export default function PostRead() {
           <AlertLoginModal />
         </ModalLayout>
       )}
-    </>
+    </div>
   );
 }
