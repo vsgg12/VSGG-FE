@@ -19,7 +19,7 @@ export const metadata = {
     images: [
       {
         url: '/svg/logo/CircleLogo.svg',
-        width: 400,
+        width: 800,
         height: 400,
         
       },
@@ -30,7 +30,7 @@ export const metadata = {
     locale: 'ko_KR',
   },
   icons: {
-    icon: '/svg/logo/SquareLogo.svg',
+    icon: '/svg/logo/CircleLogo.svg',
   },
   metadataBase: new URL('https://vsgg.co.kr'),
 };
@@ -51,21 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name='title' content='리그 오브 레전드(LOL) 과실 판결 커뮤니티 VS.GG' />
         <meta name='Location' content='ko_KR' />
 
-        <meta property='og:image:kakao' content='/svg/logo/SquareLogo.svg' />
-        <meta property='og:image:width:kakao' content='800' />
-        <meta property='og:image:height:kakao' content='400' />
-
-        <meta name='twitter:image' content='/svg/logo/SquareLogo.svg' />
-        <meta name='twitter:image:width' content='1200' />
-        <meta name='twitter:image:height' content='630' />
-
-        <meta property='og:image:instagram' content='/svg/logo/SquareLogo.svg' />
-        <meta property='og:image:width:instagram' content='320' />
-        <meta property='og:image:height:instagram' content='320' />
-
-        <meta property='og:image:facebook' content='/svg/logo/SquareLogo.svg' />
-        <meta property='og:image:width:facebook' content='600' />
-        <meta property='og:image:height:facebook' content='315' />
+        <meta property='og:image' content='/svg/logo/SquareLogo.svg' />
+        <meta property='og:image:width' content='800' />
+        <meta property='og:image:height' content='400' />
 
         <link
           href='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css'
