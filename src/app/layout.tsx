@@ -44,8 +44,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content='r1opwB8ilF7fEuqvQ6Flfu9WHhshGXeABmREKa02zyQ'
         />
         <meta name='Yeti' content='All' />
-        <meta name='NaverBot' content='All' />
-        <meta property='robots' content='All' />
+        <meta name='Yeti' content='index, follow' />
+        <meta name='googlebot' content='All' />
+        <meta name='googlebot' content='index, follow' />
+        <meta name='robots' content='All' />
+        <meta name='robots' content='index, follow' />
+        <meta name='Daumoa' content='All' />
+        <meta name='Daumoa' content='index, follow' />
+        
 
         <meta name='title' content='리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG' />
         <meta name='Location' content='ko_KR' />
@@ -60,9 +66,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <link rel='canonical' href='https://vsgg.co.kr' />
 
-        <link rel='icon' href='/images/Favicon.ico' type='image/x-icon' sizes='any' />
-        <link rel='icon' href='images/Favicon.ico' sizes='192x192' type='image/x-icon' />
-        <link rel='icon' href='images/Favicon.ico' sizes='128x128' type='image/x-icon' />
+        <link rel='icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
+        <link rel='shortcut icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='180x180' />
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='152x152' />
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='167x167' />
