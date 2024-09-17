@@ -20,7 +20,7 @@ export const metadata = {
       {
         url: '/images/openGraph.png',
         width: 800,
-        height: 400,
+        height: 420,
       },
     ],
     siteName: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
@@ -51,14 +51,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name='robots' content='index, follow' />
         <meta name='Daumoa' content='All' />
         <meta name='Daumoa' content='index, follow' />
-        
 
         <meta name='title' content='리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG' />
         <meta name='Location' content='ko_KR' />
 
         <meta property='og:image' content='/images/openGraph.png' />
         <meta property='og:image:width' content='800' />
-        <meta property='og:image:height' content='400' />
+        <meta property='og:image:height' content='420' />
 
         <link
           href='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css'
