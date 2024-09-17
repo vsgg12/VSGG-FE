@@ -19,14 +19,15 @@ export const metadata = {
     images: [
       {
         url: '/svg/logo/CircleLogo.svg',
-        width: 1200,
-        height: 630,
+        width: 400,
+        height: 400,
+        
       },
     ],
     siteName: '리그 오브 레전드(LOL) 과실 판결 커뮤니티 VS.GG',
     type: 'website',
     url: 'https://vsgg.co.kr',
-    locale: 'ko_KR'
+    locale: 'ko_KR',
   },
   icons: {
     icon: '/svg/logo/SquareLogo.svg',
@@ -39,8 +40,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='ko' className='root-bg'>
       <head>
         <meta name='naver-site-verification' content='6f47895aa61798532c99334cbb3786cb9e28a25e' />
+        <meta
+          name='google-site-verification'
+          content='r1opwB8ilF7fEuqvQ6Flfu9WHhshGXeABmREKa02zyQ'
+        />
+        <meta name='Yeti' content='All' />
+        <meta name='NaverBot' content='All' />
+        <meta property='robots' content='All' />
+
         <meta name='title' content='리그 오브 레전드(LOL) 과실 판결 커뮤니티 VS.GG' />
-        <meta name="Location" content="ko_KR"/>
+        <meta name='Location' content='ko_KR' />
 
         <meta property='og:image:kakao' content='/svg/logo/SquareLogo.svg' />
         <meta property='og:image:width:kakao' content='800' />
@@ -63,19 +72,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel='stylesheet'
         />
         <link rel='canonical' href='https://vsgg.co.kr' />
-        <link rel='icon' href='/svg/logo/SquareLogo.svg' type='image/svg+xml' sizes='48x48' />
-        <link
-          rel='apple-touch-icon'
-          href='/svg/logo/SquareLogo.svg'
-          type='image/svg+xml'
-          sizes='48x48'
-        />
-        <link
-          rel='apple-touch-icon-precomposed'
-          href='/svg/logo/SquareLogo.svg'
-          type='image/svg+xml'
-          sizes='48x48'
-        />
+
+        <link rel='icon' href='/svg/logo/SquareLogo.svg' type='image/svg+xml' sizes='any' />
+        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='192x192' type='image/png' />
+        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='128x128' type='image/png' />
+        <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='180x180' />
+        <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='152x152' />
+        <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='167x167' />
+        <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='120x120' />
+        <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='76x76' />
+        <link rel='mask-icon' href='/svg/logo/SquareLogo.svg' color='#8A1F21' />
+        <link rel='shortcut icon' href='/svg/logo/SquareLogo.svg' type='image/svg+xml' />
 
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
         <Script src='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js'></Script>
