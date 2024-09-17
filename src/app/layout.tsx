@@ -18,9 +18,9 @@ export const metadata = {
       '라이엇도 안심하는 리그오브레전드 과실 판결 커뮤니티 VS.GG, LCK부터 내 플레이까지 모두 가능! 간단한 챔피언, 포지션, 티어 정보만 입력하세요. 과실을 판결하고 플레이어들과 토론하며 롤을 더 재밌게 즐겨요',
     images: [
       {
-        url: '/svg/logo/CircleLogo.svg',
-        width: 800,
-        height: 400,
+        url: '/svg/logo/SquareLogo.svg',
+        width: 1200,
+        height: 630,
         
       },
     ],
@@ -52,8 +52,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name='Location' content='ko_KR' />
 
         <meta property='og:image' content='/svg/logo/SquareLogo.svg' />
-        <meta property='og:image:width' content='800' />
-        <meta property='og:image:height' content='400' />
+        <meta property='og:image:width' content='1200' />
+        <meta property='og:image:height' content='630' />
 
         <link
           href='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css'
@@ -62,8 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel='canonical' href='https://vsgg.co.kr' />
 
         <link rel='icon' href='/svg/logo/SquareLogo.svg' type='image/svg+xml' sizes='any' />
-        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='192x192' type='image/png' />
-        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='128x128' type='image/png' />
+        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='192x192' type='image/svg+xml' />
+        <link rel='icon' href='/svg/logo/SquareLogo.svg' sizes='128x128' type='image/svg+xml' />
         <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='180x180' />
         <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='152x152' />
         <link rel='apple-touch-icon' href='/svg/logo/SquareLogo.svg' sizes='167x167' />
