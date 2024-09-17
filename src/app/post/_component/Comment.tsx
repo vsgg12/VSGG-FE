@@ -48,8 +48,8 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
       <div>
         <div className='flex flex-row relative font-medium items-center'>
           <p className='text-[14px] text-[#333333] mr-1'>@</p>
-          <p className='mr-[6px] text-[14px] text-[#909090]'>{comment.member.tier}</p>
-          <p className='text-[14px] text-[#333333]'>{comment.member.nickname}</p>
+          <p className='mr-[6px] text-[14px] text-[#333333]'>{comment.member.nickname}</p>
+          <p className=' text-[14px] text-[#909090]'>{comment.member.tier}</p>
           {/* <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow'>
             | {timeDifferenceFromNow(pastTime)}
           </p>

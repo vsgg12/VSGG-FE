@@ -35,7 +35,7 @@ export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
         }}
         value={showReply ? '' : commentContent}
       />
-      <div className='flex w-full justify-end'>
+      <div className='flex w-full justify-end mt-[3px]'>
         <button
           className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
           type='submit'
