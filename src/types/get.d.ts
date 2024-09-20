@@ -70,6 +70,7 @@ type IGetCommentItemType = {
   id: number;
   content: string;
   member: IGetMemberDTOType;
+  createdDateTime: string;
   children?: ICommentType[];
 };
 
@@ -116,7 +117,7 @@ type IGetMyPostsType = {
   resultCode: number;
   resultMsg: string;
   postList: IGetMyPostItemsType[];
-}
+};
 
 type IGetMyPostItemsType = {
   id: number;
@@ -124,7 +125,7 @@ type IGetMyPostItemsType = {
   commentNum: number;
   voteStatus: string;
   createdDate: string;
-}
+};
 
 type IGetMyPageType = {
   resultCode: number;
@@ -141,4 +142,4 @@ type IMemperProfileDTOType = {
   predicateResult: number;
   nextPredicateResult: number;
   tier: string;
-}
+};
