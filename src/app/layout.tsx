@@ -67,11 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <link rel='icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
         <link rel='shortcut icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='180x180' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='152x152' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='167x167' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='120x120' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='76x76' />
+        <link rel='apple-touch-icon' href='/images/Favicon.ico' sizes='180x180' />
+        <link rel='apple-touch-icon' href='/images/Favicon.ico' sizes='152x152' />
+        <link rel='apple-touch-icon' href='/images/Favicon.ico' sizes='167x167' />
+        <link rel='apple-touch-icon' href='/images/Favicon.ico' sizes='120x120' />
+        <link rel='apple-touch-icon' href='/images/Favicon.icong' sizes='76x76' />
         <link rel='mask-icon' href='images/Favicon.ico' color='#8A1F21' />
         <link rel='shortcut icon' href='images/Favicon.ico' type='image/x-icon' />
 
