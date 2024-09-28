@@ -12,6 +12,7 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
+import MyPostList from './_component/MyPostList';
 
 const data = [
   {
@@ -38,27 +39,14 @@ export default function MyPage() {
     queryFn: () => getMyProfileDTO(accessToken),
   });
 
-  console.log(userProfileData)
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS'],
-    queryFn: () => getMyPostLists(accessToken),
+    queryFn: () => getMyPostLists({ token: accessToken, size: '5', page: '1' }),
   });
 
-  const formatDate = (dateString: string): string => {
-    if (dateString.length !== 8) {
-      throw new Error('Invalid date string. It must be in the format YYYYMMDD.');
-    }
-
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(4, 6);
-    const day = dateString.slice(6, 8);
-
-    return `${year}.${month}.${day}`;
-  };
-
   return (
-    <div className='min-w-[1200px] '>
+    <div className='min-w-[1200px]'>
       <div className='flex min-w-[1350px]'>
         <Header />
       </div>
@@ -224,25 +212,7 @@ export default function MyPage() {
                     <div className='mr-[20px]'>작성일</div>
                   </div>
                 </div>
-
-                {myPostLists &&
-                  myPostLists.postList.slice(0, 5).map((myPostItem: IGetMyPostItemsType) => (
-                    <>
-                      <div
-                        className='flex justify-between items-center text-xs text-[#C3C3C3]'
-                        key={myPostItem.id}
-                      >
-                        <div className='text-[#555555] font-medium text-[16px]'>
-                          {myPostItem.title}
-                        </div>
-                        <div className='flex justify-between w-[235px]'>
-                          <div>{myPostItem.commentNum}</div>
-                          <div>{formatDate(myPostItem.createdDate)}</div>
-                        </div>
-                      </div>
-                      <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
-                    </>
-                  ))}
+                {myPostLists && <MyPostList myPostList={myPostLists.postList} />}
               </div>
             </div>
           </div>
