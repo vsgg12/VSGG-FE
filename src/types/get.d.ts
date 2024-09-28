@@ -106,13 +106,6 @@ type IAlarmsType = {
   createDateTime: string;
 };
 
-type IJudgeType = {
-  title: string;
-  writer: string;
-  grade: number;
-  date: string;
-};
-
 type IGetMyPostsType = {
   pageInfo: IGetPageInfo;
   postList: IGetMyPostItemsType[];
@@ -148,3 +141,18 @@ type IMemperProfileDTOType = {
   nextPredicateResult: number;
   tier: string;
 };
+
+type IGetMyJudgeType = {
+  pageInfo: IGetPageInfo;
+  votedPostList: IVotedPostItem[];
+}
+
+type IVotedPostItem = {
+  id: number;
+  title: string;
+  authorNickname: string;
+  voteStatus: string;
+  myVoteResult: string | null;
+  createdDate: string
+  authorTier: string;
+}

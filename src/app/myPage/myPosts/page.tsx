@@ -28,10 +28,10 @@ export default function MyPosts() {
       <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
         <Logo />
       </div>
-      <div className='flex justify-center w-full '>
+      <div className='flex justify-center w-full'>
         <div className='flex w-full flex-col mx-28'>
           {myPostLists && (
-            <div className='flex flex-col gap-3 rounded-xl bg-white px-10 pb-4 pt-8 min-h-[850px] mb-[50px]'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px]'>
               <div className='flex items-center gap-5 mb-[8px]'>
                 <p>내가 쓴 글</p>
               </div>
