@@ -114,9 +114,14 @@ type IJudgeType = {
 };
 
 type IGetMyPostsType = {
-  resultCode: number;
-  resultMsg: string;
+  pageInfo: IGetPageInfo;
   postList: IGetMyPostItemsType[];
+};
+
+type IGetPageInfo = {
+  size: nunmber;
+  page: number;
+  totalPageNum: number;
 };
 
 type IGetMyPostItemsType = {
