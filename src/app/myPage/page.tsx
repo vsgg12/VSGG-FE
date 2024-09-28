@@ -38,7 +38,7 @@ export default function MyPage() {
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
   });
-
+  console.log(userProfileData)
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS'],
