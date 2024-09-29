@@ -24,6 +24,7 @@ import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import { useForm, FormProvider } from 'react-hook-form';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -31,14 +32,11 @@ export default function PostRead() {
   const queryClient = useQueryClient();
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
-  const {
-    isCommentInProgress,
-    setIsCommentInProgress,
-    commentContent,
-    setCommentContent,
-    showReply,
-    setShowReply,
-  } = useCommentStore();
+  const methods = useForm<{ commentContent: string }>();
+  const { handleSubmit } = methods;
+
+  const { isCommentInProgress, setIsCommentInProgress, showReply, setShowReply } =
+    useCommentStore();
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
@@ -99,18 +97,6 @@ export default function PostRead() {
     }
   }, [post, voteResult, setPostVoteResult, user]);
 
-  const { mutate: writeComment } = useMutation({
-    mutationFn: () =>
-      PostComment(id, { parentId: showReply, content: commentContent }, accessToken),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
-      setIsCommentInProgress(false);
-      setCommentContent('');
-      setShowReply(null);
-    },
-    onError: (error) => console.log(error),
-  });
-
   const { mutate: postVote } = useMutation({
     mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
     onSuccess: async () => {
@@ -131,15 +117,6 @@ export default function PostRead() {
     onError: (err) => console.log(err),
   });
 
-  const handleCommentSubmit = async () => {
-    if (isCommentInProgress) {
-      return;
-    }
-    setIsCommentInProgress(true);
-
-    writeComment();
-  };
-
   const handleVoteSubmit = () => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
@@ -152,7 +129,7 @@ export default function PostRead() {
   };
 
   return (
-    <div className="min-w-[1200px]">
+    <div className='min-w-[1200px]'>
       <div className='flex'>
         <Header />
       </div>
@@ -233,7 +210,9 @@ export default function PostRead() {
                   <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
                     <div className='p-content-s-mb text-lg'>댓글</div>
                     <div className='flex flex-row'>
-                      <PostCommentInput handleSubmit={handleCommentSubmit} />
+                      <FormProvider {...methods}>
+                        <PostCommentInput id={id} />
+                      </FormProvider>
                     </div>
                   </div>
                   {commentData?.comments.length === 0 ? (
@@ -243,7 +222,7 @@ export default function PostRead() {
                   ) : (
                     <>
                       {commentData &&
-                        commentData?.comments.map((comment, index) => (
+                        commentData?.comments.map((comment: IGetCommentItemType, index) => (
                           <div key={index} className='mb-[20px] text-[13px]'>
                             <Comment
                               comment={comment}
@@ -267,20 +246,22 @@ export default function PostRead() {
                             </button>
                             {showReply === comment.id && (
                               <div className='text-[12px]'>
-                                <ReplyInput handleSubmit={handleCommentSubmit} />
+                                {/* <ReplyInput handleSubmit={handleCommentSubmit} /> */}
                               </div>
                             )}
                             <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
-                              {comment.children?.map((reply: ICommentType, index: number) => (
-                                <div key={index} className='mb-[10px]'>
-                                  <Comment
-                                    comment={reply}
-                                    isReply={true}
-                                    targetComment={comment}
-                                    deleteComment={() => handleDeleteComment(reply.id)}
-                                  />
-                                </div>
-                              ))}
+                              {comment.children?.map(
+                                (reply: IGetCommentItemType, index: number) => (
+                                  <div key={index} className='mb-[10px]'>
+                                    <Comment
+                                      comment={reply}
+                                      isReply={true}
+                                      targetComment={comment}
+                                      deleteComment={() => handleDeleteComment(reply.id)}
+                                    />
+                                  </div>
+                                ),
+                              )}
                             </div>
                           </div>
                         ))}
