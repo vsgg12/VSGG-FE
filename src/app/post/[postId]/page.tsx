@@ -280,7 +280,23 @@ export default function PostRead() {
                               </button>
                               {showReply === comment.id && (
                                 <div className='text-[12px]'>
-                                  {/* <ReplyInput handleSubmit={handleCommentSubmit} /> */}
+                                  <FormProvider {...methods}>
+                                    <form
+                                      onSubmit={methods.handleSubmit(onSubmit)}
+                                      className='w-full'
+                                    >
+                                      <PostCommentInput />
+                                      <div className='flex w-full justify-end mt-[3px]'>
+                                        <button
+                                          className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                          type='submit'
+                                        >
+                                          <p className='mr-[4px]'>등록</p>
+                                          <BsArrowUpCircle />
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </FormProvider>{' '}
                                 </div>
                               )}
                               <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>

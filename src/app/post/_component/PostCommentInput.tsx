@@ -39,7 +39,6 @@ export default function PostCommentInput() {
           if (!isLogin) {
             setIsLoginModalOpen(true);
           }
-          setShowReply(null);
         }}
       />
       {isCommentInProgress && !showReply && <Loading />}
