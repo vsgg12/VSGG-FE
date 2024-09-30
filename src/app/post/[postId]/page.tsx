@@ -1,4 +1,5 @@
 'use client';
+import { BsArrowUpCircle } from 'react-icons/bs';
 import PostTag from '../_component/PostTag';
 import PostCommentInput from '../_component/PostCommentInput';
 import Comment from '../_component/Comment';
@@ -33,7 +34,6 @@ export default function PostRead() {
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const methods = useForm<{ commentContent: string }>();
-  const { handleSubmit } = methods;
 
   const { isCommentInProgress, setIsCommentInProgress, showReply, setShowReply } =
     useCommentStore();
@@ -97,6 +97,18 @@ export default function PostRead() {
     }
   }, [post, voteResult, setPostVoteResult, user]);
 
+  const { mutate: writeComment } = useMutation({
+    mutationFn: (data: string) =>
+      PostComment(id, { parentId: showReply, content: data }, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+      setIsCommentInProgress(false);
+      setShowReply(null);
+      methods.reset();
+    },
+    onError: (error) => console.log(error),
+  });
+
   const { mutate: postVote } = useMutation({
     mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
     onSuccess: async () => {
@@ -116,6 +128,18 @@ export default function PostRead() {
     },
     onError: (err) => console.log(err),
   });
+
+  const onSubmit = (data: { commentContent: string }) => {
+    if (isCommentInProgress) {
+      return;
+    }
+    setIsCommentInProgress(true);
+
+    console.log('찍히긴하나');
+    console.log(data);
+
+    writeComment(data.commentContent);
+  };
 
   const handleVoteSubmit = () => {
     if (!isLogin) {
@@ -198,75 +222,86 @@ export default function PostRead() {
                         }
                       />
                     </div>
-
                     <div
                       className='w-full mt-7 p-1 break-words'
                       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
                     ></div>
                   </div>
                 )}
-
-                <div className='p-content-rounded scroll relative mb-11 max-h-[1000px] w-1/3 min-w-[350px] bg-white px-[63px] pb-[44px]'>
-                  <div className='sticky z-10 top-[-1px] bg-[#ffffff] pt-[44px]'>
+                <div className='p-content-rounded relative mb-11 h-[1000px] w-1/3 min-w-[350px] bg-white px-[30px] pb-[30px] '>
+                  <div className=' bg-[#ffffff] pt-[30px]'>
                     <div className='p-content-s-mb text-lg'>댓글</div>
-                    <div className='flex flex-row'>
+                    <div className='flex flex-row w-full'>
                       <FormProvider {...methods}>
-                        <PostCommentInput id={id} />
+                        <form onSubmit={methods.handleSubmit(onSubmit)} className='w-full'>
+                          <PostCommentInput />
+                          <div className='flex w-full justify-end mt-[3px]'>
+                            <button
+                              className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                              type='submit'
+                            >
+                              <p className='mr-[4px]'>등록</p>
+                              <BsArrowUpCircle />
+                            </button>
+                          </div>
+                        </form>
                       </FormProvider>
                     </div>
                   </div>
-                  {commentData?.comments.length === 0 ? (
-                    <div className='flex justify-center'>
-                      <div>아직 댓글이 없습니다.</div>
-                    </div>
-                  ) : (
-                    <>
-                      {commentData &&
-                        commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                          <div key={index} className='mb-[20px] text-[13px]'>
-                            <Comment
-                              comment={comment}
-                              deleteComment={() => handleDeleteComment(comment.id)}
-                            />
-                            <button
-                              key={index}
-                              type='button'
-                              onClick={() => {
-                                if (!isLogin) {
-                                  setIsLoginModalOpen(true);
-                                } else if (showReply && showReply === comment.id) {
-                                  setShowReply(null);
-                                } else {
-                                  setShowReply(comment.id);
-                                }
-                              }}
-                              className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
-                            >
-                              {showReply === comment.id ? '닫기' : '답글'}
-                            </button>
-                            {showReply === comment.id && (
-                              <div className='text-[12px]'>
-                                {/* <ReplyInput handleSubmit={handleCommentSubmit} /> */}
-                              </div>
-                            )}
-                            <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
-                              {comment.children?.map(
-                                (reply: IGetCommentItemType, index: number) => (
-                                  <div key={index} className='mb-[10px]'>
-                                    <Comment
-                                      comment={reply}
-                                      isReply={true}
-                                      targetComment={comment}
-                                      deleteComment={() => handleDeleteComment(reply.id)}
-                                    />
-                                  </div>
-                                ),
+                  <div className='mt-[20px]'>
+                    {commentData?.comments.length === 0 ? (
+                      <div className='flex justify-center'>
+                        <div>아직 댓글이 없습니다.</div>
+                      </div>
+                    ) : (
+                      <div className='scroll overflow-hidden h-[770px]'>
+                        {commentData &&
+                          commentData?.comments.map((comment: IGetCommentItemType, index) => (
+                            <div key={index} className='mb-[20px] text-[13px]'>
+                              <Comment
+                                comment={comment}
+                                deleteComment={() => handleDeleteComment(comment.id)}
+                              />
+                              <button
+                                key={index}
+                                type='button'
+                                onClick={() => {
+                                  if (!isLogin) {
+                                    setIsLoginModalOpen(true);
+                                  } else if (showReply && showReply === comment.id) {
+                                    setShowReply(null);
+                                  } else {
+                                    setShowReply(comment.id);
+                                  }
+                                }}
+                                className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
+                              >
+                                {showReply === comment.id ? '닫기' : '답글'}
+                              </button>
+                              {showReply === comment.id && (
+                                <div className='text-[12px]'>
+                                  {/* <ReplyInput handleSubmit={handleCommentSubmit} /> */}
+                                </div>
                               )}
+                              <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
+                                {comment.children?.map(
+                                  (reply: IGetCommentItemType, index: number) => (
+                                    <div key={index} className='mb-[10px]'>
+                                      <Comment
+                                        comment={reply}
+                                        isReply={true}
+                                        targetComment={comment}
+                                        deleteComment={() => handleDeleteComment(reply.id)}
+                                      />
+                                    </div>
+                                  ),
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                    </>
-                  )}
+                          ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               {(voteData && isOwner) || post?.postDTO.isVote ? (

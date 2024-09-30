@@ -56,7 +56,10 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
       </div>
       <p className='text-[14px]'>
         {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
-        {comment.content}
+        <p className='whitespace-pre-wrap'>
+          {comment.content}
+          <br />
+        </p>
       </p>
     </div>
   );
