@@ -57,7 +57,7 @@ export default function MyPage() {
               </div>
               <div className='h-[180px] w-[120px] rounded-full relative'>
                 <img
-                  src={user.profile_image}
+                  src={userProfileData.memberProfileDTO.profileImageUrl}
                   alt='profileImage'
                   className='h-full w-full rounded-full border'
                 />
@@ -99,7 +99,7 @@ export default function MyPage() {
               </div>
               <div className='h-0.5 w-full bg-[#8A1F21]'></div>
               <div className='flex w-full flex-col justify-center gap-4'>
-                <div className='text-[17px]'>다음 등급까지</div>
+                <div className='text-[17px]'>다음 {userProfileData.memberProfileDTO.nextTier}까지</div>
                 <div className='flex flex-col items-center justify-center gap-2'>
                   <BarChart num={userProfileData.memberProfileDTO.joinedResult} />
                   <div className='text-[17px] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
@@ -167,7 +167,7 @@ export default function MyPage() {
           <ChangeProfileModal
             setIsModalOpen={setIsModalOpen}
             userName={userProfileData.memberProfileDTO.nickName}
-            userProfileImage={user.profile_image}
+            userProfileImage={userProfileData.memberProfileDTO.profileImageUrl}
           />
         </ModalLayout>
       )}
