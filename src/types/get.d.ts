@@ -140,12 +140,14 @@ type IMemperProfileDTOType = {
   predicateResult: number;
   nextPredicateResult: number;
   tier: string;
+  nextTier: string;
+  profileImageUrl: string;
 };
 
 type IGetMyJudgeType = {
   pageInfo: IGetPageInfo;
   votedPostList: IVotedPostItem[];
-}
+};
 
 type IVotedPostItem = {
   id: number;
@@ -153,6 +155,6 @@ type IVotedPostItem = {
   authorNickname: string;
   voteStatus: string;
   myVoteResult: string | null;
-  createdDate: string
+  createdDate: string;
   authorTier: string;
-}
+};
