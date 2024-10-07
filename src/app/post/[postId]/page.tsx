@@ -17,7 +17,6 @@ import DOMPurify from 'dompurify';
 import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
-import ReplyInput from '../_component/ReplyInput';
 import DeleteComment from '@/api/deleteComment';
 import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
@@ -33,7 +32,8 @@ export default function PostRead() {
   const queryClient = useQueryClient();
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
-  const methods = useForm<{ commentContent: string }>();
+  const commentMethods = useForm<{ commentContent: string }>();
+  const replyMethods = useForm<{ replyContent: string }>();
 
   const { isCommentInProgress, setIsCommentInProgress, showReply, setShowReply } =
     useCommentStore();
@@ -104,7 +104,8 @@ export default function PostRead() {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
       setShowReply(null);
-      methods.reset();
+      commentMethods.reset();
+      replyMethods.reset();
     },
     onError: (error) => console.log(error),
   });
@@ -129,16 +130,26 @@ export default function PostRead() {
     onError: (err) => console.log(err),
   });
 
-  const onSubmit = (data: { commentContent: string }) => {
+  //댓글 작성 onSubmit 함수
+  const onCommentSubmit = (data: { commentContent: string }) => {
     if (isCommentInProgress) {
       return;
     }
     setIsCommentInProgress(true);
 
-    console.log('찍히긴하나');
     console.log(data);
-
     writeComment(data.commentContent);
+  };
+
+  //답글 작성 onSubmit 함수
+  const onReplySubmit = (data: { replyContent: string }) => {
+    if (isCommentInProgress) {
+      return;
+    }
+    setIsCommentInProgress(true);
+
+    console.log(data);
+    writeComment(data.replyContent);
   };
 
   const handleVoteSubmit = () => {
@@ -232,17 +243,24 @@ export default function PostRead() {
                   <div className=' bg-[#ffffff] pt-[30px]'>
                     <div className='p-content-s-mb text-lg'>댓글</div>
                     <div className='flex flex-row w-full'>
-                      <FormProvider {...methods}>
-                        <form onSubmit={methods.handleSubmit(onSubmit)} className='w-full'>
-                          <PostCommentInput />
+                      <FormProvider {...commentMethods}>
+                        <form
+                          onSubmit={commentMethods.handleSubmit(onCommentSubmit)}
+                          className='w-full'
+                        >
+                          <PostCommentInput registerName={'commentContent'} />
                           <div className='flex w-full justify-end mt-[3px]'>
-                            <button
-                              className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
-                              type='submit'
-                            >
-                              <p className='mr-[4px]'>등록</p>
-                              <BsArrowUpCircle />
-                            </button>
+                            {showReply === null ? (
+                              <button
+                                className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                type='submit'
+                              >
+                                <p className='mr-[4px]'>등록</p>
+                                <BsArrowUpCircle />
+                              </button>
+                            ) : (
+                              <div className='h-[18px]'></div>
+                            )}
                           </div>
                         </form>
                       </FormProvider>
@@ -276,43 +294,49 @@ export default function PostRead() {
                                 }}
                                 className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                               >
-                                {showReply === comment.id ? '닫기' : '답글'}
+                                {showReply === comment.id
+                                  ? `답글 ${comment.children?.length}개 닫기`
+                                  : comment.children?.length === 0
+                                    ? '답글 달기'
+                                    : `답글 ${comment.children?.length}개 열기`}
                               </button>
                               {showReply === comment.id && (
-                                <div className='text-[12px]'>
-                                  <FormProvider {...methods}>
-                                    <form
-                                      onSubmit={methods.handleSubmit(onSubmit)}
-                                      className='w-full'
-                                    >
-                                      <PostCommentInput />
-                                      <div className='flex w-full justify-end mt-[3px]'>
-                                        <button
-                                          className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
-                                          type='submit'
-                                        >
-                                          <p className='mr-[4px]'>등록</p>
-                                          <BsArrowUpCircle />
-                                        </button>
-                                      </div>
-                                    </form>
-                                  </FormProvider>{' '}
+                                <div>
+                                  <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
+                                    {comment.children?.map(
+                                      (reply: IGetCommentItemType, index: number) => (
+                                        <div key={index} className='mb-[10px]'>
+                                          <Comment
+                                            comment={reply}
+                                            isReply={true}
+                                            targetComment={comment}
+                                            deleteComment={() => handleDeleteComment(reply.id)}
+                                          />
+                                        </div>
+                                      ),
+                                    )}
+                                  </div>
+                                  <div className='text-[12px]'>
+                                    <FormProvider {...replyMethods}>
+                                      <form
+                                        onSubmit={replyMethods.handleSubmit(onReplySubmit)}
+                                        className='w-full'
+                                      >
+                                        <PostCommentInput registerName={'replyContent'} />
+                                        <div className='flex w-full justify-end mt-[3px]'>
+                                          <button
+                                            className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                            type='submit'
+                                          >
+                                            <p className='mr-[4px]'>등록</p>
+                                            <BsArrowUpCircle />
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </FormProvider>
+                                  </div>
                                 </div>
                               )}
-                              <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
-                                {comment.children?.map(
-                                  (reply: IGetCommentItemType, index: number) => (
-                                    <div key={index} className='mb-[10px]'>
-                                      <Comment
-                                        comment={reply}
-                                        isReply={true}
-                                        targetComment={comment}
-                                        deleteComment={() => handleDeleteComment(reply.id)}
-                                      />
-                                    </div>
-                                  ),
-                                )}
-                              </div>
                             </div>
                           ))}
                       </div>

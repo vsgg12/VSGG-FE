@@ -6,10 +6,14 @@ import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
-export default function PostCommentInput() {
-  const { isCommentInProgress, showReply, setShowReply } = useCommentStore();
-  const { register } = useFormContext<{ commentContent: string }>();
-  const { ref, ...rest } = register('commentContent', { required: true });
+interface IPostCommentInputProps {
+  registerName: 'commentContent' | 'replyContent';
+}
+
+export default function PostCommentInput({ registerName }: IPostCommentInputProps) {
+  const { isCommentInProgress, showReply } = useCommentStore();
+  const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
+  const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { isLogin } = useAuthStore.getState();
