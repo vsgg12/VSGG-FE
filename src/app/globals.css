@@ -23,7 +23,7 @@ button {
 }
 
 ::-webkit-scrollbar {
-  @apply w-[0.4375rem];
+  @apply w-[0.3rem];
 }
 
 ::-webkit-scrollbar-thumb {

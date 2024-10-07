@@ -15,9 +15,9 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
   const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
   const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
   const { isLogin } = useAuthStore.getState();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
   const resizeHeight = () => {
     if (textareaRef.current) {
       const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight || '20px', 10);
@@ -32,13 +32,14 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
   return (
     <div>
       <textarea
-        className='h-[35px] max-h-[200px] w-[100%] overflow-hidden rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none resize-none'
+        className='h-[35px] max-h-[200px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none resize-none'
         {...rest}
         ref={(e) => {
           ref(e);
           textareaRef.current = e;
         }}
         onChange={() => resizeHeight()}
+        maxLength={300}
         onFocus={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
