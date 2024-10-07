@@ -1,5 +1,3 @@
-import Loading from '@/components/Loading';
-import useCommentStore from '../[postId]/store/useCommentStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
@@ -11,7 +9,6 @@ interface IPostCommentInputProps {
 }
 
 export default function PostCommentInput({ registerName }: IPostCommentInputProps) {
-  const { isCommentInProgress, showReply } = useCommentStore();
   const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
   const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -46,7 +43,6 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
           }
         }}
       />
-      {isCommentInProgress && !showReply && <Loading />}
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
           <AlertLoginModal />

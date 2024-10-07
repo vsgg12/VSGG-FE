@@ -36,9 +36,8 @@ export default function PostRead() {
   const router = useRouter();
   const commentMethods = useForm<{ commentContent: string }>();
   const replyMethods = useForm<{ replyContent: string }>();
-
-  const { isCommentInProgress, setIsCommentInProgress, showReply, setShowReply } =
-    useCommentStore();
+  const [showReply, setShowReply] = useState<null | number>(null);
+  const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
@@ -105,7 +104,6 @@ export default function PostRead() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
-      setShowReply(null);
       commentMethods.reset();
       replyMethods.reset();
     },
