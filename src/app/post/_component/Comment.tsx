@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Icon_more from '../../../../public/svg/Icon_more.svg';
+// import Image from 'next/image';
+// import Icon_more from '../../../../public/svg/Icon_more.svg';
 
 interface ICommentProps {
   comment: IGetCommentItemType;
@@ -51,7 +51,7 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
         <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow'>
           | {timeDifferenceFromNow(pastTime)}
         </p>
-        <Image src={Icon_more} alt='more' width={12} height={12} className='cursor-pointer' />
+        {/* <Image src={Icon_more} alt='more' width={12} height={12} className='cursor-pointer' /> */}
       </div>
       <p className='text-[14px]'>
         {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
