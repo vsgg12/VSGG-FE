@@ -25,6 +25,8 @@ import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useForm, FormProvider } from 'react-hook-form';
+import Image from 'next/image';
+import Icon_more from '../../../../public/svg/Icon_more.svg';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -199,13 +201,17 @@ export default function PostRead() {
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
                       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                         <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
-                        <div className='text-[12px] text-[#C8C8C8]'>
-                          조회수 {post.postDTO.viewCount}
-                        </div>
+                        {/* <Image
+                          src={Icon_more}
+                          alt='more'
+                          width={12}
+                          height={12}
+                          className='cursor-pointer'
+                        /> */}
                       </div>
                       <div className='flex flex-row items-center justify-start font-medium '>
                         <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
-                        <div>
+                        <div className='flex-grow'>
                           <div className='flex flex-row'>
                             <div className=' mr-[6px] text-[12px] text-[#333333]'>
                               {post.postDTO.memberDTO.nickname}
@@ -216,6 +222,9 @@ export default function PostRead() {
                           </div>
                           <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                         </div>
+                        <p className='text-[12px] text-[#C8C8C8] mt-[20px]'>
+                          조회수 {post.postDTO.viewCount}
+                        </p>
                       </div>
                     </div>
                     <video
