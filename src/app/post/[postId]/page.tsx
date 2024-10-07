@@ -25,8 +25,8 @@ import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useForm, FormProvider } from 'react-hook-form';
-import Image from 'next/image';
-import Icon_more from '../../../../public/svg/Icon_more.svg';
+// import Image from 'next/image';
+// import Icon_more from '../../../../public/svg/Icon_more.svg';
 
 export default function PostRead() {
   const { postId } = useParams();
