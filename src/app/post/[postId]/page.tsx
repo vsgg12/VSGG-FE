@@ -138,7 +138,7 @@ export default function PostRead() {
     setIsCommentInProgress(true);
 
     console.log(data);
-    writeComment(data.commentContent);
+    writeComment(data.commentContent.trim());
   };
 
   //답글 작성 onSubmit 함수
@@ -149,7 +149,7 @@ export default function PostRead() {
     setIsCommentInProgress(true);
 
     console.log(data);
-    writeComment(data.replyContent);
+    writeComment(data.replyContent.trim());
   };
 
   const handleVoteSubmit = () => {
