@@ -141,12 +141,12 @@ type IMemperProfileDTOType = {
   nextPredicateResult: number;
   tier: string;
   nextTier: string;
-  profileImageUrl: string;
+  profileUrl: string;
 };
 
 type IGetMyJudgeType = {
   pageInfo: IGetPageInfo;
-  votedPostList: IVotedPostItem[];
+  postList: IVotedPostItem[];
 };
 
 type IVotedPostItem = {

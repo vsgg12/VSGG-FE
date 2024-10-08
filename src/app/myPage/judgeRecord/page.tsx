@@ -8,6 +8,8 @@ import Header from '@/components/Header';
 import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import getMyJudgeList from '@/api/getMyJudgeList';
+import MyJudgeList from '../_component/MyJudgeList';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
@@ -16,6 +18,11 @@ export default function JudgeRecord() {
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
+  });
+
+  const { data: myJudgeLists } = useQuery({
+    queryKey: ['MY_JUDGE_LISTS', page],
+    queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
   });
 
   const handlePageChange = (page: number) => {
@@ -34,7 +41,13 @@ export default function JudgeRecord() {
             <div className='w-[340px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px]'>
               <p className='self-start text-xs flex-grow ml-5 mt-2'>판결 승률</p>
               <div className='absolute top-[340px] w-[250px]'>
-                <HalfDoughnutChart win={30} lose={70} />
+                <HalfDoughnutChart
+                  win={userProfileData.memberProfileDTO.predicateResult}
+                  lose={
+                    userProfileData.memberProfileDTO.joinedResult -
+                    userProfileData.memberProfileDTO.predicateResult
+                  }
+                />
               </div>
               <div className=' text-xs text-[#C3C3C3]'>
                 {userProfileData.memberProfileDTO.joinedResult}전{' '}
@@ -55,22 +68,26 @@ export default function JudgeRecord() {
             </div>
             <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
               <div>제목</div>
-              <div className='w-[250px] flex justify-between'>
+              <div className='w-[230px] flex justify-between'>
                 <div>게시자</div>
                 <div className='mr-[20px]'>작성일</div>
               </div>
             </div>
-            <div className='h-full flex-grow'>{/* 내 판결 전적 목록 컴포넌트 부분 */}</div>
+            <div className='h-full flex-grow'>
+              {myJudgeLists && <MyJudgeList myJudgeList={myJudgeLists.postList} />}
+            </div>
             <div className='flex justify-center pb-4'>
-              <Pagination
-                activePage={page}
-                totalItemsCount={1}
-                pageRangeDisplayed={5}
-                prevPageText={'<'}
-                nextPageText={'>'}
-                onChange={handlePageChange}
-                activeLinkClass='active-page'
-              />
+              {myJudgeLists && (
+                <Pagination
+                  activePage={page}
+                  totalItemsCount={myJudgeLists.pageInfo.totalPageNum}
+                  pageRangeDisplayed={5}
+                  prevPageText={'<'}
+                  nextPageText={'>'}
+                  onChange={handlePageChange}
+                  activeLinkClass='active-page'
+                />
+              )}
             </div>
           </div>
         </div>
