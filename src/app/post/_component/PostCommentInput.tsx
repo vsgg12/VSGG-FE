@@ -1,52 +1,48 @@
-import { BsArrowUpCircle } from 'react-icons/bs';
-import Loading from '@/components/Loading';
-import useCommentStore from '../[postId]/store/useCommentStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import { useFormContext } from 'react-hook-form';
 
-interface IPostCommentProps {
-  handleSubmit: () => void;
+interface IPostCommentInputProps {
+  registerName: 'commentContent' | 'replyContent';
 }
 
-export default function PostCommentInput({ handleSubmit }: IPostCommentProps) {
-  const { isCommentInProgress, setCommentContent, commentContent, showReply, setShowReply } =
-    useCommentStore();
-
+export default function PostCommentInput({ registerName }: IPostCommentInputProps) {
+  const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
+  const { ref, ...rest } = register(registerName, { required: true });
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore.getState();
-   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentContent(e.target.value);
+  const resizeHeight = () => {
+    if (textareaRef.current) {
+      const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight || '20px', 10);
+      const maxLines = 10;
+      const maxHeight = lineHeight * maxLines;
+
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`;
+    }
   };
 
   return (
-    <div className='mb-[20px] flex grow flex-col'>
-      <input
-        className='h-[35px] w-[100%] resize-none overflow-hidden rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none'
-        onChange={handleInputChange}
+    <div>
+      <textarea
+        className='h-[35px] max-h-[200px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none resize-none'
+        {...rest}
+        ref={(e) => {
+          ref(e);
+          textareaRef.current = e;
+        }}
+        onChange={() => resizeHeight()}
+        maxLength={300}
         onFocus={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
           }
-          setCommentContent('');
-          setShowReply(null);
         }}
-        value={showReply ? '' : commentContent}
       />
-      <div className='flex w-full justify-end mt-[3px]'>
-        <button
-          className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
-          type='submit'
-          onClick={handleSubmit}
-          disabled={commentContent === ''}
-        >
-          <p className='mr-[4px]'>등록</p>
-          <BsArrowUpCircle />
-        </button>
-      </div>
-      {isCommentInProgress && !showReply && <Loading />}
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
           <AlertLoginModal />
