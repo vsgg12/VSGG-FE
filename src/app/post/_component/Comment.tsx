@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Icon_more from '../../../../public/svg/Icon_more.svg';
+// import Image from 'next/image';
+// import Icon_more from '../../../../public/svg/Icon_more.svg';
 
 interface ICommentProps {
   comment: IGetCommentItemType;
@@ -17,10 +17,10 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
 
     const diffMs: number = currentTime.getTime() - pastDate.getTime(); // 밀리초 단위 시간 차이 (number 타입)
 
-    if (diffMs < 6000) {
+    if (diffMs <= 6000) {
       //1분 미만
       return '방금 전';
-    } else if (diffMs < 60000) {
+    } else if (diffMs < 3600000) {
       //1시간 미만
       const diffMins = Math.floor(diffMs / (1000 * 60)); // 분 단위로 변환
       return `${diffMins}분 전`;
@@ -44,22 +44,22 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
   }
 
   return (
-    <>
-      <div>
-        <div className='flex flex-row relative font-medium items-center'>
-          <p className='text-[14px] text-[#333333] mr-1'>@</p>
-          <p className='mr-[6px] text-[14px] text-[#333333]'>{comment.member.nickname}</p>
-          <p className=' text-[14px] text-[#909090]'>{comment.member.tier}</p>
-          <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow'>
-            | {timeDifferenceFromNow(pastTime)}
-          </p>
-          <Image src={Icon_more} alt='more' width={12} height={12} className='cursor-pointer' />
-        </div>
-        <p className='text-[14px]'>
-          {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
-          {comment.content}
+    <div>
+      <div className='flex flex-row relative font-medium items-center'>
+        <p className='mr-[6px] text-[14px] text-[#333333]'>@{comment.member.nickname}</p>
+        <p className=' text-[14px] text-[#909090]'>{comment.member.tier}</p>
+        <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow'>
+          | {timeDifferenceFromNow(pastTime)}
         </p>
+        {/* <Image src={Icon_more} alt='more' width={12} height={12} className='cursor-pointer' /> */}
       </div>
-    </>
+      <p className='text-[14px]'>
+        {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
+        <span className='whitespace-pre-wrap'>
+          {comment.content}
+          <br />
+        </span>
+      </p>
+    </div>
   );
 }

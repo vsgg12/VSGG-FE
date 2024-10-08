@@ -60,18 +60,12 @@ type IGetCommentListType = {
   comments: IGetCommentItemType[];
 };
 
-interface ICommentType {
-  id: number;
-  content: string;
-  member: IGetMemberDTOType;
-}
-
 type IGetCommentItemType = {
   id: number;
   content: string;
   member: IGetMemberDTOType;
   createdDateTime: string;
-  children?: ICommentType[];
+  children?: IGetCommentItemType[];
 };
 
 type IGetVoteType = {
