@@ -15,6 +15,8 @@ import getMyProfileDTO from '@/api/getMyProfileDTO';
 import MyPostList from './_component/MyPostList';
 import Image from 'next/image';
 import editProgileIcon from "../../../public/svg/editProfileIcon.svg"
+import getMyJudgeList from '@/api/getMyJudgeList';
+import MyJudgeList from './_component/MyJudgeList';
 
 export default function MyPage() {
   const router = useRouter();
@@ -31,6 +33,11 @@ export default function MyPage() {
     queryKey: ['MY_POST_LISTS'],
     queryFn: () => getMyPostLists({ token: accessToken, size: '5', page: '1' }),
   });
+
+  const { data: myJudgeLists } = useQuery({
+    queryKey: ['MY_JUDGE_LISTS'],
+    queryFn: () => getMyJudgeList({token: accessToken, size: '5', page: '1'}),
+  })
 
   return (
     <div className='min-w-[1200px]'>
@@ -55,11 +62,11 @@ export default function MyPage() {
                   수정
                 </div> */}
               </div>
-              <div className='h-[180px] w-[120px] rounded-full relative'>
+              <div className='h-[135px] w-[135px] rounded-full relative'>
                 <img
-                  src={userProfileData.memberProfileDTO.profileImageUrl}
+                  src={userProfileData.memberProfileDTO.profileUrl}
                   alt='profileImage'
-                  className='h-full w-full rounded-full border'
+                  className='h-[135px] w-[135px] rounded-full border'
                 />
                 <Image
                   src={editProgileIcon}
@@ -99,7 +106,9 @@ export default function MyPage() {
               </div>
               <div className='h-0.5 w-full bg-[#8A1F21]'></div>
               <div className='flex w-full flex-col justify-center gap-4'>
-                <div className='text-[17px]'>다음 {userProfileData.memberProfileDTO.nextTier}까지</div>
+                <div className='text-[17px]'>
+                  다음 {userProfileData.memberProfileDTO.nextTier}까지
+                </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
                   <BarChart num={userProfileData.memberProfileDTO.joinedResult} />
                   <div className='text-[17px] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
@@ -129,12 +138,12 @@ export default function MyPage() {
               </div>
               <div className='flex justify-between text-xs text-[#C3C3C3] mb-[12px]'>
                 <div>제목</div>
-                <div className='w-[250px] flex justify-between'>
+                <div className='w-[230px] flex justify-between'>
                   <div>게시자</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
               </div>
-              {/* 내 판결 전적 목록 컴포넌트 호출 부분 */}
+              {myJudgeLists && <MyJudgeList myJudgeList={myJudgeLists.postList} />}
             </div>
 
             <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[764.8px] h-[466px] font-semibold'>
@@ -167,7 +176,7 @@ export default function MyPage() {
           <ChangeProfileModal
             setIsModalOpen={setIsModalOpen}
             userName={userProfileData.memberProfileDTO.nickName}
-            userProfileImage={userProfileData.memberProfileDTO.profileImageUrl}
+            userProfileImage={userProfileData.memberProfileDTO.profileUrl}
           />
         </ModalLayout>
       )}

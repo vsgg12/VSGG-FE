@@ -136,8 +136,6 @@ export default function PostRead() {
       return;
     }
     setIsCommentInProgress(true);
-
-    console.log(data);
     writeComment(data.commentContent.trim());
   };
 
@@ -147,8 +145,6 @@ export default function PostRead() {
       return;
     }
     setIsCommentInProgress(true);
-
-    console.log(data);
     writeComment(data.replyContent.trim());
   };
 

@@ -1,6 +1,8 @@
+import { DeleteMyProfileImage, PatchMyNickname, PatchMyProfileImage } from '@/api/changeProfile';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
-import { useMutation } from '@tanstack/react-query';
-import React, { SetStateAction, useRef, useState } from 'react';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 
 interface ChangeProgileModalProps {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -14,11 +16,15 @@ function ChangeProfileModal({
   userProfileImage,
 }: ChangeProgileModalProps) {
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [patchImage, setPatchImage] = useState<File | undefined>();
   const [isSameNickName, setIsSameNickName] = useState<boolean>(false);
   const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(true);
   const [profileImage, setProfileImage] = useState<string>(userProfileImage);
   const [nickName, setNickName] = useState<string>(userName);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { accessToken } = useAuthStore();
+  const queryClient = useQueryClient();
+  const formData = new FormData();
 
   const handleChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -44,7 +50,41 @@ function ChangeProfileModal({
         setIsNickNameCheck(true);
       }
     },
-    onError: (error) => console.log(error),
+    onError: (error) => console.error(error),
+  });
+
+  const { mutate: deleteProfileImage } = useMutation({
+    mutationFn: () => DeleteMyProfileImage(accessToken),
+    onSuccess: () => changeProfileImage(),
+  });
+
+  const { mutate: changeProfileImage } = useMutation({
+    mutationFn: () => PatchMyProfileImage({ token: accessToken, profile: formData }),
+    onSuccess: () => {
+      changeNickname();
+    },
+    onError: (error) => {
+      console.error(error);
+      alert('이미지 변경에 실패하셨습니다.');
+    },
+  });
+
+  const { mutate: changeNickname } = useMutation({
+    mutationFn: () =>
+      PatchMyNickname({
+        token: accessToken,
+        nickName: nickName,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['MY_PROFILE_INFO'],
+      });
+      alert('프로필 수정에 성공하셨습니다.');
+      setIsModalOpen(false);
+    },
+    onError: () => {
+      alert('닉네임 변경에 실패하셨습니다.');
+    },
   });
 
   const handleCheckNickname = () => {
@@ -60,16 +100,44 @@ function ChangeProfileModal({
     nicknameCheck();
   };
 
+  useEffect(() => {
+    if (patchImage) {
+      formData.append('profile', patchImage);
+    }
+  }, [patchImage, formData]);
+
+  // 기본 프로필 이미지 url을 File 타입으로 바꾸는 함수
+  const urlToFile = async (url: string, fileName: string, mimeType: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: mimeType });
+  };
+
   const handleDeleteImage = () => {
-    if (profileImage === '') {
+    if (
+      profileImage === 'none' ||
+      profileImage === 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+    ) {
       return;
     }
     setProfileImage('https://ssl.pstatic.net/static/pwe/address/img_profile.png');
+    urlToFile(
+      'https://ssl.pstatic.net/static/pwe/address/img_profile.png',
+      'profile.png',
+      'image/png',
+    )
+      .then((file) => {
+        setPatchImage(file);
+      })
+      .catch((error) => {
+        console.error('Error converting URL to file:', error);
+      });
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+      setPatchImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result as string);
@@ -90,16 +158,32 @@ function ChangeProfileModal({
   };
 
   const handleSave = () => {
-    if (isNickNameCheck || userName === nickName) {
-      // 닉네임, 프로필 이미지 수정하는 api 호출
-      setIsModalOpen(false);
-      return;
+    // 닉네임 변경이 없을 경우
+    if (isNickNameCheck && nickName === userName) {
+      if (userProfileImage === profileImage) {
+        setIsModalOpen(false);
+        return;
+      }
+      if (userProfileImage === 'none') {
+        changeProfileImage(); // 문제
+        return;
+      }
+      deleteProfileImage(); // 문제
     }
-    if (isSameNickName) {
+
+    // 닉네임 변경이 있을 경우
+    if (isNickNameCheck && nickName !== userName) {
+      if (userProfileImage !== profileImage) {
+        deleteProfileImage();
+        return;
+      }
+      changeNickname();
+    }
+
+    if (isSameNickName && userName !== nickName) {
       alert('닉네임 중복확인이 필요합니다.');
       return;
     }
-    
   };
 
   return (
