@@ -10,6 +10,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/getAlarms';
+import getMyProfileDTO from '@/api/getMyProfileDTO';
 
 export default function Header() {
   const router = useRouter();
@@ -18,6 +19,11 @@ export default function Header() {
   const currentUrl = usePathname();
   const { accessToken, user, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
+
+  const { data: userProfileData } = useQuery({
+    queryKey: ['MY_PROFILE_INFO'],
+    queryFn: () => getMyProfileDTO(accessToken),
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
@@ -130,7 +136,7 @@ export default function Header() {
                 onClick={handleProfileBtnClick}
               >
                 <img
-                  src={user?.profile_image}
+                  src={userProfileData?.memberProfileDTO.profileUrl}
                   alt='profileImage'
                   className='h-[36px] w-[36px] rounded-full border-[#8A1F21] border-[2px]'
                 />
