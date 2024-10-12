@@ -2,7 +2,7 @@ import api from '@/_lib/fetcher';
 
 interface IPatchMyProfileImageProps {
   token: string;
-  profile: string;
+  profile: FormData;
 }
 
 interface IPatchMyNicknameProps {
@@ -11,11 +11,17 @@ interface IPatchMyNicknameProps {
 }
 
 export async function PatchMyProfileImage({ token, profile }: IPatchMyProfileImageProps) {
-  const data = await api.patch({
-    endpoint: '/mypage/profile',
-    authorization: token,
-    body: { profile: profile },
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}/mypage/profile`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: profile,
   });
+  if (!response.ok) {
+    throw new Error('Failed to patch profile image');
+  }
+  const data = await response.json();
   return data;
 }
 

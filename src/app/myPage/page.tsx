@@ -62,11 +62,11 @@ export default function MyPage() {
                   수정
                 </div> */}
               </div>
-              <div className='h-[180px] w-[120px] rounded-full relative'>
+              <div className='h-[135px] w-[135px] rounded-full relative'>
                 <img
                   src={userProfileData.memberProfileDTO.profileUrl}
                   alt='profileImage'
-                  className='h-full w-full rounded-full border'
+                  className='h-[135px] w-[135px] rounded-full border'
                 />
                 <Image
                   src={editProgileIcon}
