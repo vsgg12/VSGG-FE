@@ -148,7 +148,7 @@ export default function Header() {
                 <ProfileModal
                   handleLogoutClick={handleLogoutBtnClick}
                   email={user.email}
-                  profileImage={user.profile_image}
+                  profileImage={userProfileData?.memberProfileDTO.profileUrl}
                   nickname={user.nickname}
                 />
               )}
