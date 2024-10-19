@@ -1,5 +1,5 @@
 import React from 'react'
-import MyPostItem from './MyPostItem';
+import MyPostItem from '@/app/myPage/_component/MyPostItem';
 
 interface IMyPostListProps{
     myPostList: IGetMyPostItemsType[];

@@ -1,7 +1,8 @@
 import React from 'react'
-import VoteStatusCircle from './VoteStatusCircle';
+
 import formatDate from '@/utils/formatDate';
 import { useRouter } from 'next/navigation';
+import VoteStatusCircle from '@/app/myPage/_component/VoteStatusCircle'
 
 interface IMyPostItemProps{
     myPostItem: IGetMyPostItemsType;
