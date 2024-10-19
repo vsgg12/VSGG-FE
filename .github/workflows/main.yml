@@ -1,4 +1,4 @@
-name: deploy to S3
+name: Deploy
 
 on:
   push:
@@ -13,55 +13,51 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-    
+
+      - name: Check Node version
+        run: node -v
+
       - run: touch ./.env.local
       - run: echo "${{ secrets.ENV_LOCAL }}" > ./.env.local
 
-      
-      - name: Install dependencies
-        run: npm ci
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: node_modules
+          key: npm-packages-${{ hashFiles('**/package-lock.json') }}
 
-      # 프로젝트 빌드
-      - name: Build next app
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Clean build directory
+        run: rm -rf .next
+
+      - name: Build
         run: npm run build
 
- 
- 
- # 프로젝트 압축
-      - name: Make zip file
-        run: zip -qq -r ./vsgg.zip . -x "node_modules/*"
-        # -qq: quit 모드로 실행 (에러나 경고메세지만 출력하도록 함)
-        # -r: 지정된 디렉토리를 재귀적으로 압축 (하위 디렉토리와 파일들 모두 압축)
-        # -x "node_modules/*": node_modules 폴더 제외
+      - name: Create zip file
+        run: zip -qq -r --symlinks ./vsgg.zip .
+        shell: bash
 
-      # Github Action에서 AWS의 권한 자격을 얻어오는 단계
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      # 압축된 파일을 S3에 업로드
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./vsgg.zip s3://$S3_BUCKET_NAME/vsgg.zip
 
-      # S3에 업로드 된 빌드 파일을 이용해 CodeDeploy가 정의된 동작을 하도록 트리거
-      - name: Code Deploy
+      - name: Deploy for Development
         run: |
           aws deploy create-deployment \
-          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=vsgg.zip
+          --s3-location bucket=$S3_BUCKET_NAME,key=vsgg.zip,bundleType=zip
