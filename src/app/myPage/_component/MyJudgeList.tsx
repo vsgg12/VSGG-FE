@@ -1,5 +1,5 @@
 import React from 'react'
-import MyJudgeItem from './MyJudgeItem';
+import MyJudgeItem from '@/app/myPage/_component/MyJudgeItem';
 
 interface IMyJudgeListProps {
     myJudgeList: IVotedPostItem[];
