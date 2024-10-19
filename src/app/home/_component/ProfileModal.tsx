@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 interface IProfileModalProps {
   handleLogoutClick: () => void;
   nickname: string;
-  profileImage: string;
+  profileImage: string | undefined;
   email: string;
 }
 
@@ -22,15 +22,15 @@ export default function ProfileModal({
   const router = useRouter();
 
   const handleMyPageBtnClick = (): void => {
-    router.push('/servicePreparing');
+    router.push('/myPage');
   };
 
   const handleMyJudgeBtnClick = (): void => {
-    router.push('/servicePreparing');
+    router.push('/myPage/judgeRecord');
   };
 
   const handleMyPostBtnClick = (): void => {
-    router.push('/servicePreparing');
+    router.push('/myPage/myPosts');
   };
 
   return (

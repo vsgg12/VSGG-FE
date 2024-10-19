@@ -60,17 +60,12 @@ type IGetCommentListType = {
   comments: IGetCommentItemType[];
 };
 
-interface ICommentType {
-  id: number;
-  content: string;
-  member: IGetMemberDTOType;
-}
-
 type IGetCommentItemType = {
   id: number;
   content: string;
   member: IGetMemberDTOType;
-  children?: ICommentType[];
+  createdDateTime: string;
+  children?: IGetCommentItemType[];
 };
 
 type IGetVoteType = {
@@ -105,18 +100,16 @@ type IAlarmsType = {
   createDateTime: string;
 };
 
-type IJudgeType = {
-  title: string;
-  writer: string;
-  grade: number;
-  date: string;
+type IGetMyPostsType = {
+  pageInfo: IGetPageInfo;
+  postList: IGetMyPostItemsType[];
 };
 
-type IGetMyPostsType = {
-  resultCode: number;
-  resultMsg: string;
-  postList: IGetMyPostItemsType[];
-}
+type IGetPageInfo = {
+  size: nunmber;
+  page: number;
+  totalPageNum: number;
+};
 
 type IGetMyPostItemsType = {
   id: number;
@@ -124,7 +117,7 @@ type IGetMyPostItemsType = {
   commentNum: number;
   voteStatus: string;
   createdDate: string;
-}
+};
 
 type IGetMyPageType = {
   resultCode: number;
@@ -141,4 +134,21 @@ type IMemperProfileDTOType = {
   predicateResult: number;
   nextPredicateResult: number;
   tier: string;
-}
+  nextTier: string;
+  profileUrl: string;
+};
+
+type IGetMyJudgeType = {
+  pageInfo: IGetPageInfo;
+  postList: IVotedPostItem[];
+};
+
+type IVotedPostItem = {
+  id: number;
+  title: string;
+  authorNickname: string;
+  voteStatus: string;
+  myVoteResult: string | null;
+  createdDate: string;
+  authorTier: string;
+};
