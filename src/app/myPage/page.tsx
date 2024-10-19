@@ -12,9 +12,9 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
-import MyPostList from './_component/MyPostList';
+import MyPostList from '@/app/myPage/_component/MyPostList';
 import Image from 'next/image';
-import editProgileIcon from "../../../public/svg/editProfileIcon.svg"
+import editProgileIcon from '../../../public/svg/editProfileIcon.svg';
 import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from './_component/MyJudgeList';
 
@@ -36,8 +36,8 @@ export default function MyPage() {
 
   const { data: myJudgeLists } = useQuery({
     queryKey: ['MY_JUDGE_LISTS'],
-    queryFn: () => getMyJudgeList({token: accessToken, size: '5', page: '1'}),
-  })
+    queryFn: () => getMyJudgeList({ token: accessToken, size: '5', page: '1' }),
+  });
 
   return (
     <div className='min-w-[1200px]'>
