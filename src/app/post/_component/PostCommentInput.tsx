@@ -29,7 +29,7 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
   return (
     <div>
       <textarea
-        className='h-[35px] max-h-[200px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none resize-none'
+        className='h-[51px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] pt-[12px] text-[13px] focus:outline-none resize-none scrollbar-hide'
         {...rest}
         ref={(e) => {
           ref(e);
