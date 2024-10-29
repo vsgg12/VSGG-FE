@@ -47,6 +47,8 @@ export default function PostRead() {
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
+  const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const [targetComment, setTargetComment] = useState<number | null>(null);
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
@@ -102,10 +104,13 @@ export default function PostRead() {
 
   const { mutate: writeComment } = useMutation({
     mutationFn: (data: string) =>
-      PostComment(id, { parentId: showReply, content: data }, accessToken),
+      PostComment(id, { parentId: targetComment, content: data }, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsCommentInProgress(false);
+      if (showReply) {
+        setTargetComment(showReply);
+      }
       commentMethods.reset();
       replyMethods.reset();
     },
@@ -165,6 +170,20 @@ export default function PostRead() {
     isMoreModalOpen ? setIsMoreModalOpen(false) : setIsMoreModalOpen(true);
   };
 
+  const handleOpenCommentMoreModal = (commentId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
+  };
+
+  const handleOpenReplyMoreModal = (replyId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
+  };
+
+  const handleReply = (commentId: number, targetId: number) => {
+    setTargetComment(targetId);
+    setShowReply(commentId);
+    setIsCommentMoreModalOpen(null);
+  };
+
   return (
     <div className='min-w-[1200px]'>
       <div className='flex'>
@@ -210,11 +229,7 @@ export default function PostRead() {
                         />
                         {isMoreModalOpen && (
                           <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
-                            {isOwner ? (
-                              <MoreModal type='owner' where='post' />
-                            ) : (
-                              <MoreModal type='user' where='post' />
-                            )}
+                            <MoreModal type={isOwner ? 'owner' : 'user'} where='post' />
                           </div>
                         )}
                       </div>
@@ -272,6 +287,7 @@ export default function PostRead() {
                           <PostCommentInput
                             registerName={'commentContent'}
                             setShowReply={setShowReply}
+                            setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                           />
                           <div className='flex w-full justify-end mt-[3px]'>
                             {showReply === null ? (
@@ -299,21 +315,49 @@ export default function PostRead() {
                       <div className='scroll overflow-hidden h-[770px]'>
                         {commentData &&
                           commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                            <div key={index} className='mb-[20px] text-[13px]'>
-                              <Comment
-                                comment={comment}
-                                deleteComment={() => handleDeleteComment(comment.id)}
-                              />
+                            <div key={index} className='mb-[20px] text-[13px] '>
+                              <div className='relative flex justify-between'>
+                                <Comment
+                                  comment={comment}
+                                  deleteComment={() => handleDeleteComment(comment.id)}
+                                />
+                                {isCommentMoreModalOpen === comment.id && (
+                                  <div className='absolute translate-x-[210px]'>
+                                    <MoreModal
+                                      type={
+                                        comment.member.nickname === user?.nickname
+                                          ? 'owner'
+                                          : 'user'
+                                      }
+                                      where='comment'
+                                      handleReply={() => handleReply(comment.id, comment.id)}
+                                      commentId={comment.id}
+                                      targetId={comment.id}
+                                    />
+                                  </div>
+                                )}
+                                <Image
+                                  src={Icon_more}
+                                  alt='more'
+                                  width={12}
+                                  height={12}
+                                  className='cursor-pointer flex self-start'
+                                  onClick={() => handleOpenCommentMoreModal(comment.id)}
+                                />
+                              </div>
+
                               <button
                                 key={index}
                                 type='button'
                                 onClick={() => {
-                                  if (!isLogin) {
-                                    setIsLoginModalOpen(true);
-                                  } else if (showReply && showReply === comment.id) {
+                                  if (showReply === comment.id) {
                                     setShowReply(null);
+                                    setTargetComment(null);
+                                    setIsCommentMoreModalOpen(null);
                                   } else {
                                     setShowReply(comment.id);
+                                    setTargetComment(comment.id);
+                                    setIsCommentMoreModalOpen(null);
                                     replyMethods.reset({ replyContent: '' });
                                     commentMethods.reset({ commentContent: '' });
                                   }
@@ -323,21 +367,52 @@ export default function PostRead() {
                                 {showReply === comment.id
                                   ? `답글 ${comment.children?.length}개 닫기`
                                   : comment.children?.length === 0
-                                    ? '답글 달기'
+                                    ? '답글'
                                     : `답글 ${comment.children?.length}개 열기`}
                               </button>
+
                               {showReply === comment.id && (
                                 <div>
                                   <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
                                     {comment.children?.map(
                                       (reply: IGetCommentItemType, index: number) => (
-                                        <div key={index} className='mb-[10px]'>
+                                        <div
+                                          key={index}
+                                          className='mb-[10px] flex justify-between relative'
+                                        >
                                           <Comment
                                             comment={reply}
                                             isReply={true}
                                             targetComment={comment}
                                             deleteComment={() => handleDeleteComment(reply.id)}
                                           />
+                                          <Image
+                                            src={Icon_more}
+                                            alt='more'
+                                            width={12}
+                                            height={12}
+                                            className='cursor-pointer flex self-start'
+                                            onClick={() => {
+                                              handleOpenReplyMoreModal(reply.id);
+                                            }}
+                                          />
+                                          {isCommentMoreModalOpen === reply.id && (
+                                            <div className='absolute translate-x-[185px]'>
+                                              <MoreModal
+                                                type={
+                                                  reply.member.nickname === user?.nickname
+                                                    ? 'owner'
+                                                    : 'user'
+                                                }
+                                                where='comment'
+                                                handleReply={() =>
+                                                  handleReply(comment.id, reply.id)
+                                                }
+                                                commentId={comment.id}
+                                                targetId={reply.id}
+                                              />
+                                            </div>
+                                          )}
                                         </div>
                                       ),
                                     )}
@@ -348,7 +423,10 @@ export default function PostRead() {
                                         onSubmit={replyMethods.handleSubmit(onReplySubmit)}
                                         className='w-full'
                                       >
-                                        <PostCommentInput registerName={'replyContent'} />
+                                        <PostCommentInput
+                                          registerName={'replyContent'}
+                                          setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                                        />
                                         <div className='flex w-full justify-end mt-[3px]'>
                                           <button
                                             className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'

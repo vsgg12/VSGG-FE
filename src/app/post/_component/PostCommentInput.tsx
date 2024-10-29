@@ -7,9 +7,14 @@ import { useFormContext } from 'react-hook-form';
 interface IPostCommentInputProps {
   registerName: 'commentContent' | 'replyContent';
   setShowReply?: Dispatch<SetStateAction<number | null>>;
+  setIsCommentMoreModalOpen: Dispatch<SetStateAction<number | null>>;
 }
 
-export default function PostCommentInput({ registerName, setShowReply }: IPostCommentInputProps) {
+export default function PostCommentInput({
+  registerName,
+  setShowReply,
+  setIsCommentMoreModalOpen,
+}: IPostCommentInputProps) {
   const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
   const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -43,9 +48,9 @@ export default function PostCommentInput({ registerName, setShowReply }: IPostCo
             setIsLoginModalOpen(true);
           }
           if (registerName === 'commentContent') {
-            console.log(`Focused on ${registerName}`);
             setShowReply && setShowReply(null);
           }
+          setIsCommentMoreModalOpen(null);
         }}
       />
       {isLoginModalOpen && (

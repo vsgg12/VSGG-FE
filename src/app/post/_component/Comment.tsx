@@ -1,6 +1,3 @@
-// import Image from 'next/image';
-// import Icon_more from '../../../../public/svg/Icon_more.svg';
-
 interface ICommentProps {
   comment: IGetCommentItemType;
   deleteComment: () => void;
@@ -11,36 +8,24 @@ interface ICommentProps {
 export default function Comment({ comment, targetComment, isReply = false }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
+  const ONE_MINUTE = 60000;
+  const ONE_HOUR = 3600000;
+  const ONE_DAY = 86400000;
+  const ONE_MONTH = 2592000000;
+  const ONE_YEAR = 31557600000;
+
   function timeDifferenceFromNow(pastTime: string) {
     const currentTime = new Date();
     const pastDate = new Date(pastTime);
 
     const diffMs: number = currentTime.getTime() - pastDate.getTime(); // 밀리초 단위 시간 차이 (number 타입)
 
-    if (diffMs <= 6000) {
-      //1분 미만
-      return '방금 전';
-    } else if (diffMs < 3600000) {
-      //1시간 미만
-      const diffMins = Math.floor(diffMs / (1000 * 60)); // 분 단위로 변환
-      return `${diffMins}분 전`;
-    } else if (diffMs < 86400000) {
-      //24시간 미만
-      const diffHours = Math.floor(diffMs / (1000 * 60 * 60)); // 시간 단위로 변환
-      return `${diffHours}시간 전`;
-    } else if (diffMs < 2592000000) {
-      //30일 이하
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // 일 단위로 변환
-      return `${diffDays}일 전`;
-    } else if (diffMs < 31557600000) {
-      //12개월 미만
-      const diffMonths = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 30)); // 월 단위로 변환
-      return `${diffMonths}개월 전`;
-    } else {
-      //12개월 이상
-      const diffYears = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365)); // 년 단위로 변환
-      return `${diffYears}년 전`;
-    }
+    if (diffMs < ONE_MINUTE) return '방금 전';
+    if (diffMs < ONE_HOUR) return `${Math.floor(diffMs / ONE_MINUTE)}분 전`;
+    if (diffMs < ONE_DAY) return `${Math.floor(diffMs / ONE_HOUR)}시간 전`;
+    if (diffMs < ONE_MONTH) return `${Math.floor(diffMs / ONE_DAY)}일 전`;
+    if (diffMs < ONE_YEAR) return `${Math.floor(diffMs / ONE_MONTH)}개월 전`;
+    return `${Math.floor(diffMs / ONE_YEAR)}년 전`;
   }
 
   return (
@@ -51,7 +36,6 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
         <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow'>
           | {timeDifferenceFromNow(pastTime)}
         </p>
-        {/* <Image src={Icon_more} alt='more' width={12} height={12} className='cursor-pointer' /> */}
       </div>
       <p className='text-[14px]'>
         {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}

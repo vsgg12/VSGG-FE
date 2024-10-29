@@ -3,10 +3,20 @@ import React from 'react';
 interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
+  handleReply?: (commentId: number, targetId: number) => void;
+  targetId?: number;
+  commentId?: number;
 }
 
-function MoreModal({ type, where }: Props) {
-  const items = type === 'owner' ? ['수정', '삭제'] : ['신고'];
+function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply }: Props) {
+  const items =
+    where === 'post'
+      ? type === 'owner'
+        ? ['수정', '삭제']
+        : ['신고']
+      : type === 'owner'
+        ? ['수정', '삭제']
+        : ['답글', '신고'];
 
   const handleClick = (text: string) => {
     switch (text) {
@@ -21,6 +31,9 @@ function MoreModal({ type, where }: Props) {
       case '신고':
         // 이건 어떻게 할지 아직 모름
         alert('준비중입니다.');
+        break;
+      case '답글':
+        handleReply && handleReply(commentId, targetId);
         break;
       default:
         break;
