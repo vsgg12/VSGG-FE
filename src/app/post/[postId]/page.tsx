@@ -54,6 +54,12 @@ export default function PostRead() {
   });
 
   useEffect(() => {
+    if (post?.postDTO.isDelete === "TRUE") {
+      router.push("/notFound")
+    }
+  },[post])
+
+  useEffect(() => {
     if (post) {
       const inGameInfo = post.postDTO.inGameInfoList[0] || {
         championName: 'Unknown',
