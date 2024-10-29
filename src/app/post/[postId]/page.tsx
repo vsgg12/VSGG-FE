@@ -37,7 +37,6 @@ export default function PostRead() {
   const router = useRouter();
   const commentMethods = useForm<{ commentContent: string }>();
   const replyMethods = useForm<{ replyContent: string }>();
-  const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -47,13 +46,20 @@ export default function PostRead() {
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
-  const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
-  const [targetComment, setTargetComment] = useState<number | null>(null);
 
+  const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const [showReply, setShowReply] = useState<null | number>(null);
+  const [targetComment, setTargetComment] = useState<number | null>(null);
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (post?.postDTO.isDelete === 'TRUE') {
+      router.push('/notFound');
+    }
+  }, [post]);
 
   useEffect(() => {
     if (post) {
@@ -230,6 +236,11 @@ export default function PostRead() {
                         {isMoreModalOpen && (
                           <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
                             <MoreModal type={isOwner ? 'owner' : 'user'} where='post' />
+                            {isOwner ? (
+                              <MoreModal type='owner' where='post' postId={post.postDTO.id} />
+                            ) : (
+                              <MoreModal type='user' where='post' />
+                            )}
                           </div>
                         )}
                       </div>
@@ -383,7 +394,7 @@ export default function PostRead() {
                                           <Comment
                                             comment={reply}
                                             isReply={true}
-                                            targetComment={comment}
+                                            targetNickname={''}
                                             deleteComment={() => handleDeleteComment(reply.id)}
                                           />
                                           <Image

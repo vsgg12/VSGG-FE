@@ -1,3 +1,7 @@
+import deletePost from '@/api/deletePost';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface Props {
@@ -6,9 +10,10 @@ interface Props {
   handleReply?: (commentId: number, targetId: number) => void;
   targetId?: number;
   commentId?: number;
+  postId?: number;
 }
 
-function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply }: Props) {
+function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply, postId }: Props) {
   const items =
     where === 'post'
       ? type === 'owner'
@@ -18,6 +23,20 @@ function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply }: Pr
         ? ['수정', '삭제']
         : ['답글', '신고'];
 
+  const { accessToken } = useAuthStore();
+  const router = useRouter();
+
+  const { mutate: deletePostItem } = useMutation({
+    mutationFn: () => deletePost(postId, accessToken),
+    onSuccess: () => {
+      alert('게시글이 삭제되었습니다.');
+      router.push('/home');
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
   const handleClick = (text: string) => {
     switch (text) {
       case '수정':
@@ -25,8 +44,9 @@ function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply }: Pr
         alert('준비중입니다.');
         break;
       case '삭제':
-        // where에 따른 게시글 삭제, 댓글 삭제 api 호출 다르게
-        alert('삭제');
+        if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
+          deletePostItem();
+        }
         break;
       case '신고':
         // 이건 어떻게 할지 아직 모름
