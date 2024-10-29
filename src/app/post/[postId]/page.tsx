@@ -54,10 +54,10 @@ export default function PostRead() {
   });
 
   useEffect(() => {
-    if (post?.postDTO.isDelete === "TRUE") {
-      router.push("/notFound")
+    if (post?.postDTO.isDelete === 'TRUE') {
+      router.push('/notFound');
     }
-  },[post])
+  }, [post]);
 
   useEffect(() => {
     if (post) {
@@ -217,7 +217,7 @@ export default function PostRead() {
                         {isMoreModalOpen && (
                           <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
                             {isOwner ? (
-                              <MoreModal type='owner' where='post' />
+                              <MoreModal type='owner' where='post' postId={post.postDTO.id} />
                             ) : (
                               <MoreModal type='user' where='post' />
                             )}
