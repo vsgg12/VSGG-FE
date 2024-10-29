@@ -1,14 +1,15 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
   registerName: 'commentContent' | 'replyContent';
+  setShowReply?: Dispatch<SetStateAction<number | null>>;
 }
 
-export default function PostCommentInput({ registerName }: IPostCommentInputProps) {
+export default function PostCommentInput({ registerName, setShowReply }: IPostCommentInputProps) {
   const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
   const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -29,7 +30,7 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
   return (
     <div>
       <textarea
-        className='h-[35px] max-h-[200px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] py-[5px] text-[13px] focus:outline-none resize-none'
+        className='h-[51px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] pt-[12px] text-[13px] focus:outline-none resize-none scrollbar-hide'
         {...rest}
         ref={(e) => {
           ref(e);
@@ -40,6 +41,10 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
         onFocus={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
+          }
+          if (registerName === 'commentContent') {
+            console.log(`Focused on ${registerName}`);
+            setShowReply && setShowReply(null);
           }
         }}
       />

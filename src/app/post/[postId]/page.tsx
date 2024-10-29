@@ -251,7 +251,10 @@ export default function PostRead() {
                           onSubmit={commentMethods.handleSubmit(onCommentSubmit)}
                           className='w-full'
                         >
-                          <PostCommentInput registerName={'commentContent'} />
+                          <PostCommentInput
+                            registerName={'commentContent'}
+                            setShowReply={setShowReply}
+                          />
                           <div className='flex w-full justify-end mt-[3px]'>
                             {showReply === null ? (
                               <button
@@ -293,6 +296,8 @@ export default function PostRead() {
                                     setShowReply(null);
                                   } else {
                                     setShowReply(comment.id);
+                                    replyMethods.reset({ replyContent: '' });
+                                    commentMethods.reset({ commentContent: '' });
                                   }
                                 }}
                                 className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
