@@ -1,14 +1,15 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
   registerName: 'commentContent' | 'replyContent';
+  setShowReply?: Dispatch<SetStateAction<number | null>>;
 }
 
-export default function PostCommentInput({ registerName }: IPostCommentInputProps) {
+export default function PostCommentInput({ registerName, setShowReply }: IPostCommentInputProps) {
   const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
   const { ref, ...rest } = register(registerName, { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -40,6 +41,10 @@ export default function PostCommentInput({ registerName }: IPostCommentInputProp
         onFocus={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
+          }
+          if (registerName === 'commentContent') {
+            console.log(`Focused on ${registerName}`);
+            setShowReply && setShowReply(null);
           }
         }}
       />
