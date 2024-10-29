@@ -2,10 +2,10 @@ interface ICommentProps {
   comment: IGetCommentItemType;
   deleteComment: () => void;
   isReply?: boolean;
-  targetComment?: IGetCommentItemType;
+  targetNickname?: string;
 }
 
-export default function Comment({ comment, targetComment, isReply = false }: ICommentProps) {
+export default function Comment({ comment, targetNickname, isReply = false }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
@@ -38,7 +38,7 @@ export default function Comment({ comment, targetComment, isReply = false }: ICo
         </p>
       </div>
       <p className='text-[14px]'>
-        {isReply && <span className='text-[#8A1F21]'>@{targetComment?.member.nickname} </span>}
+        {isReply && <span className='text-[#8A1F21]'>@{targetNickname} </span>}
         <span className='whitespace-pre-wrap'>
           {comment.content}
           <br />
