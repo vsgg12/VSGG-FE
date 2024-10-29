@@ -20,7 +20,10 @@ function MoreModal({ type, where, postId }: Props) {
     onSuccess: () => {
       alert('게시글이 삭제되었습니다.');
       router.push('/home');
-    },
+      },
+      onError: (error) => {
+          alert(error)
+    }
   });
 
   const handleClick = (text: string) => {
@@ -30,7 +33,9 @@ function MoreModal({ type, where, postId }: Props) {
         alert('준비중입니다.');
         break;
       case '삭제':
-        where === 'post' ? deletePostItem() : alert("댓글 삭제 기능 준비중입니다.");
+        if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
+          deletePostItem();
+        }
         break;
       case '신고':
         // 이건 어떻게 할지 아직 모름
