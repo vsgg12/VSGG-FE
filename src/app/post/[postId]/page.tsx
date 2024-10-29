@@ -293,6 +293,7 @@ export default function PostRead() {
                                     setShowReply(null);
                                   } else {
                                     setShowReply(comment.id);
+                                    replyMethods.reset({ replyContent: '' });
                                   }
                                 }}
                                 className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
