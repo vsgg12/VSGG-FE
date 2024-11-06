@@ -50,11 +50,9 @@ export default function MyPage() {
       {userProfileData && user && (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col gap-10 mb-20'>
-            <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[30px] rounded-[30px] bg-white px-10 py-5'>
+            <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[20px] rounded-[30px] bg-white px-10 py-10'>
               <div className='flex gap-3 items-center'>
-                <div className='text-[20px] font-semibold'>
-                  {userProfileData.memberProfileDTO.nickName} 님
-                </div>
+                <div className='text-[20px]'>{userProfileData.memberProfileDTO.nickName} 님</div>
                 {/* <div
                   className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'
                   onClick={() => setIsModalOpen(true)}
@@ -77,16 +75,14 @@ export default function MyPage() {
                   onClick={() => setIsModalOpen(true)}
                 />
               </div>
-              <div className='text-[20px]  font-semibold'>
-                {userProfileData.memberProfileDTO.tier}
-              </div>
-              <div className='text-[16px] font-semibold'>
+              <div className='text-[20px]'>{userProfileData.memberProfileDTO.tier}</div>
+              <div className='text-[16px] mb-[5px]'>
                 보유 포인트 : {userProfileData.memberProfileDTO.point}P
               </div>
-              <div className='h-0.5 w-full bg-[#8A1F21]' />
-              <div className='h-[310px] flex flex-col items-center relative'>
-                <div className='text-[17px]'>판결 승률</div>
-                <div className='absolute w-[250px] top-[-20px]'>
+              <div className='h-1 w-full bg-[#8A1F21]' />
+              <div className='h-[350px] flex flex-col items-center relative'>
+                <p className='text-[17px] translate-x-[-80px]'>판결 승률</p>
+                <div className='absolute w-[180px] '>
                   <HalfDoughnutChart
                     win={userProfileData.memberProfileDTO.predicateResult}
                     lose={
@@ -95,8 +91,7 @@ export default function MyPage() {
                     }
                   />
                 </div>
-
-                <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[-10px]'>
+                <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[0px]'>
                   {userProfileData.memberProfileDTO.joinedResult}전{' '}
                   {userProfileData.memberProfileDTO.predicateResult}승{' '}
                   {userProfileData.memberProfileDTO.joinedResult -
@@ -104,10 +99,10 @@ export default function MyPage() {
                   패
                 </div>
               </div>
-              <div className='h-0.5 w-full bg-[#8A1F21]'></div>
-              <div className='flex w-full flex-col justify-center gap-4'>
-                <div className='text-[17px]'>
-                  다음 {userProfileData.memberProfileDTO.nextTier}까지
+              <div className='h-1 w-full bg-[#8A1F21]'></div>
+              <div className='flex w-full flex-col justify-center gap-5'>
+                <div className='text-[17px] translate-x-[20px]'>
+                  {userProfileData.memberProfileDTO.nextTier}까지
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
                   <BarChart num={userProfileData.memberProfileDTO.joinedResult} />
