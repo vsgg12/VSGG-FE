@@ -25,8 +25,9 @@ import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useForm, FormProvider } from 'react-hook-form';
-// import Image from 'next/image';
-// import Icon_more from '../../../../public/svg/Icon_more.svg';
+import Image from 'next/image';
+import Icon_more from '../../../../public/svg/Icon_more.svg';
+import MoreModal from '@/components/modals/MoreModal';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -45,11 +46,18 @@ export default function PostRead() {
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (post?.postDTO.isDelete === 'TRUE') {
+      router.push('/notFound');
+    }
+  }, [post]);
 
   useEffect(() => {
     if (post) {
@@ -159,6 +167,10 @@ export default function PostRead() {
     deleteComment(commentId);
   };
 
+  const handleMoreIconClick = () => {
+    isMoreModalOpen ? setIsMoreModalOpen(false) : setIsMoreModalOpen(true);
+  };
+
   return (
     <div className='min-w-[1200px]'>
       <div className='flex'>
@@ -193,15 +205,27 @@ export default function PostRead() {
                 {post && (
                   <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[600px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
+                      <div className='flex justify-end relative'>
+                        <Image
+                          className='cursor-pointer'
+                          alt='moreIcon'
+                          width={20}
+                          height={20}
+                          src={Icon_more}
+                          onClick={handleMoreIconClick}
+                        />
+                        {isMoreModalOpen && (
+                          <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
+                            {isOwner ? (
+                              <MoreModal type='owner' where='post' postId={post.postDTO.id} />
+                            ) : (
+                              <MoreModal type='user' where='post' />
+                            )}
+                          </div>
+                        )}
+                      </div>
                       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                         <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
-                        {/* <Image
-                          src={Icon_more}
-                          alt='more'
-                          width={12}
-                          height={12}
-                          className='cursor-pointer'
-                        /> */}
                       </div>
                       <div className='flex flex-row items-center justify-start font-medium '>
                         <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
@@ -251,7 +275,10 @@ export default function PostRead() {
                           onSubmit={commentMethods.handleSubmit(onCommentSubmit)}
                           className='w-full'
                         >
-                          <PostCommentInput registerName={'commentContent'} />
+                          <PostCommentInput
+                            registerName={'commentContent'}
+                            setShowReply={setShowReply}
+                          />
                           <div className='flex w-full justify-end mt-[3px]'>
                             {showReply === null ? (
                               <button
@@ -293,6 +320,8 @@ export default function PostRead() {
                                     setShowReply(null);
                                   } else {
                                     setShowReply(comment.id);
+                                    replyMethods.reset({ replyContent: '' });
+                                    commentMethods.reset({ commentContent: '' });
                                   }
                                 }}
                                 className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'

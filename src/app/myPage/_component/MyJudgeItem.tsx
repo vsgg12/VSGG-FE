@@ -29,7 +29,7 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
         </div>
 
         <div className='flex justify-between min-w-[240px]'>
-          <div className="flex gap-[5px]">
+          <div className='flex gap-[5px] text-[#333333]'>
             {myJudgeItem.authorNickname}{' '}
             <span className='text-[#C3C3C3]'>{myJudgeItem.authorTier}</span>
           </div>
