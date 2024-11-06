@@ -14,7 +14,6 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose }) => {
   const winPercentage = (win / total) * 100;
 
   const data = {
-    labels: ['승리', '패배'],
     datasets: [
       {
         label: '# of Votes',
@@ -28,12 +27,13 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose }) => {
   const options = {
     rotation: -90,
     circumference: 180,
+    cutout: '67%',
   };
 
   return (
-    <div className='relative flex flex-col items-center justify-center'>
+    <div className='relative flex flex-col items-center justify-center '>
       <Doughnut data={data} options={options} />
-      <span className='absolute text-[30px] text-[#8A1F21] bottom-[3.5rem]'>
+      <span className='absolute text-[25px] text-[#8A1F21] bottom-[45px]'>
         {winPercentage.toFixed(0)}%
       </span>
     </div>
