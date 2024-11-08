@@ -54,7 +54,7 @@ export default function PostRead() {
   });
 
   useEffect(() => {
-    if (post?.postDTO.isDelete === 'TRUE') {
+    if (post?.postDTO.isDeleted === 'TRUE') {
       router.push('/notFound');
     }
   }, [post]);

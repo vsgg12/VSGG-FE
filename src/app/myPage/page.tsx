@@ -53,16 +53,14 @@ export default function MyPage() {
             <div className='w-[338px] h-[820px] flex flex-col items-center  gap-[20px] rounded-[30px] bg-white px-10 py-10'>
               <div className='flex gap-3 items-center'>
                 <div className='text-[20px]'>{userProfileData.memberProfileDTO.nickName} 님</div>
-                {/* <div
-                  className='text-[#8A1F21] text-[10px] font-semibold cursor-pointer'
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  수정
-                </div> */}
               </div>
               <div className='h-[135px] w-[135px] rounded-full relative'>
                 <img
-                  src={userProfileData.memberProfileDTO.profileUrl}
+                  src={
+                    userProfileData.memberProfileDTO.profileUrl === 'none'
+                      ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                      : userProfileData.memberProfileDTO.profileUrl
+                  }
                   alt='profileImage'
                   className='h-[135px] w-[135px] rounded-full border'
                 />

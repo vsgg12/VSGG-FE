@@ -19,7 +19,7 @@ type IGetPostDTOType = {
   hashtagList: IHashTagListType[];
   inGameInfoList: IGetInGameInfoType[];
   isVote: boolean;
-  isDelete: 'TRUE' | 'FALSE';
+  isDeleted: 'TRUE' | 'FALSE';
 };
 
 type IGetVideoType = {
