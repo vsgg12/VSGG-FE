@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import PostDeadLine from '@/components/PostDeadLine';
+import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 
 export default function HomePostItems({
   post,
@@ -53,25 +55,30 @@ export default function HomePostItems({
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit min-w-[1205px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit min-w-[1205px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}
           >
-            <div className='flex w-full flex-row justify-between font-medium'>
-              <div className='p-content-s-mb text-[1.563rem]'>{post.title}</div>
-              <div className='text-[0.75rem] text-[#C8C8C8]'>조회수 {post.viewCount}</div>
+            <div className='flex w-full font-medium justify-center items-center gap-[8px]'>
+              <div className='text-black text-[1.563rem]'>{post.title}</div>
+              <div className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
+                | 조회수 {formatNumberWithCommas(post.viewCount)}
+              </div>
+              <PostDeadLine deadLine={post.daysUntilEnd} />
             </div>
-            <div className='p-content-s-mb flex flex-row items-center justify-start font-medium'>
-              <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
-              <div>
-                <div className='flex flex-row'>
-                  <div className='mr-[0.625rem] text-[0.75rem] text-[#333333]'>
-                    {post.memberDTO.nickname}
+            <div className='justify-start font-medium'>
+              <div className='flex'>
+                <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
+                <div className='flex flex-col'>
+                  <div className='flex'>
+                    <div className='mr-[0.625rem] text-[0.75rem] text-[#333333]'>
+                      {post.memberDTO.nickname}
+                    </div>
+                    <div className='text-[0.75rem] text-[#909090]'>{post.memberDTO.tier}</div>
                   </div>
-                  <div className='text-[0.75rem] text-[#909090]'>{post.memberDTO.tier}</div>
+                  <div className='text-[0.75rem] text-[#C8C8C8]'>{formattedDate}</div>
                 </div>
-                <div className='text-[0.75rem] text-[#C8C8C8]'>{formattedDate}</div>
               </div>
             </div>
             <div className='flex h-fit flex-row'>
@@ -118,7 +125,9 @@ export default function HomePostItems({
                   })}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote || post.memberDTO.nickname === user?.nickname ? (
+                  {post.isVote ||
+                  post.memberDTO.nickname === user?.nickname ||
+                  post.status === 'FINISHED' ? (
                     <HomeVoted voteInfos={voteInfos} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />

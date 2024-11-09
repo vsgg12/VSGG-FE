@@ -17,6 +17,7 @@ import Image from 'next/image';
 import editProgileIcon from '../../../public/svg/editProfileIcon.svg';
 import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from './_component/MyJudgeList';
+import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 
 export default function MyPage() {
   const router = useRouter();
@@ -75,7 +76,7 @@ export default function MyPage() {
               </div>
               <div className='text-[20px]'>{userProfileData.memberProfileDTO.tier}</div>
               <div className='text-[16px] mb-[5px]'>
-                보유 포인트 : {userProfileData.memberProfileDTO.point}P
+                보유 포인트 : {formatNumberWithCommas(userProfileData.memberProfileDTO.point)}P
               </div>
               <div className='h-1 w-full bg-[#8A1F21]' />
               <div className='h-[350px] flex flex-col items-center relative'>
