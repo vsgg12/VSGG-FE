@@ -10,9 +10,10 @@ import { useEffect, useState } from 'react';
 interface IVoteResultProps {
   voteInfos: IGetInGameInfoType[] | undefined;
   isOwner: boolean;
+  isFinished: boolean;
 }
 
-export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
+export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResultProps) {
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
                 {isOwner && isNoOneVoted ? (
                   <div className='flex relative w-[340px] justify-center'>
                     <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
-                      아직 투표한 사람이 없는 게시글입니다.
+                      {isFinished ? "투표한 사람이 없는 게시글입니다.":"아직 투표한 사람이 없는 게시글입니다."}
                     </p>
                     <Image className='mr-7' src={Doughnut} width={175} height={175} alt='noVote' />
                   </div>
@@ -100,7 +101,7 @@ export default function VoteResult({ voteInfos, isOwner }: IVoteResultProps) {
               </div>
 
               <div className='flex flex-col justify-end mr-10'>
-                {!isOwner && (
+                {isFinished ? null : !isOwner && (
                   <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
                     제출완료
                   </button>
