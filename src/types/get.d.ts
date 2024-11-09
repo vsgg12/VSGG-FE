@@ -11,7 +11,7 @@ type IGetPostDTOType = {
   content: string;
   thumbnailURL: string;
   viewCount: number;
-  status: string;
+  status: string | "PROGRESS" | "FINISHED";
   video: IGetVideoType;
   memberDTO: IGetMemberDTOType;
   createdAt: string;
@@ -20,6 +20,7 @@ type IGetPostDTOType = {
   inGameInfoList: IGetInGameInfoType[];
   isVote: boolean;
   isDeleted: 'TRUE' | 'FALSE';
+  daysUntilEnd: number;
 };
 
 type IGetVideoType = {
