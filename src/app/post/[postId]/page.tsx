@@ -28,8 +28,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import Image from 'next/image';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import MoreModal from '@/components/modals/MoreModal';
-import PostDeadLine from '@/components/PostDeadLine';
-import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -39,6 +37,7 @@ export default function PostRead() {
   const router = useRouter();
   const commentMethods = useForm<{ commentContent: string }>();
   const replyMethods = useForm<{ replyContent: string }>();
+  const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -48,20 +47,13 @@ export default function PostRead() {
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
-
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
-  const [showReply, setShowReply] = useState<null | number>(null);
   const [targetComment, setTargetComment] = useState<number | null>(null);
+
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
-
-  useEffect(() => {
-    if (post?.postDTO.isDeleted === 'TRUE') {
-      router.push('/notFound');
-    }
-  }, [post]);
 
   useEffect(() => {
     if (post) {
@@ -136,7 +128,7 @@ export default function PostRead() {
 
   //댓글 삭제
   const { mutate: deleteComment } = useMutation({
-    mutationFn: (commentId: number) => DeleteComment(commentId, accessToken),
+    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsNotAbleSubmit(true);
@@ -226,8 +218,7 @@ export default function PostRead() {
                 {post && (
                   <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[600px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-                      <div className='flex justify-between relative mb-[10px]'>
-                        <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
+                      <div className='flex justify-end relative'>
                         <Image
                           className='cursor-pointer'
                           alt='moreIcon'
@@ -239,11 +230,6 @@ export default function PostRead() {
                         {isMoreModalOpen && (
                           <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
                             <MoreModal type={isOwner ? 'owner' : 'user'} where='post' />
-                            {isOwner ? (
-                              <MoreModal type='owner' where='post' postId={post.postDTO.id} />
-                            ) : (
-                              <MoreModal type='user' where='post' />
-                            )}
                           </div>
                         )}
                       </div>
@@ -264,7 +250,7 @@ export default function PostRead() {
                           <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                         </div>
                         <p className='text-[12px] text-[#C8C8C8] mt-[20px]'>
-                          조회수 {formatNumberWithCommas(post.postDTO.viewCount)}
+                          조회수 {post.postDTO.viewCount}
                         </p>
                       </div>
                     </div>
@@ -397,7 +383,7 @@ export default function PostRead() {
                                           <Comment
                                             comment={reply}
                                             isReply={true}
-                                            targetNickname={''}
+                                            targetComment={comment}
                                             deleteComment={() => handleDeleteComment(reply.id)}
                                           />
                                           <Image
