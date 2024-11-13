@@ -7,9 +7,11 @@ interface IMyPostListProps{
 
 function MyPostList({myPostList}: IMyPostListProps) {
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className='flex flex-col gap-[10px]'>
       {myPostList.map((myPostItem: IGetMyPostItemsType) => (
-        <MyPostItem myPostItem={myPostItem}/>
+        <div key={myPostItem.id}>
+          <MyPostItem myPostItem={myPostItem} />
+        </div>
       ))}
     </div>
   );

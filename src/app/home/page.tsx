@@ -28,6 +28,7 @@ export default function Home() {
   const loaderRef = useRef(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
+  const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
 
   const {
     data: postData,
@@ -51,10 +52,10 @@ export default function Home() {
 
   useEffect(() => {
     if (postData?.postDTO) {
-      setVisiblePosts(postData.postDTO.slice(0, 5));
+      setVisiblePosts(existData.slice(0, 5));
       setPostIndex(5); // 초기 로드 후 인덱스를 다시 설정해야 함
     }
-  }, [postData]);
+  }, [postData, existData]);
 
   const handleWriteClick = (): void => {
     if (!isLogin) {
@@ -71,6 +72,13 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (postData && postData.postDTO && postData.postDTO.length > 0) {
+      const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
+      setExistData(filteredData);
+    } 
+  }, [postData]);
+
   const handleSearch = () => {
     if (!isLogin) {
       router.push('/login');
@@ -79,15 +87,15 @@ export default function Home() {
     }
   };
 
-  const getPostData = useCallback(() => postData, [postData]);
+  const getPostData = useCallback(() => existData, [existData]);
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
 
   const loadMore = useCallback(() => {
-    const postLength = postData ? postData.postDTO.length : 0;
+    const postLength = existData ?existData.length : 0;
     const currentPostData = getPostData();
     const currentPostIndex = getPostIndex();
     if (currentPostData) {
-      const newPosts = currentPostData.postDTO.slice(
+      const newPosts = currentPostData.slice(
         currentPostIndex,
         currentPostIndex + 5 < postLength ? currentPostIndex + 5 : postLength,
       );
@@ -103,7 +111,7 @@ export default function Home() {
           if (entry.isIntersecting) {
             const currentPostIndex = getPostIndex();
             const currentPostData = getPostData();
-            if (currentPostData && currentPostIndex < currentPostData.postDTO.length) {
+            if (currentPostData && currentPostIndex < currentPostData.length) {
               loadMore();
             }
           }
@@ -124,8 +132,8 @@ export default function Home() {
   }, [loaderRef, loadMore, getPostIndex, getPostData]);
 
   return (
-    <div className="min-w-[1400px]">
-        <Header />
+    <div className='min-w-[1400px]'>
+      <Header />
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex justify-center'>

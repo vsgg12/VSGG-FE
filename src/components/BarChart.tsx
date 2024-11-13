@@ -7,13 +7,14 @@ interface BarChartProps {
 
 const BarChart: React.FC<BarChartProps> = ({ num }) => {
   return (
-    <div className='w-full' style={{ border: '2px solid #8A1F21', borderRadius: '15px' }}>
+    <div className='w-[200px]' style={{ border: '2px solid #8A1F21', borderRadius: '50px' }}>
       <ProgressBar
         completed={num}
         bgColor='#8A1F21'
         labelColor='#8A1F21'
         baseBgColor='#FFF'
-        borderRadius='15px'
+        borderRadius='50px'
+        height='30px'
         animateOnRender
       />
     </div>

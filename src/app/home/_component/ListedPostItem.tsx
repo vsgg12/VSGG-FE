@@ -1,5 +1,5 @@
-// import Image from 'next/image';
-// import Icon_timer from '../../../../public/svg/timer.svg';
+import PostDeadLine from '@/components/PostDeadLine';
+import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
 
@@ -9,9 +9,10 @@ interface IListedItem {
 
 export default function ListedPostItem({ post }: IListedItem) {
   const router = useRouter();
+  console.log("exist", post)
   return (
     <div
-      className='flex flex-col w-[1205px] h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
+      className='flex flex-col min-w-[1205px] h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
@@ -24,12 +25,11 @@ export default function ListedPostItem({ post }: IListedItem) {
         <p className='text-[#C8C8C8] text-[12px]'>{moment(post.createdAt).format('YYYY-MM-DD')}</p>
       </div>
       <div className='flex justify-center items-center gap-[5px]'>
-        <p className='text-black text-[25px]'>{post.title}</p>
-        <p className='text-[#C8C8C8] flex-grow'>| 조회수 {post.viewCount}</p>
-        {/* <div className='flex items-center justify-center gap-[5px] text-[18px] text-white w-[182px] h-[28px] rounded-[20px] bg-[#8A1F21]'>
-          <Image src={Icon_timer} width={20} height={20} alt='timer' />
-          투표 마감까지 일
-        </div> */}
+        <div className='text-black text-[25px]'>{post.title}</div>
+        <div className='text-[#C8C8C8] flex-grow'>
+          | 조회수 {formatNumberWithCommas(post.viewCount)}
+        </div>
+        <PostDeadLine deadLine={post.daysUntilEnd} />
       </div>
     </div>
   );

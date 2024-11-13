@@ -28,6 +28,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import Image from 'next/image';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import MoreModal from '@/components/modals/MoreModal';
+import PostDeadLine from '@/components/PostDeadLine';
+import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -56,7 +58,7 @@ export default function PostRead() {
   });
 
   useEffect(() => {
-    if (post?.postDTO.isDelete === 'TRUE') {
+    if (post?.postDTO.isDeleted === 'TRUE') {
       router.push('/notFound');
     }
   }, [post]);
@@ -224,7 +226,8 @@ export default function PostRead() {
                 {post && (
                   <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[600px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-                      <div className='flex justify-end relative'>
+                      <div className='flex justify-between relative mb-[10px]'>
+                        <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
                         <Image
                           className='cursor-pointer'
                           alt='moreIcon'
@@ -261,7 +264,7 @@ export default function PostRead() {
                           <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                         </div>
                         <p className='text-[12px] text-[#C8C8C8] mt-[20px]'>
-                          조회수 {post.postDTO.viewCount}
+                          조회수 {formatNumberWithCommas(post.postDTO.viewCount)}
                         </p>
                       </div>
                     </div>
@@ -459,8 +462,8 @@ export default function PostRead() {
                   </div>
                 </div>
               </div>
-              {(voteData && isOwner) || post?.postDTO.isVote ? (
-                <VoteResult voteInfos={voteData} isOwner={isOwner} />
+              {(voteData && isOwner) || post?.postDTO.isVote || post?.postDTO.status === "FINISHED" ? (
+                  <VoteResult voteInfos={voteData} isOwner={isOwner} isFinished={post?.postDTO.status === "FINISHED"} />
               ) : (
                 post &&
                 !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />

@@ -9,7 +9,9 @@ function MyJudgeList({myJudgeList}: IMyJudgeListProps) {
   return (
     <div className='flex flex-col gap-[10px]'>
       {myJudgeList.map((myJudgeItem: IVotedPostItem) => (
-        <MyJudgeItem myJudgeItem={myJudgeItem} />
+        <div key={myJudgeItem.id}>
+          <MyJudgeItem myJudgeItem={myJudgeItem} />
+        </div>
       ))}
     </div>
   );
