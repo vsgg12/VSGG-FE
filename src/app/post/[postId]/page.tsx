@@ -131,7 +131,7 @@ export default function PostRead() {
 
   //댓글 삭제
   const { mutate: deleteComment } = useMutation({
-    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
+    mutationFn: (commentId: number) => DeleteComment(commentId, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
       setIsNotAbleSubmit(true);
@@ -379,8 +379,14 @@ export default function PostRead() {
                   </div>
                 </div>
               </div>
-              {(voteData && isOwner) || post?.postDTO.isVote || post?.postDTO.status === "FINISHED" ? (
-                  <VoteResult voteInfos={voteData} isOwner={isOwner} isFinished={post?.postDTO.status === "FINISHED"} />
+              {(voteData && isOwner) ||
+              post?.postDTO.isVote ||
+              post?.postDTO.status === 'FINISHED' ? (
+                <VoteResult
+                  voteInfos={voteData}
+                  isOwner={isOwner}
+                  isFinished={post?.postDTO.status === 'FINISHED'}
+                />
               ) : (
                 post &&
                 !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
