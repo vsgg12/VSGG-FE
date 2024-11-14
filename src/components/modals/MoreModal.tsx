@@ -1,29 +1,70 @@
+import DeleteComment from '@/api/deleteComment';
 import deletePost from '@/api/deletePost';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useMutation } from '@tanstack/react-query';
+import usePostIdStore from '@/app/post/[postId]/store/usePostIdStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
+  handleReply?: (commentId: number, targetId: number) => void;
+  setIsCommentMoreModalOpen?: Dispatch<SetStateAction<number | null>>;
+  targetId?: number;
+  commentId?: number;
   postId?: number;
+  hasChildrenComment?: boolean;
 }
 
-function MoreModal({ type, where, postId }: Props) {
-  const items = type === 'owner' ? ['수정', '삭제'] : ['신고'];
+function MoreModal({
+  type,
+  where,
+  targetId = 0,
+  commentId = 0,
+  handleReply,
+  setIsCommentMoreModalOpen,
+  postId,
+  hasChildrenComment,
+}: Props) {
+  const items =
+    where === 'post'
+      ? type === 'owner'
+        ? ['수정', '삭제']
+        : ['신고']
+      : type === 'owner'
+        ? ['수정', '삭제']
+        : ['답글', '신고'];
+
   const { accessToken } = useAuthStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { setPostVoteResult } = usePostIdStore();
 
   const { mutate: deletePostItem } = useMutation({
     mutationFn: () => deletePost(postId, accessToken),
     onSuccess: () => {
       alert('게시글이 삭제되었습니다.');
       router.push('/home');
-      },
-      onError: (error) => {
-          alert(error)
-    }
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  //댓글 삭제
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: () => DeleteComment(targetId, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+      setPostVoteResult([]);
+    },
+    onError: (err) => {
+      alert(err);
+    },
+    onSettled: () => {
+      setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
+    },
   });
 
   const handleClick = (text: string) => {
@@ -35,11 +76,22 @@ function MoreModal({ type, where, postId }: Props) {
       case '삭제':
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
+        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
+          if (hasChildrenComment) {
+            alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
+            setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
+          } else {
+            deleteComment();
+          }
         }
         break;
       case '신고':
         // 이건 어떻게 할지 아직 모름
         alert('준비중입니다.');
+        break;
+      case '답글':
+        alert('준비중입니다.');
+        handleReply && handleReply(commentId, targetId);
         break;
       default:
         break;
