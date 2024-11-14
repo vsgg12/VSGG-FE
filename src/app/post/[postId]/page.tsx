@@ -17,7 +17,6 @@ import DOMPurify from 'dompurify';
 import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
-import DeleteComment from '@/api/deleteComment';
 import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
 import Logo from '@/components/Logo';
@@ -316,10 +315,10 @@ export default function PostRead() {
                         {commentData &&
                           commentData?.comments.map((comment: IGetCommentItemType, index) => (
                             <div key={index} className='mb-[20px] text-[13px] '>
-                              <div className='relative flex justify-between'>
+                              <div className='relative flex justify-between h-[45px]'>
                                 <Comment comment={comment} />
-                                {isCommentMoreModalOpen === comment.id && (
-                                  <div className='absolute translate-x-[210px]'>
+                                <div className='flex'>
+                                  {isCommentMoreModalOpen === comment.id && (
                                     <MoreModal
                                       type={
                                         comment.member.nickname === user?.nickname
@@ -328,19 +327,23 @@ export default function PostRead() {
                                       }
                                       where='comment'
                                       handleReply={() => handleReply(comment.id, comment.id)}
+                                      setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                                       commentId={comment.id}
                                       targetId={comment.id}
                                     />
-                                  </div>
-                                )}
-                                <Image
-                                  src={Icon_more}
-                                  alt='more'
-                                  width={12}
-                                  height={12}
-                                  className='cursor-pointer flex self-start'
-                                  onClick={() => handleOpenCommentMoreModal(comment.id)}
-                                />
+                                  )}
+                                  {comment.member.nickname !== user?.nickname &&
+                                    comment.content !== '삭제된 댓글입니다.' && (
+                                      <Image
+                                        src={Icon_more}
+                                        alt='more'
+                                        width={12}
+                                        height={12}
+                                        className='cursor-pointer flex self-start'
+                                        onClick={() => handleOpenCommentMoreModal(comment.id)}
+                                      />
+                                    )}
+                                </div>
                               </div>
 
                               <button
@@ -376,25 +379,11 @@ export default function PostRead() {
                                       (reply: IGetCommentItemType, index: number) => (
                                         <div
                                           key={index}
-                                          className='mb-[10px] flex justify-between relative'
+                                          className='mb-[10px] flex justify-between relative h-[45px]'
                                         >
-                                          <Comment
-                                            comment={reply}
-                                            isReply={true}
-                                            targetComment={comment}
-                                          />
-                                          <Image
-                                            src={Icon_more}
-                                            alt='more'
-                                            width={12}
-                                            height={12}
-                                            className='cursor-pointer flex self-start'
-                                            onClick={() => {
-                                              handleOpenReplyMoreModal(reply.id);
-                                            }}
-                                          />
-                                          {isCommentMoreModalOpen === reply.id && (
-                                            <div className='absolute translate-x-[185px]'>
+                                          <Comment comment={reply} isReply={true} />
+                                          <div className='flex '>
+                                            {isCommentMoreModalOpen === reply.id && (
                                               <MoreModal
                                                 type={
                                                   reply.member.nickname === user?.nickname
@@ -405,11 +394,27 @@ export default function PostRead() {
                                                 handleReply={() =>
                                                   handleReply(comment.id, reply.id)
                                                 }
+                                                setIsCommentMoreModalOpen={
+                                                  setIsCommentMoreModalOpen
+                                                }
                                                 commentId={comment.id}
                                                 targetId={reply.id}
                                               />
-                                            </div>
-                                          )}
+                                            )}
+                                            {reply.member.nickname !== user?.nickname &&
+                                              reply.content !== '삭제된 댓글입니다.' && (
+                                                <Image
+                                                  src={Icon_more}
+                                                  alt='more'
+                                                  width={12}
+                                                  height={12}
+                                                  className='cursor-pointer flex self-start'
+                                                  onClick={() => {
+                                                    handleOpenReplyMoreModal(reply.id);
+                                                  }}
+                                                />
+                                              )}
+                                          </div>
                                         </div>
                                       ),
                                     )}

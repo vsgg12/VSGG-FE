@@ -10,7 +10,7 @@ interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
   handleReply?: (commentId: number, targetId: number) => void;
-  setIsMoreModalOpen?: Dispatch<SetStateAction<boolean>>;
+  setIsCommentMoreModalOpen?: Dispatch<SetStateAction<number | null>>;
   targetId?: number;
   commentId?: number;
   postId?: number;
@@ -22,7 +22,7 @@ function MoreModal({
   targetId = 0,
   commentId = 0,
   handleReply,
-  setIsMoreModalOpen,
+  setIsCommentMoreModalOpen,
   postId,
 }: Props) {
   const items =
@@ -65,7 +65,7 @@ function MoreModal({
       alert(err);
     },
     onSettled: () => {
-      setIsMoreModalOpen && setIsMoreModalOpen(false);
+      setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
     },
   });
 
