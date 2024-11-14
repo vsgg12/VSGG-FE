@@ -41,7 +41,7 @@ export default function PostRead() {
   const replyMethods = useForm<{ replyContent: string }>();
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
-  const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
+  const { voteResult, postVoteResult, setPostVoteResult } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
@@ -56,6 +56,12 @@ export default function PostRead() {
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (post?.postDTO.isDeleted === 'TRUE') {
+      router.push('/notFound');
+    }
+  }, [post]);
 
   useEffect(() => {
     if (post) {
@@ -80,7 +86,7 @@ export default function PostRead() {
   }, [post]);
 
   const { data: commentData } = useQuery({
-    queryKey: ['COMMENTS', id],
+    queryKey: ['COMMENTS'],
     queryFn: async () => getComments(id),
   });
 
@@ -108,7 +114,7 @@ export default function PostRead() {
     mutationFn: (data: string) =>
       PostComment(id, { parentId: showReply, content: data }, accessToken),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsCommentInProgress(false);
       if (showReply) {
         setTargetComment(showReply);
@@ -124,17 +130,6 @@ export default function PostRead() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
-    },
-    onError: (err) => console.log(err),
-  });
-
-  //댓글 삭제
-  const { mutate: deleteComment } = useMutation({
-    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
-      setIsNotAbleSubmit(true);
-      setPostVoteResult([]);
     },
     onError: (err) => console.log(err),
   });
@@ -164,12 +159,8 @@ export default function PostRead() {
     postVote();
   };
 
-  const handleDeleteComment = (commentId: number) => {
-    deleteComment(commentId);
-  };
-
   const handleMoreIconClick = () => {
-    isMoreModalOpen ? setIsMoreModalOpen(false) : setIsMoreModalOpen(true);
+    setIsMoreModalOpen(!isMoreModalOpen);
   };
 
   const handleOpenCommentMoreModal = (commentId: number) => {
@@ -222,19 +213,25 @@ export default function PostRead() {
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
                       <div className='flex justify-between relative mb-[10px]'>
                         <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
-                        <Image
-                          className='cursor-pointer'
-                          alt='moreIcon'
-                          width={20}
-                          height={20}
-                          src={Icon_more}
-                          onClick={handleMoreIconClick}
-                        />
-                        {isMoreModalOpen && (
-                          <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
-                            <MoreModal type={isOwner ? 'owner' : 'user'} where='post' />
-                          </div>
-                        )}
+                        <div className='flex'>
+                          {isMoreModalOpen && (
+                            <div>
+                              {isOwner ? (
+                                <MoreModal type='owner' where='post' postId={post.postDTO.id} />
+                              ) : (
+                                <MoreModal type='user' where='post' />
+                              )}
+                            </div>
+                          )}
+                          <Image
+                            className='cursor-pointer'
+                            alt='moreIcon'
+                            width={20}
+                            height={20}
+                            src={Icon_more}
+                            onClick={handleMoreIconClick}
+                          />
+                        </div>
                       </div>
                       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                         <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
@@ -320,10 +317,7 @@ export default function PostRead() {
                           commentData?.comments.map((comment: IGetCommentItemType, index) => (
                             <div key={index} className='mb-[20px] text-[13px] '>
                               <div className='relative flex justify-between'>
-                                <Comment
-                                  comment={comment}
-                                  deleteComment={() => handleDeleteComment(comment.id)}
-                                />
+                                <Comment comment={comment} />
                                 {isCommentMoreModalOpen === comment.id && (
                                   <div className='absolute translate-x-[210px]'>
                                     <MoreModal
@@ -353,7 +347,9 @@ export default function PostRead() {
                                 key={index}
                                 type='button'
                                 onClick={() => {
-                                  if (showReply === comment.id) {
+                                  if (!isLogin) {
+                                    setIsLoginModalOpen(true);
+                                  } else if (showReply && showReply === comment.id) {
                                     setShowReply(null);
                                     setTargetComment(null);
                                     setIsCommentMoreModalOpen(null);
@@ -365,7 +361,7 @@ export default function PostRead() {
                                     commentMethods.reset({ commentContent: '' });
                                   }
                                 }}
-                                className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
+                                className='mb-[20px] text-[14px] font-medium text-[#8A1F21]'
                               >
                                 {showReply === comment.id
                                   ? `답글 ${comment.children?.length}개 닫기`
@@ -373,7 +369,6 @@ export default function PostRead() {
                                     ? '답글'
                                     : `답글 ${comment.children?.length}개 열기`}
                               </button>
-
                               {showReply === comment.id && (
                                 <div>
                                   <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
@@ -387,7 +382,6 @@ export default function PostRead() {
                                             comment={reply}
                                             isReply={true}
                                             targetComment={comment}
-                                            deleteComment={() => handleDeleteComment(reply.id)}
                                           />
                                           <Image
                                             src={Icon_more}
