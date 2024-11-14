@@ -148,7 +148,11 @@ export default function Header() {
                 <ProfileModal
                   handleLogoutClick={handleLogoutBtnClick}
                   email={user.email}
-                  profileImage={userProfileData?.memberProfileDTO.profileUrl}
+                  profileImage={
+                    userProfileData?.memberProfileDTO.profileUrl === 'none'
+                      ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                      : userProfileData?.memberProfileDTO.profileUrl
+                  }
                   nickname={user.nickname}
                 />
               )}

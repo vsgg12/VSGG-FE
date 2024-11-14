@@ -17,7 +17,6 @@ import DOMPurify from 'dompurify';
 import getComments from '@/api/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from './store/useCommentStore';
-import DeleteComment from '@/api/deleteComment';
 import PostVote from '@/api/postVote';
 import usePostIdStore from './store/usePostIdStore';
 import Logo from '@/components/Logo';
@@ -28,6 +27,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import Image from 'next/image';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import MoreModal from '@/components/modals/MoreModal';
+import PostDeadLine from '@/components/PostDeadLine';
+import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -39,7 +40,7 @@ export default function PostRead() {
   const replyMethods = useForm<{ replyContent: string }>();
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
-  const { voteResult, postVoteResult, setPostVoteResult, setIsNotAbleSubmit } = usePostIdStore();
+  const { voteResult, postVoteResult, setPostVoteResult } = usePostIdStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
@@ -47,6 +48,8 @@ export default function PostRead() {
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
+  const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const [targetComment, setTargetComment] = useState<number | null>(null);
 
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
@@ -82,7 +85,7 @@ export default function PostRead() {
   }, [post]);
 
   const { data: commentData } = useQuery({
-    queryKey: ['COMMENTS', id],
+    queryKey: ['COMMENTS'],
     queryFn: async () => getComments(id),
   });
 
@@ -110,8 +113,11 @@ export default function PostRead() {
     mutationFn: (data: string) =>
       PostComment(id, { parentId: showReply, content: data }, accessToken),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsCommentInProgress(false);
+      if (showReply) {
+        setTargetComment(showReply);
+      }
       commentMethods.reset();
       replyMethods.reset();
     },
@@ -123,17 +129,6 @@ export default function PostRead() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
-    },
-    onError: (err) => console.log(err),
-  });
-
-  //댓글 삭제
-  const { mutate: deleteComment } = useMutation({
-    mutationFn: (commentId: number) => DeleteComment(id, commentId, accessToken),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS', id] });
-      setIsNotAbleSubmit(true);
-      setPostVoteResult([]);
     },
     onError: (err) => console.log(err),
   });
@@ -163,12 +158,22 @@ export default function PostRead() {
     postVote();
   };
 
-  const handleDeleteComment = (commentId: number) => {
-    deleteComment(commentId);
+  const handleMoreIconClick = () => {
+    setIsMoreModalOpen(!isMoreModalOpen);
   };
 
-  const handleMoreIconClick = () => {
-    isMoreModalOpen ? setIsMoreModalOpen(false) : setIsMoreModalOpen(true);
+  const handleOpenCommentMoreModal = (commentId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
+  };
+
+  const handleOpenReplyMoreModal = (replyId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
+  };
+
+  const handleReply = (commentId: number, targetId: number) => {
+    setTargetComment(targetId);
+    setShowReply(commentId);
+    setIsCommentMoreModalOpen(null);
   };
 
   return (
@@ -205,24 +210,27 @@ export default function PostRead() {
                 {post && (
                   <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[600px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-                      <div className='flex justify-end relative'>
-                        <Image
-                          className='cursor-pointer'
-                          alt='moreIcon'
-                          width={20}
-                          height={20}
-                          src={Icon_more}
-                          onClick={handleMoreIconClick}
-                        />
-                        {isMoreModalOpen && (
-                          <div className='absolute translate-x-[-25px] translate-y-[-3px]'>
-                            {isOwner ? (
-                              <MoreModal type='owner' where='post' postId={post.postDTO.id} />
-                            ) : (
-                              <MoreModal type='user' where='post' />
-                            )}
-                          </div>
-                        )}
+                      <div className='flex justify-between relative mb-[10px] h-[35px]'>
+                        <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
+                        <div className='flex'>
+                          {isMoreModalOpen && (
+                            <div className='mt-[4px] mr-[5px]'>
+                              {isOwner ? (
+                                <MoreModal type='owner' where='post' postId={post.postDTO.id} />
+                              ) : (
+                                <MoreModal type='user' where='post' />
+                              )}
+                            </div>
+                          )}
+                          <Image
+                            className='cursor-pointer'
+                            alt='moreIcon'
+                            width={20}
+                            height={20}
+                            src={Icon_more}
+                            onClick={handleMoreIconClick}
+                          />
+                        </div>
                       </div>
                       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
                         <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
@@ -241,7 +249,7 @@ export default function PostRead() {
                           <div className='text-[12px] text-[#C8C8C8]'>{formattedDate}</div>
                         </div>
                         <p className='text-[12px] text-[#C8C8C8] mt-[20px]'>
-                          조회수 {post.postDTO.viewCount}
+                          조회수 {formatNumberWithCommas(post.postDTO.viewCount)}
                         </p>
                       </div>
                     </div>
@@ -278,14 +286,15 @@ export default function PostRead() {
                           <PostCommentInput
                             registerName={'commentContent'}
                             setShowReply={setShowReply}
+                            setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                           />
                           <div className='flex w-full justify-end mt-[3px]'>
                             {showReply === null ? (
                               <button
-                                className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
                                 type='submit'
                               >
-                                <p className='mr-[4px]'>등록</p>
+                                <p className='mr-[5px]'>등록</p>
                                 <BsArrowUpCircle />
                               </button>
                             ) : (
@@ -305,11 +314,39 @@ export default function PostRead() {
                       <div className='scroll overflow-hidden h-[770px]'>
                         {commentData &&
                           commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                            <div key={index} className='mb-[20px] text-[13px]'>
-                              <Comment
-                                comment={comment}
-                                deleteComment={() => handleDeleteComment(comment.id)}
-                              />
+                            <div key={index} className='mb-[20px] text-[13px] '>
+                              <div className='relative flex justify-between h-[45px]'>
+                                <Comment comment={comment} />
+                                <div className='flex'>
+                                  {isCommentMoreModalOpen === comment.id && (
+                                    <MoreModal
+                                      type={
+                                        comment.member.nickname === user?.nickname
+                                          ? 'owner'
+                                          : 'user'
+                                      }
+                                      where='comment'
+                                      handleReply={() => handleReply(comment.id, comment.id)}
+                                      setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                                      commentId={comment.id}
+                                      targetId={comment.id}
+                                      hasChildrenComment={
+                                        comment.children?.length !== 0 ? true : false
+                                      }
+                                    />
+                                  )}
+                                  {comment.content !== '삭제된 댓글입니다.' && (
+                                    <Image
+                                      src={Icon_more}
+                                      alt='more'
+                                      width={12}
+                                      height={12}
+                                      className='cursor-pointer flex self-start mr-[10px]'
+                                      onClick={() => handleOpenCommentMoreModal(comment.id)}
+                                    />
+                                  )}
+                                </div>
+                              </div>
                               <button
                                 key={index}
                                 type='button'
@@ -318,8 +355,12 @@ export default function PostRead() {
                                     setIsLoginModalOpen(true);
                                   } else if (showReply && showReply === comment.id) {
                                     setShowReply(null);
+                                    setTargetComment(null);
+                                    setIsCommentMoreModalOpen(null);
                                   } else {
                                     setShowReply(comment.id);
+                                    setTargetComment(comment.id);
+                                    setIsCommentMoreModalOpen(null);
                                     replyMethods.reset({ replyContent: '' });
                                     commentMethods.reset({ commentContent: '' });
                                   }
@@ -329,21 +370,58 @@ export default function PostRead() {
                                 {showReply === comment.id
                                   ? `답글 ${comment.children?.length}개 닫기`
                                   : comment.children?.length === 0
-                                    ? '답글 달기'
+                                    ? '답글'
                                     : `답글 ${comment.children?.length}개 열기`}
                               </button>
                               {showReply === comment.id && (
                                 <div>
-                                  <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
+                                  <div className='mb-[20px] mt-[10px] border-l-2 border-[#8A1F21] pl-6 '>
                                     {comment.children?.map(
                                       (reply: IGetCommentItemType, index: number) => (
-                                        <div key={index} className='mb-[10px]'>
-                                          <Comment
-                                            comment={reply}
-                                            isReply={true}
-                                            targetComment={comment}
-                                            deleteComment={() => handleDeleteComment(reply.id)}
-                                          />
+                                        <div
+                                          key={index}
+                                          className='mb-[10px] flex justify-between relative h-[45px]'
+                                        >
+                                          <Comment comment={reply} isReply={true} />
+                                          <div className='flex '>
+                                            {isCommentMoreModalOpen === reply.id && (
+                                              <MoreModal
+                                                type={
+                                                  reply.member.nickname === user?.nickname
+                                                    ? 'owner'
+                                                    : 'user'
+                                                }
+                                                where='comment'
+                                                handleReply={() =>
+                                                  handleReply(comment.id, reply.id)
+                                                }
+                                                setIsCommentMoreModalOpen={
+                                                  setIsCommentMoreModalOpen
+                                                }
+                                                commentId={comment.id}
+                                                targetId={reply.id}
+                                              />
+                                            )}
+                                            {(reply.content !== '삭제된 댓글입니다.' &&
+                                              reply.member.nickname === user?.nickname) ||
+                                            (reply.content !== '삭제된 댓글입니다.' &&
+                                              reply.member.nickname !== user?.nickname) ||
+                                            (reply.content === '삭제된 댓글입니다.' &&
+                                              reply.member.nickname !== user?.nickname) ? (
+                                              <Image
+                                                src={Icon_more}
+                                                alt='more'
+                                                width={12}
+                                                height={12}
+                                                className='cursor-pointer flex self-start mr-[10px]'
+                                                onClick={() => {
+                                                  handleOpenReplyMoreModal(reply.id);
+                                                }}
+                                              />
+                                            ) : (
+                                              <></>
+                                            )}
+                                          </div>
                                         </div>
                                       ),
                                     )}
@@ -354,13 +432,16 @@ export default function PostRead() {
                                         onSubmit={replyMethods.handleSubmit(onReplySubmit)}
                                         className='w-full'
                                       >
-                                        <PostCommentInput registerName={'replyContent'} />
+                                        <PostCommentInput
+                                          registerName={'replyContent'}
+                                          setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                                        />
                                         <div className='flex w-full justify-end mt-[3px]'>
                                           <button
-                                            className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                            className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
                                             type='submit'
                                           >
-                                            <p className='mr-[4px]'>등록</p>
+                                            <p className='mr-[5px]'>등록</p>
                                             <BsArrowUpCircle />
                                           </button>
                                         </div>
@@ -376,8 +457,14 @@ export default function PostRead() {
                   </div>
                 </div>
               </div>
-              {(voteData && isOwner) || post?.postDTO.isVote ? (
-                <VoteResult voteInfos={voteData} isOwner={isOwner} />
+              {(voteData && isOwner) ||
+              post?.postDTO.isVote ||
+              post?.postDTO.status === 'FINISHED' ? (
+                <VoteResult
+                  voteInfos={voteData}
+                  isOwner={isOwner}
+                  isFinished={post?.postDTO.status === 'FINISHED'}
+                />
               ) : (
                 post &&
                 !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />

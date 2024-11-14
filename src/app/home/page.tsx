@@ -76,9 +76,7 @@ export default function Home() {
     if (postData && postData.postDTO && postData.postDTO.length > 0) {
       const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
       setExistData(filteredData);
-    } else {
-      console.log('No valid postData or postDTO');
-    }
+    } 
   }, [postData]);
 
   const handleSearch = () => {
@@ -89,15 +87,15 @@ export default function Home() {
     }
   };
 
-  const getPostData = useCallback(() => postData, [postData]);
+  const getPostData = useCallback(() => existData, [existData]);
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
 
   const loadMore = useCallback(() => {
-    const postLength = postData ? postData.postDTO.length : 0;
+    const postLength = existData ?existData.length : 0;
     const currentPostData = getPostData();
     const currentPostIndex = getPostIndex();
     if (currentPostData) {
-      const newPosts = currentPostData.postDTO.slice(
+      const newPosts = currentPostData.slice(
         currentPostIndex,
         currentPostIndex + 5 < postLength ? currentPostIndex + 5 : postLength,
       );
@@ -113,7 +111,7 @@ export default function Home() {
           if (entry.isIntersecting) {
             const currentPostIndex = getPostIndex();
             const currentPostData = getPostData();
-            if (currentPostData && currentPostIndex < currentPostData.postDTO.length) {
+            if (currentPostData && currentPostIndex < currentPostData.length) {
               loadMore();
             }
           }
