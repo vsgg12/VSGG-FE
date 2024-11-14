@@ -379,11 +379,20 @@ export default function PostRead() {
                   </div>
                 </div>
               </div>
-              {(voteData && isOwner) || post?.postDTO.isVote || post?.postDTO.status === "FINISHED" ? (
-                  <VoteResult voteInfos={voteData} isOwner={isOwner} isFinished={post?.postDTO.status === "FINISHED"} />
+              {(voteData && isOwner) ||
+              post?.postDTO.isVote ||
+              post?.postDTO.status === 'FINISHED' ? (
+                <VoteResult
+                  voteInfos={voteData}
+                  isOwner={isOwner}
+                  isFinished={post?.postDTO.status === 'FINISHED'}
+                />
               ) : (
                 post &&
-                !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
+                !isOwner &&
+                post.postDTO.status === 'PROGRESS' && (
+                  <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
+                )
               )}
             </div>
           </section>

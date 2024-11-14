@@ -88,7 +88,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               </div>
               <div className='flex flex-col items-center justify-center min-w-[230.5px]'>
                 <div className='mb-[20px] flex text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</div>
-                {isOwner && isNoOneVoted ? (
+                {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
                   <div className='flex relative w-[340px] justify-center'>
                     <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
                       {isFinished ? "투표한 사람이 없는 게시글입니다.":"아직 투표한 사람이 없는 게시글입니다."}
