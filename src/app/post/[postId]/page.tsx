@@ -210,11 +210,11 @@ export default function PostRead() {
                 {post && (
                   <div className='p-content-mr p-content-rounded scroll relative mb-11 max-h-[1000px] w-2/3 min-w-[600px] bg-white px-[63px] pb-[44px]'>
                     <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-                      <div className='flex justify-between relative mb-[10px]'>
+                      <div className='flex justify-between relative mb-[10px] h-[35px]'>
                         <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
                         <div className='flex'>
                           {isMoreModalOpen && (
-                            <div>
+                            <div className='mt-[4px] mr-[5px]'>
                               {isOwner ? (
                                 <MoreModal type='owner' where='post' postId={post.postDTO.id} />
                               ) : (
@@ -291,10 +291,10 @@ export default function PostRead() {
                           <div className='flex w-full justify-end mt-[3px]'>
                             {showReply === null ? (
                               <button
-                                className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
                                 type='submit'
                               >
-                                <p className='mr-[4px]'>등록</p>
+                                <p className='mr-[5px]'>등록</p>
                                 <BsArrowUpCircle />
                               </button>
                             ) : (
@@ -330,22 +330,23 @@ export default function PostRead() {
                                       setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                                       commentId={comment.id}
                                       targetId={comment.id}
+                                      hasChildrenComment={
+                                        comment.children?.length !== 0 ? true : false
+                                      }
                                     />
                                   )}
-                                  {comment.member.nickname !== user?.nickname &&
-                                    comment.content !== '삭제된 댓글입니다.' && (
-                                      <Image
-                                        src={Icon_more}
-                                        alt='more'
-                                        width={12}
-                                        height={12}
-                                        className='cursor-pointer flex self-start'
-                                        onClick={() => handleOpenCommentMoreModal(comment.id)}
-                                      />
-                                    )}
+                                  {comment.content !== '삭제된 댓글입니다.' && (
+                                    <Image
+                                      src={Icon_more}
+                                      alt='more'
+                                      width={12}
+                                      height={12}
+                                      className='cursor-pointer flex self-start mr-[10px]'
+                                      onClick={() => handleOpenCommentMoreModal(comment.id)}
+                                    />
+                                  )}
                                 </div>
                               </div>
-
                               <button
                                 key={index}
                                 type='button'
@@ -364,7 +365,7 @@ export default function PostRead() {
                                     commentMethods.reset({ commentContent: '' });
                                   }
                                 }}
-                                className='mb-[20px] text-[14px] font-medium text-[#8A1F21]'
+                                className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                               >
                                 {showReply === comment.id
                                   ? `답글 ${comment.children?.length}개 닫기`
@@ -374,7 +375,7 @@ export default function PostRead() {
                               </button>
                               {showReply === comment.id && (
                                 <div>
-                                  <div className='mb-[30px] border-l-2 border-[#8A1F21] pl-6'>
+                                  <div className='mb-[20px] mt-[10px] border-l-2 border-[#8A1F21] pl-6 '>
                                     {comment.children?.map(
                                       (reply: IGetCommentItemType, index: number) => (
                                         <div
@@ -401,19 +402,25 @@ export default function PostRead() {
                                                 targetId={reply.id}
                                               />
                                             )}
-                                            {reply.member.nickname !== user?.nickname &&
-                                              reply.content !== '삭제된 댓글입니다.' && (
-                                                <Image
-                                                  src={Icon_more}
-                                                  alt='more'
-                                                  width={12}
-                                                  height={12}
-                                                  className='cursor-pointer flex self-start'
-                                                  onClick={() => {
-                                                    handleOpenReplyMoreModal(reply.id);
-                                                  }}
-                                                />
-                                              )}
+                                            {(reply.content !== '삭제된 댓글입니다.' &&
+                                              reply.member.nickname === user?.nickname) ||
+                                            (reply.content !== '삭제된 댓글입니다.' &&
+                                              reply.member.nickname !== user?.nickname) ||
+                                            (reply.content === '삭제된 댓글입니다.' &&
+                                              reply.member.nickname !== user?.nickname) ? (
+                                              <Image
+                                                src={Icon_more}
+                                                alt='more'
+                                                width={12}
+                                                height={12}
+                                                className='cursor-pointer flex self-start mr-[10px]'
+                                                onClick={() => {
+                                                  handleOpenReplyMoreModal(reply.id);
+                                                }}
+                                              />
+                                            ) : (
+                                              <></>
+                                            )}
                                           </div>
                                         </div>
                                       ),
@@ -431,10 +438,10 @@ export default function PostRead() {
                                         />
                                         <div className='flex w-full justify-end mt-[3px]'>
                                           <button
-                                            className='row-end flex-end flex items-center text-[12px] text-[#8A1F21]'
+                                            className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
                                             type='submit'
                                           >
-                                            <p className='mr-[4px]'>등록</p>
+                                            <p className='mr-[5px]'>등록</p>
                                             <BsArrowUpCircle />
                                           </button>
                                         </div>

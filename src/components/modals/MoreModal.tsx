@@ -14,6 +14,7 @@ interface Props {
   targetId?: number;
   commentId?: number;
   postId?: number;
+  hasChildrenComment?: boolean;
 }
 
 function MoreModal({
@@ -24,6 +25,7 @@ function MoreModal({
   handleReply,
   setIsCommentMoreModalOpen,
   postId,
+  hasChildrenComment,
 }: Props) {
   const items =
     where === 'post'
@@ -53,13 +55,9 @@ function MoreModal({
   //댓글 삭제
   const { mutate: deleteComment } = useMutation({
     mutationFn: () => DeleteComment(targetId, accessToken),
-    onSuccess: async (data) => {
-      if (data.resultCode === 200) {
-        await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
-        setPostVoteResult([]);
-      } else if (data.resultCode === 401) {
-        alert(data.resultMsg);
-      }
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+      setPostVoteResult([]);
     },
     onError: (err) => {
       alert(err);
@@ -79,7 +77,12 @@ function MoreModal({
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
         } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
-          deleteComment();
+          if (hasChildrenComment) {
+            alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
+            setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
+          } else {
+            deleteComment();
+          }
         }
         break;
       case '신고':
@@ -87,6 +90,7 @@ function MoreModal({
         alert('준비중입니다.');
         break;
       case '답글':
+        alert('준비중입니다.');
         handleReply && handleReply(commentId, targetId);
         break;
       default:

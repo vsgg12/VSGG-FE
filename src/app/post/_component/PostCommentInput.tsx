@@ -54,7 +54,7 @@ export default function PostCommentInput({
   return (
     <div>
       <textarea
-        className='h-[40px] w-[100%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] pt-[8px] pb-[12px] text-[12px] box-border focus:outline-none resize-none scrollbar-hide'
+        className='h-[40px] w-[98%] overflow-scroll rounded-[20px] border-2 border-[#8A1F21] px-[10px] pt-[8px] pb-[12px] text-[12px] box-border focus:outline-none resize-none scrollbar-hide'
         {...rest}
         ref={(e) => {
           ref(e);
