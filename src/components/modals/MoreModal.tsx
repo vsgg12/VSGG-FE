@@ -1,19 +1,30 @@
+import DeleteComment from '@/api/deleteComment';
 import deletePost from '@/api/deletePost';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useMutation } from '@tanstack/react-query';
+import usePostIdStore from '@/app/post/[postId]/store/usePostIdStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
   handleReply?: (commentId: number, targetId: number) => void;
+  setIsMoreModalOpen?: Dispatch<SetStateAction<boolean>>;
   targetId?: number;
   commentId?: number;
   postId?: number;
 }
 
-function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply, postId }: Props) {
+function MoreModal({
+  type,
+  where,
+  targetId = 0,
+  commentId = 0,
+  handleReply,
+  setIsMoreModalOpen,
+  postId,
+}: Props) {
   const items =
     where === 'post'
       ? type === 'owner'
@@ -25,6 +36,8 @@ function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply, post
 
   const { accessToken } = useAuthStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { setPostVoteResult } = usePostIdStore();
 
   const { mutate: deletePostItem } = useMutation({
     mutationFn: () => deletePost(postId, accessToken),
@@ -37,6 +50,25 @@ function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply, post
     },
   });
 
+  //댓글 삭제
+  const { mutate: deleteComment } = useMutation({
+    mutationFn: () => DeleteComment(targetId, accessToken),
+    onSuccess: async (data) => {
+      if (data.resultCode === 200) {
+        await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+        setPostVoteResult([]);
+      } else if (data.resultCode === 401) {
+        alert(data.resultMsg);
+      }
+    },
+    onError: (err) => {
+      alert(err);
+    },
+    onSettled: () => {
+      setIsMoreModalOpen && setIsMoreModalOpen(false);
+    },
+  });
+
   const handleClick = (text: string) => {
     switch (text) {
       case '수정':
@@ -46,6 +78,8 @@ function MoreModal({ type, where, targetId = 0, commentId = 0, handleReply, post
       case '삭제':
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
+        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
+          deleteComment();
         }
         break;
       case '신고':

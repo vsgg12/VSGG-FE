@@ -1,6 +1,5 @@
 interface ICommentProps {
   comment: IGetCommentItemType;
-  deleteComment: () => void;
   isReply?: boolean;
   targetNickname?: string;
 }
@@ -38,7 +37,7 @@ export default function Comment({ comment, targetNickname, isReply = false }: IC
         </p>
       </div>
       <p className='text-[14px]'>
-        {isReply && <span className='text-[#8A1F21]'>@{targetNickname} </span>}
+        {/* {isReply && <span className='text-[#8A1F21]'>@{targetNickname} </span>} */}
         <span className='whitespace-pre-wrap'>
           {comment.content}
           <br />
