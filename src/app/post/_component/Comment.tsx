@@ -4,7 +4,7 @@ interface ICommentProps {
   targetNickname?: string;
 }
 
-export default function Comment({ comment, targetNickname, isReply = false }: ICommentProps) {
+export default function Comment({ comment }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
