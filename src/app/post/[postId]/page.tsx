@@ -174,6 +174,7 @@ export default function PostRead() {
     setTargetComment(targetId);
     setShowReply(commentId);
     setIsCommentMoreModalOpen(null);
+    targetComment;
   };
 
   return (
