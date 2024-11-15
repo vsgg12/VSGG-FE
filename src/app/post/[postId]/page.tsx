@@ -316,7 +316,7 @@ export default function PostRead() {
                         {commentData &&
                           commentData?.comments.map((comment: IGetCommentItemType, index) => (
                             <div key={index} className='mb-[20px] text-[13px] '>
-                              <div className='relative flex justify-between h-[45px]'>
+                              <div className='relative flex justify-between min-h-[45px]'>
                                 <Comment comment={comment} />
                                 <div className='flex'>
                                   {isCommentMoreModalOpen === comment.id && (
@@ -381,7 +381,7 @@ export default function PostRead() {
                                       (reply: IGetCommentItemType, index: number) => (
                                         <div
                                           key={index}
-                                          className='mb-[10px] flex justify-between relative h-[45px]'
+                                          className='mb-[10px] flex justify-between relative min-h-[45px]'
                                         >
                                           <Comment comment={reply} isReply={true} />
                                           <div className='flex '>
