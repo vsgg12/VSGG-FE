@@ -467,7 +467,10 @@ export default function PostRead() {
                 />
               ) : (
                 post &&
-                !isOwner && <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
+                !isOwner &&
+                post.postDTO.status === 'PROGRESS' && (
+                  <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
+                )
               )}
             </div>
           </section>
