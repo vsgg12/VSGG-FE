@@ -35,7 +35,7 @@ export default function PostRead() {
   }, [post, router]);
 
   return (
-    <div className='w-[100vw]'>
+    <div className='min-w-[1400px]'>
       <Header />
       <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
