@@ -33,7 +33,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
     <>
       {voteInfos && (
         <>
-          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full min-w-[840px] flex-col bg-white'>
+          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-[1400px] flex-col bg-white'>
             <div className='relative flex w-full justify-between'>
               <div className='flex flex-col ml-10 justify-around'>
                 {isOwner && isNoOneVoted
@@ -91,7 +91,9 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                 {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
                   <div className='flex relative w-[340px] justify-center'>
                     <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
-                      {isFinished ? "투표한 사람이 없는 게시글입니다.":"아직 투표한 사람이 없는 게시글입니다."}
+                      {isFinished
+                        ? '투표한 사람이 없는 게시글입니다.'
+                        : '아직 투표한 사람이 없는 게시글입니다.'}
                     </p>
                     <Image className='mr-7' src={Doughnut} width={175} height={175} alt='noVote' />
                   </div>
@@ -101,11 +103,13 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               </div>
 
               <div className='flex flex-col justify-end mr-10'>
-                {isFinished ? null : !isOwner && (
-                  <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
-                    제출완료
-                  </button>
-                )}
+                {isFinished
+                  ? null
+                  : !isOwner && (
+                      <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+                        제출완료
+                      </button>
+                    )}
               </div>
             </div>
           </div>
