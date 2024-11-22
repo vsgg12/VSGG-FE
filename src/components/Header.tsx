@@ -144,16 +144,16 @@ export default function Header() {
                   프로필
                 </span>
               </button>
-              {isProfileModalOpen && user && (
+              {isProfileModalOpen && userProfileData && user && (
                 <ProfileModal
                   handleLogoutClick={handleLogoutBtnClick}
                   email={user.email}
                   profileImage={
                     userProfileData?.memberProfileDTO.profileUrl === 'none'
                       ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
-                      : userProfileData?.memberProfileDTO.profileUrl
+                      : userProfileData.memberProfileDTO.profileUrl
                   }
-                  nickname={user.nickname}
+                  nickname={userProfileData.memberProfileDTO.nickName}
                 />
               )}
             </>
