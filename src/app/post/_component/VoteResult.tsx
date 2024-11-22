@@ -15,11 +15,19 @@ interface IVoteResultProps {
 
 export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResultProps) {
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
+  const [votes, setVotes] = useState<IGetInGameInfoType[]>();
+  useEffect(() => {
+    if (voteInfos) {
+      const filterVotes = voteInfos.filter((voteInfo) => voteInfo.averageRatio === 0);
+      setVotes(filterVotes);
+    }
+  }, [voteInfos]);
 
   useEffect(() => {
-    const votes = voteInfos?.filter((voteInfo) => voteInfo.averageRatio === 0);
-    if (voteInfos?.length === votes?.length) setIsNoOneVoted(true);
-  }, [voteInfos]);
+    if (votes && voteInfos && voteInfos.length === votes.length) {
+      setIsNoOneVoted(true);
+    }
+  }, [votes]);
 
   const getPositionSrc = (position: string) => {
     if (voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0)) {
@@ -88,7 +96,9 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               </div>
               <div className='flex flex-col items-center justify-center min-w-[230.5px]'>
                 <div className='mb-[20px] flex text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</div>
-                {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
+                {(isOwner && isNoOneVoted) ||
+                (!isOwner && isNoOneVoted && isFinished) ||
+                (isOwner && isNoOneVoted && isFinished) ? (
                   <div className='flex relative w-[340px] justify-center'>
                     <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
                       {isFinished
