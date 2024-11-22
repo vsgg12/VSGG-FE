@@ -17,13 +17,25 @@ export default function Header() {
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const { accessToken, user, isLogin } = useAuthStore.getState();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
   });
+
+  useEffect(() => {
+    if (userProfileData && userInfo) {
+      useAuthStore.setState({
+        user: {
+          nickname: userProfileData.memberProfileDTO.nickName,
+          profile_image: userProfileData.memberProfileDTO.profileUrl,
+          email: userInfo.email,
+        },
+      });
+    }
+  }, [userProfileData, userInfo]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
@@ -144,16 +156,16 @@ export default function Header() {
                   프로필
                 </span>
               </button>
-              {isProfileModalOpen && user && (
+              {isProfileModalOpen && userProfileData && userInfo && (
                 <ProfileModal
                   handleLogoutClick={handleLogoutBtnClick}
-                  email={user.email}
+                  email={userInfo.email}
                   profileImage={
                     userProfileData?.memberProfileDTO.profileUrl === 'none'
                       ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
-                      : userProfileData?.memberProfileDTO.profileUrl
+                      : userProfileData.memberProfileDTO.profileUrl
                   }
-                  nickname={user.nickname}
+                  nickname={userProfileData.memberProfileDTO.nickName}
                 />
               )}
             </>

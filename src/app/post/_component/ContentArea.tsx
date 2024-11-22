@@ -58,7 +58,7 @@ function ContentArea({ isOwner, setIsOwner, setVoteData }: IContentArea) {
   }, [post]);
 
   useEffect(() => {
-    if (post) {
+    if (post && user) {
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
@@ -71,8 +71,9 @@ function ContentArea({ isOwner, setIsOwner, setVoteData }: IContentArea) {
         }),
       );
       setPostVoteResult(newPostVoteResult);
-
-      if (user?.nickname === post.postDTO.memberDTO.nickname) setIsOwner(true);
+      if (user.email === post.postDTO.memberDTO.email) {
+        setIsOwner(true);
+      }
     }
   }, [post, voteResult, setPostVoteResult, user]);
 

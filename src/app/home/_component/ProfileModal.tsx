@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 interface IProfileModalProps {
   handleLogoutClick: () => void;
   nickname: string;
-  profileImage: string | undefined;
+  profileImage: string;
   email: string;
 }
 
