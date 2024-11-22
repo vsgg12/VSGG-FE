@@ -99,7 +99,7 @@ function MoreModal({
   };
 
   return (
-    <div className='w-[62px] max-h-[45px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8]'>
+    <div className='w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8] z-100 bg-white'>
       <div className='flex flex-col text-[12px] font-medium h-full text-[#828282] text-center justify-center gap-[3px]'>
         {items.map((item, index) => (
           <React.Fragment key={index}>

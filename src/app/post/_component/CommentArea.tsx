@@ -82,7 +82,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
 
   return (
     <div>
-      <div className='p-content-rounded relative mb-11 h-[1000px] w-[350px] bg-white px-[30px] pb-[30px] '>
+      <div className='p-content-rounded relative mb-11 h-[1000px] w-[380px] bg-white px-[20px] pb-[30px] '>
         <div className='bg-[#ffffff] pt-[30px]'>
           <div className='p-content-s-mb text-lg'>댓글</div>
           <div className='flex flex-row w-full'>
@@ -116,14 +116,14 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
               <div>아직 댓글이 없습니다.</div>
             </div>
           ) : (
-            <div className='scroll overflow-hidden h-[770px]'>
+            <div className='scroll overflow-hidden h-[770px] w-full relative'>
               {commentData &&
                 commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                  <div key={index} className='mb-[20px] text-[13px] '>
+                  <div key={index} className='relative mb-[20px] text-[13px]'>
                     <div className='relative flex justify-between min-h-[45px]'>
                       <Comment comment={comment} />
-                      <div className='flex'>
-                        {isCommentMoreModalOpen === comment.id && (
+                      {isCommentMoreModalOpen === comment.id && (
+                        <div className='absolute translate-x-[255px]'>
                           <MoreModal
                             type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
                             where='comment'
@@ -133,18 +133,18 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                             targetId={comment.id}
                             hasChildrenComment={comment.children?.length !== 0 ? true : false}
                           />
-                        )}
-                        {comment.content !== '삭제된 댓글입니다.' && (
-                          <Image
-                            src={Icon_more}
-                            alt='more'
-                            width={12}
-                            height={12}
-                            className='cursor-pointer flex self-start mr-[10px]'
-                            onClick={() => handleOpenCommentMoreModal(comment.id)}
-                          />
-                        )}
-                      </div>
+                        </div>
+                      )}
+                      {comment.content !== '삭제된 댓글입니다.' && (
+                        <Image
+                          src={Icon_more}
+                          alt='more'
+                          width={12}
+                          height={12}
+                          className='w-fit h-fit cursor-pointer flex self-start mr-[5px] pt-[2px]'
+                          onClick={() => handleOpenCommentMoreModal(comment.id)}
+                        />
+                      )}
                     </div>
                     <button
                       key={index}
@@ -167,7 +167,9 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                       className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                     >
                       {showReply === comment.id
-                        ? `답글 ${comment.children?.length}개 닫기`
+                        ? comment.children?.length === 0
+                          ? '답글 닫기'
+                          : `답글 ${comment.children?.length}개 닫기`
                         : comment.children?.length === 0
                           ? '답글'
                           : `답글 ${comment.children?.length}개 열기`}
@@ -181,8 +183,8 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                               className='mb-[10px] flex justify-between relative min-h-[45px]'
                             >
                               <Comment comment={reply} isReply={true} />
-                              <div className='flex '>
-                                {isCommentMoreModalOpen === reply.id && (
+                              {isCommentMoreModalOpen === reply.id && (
+                                <div className='absolute translate-x-[225px] '>
                                   <MoreModal
                                     type={
                                       reply.member.nickname === user?.nickname ? 'owner' : 'user'
@@ -193,27 +195,27 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                                     commentId={comment.id}
                                     targetId={reply.id}
                                   />
-                                )}
-                                {(reply.content !== '삭제된 댓글입니다.' &&
-                                  reply.member.nickname === user?.nickname) ||
-                                (reply.content !== '삭제된 댓글입니다.' &&
-                                  reply.member.nickname !== user?.nickname) ||
-                                (reply.content === '삭제된 댓글입니다.' &&
-                                  reply.member.nickname !== user?.nickname) ? (
-                                  <Image
-                                    src={Icon_more}
-                                    alt='more'
-                                    width={12}
-                                    height={12}
-                                    className='cursor-pointer flex self-start mr-[10px]'
-                                    onClick={() => {
-                                      handleOpenReplyMoreModal(reply.id);
-                                    }}
-                                  />
-                                ) : (
-                                  <></>
-                                )}
-                              </div>
+                                </div>
+                              )}
+                              {(reply.content !== '삭제된 댓글입니다.' &&
+                                reply.member.nickname === user?.nickname) ||
+                              (reply.content !== '삭제된 댓글입니다.' &&
+                                reply.member.nickname !== user?.nickname) ||
+                              (reply.content === '삭제된 댓글입니다.' &&
+                                reply.member.nickname !== user?.nickname) ? (
+                                <Image
+                                  src={Icon_more}
+                                  alt='more'
+                                  width={12}
+                                  height={12}
+                                  className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
+                                  onClick={() => {
+                                    handleOpenReplyMoreModal(reply.id);
+                                  }}
+                                />
+                              ) : (
+                                <></>
+                              )}
                             </div>
                           ))}
                         </div>

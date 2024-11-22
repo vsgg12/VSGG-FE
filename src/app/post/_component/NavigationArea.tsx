@@ -4,7 +4,7 @@ import React from 'react';
 function NavigationArea() {
   const router = useRouter();
   return (
-    <div className='flex flex-row items-center justify-between'>
+    <div className='min-w-[1400px] px-[50px] flex flex-row items-center justify-between'>
       <button
         onClick={() => {
           router.push('/home');

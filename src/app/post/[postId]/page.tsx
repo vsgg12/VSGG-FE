@@ -35,7 +35,7 @@ export default function PostRead() {
   }, [post, router]);
 
   return (
-    <div className='min-w-[1400px]'>
+    <div className='min-w-[1400px] flex-col items-center'>
       <Header />
       <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
@@ -44,9 +44,11 @@ export default function PostRead() {
         <Loading />
       ) : (
         post && (
-          <div className='flex flex-col justify-center px-[105px]'>
-            <NavigationArea />
-            <div className='flex flex-row '>
+          <div className='flex flex-col items-center justify-center px-[50px]'>
+            <div>
+              <NavigationArea />
+            </div>
+            <div className='flex flex-row gap-[30px] justify-center'>
               <ContentArea isOwner={isOwner} setIsOwner={setIsOwner} setVoteData={setVoteData} />
               <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
             </div>

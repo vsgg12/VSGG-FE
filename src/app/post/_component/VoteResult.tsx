@@ -33,7 +33,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
     <>
       {voteInfos && (
         <>
-          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-[1400px] flex-col bg-white'>
+          <div>
             <div className='relative flex w-full justify-between'>
               <div className='flex flex-col ml-10 justify-around'>
                 {isOwner && isNoOneVoted
