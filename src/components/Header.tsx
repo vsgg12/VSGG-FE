@@ -90,7 +90,7 @@ export default function Header() {
 
   return (
     <>
-      <div className='w-full h-[100px] top-0 flex flex-row items-center justify-end bg-[#f3f3f3] z-100 px-24'>
+      <div className='w-[1400px] h-[100px] top-0 flex flex-row items-center justify-end bg-[#f3f3f3] z-100'>
         <div className='flex flex-row items-center gap-6'>
           {!isLoading && isLogin ? (
             <>

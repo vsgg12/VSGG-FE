@@ -54,16 +54,16 @@ export default function HomePostItems({
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit min-w-[1205px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit w-[1300px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}
           >
             <div className='flex w-full font-medium justify-center items-center gap-[8px]'>
-              <div className='text-black text-[1.563rem]'>{post.title}</div>
-              <div className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
+              <div className='h-[40px] text-black text-[1.563rem] '>{post.title}</div>
+              <p className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
                 | 조회수 {formatNumberWithCommas(post.viewCount)}
-              </div>
+              </p>
               <PostDeadLine deadLine={post.daysUntilEnd} />
             </div>
             <div className='justify-start font-medium'>
