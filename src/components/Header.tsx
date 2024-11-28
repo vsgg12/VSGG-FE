@@ -27,13 +27,19 @@ export default function Header() {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
-      useAuthStore.setState({
-        user: {
-          nickname: userProfileData.memberProfileDTO.nickName,
-          profile_image: userProfileData.memberProfileDTO.profileUrl,
-          email: userInfo.email,
-        },
-      });
+      const currentState = useAuthStore.getState();
+      const newUser = {
+        nickname: userProfileData.memberProfileDTO.nickName,
+        profile_image: userProfileData.memberProfileDTO.profileUrl,
+        email: userInfo.email,
+      };
+
+      if (
+        currentState.user?.nickname !== newUser.nickname ||
+        currentState.user?.profile_image !== newUser.profile_image
+      ) {
+        useAuthStore.setState({ user: newUser });
+      }
     }
   }, [userProfileData, userInfo]);
 
@@ -157,16 +163,21 @@ export default function Header() {
                 </span>
               </button>
               {isProfileModalOpen && userProfileData && userInfo && (
-                <ProfileModal
-                  handleLogoutClick={handleLogoutBtnClick}
-                  email={userInfo.email}
-                  profileImage={
-                    userProfileData?.memberProfileDTO.profileUrl === 'none'
-                      ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
-                      : userProfileData.memberProfileDTO.profileUrl
-                  }
-                  nickname={userProfileData.memberProfileDTO.nickName}
-                />
+                <div
+                  className='w-[250px] min-h-[205px] border border-[#8A1F21] rounded-[18px] p-[13px] bg-[#FFFFFF] z-50'
+                  style={{ position: 'absolute', transform: 'translate(-37%,63%)' }}
+                >
+                  <ProfileModal
+                    handleLogoutClick={handleLogoutBtnClick}
+                    email={userInfo.email}
+                    profileImage={
+                      userProfileData?.memberProfileDTO.profileUrl === 'none'
+                        ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                        : userProfileData.memberProfileDTO.profileUrl
+                    }
+                    nickname={userProfileData.memberProfileDTO.nickName}
+                  />
+                </div>
               )}
             </>
           ) : (
