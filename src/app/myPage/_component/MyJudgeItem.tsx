@@ -28,15 +28,15 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
           />
         </div>
 
-        <div className='flex justify-between min-w-[240px]'>
-          <div className='flex gap-[5px] text-[#333333]'>
+        <div className='flex justify-evenly w-[330px]'>
+          <div className='flex gap-[8px] text-[#333333] w-[240px] justify-center'>
             {myJudgeItem.authorNickname}{' '}
             <span className='text-[#C3C3C3]'>{myJudgeItem.authorTier}</span>
           </div>
           <div>{formatDate(myJudgeItem.createdDate)}</div>
         </div>
       </div>
-      <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+      <div className='h-0.5 w-full bg-[#8A1F21] my-[21px]' />
     </>
   );
 }

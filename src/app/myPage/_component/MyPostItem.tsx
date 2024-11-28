@@ -25,12 +25,12 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
           <VoteStatusCircle text={myPostItem.voteStatus} />
         </div>
 
-        <div className='flex justify-between w-[235px]'>
-          <div>{myPostItem.commentNum}</div>
+        <div className='flex justify-between w-[230px]'>
+          <div className="w-[50px] flex justify-center">{myPostItem.commentNum}</div>
           <div>{formatDate(myPostItem.createdDate)}</div>
         </div>
       </div>
-      <div className='h-0.5 w-full bg-[#8A1F21] my-[8px]' />
+      <div className='h-0.5 w-full bg-[#8A1F21] my-[21px]' />
     </>
   );
 }
