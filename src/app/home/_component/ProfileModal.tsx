@@ -35,10 +35,7 @@ export default function ProfileModal({
 
   return (
     <>
-      <div
-        className='w-[250px] h-[205px] border border-[#8A1F21] rounded-[18px] p-[13px] bg-[#FFFFFF] z-50'
-        style={{ position: 'absolute', transform: 'translate(-90px,130px)' }}
-      >
+      
         <div className='flex flex-col gap-[8.5px]'>
           <div className='flex flex-row gap-[10px] mb-[9px]'>
             <img
@@ -88,7 +85,7 @@ export default function ProfileModal({
             </span>
           </div>
         </div>
-      </div>
+      
     </>
   );
 }
