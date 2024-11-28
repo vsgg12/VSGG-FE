@@ -7,7 +7,7 @@ interface IMyJudgeListProps {
 
 function MyJudgeList({myJudgeList}: IMyJudgeListProps) {
   return (
-    <div className='flex flex-col gap-[10px]'>
+    <div className='flex flex-col'>
       {myJudgeList.map((myJudgeItem: IVotedPostItem) => (
         <div key={myJudgeItem.id}>
           <MyJudgeItem myJudgeItem={myJudgeItem} />
