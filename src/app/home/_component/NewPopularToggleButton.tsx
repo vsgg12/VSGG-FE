@@ -1,11 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
+import { useHomeStore } from '../store/useHomeStore';
 
-interface INewPopularToggleButton {
-  activeButton: string;
-  setActiveButton: Dispatch<SetStateAction<string>>;
-}
-
-function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularToggleButton) {
+function NewPopularToggleButton() {
+  const { activeButton, setActiveButton } = useHomeStore();
   return (
     <div className='flex h-[34px] w-[184.5px] border-2 border-[#8A1F21] rounded-[150px] relative bg-[#FFFFFF]'>
       <button

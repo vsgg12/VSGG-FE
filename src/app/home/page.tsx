@@ -1,35 +1,33 @@
 'use client';
 
-import HomePostItems from './_component/HomePostItems';
-import Image from 'next/image';
-import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
-import Search from './_component/Search';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
-import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
-import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
-
-import ListedPostItem from './_component/ListedPostItem';
-import NewPopularToggleButton from './_component/NewPopularToggleButton';
-import AlignModeToggleButton from './_component/AlignModeToggleButton';
+import { useWindowSize } from 'react-use';
+import DesktopComponent from './desktop/DesktopComponent';
+import MobileComponent from './mobile/MobileComponent';
+import { useHomeStore } from './store/useHomeStore';
 
 export default function Home() {
   const router = useRouter();
-  const [activeButton, setActiveButton] = useState<string>('createdatetime');
+  const { width } = useWindowSize();
+  const {
+    activeButton,
+    setIsLoginModalOpen,
+    postIndex,
+    existData,
+    setPostIndex,
+    setVisiblePosts,
+    setExistData,
+  } = useHomeStore();
+
   const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
-  const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
-  const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [isListed, setIsListed] = useState<boolean>(false);
-  const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
 
   const {
     data: postData,
@@ -100,7 +98,7 @@ export default function Home() {
         currentPostIndex,
         currentPostIndex + 5 < postLength ? currentPostIndex + 5 : postLength,
       );
-      setVisiblePosts((prev) => [...prev, ...newPosts]);
+      setVisiblePosts((prev: IGetPostDTOType[]) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
   }, [getPostData, getPostIndex]);
@@ -135,51 +133,17 @@ export default function Home() {
   return (
     <div className='min-w-[1400px] '>
       <Header />
-      <main className='px-[50px]'>
-        <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
-        <section className='flex flex-col justify-center relative w-full items-center'>
-          <div className='min-w-[1400px] px-[50px] mb-[40px] flex flex-row items-center justify-between'>
-            <NewPopularToggleButton activeButton={activeButton} setActiveButton={setActiveButton} />
-            <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
-          </div>
-          {isLoading ? (
-            <Loading />
-          ) : visiblePosts.length === 0 ? (
-            <div className='flex flex-col flex-grow items-center justify-center'>
-              현재 작성된 게시물이 없습니다.
-            </div>
-          ) : (
-            visiblePosts.map((post, idx) => (
-              <div key={idx}>
-                {isListed ? (
-                  <ListedPostItem post={post} />
-                ) : (
-                  <HomePostItems post={post} voteInfos={post.inGameInfoList} />
-                )}
-              </div>
-            ))
-          )}
-          <div ref={loaderRef} style={{ minHeight: '30px' }} />
-        </section>
-      </main>
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
-        </ModalLayout>
-      )}
-      <button
-        onClick={handleWriteClick}
-        className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
-      >
-        <Image
-          className='h-[32px] w-[32px]'
-          width={48}
-          height={48}
-          src={writeSVG}
-          alt='writeIcon'
+      {width < 768 ? (
+        <MobileComponent />
+      ) : (
+        <DesktopComponent
+          handleWriteClick={handleWriteClick}
+          handleSearchKeyDown={handleSearchKeyDown}
+          handleSearch={handleSearch}
+          isLoading={isLoading}
+          loaderRef={loaderRef}
         />
-        <div className='text-[0.875rem]'>글쓰기</div>
-      </button>
+      )}
     </div>
   );
 }

@@ -1,14 +1,11 @@
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import videoPostListsIcon from '../../../../public/svg/videoPostListsIcon.svg';
 import Icon_ListedIcon from '../../../../public/svg/Icon_ListedPost.svg';
+import { useHomeStore } from '../store/useHomeStore';
 
-interface IAlignModeToggleButton {
-  isListed: boolean;
-  setIsListed: Dispatch<SetStateAction<boolean>>;
-}
-
-function AlignModeToggleButton({ isListed, setIsListed }: IAlignModeToggleButton) {
+function AlignModeToggleButton() {
+  const { setIsListed, isListed } = useHomeStore();
   return (
     <div>
       <button onClick={() => setIsListed(!isListed)}>
