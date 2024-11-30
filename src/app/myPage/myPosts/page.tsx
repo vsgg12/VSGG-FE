@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MyPostList from '../_component/MyPostList';
+import IsNotExistList from '../_component/IsNotExistList';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
@@ -43,10 +44,16 @@ export default function MyPosts() {
                 </div>
               </div>
               <div className='h-full flex-grow'>
-                <MyPostList myPostList={myPostLists.postList} />
+                {myPostLists && myPostLists.postList.length !== 0 ? (
+                  <MyPostList myPostList={myPostLists.postList} />
+                ) : (
+                  <div className='flex justify-center items-center w-full h-full'>
+                    <IsNotExistList type='myPost' />
+                  </div>
+                )}
               </div>
               <div className='flex justify-center pb-4'>
-                <Pagination
+                {myPostLists && myPostLists.postList.length !== 0 ? <Pagination
                   activePage={page}
                   totalItemsCount={myPostLists.pageInfo.totalPageNum}
                   pageRangeDisplayed={5}
@@ -54,7 +61,8 @@ export default function MyPosts() {
                   nextPageText={'>'}
                   onChange={handlePageChange}
                   activeLinkClass='active-page'
-                />
+                />: null}
+                
               </div>
             </div>
           )}
