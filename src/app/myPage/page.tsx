@@ -18,6 +18,7 @@ import editProgileIcon from '../../../public/svg/editProfileIcon.svg';
 import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from './_component/MyJudgeList';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
+import IsNotExistList from './_component/IsNotExistList';
 
 export default function MyPage() {
   const router = useRouter();
@@ -137,7 +138,13 @@ export default function MyPage() {
                   <div className='mr-[20px]'>작성일</div>
                 </div>
               </div>
-              {myJudgeLists && <MyJudgeList myJudgeList={myJudgeLists.postList} />}
+              {myJudgeLists && myJudgeLists.postList.length !== 0 ? (
+                <MyJudgeList myJudgeList={myJudgeLists.postList} />
+              ) : (
+                <div className='flex justify-center items-center w-full h-full'>
+                  <IsNotExistList type='myPost' />
+                </div>
+              )}
             </div>
 
             <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[880px] h-[466px] font-semibold'>
@@ -160,7 +167,13 @@ export default function MyPage() {
                   <div className='mr-[20px]'>작성일</div>
                 </div>
               </div>
-              {myPostLists && <MyPostList myPostList={myPostLists.postList} />}
+              {myPostLists && myPostLists.postList.length !== 0 ? (
+                <MyPostList myPostList={myPostLists.postList} />
+              ) : (
+                <div className='flex justify-center items-center w-full h-full'>
+                  <IsNotExistList type='myPost' />
+                </div>
+              )}
             </div>
           </div>
         </div>

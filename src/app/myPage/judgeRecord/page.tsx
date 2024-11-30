@@ -10,6 +10,7 @@ import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from '../_component/MyJudgeList';
+import IsNotExistList from '../_component/IsNotExistList';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
@@ -74,10 +75,16 @@ export default function JudgeRecord() {
               </div>
             </div>
             <div className='h-full flex-grow'>
-              {myJudgeLists && <MyJudgeList myJudgeList={myJudgeLists.postList} />}
+              {myJudgeLists && myJudgeLists!.postList.length !== 0 ? (
+                <MyJudgeList myJudgeList={myJudgeLists.postList} />
+              ) : (
+                <div className='flex justify-center items-center w-full h-full'>
+                  <IsNotExistList type='myJudge' />
+                </div>
+              )}
             </div>
             <div className='flex justify-center pb-4'>
-              {myJudgeLists && (
+              {myJudgeLists && myJudgeLists.postList.length !== 0 ? (
                 <Pagination
                   activePage={page}
                   totalItemsCount={myJudgeLists.pageInfo.totalPageNum}
@@ -87,7 +94,7 @@ export default function JudgeRecord() {
                   onChange={handlePageChange}
                   activeLinkClass='active-page'
                 />
-              )}
+              ): null}
             </div>
           </div>
         </div>
