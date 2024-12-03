@@ -112,7 +112,14 @@ function ContentArea({ isOwner, setIsOwner, setVoteData }: IContentArea) {
               <div className='p-content-s-mb text-[25px]'>{post.postDTO.title}</div>
             </div>
             <div className='flex flex-row items-center justify-start font-medium '>
-              <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
+              <img
+                src={
+                  post.postDTO.memberDTO.profileImage === null
+                    ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                    : post.postDTO.memberDTO.profileImage
+                }
+                className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]'
+              />
               <div className='flex-grow'>
                 <div className='flex flex-row'>
                   <div className=' mr-[6px] text-[12px] text-[#333333]'>
