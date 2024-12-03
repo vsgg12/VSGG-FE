@@ -23,6 +23,7 @@ export default function Header() {
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin,
   });
 
   useEffect(() => {
@@ -45,13 +46,8 @@ export default function Header() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
-    queryFn: () => {
-      if (isLogin) {
-        return getAlarms(accessToken);
-      } else {
-        return Promise.resolve(null);
-      }
-    },
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin,
   });
 
   useEffect(() => {

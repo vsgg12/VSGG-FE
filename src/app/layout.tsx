@@ -77,6 +77,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
         <Script src='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js'></Script>
+        {/* Google tag (gtag.js) */}
+        <Script async src='https://www.googletagmanager.com/gtag/js?id=G-MYFHS8HYQ5'></Script>
+        <Script
+          id='google-analytics'
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-MYFHS8HYQ5');
+            `,
+          }}
+        ></Script>
       </head>
       <body className={inter.className}>
         <RQProvider>
