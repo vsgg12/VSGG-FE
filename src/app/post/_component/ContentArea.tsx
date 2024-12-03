@@ -2,7 +2,6 @@ import MoreModal from '@/components/modals/MoreModal';
 import PostDeadLine from '@/components/PostDeadLine';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { IoPersonCircleSharp } from 'react-icons/io5';
 import PostTag from './PostTag';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
