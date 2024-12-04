@@ -169,7 +169,7 @@ export default function Home() {
       )}
       <button
         onClick={handleWriteClick}
-        className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
+        className='fixed bottom-[70px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
       >
         <Image
           className='h-[32px] w-[32px]'
