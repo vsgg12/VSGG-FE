@@ -5,7 +5,7 @@ import Image from 'next/image';
 function ViewMobileButton({ handleClick }: { handleClick: () => void }) {
   return (
     <div
-      className='w-[180.6px] h-[37px] rounded-[30px] bg-black flex justify-center items-center cursor-pointer gap-[4px] fixed bottom-[30px] left-[50%] z-10 translate-x-[-50%]'
+      className='w-[322px] h-[66px] rounded-[30px] bg-black flex justify-center items-center cursor-pointer gap-[4px] fixed bottom-[30px] left-[50%] z-10 translate-x-[-50%]'
       onClick={handleClick}
     >
       <Image src={ViewMobileIcon} alt='mobileIcon' width={16} height={16} />
