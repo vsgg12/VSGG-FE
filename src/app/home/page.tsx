@@ -150,7 +150,7 @@ export default function Home() {
             </div>
           ) : (
             visiblePosts.map((post, idx) => (
-              <div key={idx}>
+              <div key={idx} className='min-w-[1205px]'>
                 {isListed ? (
                   <ListedPostItem post={post} />
                 ) : (

@@ -30,6 +30,16 @@ button {
   @apply bg-[#ECECEC];
 }
 
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
 .root-bg {
   @apply h-full w-full bg-[#f3f3f3];
   /* @apply h-full w-full bg-[#000000]; */
@@ -146,6 +156,10 @@ button {
 
 .si-input {
   @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-[#8A1F21] p-[20px] outline-none;
+}
+
+.mobile-layout {
+  @apply min-w-[390px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
 }
 
 /* HTML: <div class="loader"></div> */
