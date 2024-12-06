@@ -25,7 +25,7 @@ function Alert() {
     enabled: isLogin,
   });
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
-  const { isMobileVersion } = useMobileVersionStore();
+  const { isMobileVersion } = useMobileVersionStore.getState();
   const router = useRouter();
 
   useEffect(() => {
