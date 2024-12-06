@@ -11,7 +11,7 @@ export default function ListedPostItem({ post }: IListedItem) {
   const router = useRouter();
   return (
     <div
-      className='flex flex-col min-w-[1205px] h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
+      className='flex flex-col w-full h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
