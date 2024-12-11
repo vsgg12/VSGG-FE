@@ -38,7 +38,7 @@ export default function MyPosts() {
               </div>
               <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
                 <div>제목</div>
-                <div className='w-[250px] flex justify-between'>
+                <div className='w-[220px] flex justify-between'>
                   <div>댓글수</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
