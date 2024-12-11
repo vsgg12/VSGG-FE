@@ -54,7 +54,7 @@ export default function HomePostItems({
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit w-[1300px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}

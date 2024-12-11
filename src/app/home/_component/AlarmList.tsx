@@ -45,32 +45,41 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
     return comment;
   };
 
+  const extractNickname = (alarmContents: string) => {
+    const nicknameEndIndex = alarmContents.indexOf('님');
+    return nicknameEndIndex !== -1 ? alarmContents.slice(0, nicknameEndIndex) : '익명';
+  };
+
   const formatDate = (dateTime: string) => {
-    return moment(dateTime).format('YYYY-MM-DD');
+    return moment(dateTime).format('MM월 DD일');
   };
 
   return (
-    <>
+    <div className='w-full h-full'>
       {!alarms || alarms.length === 0 ? (
-        <p className='flex flex-grow h-[348px] justify-center items-center'>
-          새로운 알람이 없습니다!
-        </p>
+        <p className='flex flex-grow h-full justify-center items-center'>새로운 알람이 없습니다!</p>
       ) : (
         <>
-          <div className='pb-2 overflow-y-auto h-[348px]'>
+          <div className='pb-2 overflow-y-auto h-full scrollbar-hidden'>
             <div>
               {alarms.map((alarm, index) => (
                 <div className='flex flex-col gap-[5px] cursor-pointer' key={index}>
                   <div
-                    className='flex flex-col gap-[3px] px-[5px] w-[305px] relative'
+                    className='flex flex-col gap-[3px] px-[5px] w-full relative'
                     onClick={() =>
                       handleAlarmItemClick(alarm.alarmId, alarm.alarmType, alarm.postId)
                     }
                   >
+                    {alarm.alarmType === 'COMMENT' && (
+                      <div className='text-[10px] text-[#555555]'>
+                        @ {extractNickname(alarm.alarmContents)}
+                      </div>
+                    )}
+
                     <p className='text-[12px] text-[#555555] pr-[50px]'>
                       {alarm.alarmType === 'POST'
                         ? `${truncateText(alarm.alarmContents)}`
-                        : `${truncateText(alarm.alarmContents + '\n' + alarm.commentContent)}`}
+                        : `${truncateText(alarm.commentContent)}`}
                     </p>
                     <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createDateTime)}</p>
                     {alarm.isRead === false && (
@@ -92,6 +101,6 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
