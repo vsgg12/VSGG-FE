@@ -2,9 +2,11 @@ interface ICommentProps {
   comment: IGetCommentItemType;
   isReply?: boolean;
   targetNickname?: string;
+  handleReply: (targetNickname: string, targetId: number) => void;
+  handleOpenReply?: () => void;
 }
 
-export default function Comment({ comment }: ICommentProps) {
+export default function Comment({ comment, handleReply }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
@@ -43,6 +45,7 @@ export default function Comment({ comment }: ICommentProps) {
           <br />
         </span>
       </p>
+      <button onClick={handleReply(comment.member.nickname, comment.id)}>답글 달기</button>
     </div>
   );
 }

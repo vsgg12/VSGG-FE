@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
@@ -7,7 +7,6 @@ import useCommentStore from '../[postId]/store/useCommentStore';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { BsArrowUpCircle } from 'react-icons/bs';
 import MoreModal from '@/components/modals/MoreModal';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import Image from 'next/image';
@@ -27,7 +26,8 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
-  const [targetComment, setTargetComment] = useState<number | null>(null);
+  const [targetCommentId, setTargetCommentId] = useState<number | null>(null);
+  const [targetNickname, setTargetNickname] = useState<string>('');
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -36,12 +36,12 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
 
   const { mutate: writeComment } = useMutation({
     mutationFn: (data: string) =>
-      PostComment(id, { parentId: showReply, content: data }, accessToken),
+      PostComment(id, { parentId: targetCommentId, content: data }, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsCommentInProgress(false);
       if (showReply) {
-        setTargetComment(showReply);
+        setTargetCommentId(showReply);
       }
       commentMethods.reset();
       replyMethods.reset();
@@ -57,11 +57,13 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
   };
 
-  const handleReply = (commentId: number, targetId: number) => {
-    setTargetComment(targetId);
+  const handleReply = (targetNickname: string, targetId: number) => {
+    setTargetCommentId(targetId);
+    setTargetNickname(targetNickname);
+  };
+  const handleOpenReply = (commentId: number) => {
     setShowReply(commentId);
     setIsCommentMoreModalOpen(null);
-    targetComment;
   };
 
   const onCommentSubmit = (data: { commentContent: string }) => {
@@ -93,19 +95,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                   setShowReply={setShowReply}
                   setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                 />
-                <div className='flex w-full justify-end mt-[3px]'>
-                  {showReply === null ? (
-                    <button
-                      className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
-                      type='submit'
-                    >
-                      <p className='mr-[5px]'>등록</p>
-                      <BsArrowUpCircle />
-                    </button>
-                  ) : (
-                    <div className='h-[18px]'></div>
-                  )}
-                </div>
               </form>
             </FormProvider>
           </div>
@@ -121,13 +110,17 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                 commentData?.comments.map((comment: IGetCommentItemType, index) => (
                   <div key={index} className='relative mb-[20px] text-[13px]'>
                     <div className='relative flex justify-between min-h-[45px]'>
-                      <Comment comment={comment} />
+                      <Comment
+                        comment={comment}
+                        handleReply={() => handleReply(comment.member.nickname, comment.id)}
+                        handleOpenReply={() => handleOpenReply(comment.id)}
+                      />
                       {isCommentMoreModalOpen === comment.id && (
                         <div className='absolute translate-x-[255px]'>
                           <MoreModal
                             type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
                             where='comment'
-                            handleReply={() => handleReply(comment.id, comment.id)}
+                            handleReply={() => handleReply(comment.member.nickname, comment.id)}
                             setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                             commentId={comment.id}
                             targetId={comment.id}
@@ -154,11 +147,11 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           setIsLoginModalOpen(true);
                         } else if (showReply && showReply === comment.id) {
                           setShowReply(null);
-                          setTargetComment(null);
+                          setTargetCommentId(null);
                           setIsCommentMoreModalOpen(null);
                         } else {
                           setShowReply(comment.id);
-                          setTargetComment(comment.id);
+                          setTargetCommentId(comment.id);
                           setIsCommentMoreModalOpen(null);
                           replyMethods.reset({ replyContent: '' });
                           commentMethods.reset({ commentContent: '' });
@@ -167,12 +160,10 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                       className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                     >
                       {showReply === comment.id
-                        ? comment.children?.length === 0
-                          ? '답글 닫기'
-                          : `답글 ${comment.children?.length}개 닫기`
+                        ? '답글 닫기'
                         : comment.children?.length === 0
-                          ? '답글'
-                          : `답글 ${comment.children?.length}개 열기`}
+                          ? ''
+                          : `- 답글 보기 (${comment.children?.length})개`}
                     </button>
                     {showReply === comment.id && (
                       <div>
@@ -182,7 +173,11 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                               key={index}
                               className='mb-[10px] flex justify-between relative min-h-[45px]'
                             >
-                              <Comment comment={reply} isReply={true} />
+                              <Comment
+                                comment={reply}
+                                isReply={true}
+                                handleReply={() => handleReply(comment.member.nickname, comment.id)}
+                              />
                               {isCommentMoreModalOpen === reply.id && (
                                 <div className='absolute translate-x-[225px] '>
                                   <MoreModal
@@ -190,7 +185,9 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                                       reply.member.nickname === user?.nickname ? 'owner' : 'user'
                                     }
                                     where='comment'
-                                    handleReply={() => handleReply(comment.id, reply.id)}
+                                    handleReply={() =>
+                                      handleReply(comment.member.nickname, reply.id)
+                                    }
                                     setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                                     commentId={comment.id}
                                     targetId={reply.id}
@@ -218,28 +215,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                               )}
                             </div>
                           ))}
-                        </div>
-                        <div className='text-[12px]'>
-                          <FormProvider {...replyMethods}>
-                            <form
-                              onSubmit={replyMethods.handleSubmit(onReplySubmit)}
-                              className='w-full'
-                            >
-                              <PostCommentInput
-                                registerName={'replyContent'}
-                                setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                              />
-                              <div className='flex w-full justify-end mt-[3px]'>
-                                <button
-                                  className='row-end flex-end flex items-center text-[12px] text-[#8A1F21] mr-[10px]'
-                                  type='submit'
-                                >
-                                  <p className='mr-[5px]'>등록</p>
-                                  <BsArrowUpCircle />
-                                </button>
-                              </div>
-                            </form>
-                          </FormProvider>
                         </div>
                       </div>
                     )}

@@ -11,7 +11,7 @@ type IGetPostDTOType = {
   content: string;
   thumbnailURL: string;
   viewCount: number;
-  status: string | "PROGRESS" | "FINISHED";
+  status: string | 'PROGRESS' | 'FINISHED';
   video: IGetVideoType;
   memberDTO: IGetMemberDTOType;
   createdAt: string;
@@ -67,6 +67,7 @@ type IGetCommentItemType = {
   content: string;
   member: IGetMemberDTOType;
   createdDateTime: string;
+  parentMemberNickname: string | null;
   children?: IGetCommentItemType[];
 };
 
