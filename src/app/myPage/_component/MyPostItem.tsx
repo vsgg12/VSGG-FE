@@ -14,18 +14,18 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
   return (
     <>
       <div
-        className='flex justify-between items-center text-xs text-[#C3C3C3] cursor-pointer'
+        className='flex justify-between items-center text-[12px] text-[#C3C3C3] cursor-pointer font-medium'
         key={myPostItem.id}
         onClick={() => {
           router.push(`/post/${myPostItem.id}/`);
         }}
       >
         <div className='flex gap-[10px] items-center'>
-          <div className='text-[#555555] font-medium text-[16px]'>{myPostItem.title}</div>
+          <div className='text-[#555555] text-[16px]'>{myPostItem.title}</div>
           <VoteStatusCircle text={myPostItem.voteStatus} />
         </div>
 
-        <div className='flex justify-between w-[230px]'>
+        <div className='flex justify-between w-[310px]'>
           <div className="w-[50px] flex justify-center">{myPostItem.commentNum}</div>
           <div>{formatDate(myPostItem.createdDate)}</div>
         </div>

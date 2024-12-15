@@ -42,7 +42,7 @@ export default function MyPage() {
   });
 
   return (
-    <div className='min-w-[1200px]'>
+    <div className='min-w-[1480px]'>
       <div className='flex min-w-[1350px]'>
         <Header />
       </div>
@@ -54,7 +54,9 @@ export default function MyPage() {
           <div className='flex flex-col gap-10 mb-20'>
             <div className='w-[338px] min-h-[820px] max-h-[840px] flex flex-col items-center  gap-[20px] rounded-[30px] bg-white px-10 py-10'>
               <div className='flex gap-3 items-center'>
-                <div className='text-[20px]'>{userProfileData.memberProfileDTO.nickName} 님</div>
+                <div className='text-[20px] font-medium'>
+                  {userProfileData.memberProfileDTO.nickName} 님
+                </div>
               </div>
               <div className='h-[135px] w-[135px] rounded-full relative'>
                 <img
@@ -75,14 +77,14 @@ export default function MyPage() {
                   onClick={() => setIsModalOpen(true)}
                 />
               </div>
-              <div className='text-[20px]'>{userProfileData.memberProfileDTO.tier}</div>
-              <div className='text-[16px] mb-[5px]'>
+              <div className='text-[20px] font-medium'>{userProfileData.memberProfileDTO.tier}</div>
+              <div className='text-[16px] mb-[5px] font-medium'>
                 보유 포인트 : {formatNumberWithCommas(userProfileData.memberProfileDTO.point)}P
               </div>
               <div className='h-1 w-full bg-[#8A1F21]' />
               <div className='h-[350px] flex flex-col items-center relative'>
-                <p className='text-[17px] translate-x-[-80px]'>판결 승률</p>
-                <div className='absolute w-[180px] '>
+                <p className='text-[14px] translate-x-[-80px] font-[400]'>판결 승률</p>
+                <div className='absolute w-[180px]'>
                   <HalfDoughnutChart
                     win={userProfileData.memberProfileDTO.predicateResult}
                     lose={
@@ -91,7 +93,7 @@ export default function MyPage() {
                     }
                   />
                 </div>
-                <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[0px]'>
+                <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[15px] font-[400]'>
                   {userProfileData.memberProfileDTO.joinedResult}전{' '}
                   {userProfileData.memberProfileDTO.predicateResult}승{' '}
                   {userProfileData.memberProfileDTO.joinedResult -
@@ -101,16 +103,17 @@ export default function MyPage() {
               </div>
               <div className='h-1 w-full bg-[#8A1F21]'></div>
               <div className='flex w-full flex-col justify-center gap-5'>
-                <div className='text-[17px] translate-x-[20px]'>
-                  {userProfileData.memberProfileDTO.nextTier}까지
+                <div className='text-[14px] translate-x-[20px] font-[400]'>
+                  <span className='font-semibold'>{userProfileData.memberProfileDTO.nextTier}</span>{' '}
+                  까지
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
                   <BarChart num={userProfileData.memberProfileDTO.joinedResult} />
-                  <div className='text-[17px] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
+                  <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-2'>
                   <BarChart num={userProfileData.memberProfileDTO.predicateResult} />
-                  <div className='text-[17px] text-[#C3C3C3]'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
+                  <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
                 </div>
               </div>
             </div>
@@ -118,12 +121,12 @@ export default function MyPage() {
               <div>광고</div>
             </div>
           </div>
-          <div className='flex  flex-col gap-10 mb-20'>
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[880px] h-[466px]'>
-              <div className='flex justify-between font-semibold'>
+          <div className='flex flex-col gap-10 mb-20'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[960px] h-[466px]'>
+              <div className='flex justify-between font-medium'>
                 <div className='text-[20px] mb-[20px]'>판결 전적</div>
                 <div
-                  className='text-xs cursor-pointer'
+                  className='text-[14px] cursor-pointer'
                   onClick={() => {
                     router.push('/myPage/judgeRecord');
                   }}
@@ -131,9 +134,9 @@ export default function MyPage() {
                   더보기
                 </div>
               </div>
-              <div className='flex justify-between text-xs text-[#C3C3C3] mb-[12px]'>
+              <div className='flex justify-between text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
                 <div>제목</div>
-                <div className='w-[220px] flex justify-between'>
+                <div className='w-[300px] flex justify-between'>
                   <div>게시자</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
@@ -142,16 +145,16 @@ export default function MyPage() {
                 <MyJudgeList myJudgeList={myJudgeLists.postList} />
               ) : (
                 <div className='flex justify-center items-center w-full h-full'>
-                  <IsNotExistList type='myPost' />
+                  <IsNotExistList type='myJudge' />
                 </div>
               )}
             </div>
 
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[880px] h-[466px] font-semibold'>
-              <div className='flex justify-between items-center'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[960px] h-[478px] font-semibold'>
+              <div className='flex justify-between items-center font-medium'>
                 <div className='text-[20px] mb-[20px]'>내가 쓴 글</div>
                 <div
-                  className='text-xs cursor-pointer'
+                  className='cursor-pointer text-[14px]'
                   onClick={() => {
                     router.push('/myPage/myPosts');
                   }}
@@ -160,9 +163,9 @@ export default function MyPage() {
                 </div>
               </div>
 
-              <div className='flex justify-between items-center text-xs text-[#C3C3C3] mb-[12px]'>
+              <div className='flex justify-between items-center text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
                 <div>제목</div>
-                <div className='w-[220px] flex justify-between'>
+                <div className='w-[300px] flex justify-between'>
                   <div>댓글수</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
