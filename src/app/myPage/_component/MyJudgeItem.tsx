@@ -28,7 +28,7 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
           />
         </div>
 
-        <div className='flex justify-evenly w-[330px]'>
+        <div className='flex justify-between w-[390px]'>
           <div className='flex gap-[8px] text-[#333333] w-[240px] justify-center'>
             {myJudgeItem.authorNickname}{' '}
             <span className='text-[#C3C3C3]'>{myJudgeItem.authorTier}</span>

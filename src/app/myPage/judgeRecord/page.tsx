@@ -31,7 +31,7 @@ export default function JudgeRecord() {
   };
 
   return (
-    <div className='min-w-[1350px]'>
+    <div className='min-w-[1480px]'>
       <Header />
       <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
         <Logo />
@@ -39,7 +39,7 @@ export default function JudgeRecord() {
       {userProfileData && (
         <div className='flex justify-center gap-10'>
           <div className='flex flex-col'>
-            <div className='w-[340px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px]'>
+            <div className='w-[300px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px]'>
               <p className='self-start text-[14px] font-[400] flex-grow ml-5 mt-2'>판결 승률</p>
               <div className='absolute top-[360px] w-[180px]'>
                 <HalfDoughnutChart
@@ -60,7 +60,7 @@ export default function JudgeRecord() {
             </div>
           </div>
 
-          <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] min-w-[800px]'>
+          <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] min-w-[960px]'>
             <div className='flex items-center gap-5 mb-[8px] font-medium'>
               <div className='text-[20px]'>판결 전적</div>
               <div className='text-[12px] text-[#C3C3C3]'>
@@ -69,7 +69,7 @@ export default function JudgeRecord() {
             </div>
             <div className='flex justify-between items-center text-[12px] text-[#C3C3C3] font-medium'>
               <div>제목</div>
-              <div className='w-[230px] flex justify-between'>
+              <div className='w-[300px] flex justify-between'>
                 <div>게시자</div>
                 <div className='mr-[20px]'>작성일</div>
               </div>

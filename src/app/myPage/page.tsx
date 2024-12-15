@@ -122,7 +122,7 @@ export default function MyPage() {
             </div>
           </div>
           <div className='flex flex-col gap-10 mb-20'>
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[880px] h-[466px]'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[960px] h-[466px]'>
               <div className='flex justify-between font-medium'>
                 <div className='text-[20px] mb-[20px]'>판결 전적</div>
                 <div
@@ -136,7 +136,7 @@ export default function MyPage() {
               </div>
               <div className='flex justify-between text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
                 <div>제목</div>
-                <div className='w-[220px] flex justify-between'>
+                <div className='w-[300px] flex justify-between'>
                   <div>게시자</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
@@ -150,7 +150,7 @@ export default function MyPage() {
               )}
             </div>
 
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[880px] h-[478px] font-semibold'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-8 py-6 pb-8 w-[960px] h-[478px] font-semibold'>
               <div className='flex justify-between items-center font-medium'>
                 <div className='text-[20px] mb-[20px]'>내가 쓴 글</div>
                 <div
@@ -165,7 +165,7 @@ export default function MyPage() {
 
               <div className='flex justify-between items-center text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
                 <div>제목</div>
-                <div className='w-[220px] flex justify-between'>
+                <div className='w-[300px] flex justify-between'>
                   <div>댓글수</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
