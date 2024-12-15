@@ -32,11 +32,11 @@ export default function MyPosts() {
       <div className='flex justify-center w-full'>
         <div className='flex w-full flex-col mx-28'>
           {myPostLists && (
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px]'>
-              <div className='flex items-center gap-5 mb-[8px]'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] font-medium'>
+              <div className='flex items-center gap-5 mb-[8px] text-[20px]'>
                 <p>내가 쓴 글</p>
               </div>
-              <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+              <div className='flex justify-between items-center text-[12px] text-[#C3C3C3]'>
                 <div>제목</div>
                 <div className='w-[220px] flex justify-between'>
                   <div>댓글수</div>
