@@ -42,7 +42,7 @@ export default function MyPage() {
   });
 
   return (
-    <div className='min-w-[1200px]'>
+    <div className='min-w-[1480px]'>
       <div className='flex min-w-[1350px]'>
         <Header />
       </div>
