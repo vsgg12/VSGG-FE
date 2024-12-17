@@ -65,7 +65,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
             setIsLoginModalOpen(true);
           }
         }}
-        placeholder={`@${targetNickname}`}
+        placeholder={targetNickname && `@${targetNickname}`}
       />
       <button className='text-[12px] text-[#8A1F21]' type='submit'>
         <p className='mr-[5px]'>등록</p>
