@@ -25,8 +25,10 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
-  const [targetCommentId, setTargetCommentId] = useState<number | null>(null);
-  const [targetNickname, setTargetNickname] = useState<string>('');
+  const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
+    id: null,
+    nickname: '',
+  });
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -35,13 +37,12 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
 
   const { mutate: writeComment } = useMutation({
     mutationFn: (data: string) =>
-      PostComment(id, { parentId: targetCommentId, content: data }, accessToken),
+      PostComment(id, { parentId: targetComment.id, content: data }, accessToken),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsCommentInProgress(false);
       commentMethods.reset();
-      setTargetNickname('');
-      setTargetCommentId(null);
+      setTargetComment({ id: null, nickname: '' });
     },
     onError: (error) => console.log(error),
   });
@@ -55,8 +56,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   const handleReply = (targetNickname: string, targetId: number) => {
-    setTargetCommentId(targetId);
-    setTargetNickname(targetNickname);
+    setTargetComment({ id: targetId, nickname: targetNickname });
   };
 
   const handleOpenReply = (commentId: number) => {
@@ -68,8 +68,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     if (isCommentInProgress) {
       return;
     }
-    console.log(targetCommentId, targetNickname);
-
     setIsCommentInProgress(true);
     writeComment(data.commentContent.trim());
   };
@@ -86,7 +84,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                   registerName={'commentContent'}
                   setShowReply={setShowReply}
                   setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                  targetNickname={targetNickname}
+                  targetNickname={targetComment.nickname}
                 />
               </form>
             </FormProvider>
@@ -164,9 +162,8 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                             >
                               <Comment
                                 comment={reply}
-                                isReply={true}
+                                targetComment={targetComment}
                                 handleReply={() => handleReply(reply.member.nickname, reply.id)}
-                                targetNickname={reply.parentMemberNickname}
                               />
                               {isCommentMoreModalOpen === reply.id && (
                                 <div className='absolute translate-x-[225px] '>
