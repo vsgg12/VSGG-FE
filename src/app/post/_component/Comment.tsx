@@ -1,10 +1,12 @@
 interface ICommentProps {
   comment: IGetCommentItemType;
   isReply?: boolean;
-  targetNickname?: string;
+  targetNickname?: string | null;
+  handleReply: (targetNickname: string, targetId: number) => void;
+  handleOpenReply?: () => void;
 }
 
-export default function Comment({ comment }: ICommentProps) {
+export default function Comment({ comment, handleReply, targetNickname }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
@@ -30,19 +32,25 @@ export default function Comment({ comment }: ICommentProps) {
   return (
     <div>
       <div className='flex flex-row relative font-medium items-start'>
-        <p className='mr-[5px] text-[13px] text-[#333333] mb-[5px]'>@{comment.member.nickname}</p>
+        <p className='mr-[5px] text-[13px] text-[#333333] mb-[5px]'>{comment.member.nickname}</p>
         <p className='text-[12px] text-[#909090] min-w-fit'>{comment.member.tier}</p>
         <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow min-w-fit'>
           | {timeDifferenceFromNow(pastTime)}
         </p>
       </div>
       <p className='text-[14px]'>
-        {/* {isReply && <span className='text-[#8A1F21]'>@{targetNickname} </span>} */}
+        {targetNickname && <span className='text-[#8A1F21]'>@{targetNickname} </span>}
         <span className='whitespace-pre-wrap'>
           {comment.content}
           <br />
         </span>
       </p>
+      <button
+        className='mb-[10px] text-[12px] font-medium text-[#8A1F21]'
+        onClick={() => handleReply(comment.member.nickname, comment.id)}
+      >
+        답글 달기
+      </button>
     </div>
   );
 }
