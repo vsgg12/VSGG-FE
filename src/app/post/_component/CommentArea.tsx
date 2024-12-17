@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
@@ -22,7 +22,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   const queryClient = useQueryClient();
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const commentMethods = useForm<{ commentContent: string }>();
-  const replyMethods = useForm<{ replyContent: string }>();
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
@@ -40,11 +39,9 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsCommentInProgress(false);
-      if (showReply) {
-        setTargetCommentId(showReply);
-      }
       commentMethods.reset();
-      replyMethods.reset();
+      setTargetNickname('');
+      setTargetCommentId(null);
     },
     onError: (error) => console.log(error),
   });
@@ -61,6 +58,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     setTargetCommentId(targetId);
     setTargetNickname(targetNickname);
   };
+
   const handleOpenReply = (commentId: number) => {
     setShowReply(commentId);
     setIsCommentMoreModalOpen(null);
@@ -70,16 +68,10 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     if (isCommentInProgress) {
       return;
     }
+    console.log(targetCommentId, targetNickname);
+
     setIsCommentInProgress(true);
     writeComment(data.commentContent.trim());
-  };
-
-  const onReplySubmit = (data: { replyContent: string }) => {
-    if (isCommentInProgress) {
-      return;
-    }
-    setIsCommentInProgress(true);
-    writeComment(data.replyContent.trim());
   };
 
   return (
@@ -94,6 +86,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                   registerName={'commentContent'}
                   setShowReply={setShowReply}
                   setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                  targetNickname={targetNickname}
                 />
               </form>
             </FormProvider>
@@ -128,16 +121,16 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           />
                         </div>
                       )}
-                      {comment.content !== '삭제된 댓글입니다.' && (
-                        <Image
-                          src={Icon_more}
-                          alt='more'
-                          width={12}
-                          height={12}
-                          className='w-fit h-fit cursor-pointer flex self-start mr-[5px] pt-[2px]'
-                          onClick={() => handleOpenCommentMoreModal(comment.id)}
-                        />
-                      )}
+                      <Image
+                        src={Icon_more}
+                        alt='more'
+                        width={12}
+                        height={12}
+                        className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
+                        onClick={() => {
+                          handleOpenCommentMoreModal(comment.id);
+                        }}
+                      />
                     </div>
                     <button
                       key={index}
@@ -147,20 +140,16 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           setIsLoginModalOpen(true);
                         } else if (showReply && showReply === comment.id) {
                           setShowReply(null);
-                          setTargetCommentId(null);
                           setIsCommentMoreModalOpen(null);
                         } else {
                           setShowReply(comment.id);
-                          setTargetCommentId(comment.id);
                           setIsCommentMoreModalOpen(null);
-                          replyMethods.reset({ replyContent: '' });
-                          commentMethods.reset({ commentContent: '' });
                         }
                       }}
                       className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
                     >
                       {showReply === comment.id
-                        ? '답글 닫기'
+                        ? '- 답글 숨기기'
                         : comment.children?.length === 0
                           ? ''
                           : `- 답글 보기 (${comment.children?.length})개`}
@@ -176,7 +165,8 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                               <Comment
                                 comment={reply}
                                 isReply={true}
-                                handleReply={() => handleReply(comment.member.nickname, comment.id)}
+                                handleReply={() => handleReply(reply.member.nickname, reply.id)}
+                                targetNickname={reply.parentMemberNickname}
                               />
                               {isCommentMoreModalOpen === reply.id && (
                                 <div className='absolute translate-x-[225px] '>
@@ -194,25 +184,16 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                                   />
                                 </div>
                               )}
-                              {(reply.content !== '삭제된 댓글입니다.' &&
-                                reply.member.nickname === user?.nickname) ||
-                              (reply.content !== '삭제된 댓글입니다.' &&
-                                reply.member.nickname !== user?.nickname) ||
-                              (reply.content === '삭제된 댓글입니다.' &&
-                                reply.member.nickname !== user?.nickname) ? (
-                                <Image
-                                  src={Icon_more}
-                                  alt='more'
-                                  width={12}
-                                  height={12}
-                                  className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
-                                  onClick={() => {
-                                    handleOpenReplyMoreModal(reply.id);
-                                  }}
-                                />
-                              ) : (
-                                <></>
-                              )}
+                              <Image
+                                src={Icon_more}
+                                alt='more'
+                                width={12}
+                                height={12}
+                                className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
+                                onClick={() => {
+                                  handleOpenReplyMoreModal(reply.id);
+                                }}
+                              />
                             </div>
                           ))}
                         </div>

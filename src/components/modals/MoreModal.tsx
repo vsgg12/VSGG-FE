@@ -33,8 +33,8 @@ function MoreModal({
         ? ['수정', '삭제']
         : ['신고']
       : type === 'owner'
-        ? ['수정', '삭제']
-        : ['답글', '신고'];
+        ? ['삭제', '취소']
+        : ['신고', '취소'];
 
   const { accessToken } = useAuthStore();
   const router = useRouter();
@@ -92,6 +92,9 @@ function MoreModal({
       case '답글':
         alert('준비중입니다.');
         handleReply && handleReply(commentId, targetId);
+        break;
+      case '취소':
+        setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
         break;
       default:
         break;

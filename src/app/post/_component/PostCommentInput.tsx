@@ -5,18 +5,15 @@ import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
-  registerName: 'commentContent' | 'replyContent';
+  registerName: 'commentContent';
   setShowReply?: Dispatch<SetStateAction<number | null>>;
   setIsCommentMoreModalOpen: Dispatch<SetStateAction<number | null>>;
+  targetNickname: string;
 }
 
-export default function PostCommentInput({
-  registerName,
-  setShowReply,
-  setIsCommentMoreModalOpen,
-}: IPostCommentInputProps) {
-  const { register } = useFormContext<{ commentContent: string; replyContent: string }>();
-  const { ref, ...rest } = register(registerName, { required: true });
+export default function PostCommentInput({ targetNickname }: IPostCommentInputProps) {
+  const { register } = useFormContext<{ commentContent: string }>();
+  const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore.getState();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
@@ -67,11 +64,8 @@ export default function PostCommentInput({
           if (!isLogin) {
             setIsLoginModalOpen(true);
           }
-          if (registerName === 'commentContent') {
-            setShowReply && setShowReply(null);
-          }
-          setIsCommentMoreModalOpen(null);
         }}
+        placeholder={`@${targetNickname}`}
       />
       <button className='text-[12px] text-[#8A1F21]' type='submit'>
         <p className='mr-[5px]'>등록</p>
