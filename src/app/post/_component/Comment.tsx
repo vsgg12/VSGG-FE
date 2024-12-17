@@ -1,12 +1,14 @@
 interface ICommentProps {
   comment: IGetCommentItemType;
-  isReply?: boolean;
-  targetNickname?: string | null;
+  targetComment?: {
+    id: number | null;
+    nickname: string;
+  };
   handleReply: (targetNickname: string, targetId: number) => void;
   handleOpenReply?: () => void;
 }
 
-export default function Comment({ comment, handleReply, targetNickname }: ICommentProps) {
+export default function Comment({ comment, targetComment, handleReply }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
@@ -39,7 +41,7 @@ export default function Comment({ comment, handleReply, targetNickname }: IComme
         </p>
       </div>
       <p className='text-[14px]'>
-        {targetNickname && <span className='text-[#8A1F21]'>@{targetNickname} </span>}
+        {targetComment && <span className='text-[#8A1F21]'>@{comment.parentMemberNickname} </span>}
         <span className='whitespace-pre-wrap'>
           {comment.content}
           <br />
