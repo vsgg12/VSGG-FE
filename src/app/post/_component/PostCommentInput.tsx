@@ -52,7 +52,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
         const newHeight = Math.min(textareaRef.current.scrollHeight - paddingVertical, maxHeight);
         textareaRef.current.style.height = `${newHeight}px`;
       } else {
-        textareaRef.current.style.height = '40px';
+        textareaRef.current.style.height = '30px';
       }
       textareaRef.current.style.overflowY = currentLines > maxLines ? 'auto' : 'hidden';
     }
@@ -78,7 +78,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   return (
     <div className='h-fit w-full rounded-[20px] border-2 border-[#8A1F21] flex'>
       <textarea
-        className='h-[40px] w-[295px] overflow-scroll ml-[10px] py-[8px] my-[5px] text-[12px] box-border focus:outline-none resize-none scrollbar-hide'
+        className='h-[36px] w-[325px] overflow-scroll ml-[10px] py-[8px] my-[5px] text-[12px] box-border focus:outline-none resize-none scrollbar-hide'
         {...rest}
         ref={(e) => {
           ref(e);

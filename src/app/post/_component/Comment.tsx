@@ -33,20 +33,17 @@ export default function Comment({ comment, targetComment, handleReply }: ICommen
   return (
     <div>
       <div className='flex flex-row relative font-medium items-start'>
-        <p className='mr-[5px] text-[13px] text-[#333333] mb-[5px] whitespace-nowrap'>
+        <p className='mr-[5px] text-[14px] text-[#333333] mb-[5px] whitespace-nowrap font-semibold'>
           {comment.member.nickname}
         </p>
-        <p className='text-[12px] text-[#909090] min-w-fit'>{comment.member.tier}</p>
+        <p className='text-[14px] text-[#909090] min-w-fit'>{comment.member.tier}</p>
         <p className='text-[12px] text-[#C8C8C8] ml-2 flex-grow min-w-fit'>
           | {timeDifferenceFromNow(pastTime)}
         </p>
       </div>
       <p className='text-[14px]'>
         {targetComment && <span className='text-[#8A1F21]'>@{comment.parentMemberNickname} </span>}
-        <span className='whitespace-pre-wrap'>
-          {comment.content}
-          <br />
-        </span>
+        <span className='whitespace-pre-wrap'>{comment.content}</span>
       </p>
       <button className='text-[12px] font-medium text-[#8A1F21]' onClick={() => handleReply()}>
         답글 달기
