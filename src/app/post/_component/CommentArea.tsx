@@ -91,10 +91,8 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
               <PostCommentInput
-                registerName={'commentContent'}
-                setShowReply={setShowReply}
-                setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                 targetNickname={targetComment.nickname}
+                setTargetComment={setTargetComment}
               />
             </form>
           </FormProvider>
@@ -128,7 +126,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
                           commentId={comment.id}
                           targetId={comment.id}
-                          hasChildrenComment={comment.children?.length !== 0 ? true : false}
                         />
                       </div>
                     )}

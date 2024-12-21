@@ -1,14 +1,17 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
-  registerName: 'commentContent';
-  setShowReply?: Dispatch<SetStateAction<number | null>>;
-  setIsCommentMoreModalOpen: Dispatch<SetStateAction<number | null>>;
   targetNickname: string;
+  setTargetComment: React.Dispatch<
+    React.SetStateAction<{
+      id: number | null;
+      nickname: string;
+    }>
+  >;
 }
 
 export default function PostCommentInput({ targetNickname }: IPostCommentInputProps) {
@@ -75,7 +78,9 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
           resizeHeight(e); // Shift + Enter 시 높이 조정
           handleEnterClick(e); // Enter 시 제출 처리
         }}
-        onInput={() => resizeHeight()}
+        onInput={() => {
+          resizeHeight();
+        }}
         maxLength={300}
         onFocus={() => {
           if (!isLogin) {
