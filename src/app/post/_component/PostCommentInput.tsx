@@ -1,14 +1,17 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
-  registerName: 'commentContent';
-  setShowReply?: Dispatch<SetStateAction<number | null>>;
-  setIsCommentMoreModalOpen: Dispatch<SetStateAction<number | null>>;
   targetNickname: string;
+  setTargetComment: React.Dispatch<
+    React.SetStateAction<{
+      id: number | null;
+      nickname: string;
+    }>
+  >;
 }
 
 export default function PostCommentInput({ targetNickname }: IPostCommentInputProps) {
@@ -18,7 +21,13 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const { isLogin } = useAuthStore.getState();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
-  const resizeHeight = () => {
+  useEffect(() => {
+    handleFocusTextarea();
+  }, [targetNickname]);
+
+  const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
+
     if (textareaRef.current) {
       const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight || '40px', 10);
       const maxLines = 4;
@@ -49,6 +58,23 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
     }
   };
 
+  const handleEnterClick = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (textareaRef.current) {
+        textareaRef.current.form?.dispatchEvent(
+          new Event('submit', { bubbles: true, cancelable: true }),
+        );
+      }
+    }
+  };
+
+  const handleFocusTextarea = () => {
+    if (targetNickname && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
   return (
     <div className='h-fit w-full rounded-[20px] border-2 border-[#8A1F21] flex'>
       <textarea
@@ -58,7 +84,13 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
           ref(e);
           textareaRef.current = e;
         }}
-        onChange={() => resizeHeight()}
+        onKeyDown={(e) => {
+          resizeHeight(e); // Shift + Enter 시 높이 조정
+          handleEnterClick(e); // Enter 시 제출 처리
+        }}
+        onInput={() => {
+          resizeHeight();
+        }}
         maxLength={300}
         onFocus={() => {
           if (!isLogin) {

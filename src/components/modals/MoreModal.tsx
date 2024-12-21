@@ -14,7 +14,6 @@ interface Props {
   targetId?: number;
   commentId?: number;
   postId?: number;
-  hasChildrenComment?: boolean;
 }
 
 function MoreModal({
@@ -25,7 +24,6 @@ function MoreModal({
   handleReply,
   setIsCommentMoreModalOpen,
   postId,
-  hasChildrenComment,
 }: Props) {
   const items =
     where === 'post'
@@ -59,8 +57,8 @@ function MoreModal({
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setPostVoteResult([]);
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: () => {
+      alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
     },
     onSettled: () => {
       setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
@@ -77,12 +75,7 @@ function MoreModal({
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
         } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
-          if (hasChildrenComment) {
-            alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
-            setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
-          } else {
-            deleteComment();
-          }
+          deleteComment();
         }
         break;
       case '신고':
