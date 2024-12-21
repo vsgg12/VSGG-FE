@@ -44,7 +44,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
       commentMethods.reset();
       setTargetComment({ id: null, nickname: '' });
     },
-    onError: (error) => console.log(error),
+    onError: (error) => console.error(error.message),
   });
 
   const handleOpenCommentMoreModal = (commentId: number) => {

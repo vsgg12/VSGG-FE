@@ -35,7 +35,7 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose }) => {
     <div className='relative flex flex-col items-center justify-center '>
       <Doughnut data={data} options={options} />
       <span className='absolute text-[20px] font-medium text-[#8A1F21] translate-y-[25px]'>
-        {isZero ? "0%" : winPercentage.toFixed(0)}%
+        {isZero ? "0" : winPercentage.toFixed(0)}%
       </span>
     </div>
   );

@@ -46,7 +46,7 @@ function MoreModal({
       router.push('/home');
     },
     onError: (error) => {
-      alert(error);
+      alert(error.message);
     },
   });
 
