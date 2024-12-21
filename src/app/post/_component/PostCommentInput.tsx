@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
@@ -20,6 +20,10 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore.getState();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    handleFocusTextarea();
+  }, [targetNickname]);
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
@@ -62,6 +66,12 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
           new Event('submit', { bubbles: true, cancelable: true }),
         );
       }
+    }
+  };
+
+  const handleFocusTextarea = () => {
+    if (targetNickname && textareaRef.current) {
+      textareaRef.current.focus();
     }
   };
 
