@@ -55,13 +55,24 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
   };
 
-  const handleReply = (targetNickname: string, targetId: number) => {
+  const handleReply = (targetNickname: string, targetId: number, parentId: number) => {
+    if (!isLogin) {
+      setIsLoginModalOpen(true);
+    }
     setTargetComment({ id: targetId, nickname: targetNickname });
+    setShowReply(parentId);
   };
 
   const handleOpenReply = (commentId: number) => {
-    setShowReply(commentId);
-    setIsCommentMoreModalOpen(null);
+    if (!isLogin) {
+      setIsLoginModalOpen(true);
+    } else if (showReply && showReply === commentId) {
+      setShowReply(null);
+      setIsCommentMoreModalOpen(null);
+    } else {
+      setShowReply(commentId);
+      setIsCommentMoreModalOpen(null);
+    }
   };
 
   const onCommentSubmit = (data: { commentContent: string }) => {
@@ -73,134 +84,121 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   return (
-    <div>
-      <div className='p-content-rounded relative mb-11 h-[1000px] w-[380px] bg-white px-[20px] pb-[30px] '>
-        <div className='bg-[#ffffff] pt-[30px]'>
-          <div className='p-content-s-mb text-lg'>댓글</div>
-          <div className='flex flex-row w-full'>
-            <FormProvider {...commentMethods}>
-              <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
-                <PostCommentInput
-                  registerName={'commentContent'}
-                  setShowReply={setShowReply}
-                  setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                  targetNickname={targetComment.nickname}
-                />
-              </form>
-            </FormProvider>
-          </div>
+    <div className='p-content-rounded relative mb-11 h-[1000px] w-[380px] bg-white px-[20px] pb-[30px] '>
+      <div className='bg-[#ffffff] pt-[30px]'>
+        <div className='p-content-s-mb text-lg'>댓글</div>
+        <div className='flex flex-row w-full'>
+          <FormProvider {...commentMethods}>
+            <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
+              <PostCommentInput
+                registerName={'commentContent'}
+                setShowReply={setShowReply}
+                setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                targetNickname={targetComment.nickname}
+              />
+            </form>
+          </FormProvider>
         </div>
-        <div className='mt-[20px]'>
-          {commentData?.comments.length === 0 ? (
-            <div className='flex justify-center'>
-              <div>아직 댓글이 없습니다.</div>
-            </div>
-          ) : (
-            <div className='scroll overflow-hidden h-[770px] w-full relative'>
-              {commentData &&
-                commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                  <div key={index} className='relative mb-[20px] text-[13px]'>
-                    <div className='relative flex justify-between min-h-[45px]'>
-                      <Comment
-                        comment={comment}
-                        handleReply={() => handleReply(comment.member.nickname, comment.id)}
-                        handleOpenReply={() => handleOpenReply(comment.id)}
-                      />
-                      {isCommentMoreModalOpen === comment.id && (
-                        <div className='absolute translate-x-[255px]'>
-                          <MoreModal
-                            type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
-                            where='comment'
-                            handleReply={() => handleReply(comment.member.nickname, comment.id)}
-                            setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                            commentId={comment.id}
-                            targetId={comment.id}
-                            hasChildrenComment={comment.children?.length !== 0 ? true : false}
-                          />
-                        </div>
-                      )}
-                      <Image
-                        src={Icon_more}
-                        alt='more'
-                        width={12}
-                        height={12}
-                        className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
-                        onClick={() => {
-                          handleOpenCommentMoreModal(comment.id);
-                        }}
-                      />
-                    </div>
+      </div>
+      <div className='mt-[20px]'>
+        {commentData?.comments.length === 0 ? (
+          <div className='flex justify-center'>
+            <div>아직 댓글이 없습니다.</div>
+          </div>
+        ) : (
+          <div className='scroll overflow-hidden h-[770px] w-full relative flex flex-col gap-[15px]'>
+            {commentData &&
+              commentData?.comments.map((comment: IGetCommentItemType, index) => (
+                <div key={index} className=' relative text-[13px]'>
+                  <div className='relative flex justify-between'>
+                    <Comment
+                      comment={comment}
+                      handleReply={() => {
+                        handleReply(comment.member.nickname, comment.id, comment.id);
+                      }}
+                    />
+                    {isCommentMoreModalOpen === comment.id && (
+                      <div className='absolute translate-x-[255px]'>
+                        <MoreModal
+                          type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
+                          where='comment'
+                          handleReply={() =>
+                            handleReply(comment.member.nickname, comment.id, comment.id)
+                          }
+                          setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                          commentId={comment.id}
+                          targetId={comment.id}
+                          hasChildrenComment={comment.children?.length !== 0 ? true : false}
+                        />
+                      </div>
+                    )}
+                    <Image
+                      src={Icon_more}
+                      alt='more'
+                      width={12}
+                      height={12}
+                      className='cursor-pointer flex self-start ml-[10px] mt-[2px]'
+                      onClick={() => {
+                        handleOpenCommentMoreModal(comment.id);
+                      }}
+                    />
+                  </div>
+                  {comment.children?.length !== 0 && (
                     <button
                       key={index}
                       type='button'
-                      onClick={() => {
-                        if (!isLogin) {
-                          setIsLoginModalOpen(true);
-                        } else if (showReply && showReply === comment.id) {
-                          setShowReply(null);
-                          setIsCommentMoreModalOpen(null);
-                        } else {
-                          setShowReply(comment.id);
-                          setIsCommentMoreModalOpen(null);
-                        }
-                      }}
-                      className='mb-[10px] text-[14px] font-medium text-[#8A1F21]'
+                      onClick={() => handleOpenReply(comment.id)}
+                      className='my-[5px] text-[14px] font-medium text-[#8A1F21]'
                     >
                       {showReply === comment.id
                         ? '- 답글 숨기기'
-                        : comment.children?.length === 0
-                          ? ''
-                          : `- 답글 보기 (${comment.children?.length})개`}
+                        : comment.children?.length !== 0 &&
+                          `- 답글 보기 (${comment.children?.length})개`}
                     </button>
-                    {showReply === comment.id && (
-                      <div>
-                        <div className='mb-[20px] mt-[10px] border-l-2 border-[#8A1F21] pl-6 '>
-                          {comment.children?.map((reply: IGetCommentItemType, index: number) => (
-                            <div
-                              key={index}
-                              className='mb-[10px] flex justify-between relative min-h-[45px]'
-                            >
-                              <Comment
-                                comment={reply}
-                                targetComment={targetComment}
-                                handleReply={() => handleReply(reply.member.nickname, reply.id)}
-                              />
-                              {isCommentMoreModalOpen === reply.id && (
-                                <div className='absolute translate-x-[225px] '>
-                                  <MoreModal
-                                    type={
-                                      reply.member.nickname === user?.nickname ? 'owner' : 'user'
-                                    }
-                                    where='comment'
-                                    handleReply={() =>
-                                      handleReply(comment.member.nickname, reply.id)
-                                    }
-                                    setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                                    commentId={comment.id}
-                                    targetId={reply.id}
-                                  />
-                                </div>
-                              )}
-                              <Image
-                                src={Icon_more}
-                                alt='more'
-                                width={12}
-                                height={12}
-                                className='cursor-pointer flex self-start mr-[10px] mt-[2px]'
-                                onClick={() => {
-                                  handleOpenReplyMoreModal(reply.id);
-                                }}
+                  )}
+                  {showReply === comment.id && (
+                    <div className='border-l-2 border-[#8A1F21] pl-6'>
+                      {comment.children?.map((reply: IGetCommentItemType, index: number) => (
+                        <div key={index} className='flex justify-between relative'>
+                          <Comment
+                            comment={reply}
+                            targetComment={targetComment}
+                            handleReply={() =>
+                              handleReply(reply.member.nickname, reply.id, comment.id)
+                            }
+                          />
+                          {isCommentMoreModalOpen === reply.id && (
+                            <div className='absolute translate-x-[225px] '>
+                              <MoreModal
+                                type={reply.member.nickname === user?.nickname ? 'owner' : 'user'}
+                                where='comment'
+                                handleReply={() =>
+                                  handleReply(comment.member.nickname, reply.id, comment.id)
+                                }
+                                setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
+                                commentId={comment.id}
+                                targetId={reply.id}
                               />
                             </div>
-                          ))}
+                          )}
+                          <Image
+                            src={Icon_more}
+                            alt='more'
+                            width={12}
+                            height={12}
+                            className='cursor-pointer flex self-start ml-[5px] mt-[2px]'
+                            onClick={() => {
+                              handleOpenReplyMoreModal(reply.id);
+                            }}
+                          />
                         </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-            </div>
-          )}
-        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ function MoreModal({
       setPostVoteResult([]);
     },
     onError: (err) => {
-      alert(err);
+      console.log(err);
     },
     onSettled: () => {
       setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
