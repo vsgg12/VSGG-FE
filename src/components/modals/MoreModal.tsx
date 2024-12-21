@@ -48,7 +48,7 @@ function MoreModal({
       router.push('/home');
     },
     onError: (error) => {
-      alert(error);
+      alert(error.message);
     },
   });
 
@@ -59,8 +59,8 @@ function MoreModal({
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setPostVoteResult([]);
     },
-    onError: (err) => {
-      alert(err);
+    onError: (error) => {
+      alert(error.message);
     },
     onSettled: () => {
       setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);

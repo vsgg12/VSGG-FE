@@ -113,8 +113,6 @@ const _fetch = async <T = unknown, R = unknown>({
             } 
           } catch (err) {
             // 토큰 재발급 오류
-            useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-            window.location.reload();
             throw new Error('Session expired. Please log in again.');
           }
         } else {
@@ -124,8 +122,8 @@ const _fetch = async <T = unknown, R = unknown>({
           throw new Error('Session expired. Please log in again.');
         }
       }
-      const errorData = await res.json();
-      throw new Error(errorData.message);
+      const {resultMsg} = await res.json();
+      throw new Error(resultMsg.message);
     }
     return await res.json();
   } catch (error) {
