@@ -9,22 +9,12 @@ import React, { Dispatch, SetStateAction } from 'react';
 interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
-  handleReply?: (commentId: number, targetId: number) => void;
   setIsCommentMoreModalOpen?: Dispatch<SetStateAction<number | null>>;
   targetId?: number;
-  commentId?: number;
   postId?: number;
 }
 
-function MoreModal({
-  type,
-  where,
-  targetId = 0,
-  commentId = 0,
-  handleReply,
-  setIsCommentMoreModalOpen,
-  postId,
-}: Props) {
+function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postId }: Props) {
   const items =
     where === 'post'
       ? type === 'owner'
@@ -81,10 +71,6 @@ function MoreModal({
       case '신고':
         // 이건 어떻게 할지 아직 모름
         alert('준비중입니다.');
-        break;
-      case '답글':
-        alert('준비중입니다.');
-        handleReply && handleReply(commentId, targetId);
         break;
       case '취소':
         setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
