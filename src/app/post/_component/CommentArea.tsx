@@ -116,7 +116,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                       }}
                     />
                     {isCommentMoreModalOpen === comment.id && (
-                      <div className='absolute translate-x-[305px]'>
+                      <div className='absolute translate-x-[295px]'>
                         <MoreModal
                           type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
                           where='comment'
@@ -161,7 +161,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                             }
                           />
                           {isCommentMoreModalOpen === reply.id && (
-                            <div className='absolute translate-x-[280px] '>
+                            <div className='absolute translate-x-[270px] '>
                               <MoreModal
                                 type={reply.member.nickname === user?.nickname ? 'owner' : 'user'}
                                 where='comment'
