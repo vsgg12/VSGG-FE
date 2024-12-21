@@ -84,7 +84,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   return (
-    <div className='p-content-rounded relative mb-11 h-[1000px] w-[380px] bg-white px-[20px] pb-[30px] '>
+    <div className='p-content-rounded relative mb-11 h-[1000px] w-[420px] bg-white px-[20px] pb-[30px] '>
       <div className='bg-[#ffffff] pt-[30px]'>
         <div className='p-content-s-mb text-lg'>댓글</div>
         <div className='flex flex-row w-full'>
@@ -104,10 +104,10 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
             <div>아직 댓글이 없습니다.</div>
           </div>
         ) : (
-          <div className='scroll overflow-hidden h-[770px] w-full relative flex flex-col gap-[15px]'>
+          <div className='scroll overflow-hidden h-[770px] pl-[2px] w-full relative flex flex-col gap-[15px]'>
             {commentData &&
               commentData?.comments.map((comment: IGetCommentItemType, index) => (
-                <div key={index} className=' relative text-[13px]'>
+                <div key={index} className='relative text-[13px]'>
                   <div className='relative flex justify-between'>
                     <Comment
                       comment={comment}
@@ -116,15 +116,11 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                       }}
                     />
                     {isCommentMoreModalOpen === comment.id && (
-                      <div className='absolute translate-x-[255px]'>
+                      <div className='absolute translate-x-[305px]'>
                         <MoreModal
                           type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
                           where='comment'
-                          handleReply={() =>
-                            handleReply(comment.member.nickname, comment.id, comment.id)
-                          }
                           setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                          commentId={comment.id}
                           targetId={comment.id}
                         />
                       </div>
@@ -154,9 +150,9 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                     </button>
                   )}
                   {showReply === comment.id && (
-                    <div className='border-l-2 border-[#8A1F21] pl-6'>
+                    <div className='pl-6'>
                       {comment.children?.map((reply: IGetCommentItemType, index: number) => (
-                        <div key={index} className='flex justify-between relative'>
+                        <div key={index} className='flex justify-between relative mb-[20px]'>
                           <Comment
                             comment={reply}
                             targetComment={targetComment}
@@ -165,15 +161,11 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                             }
                           />
                           {isCommentMoreModalOpen === reply.id && (
-                            <div className='absolute translate-x-[225px] '>
+                            <div className='absolute translate-x-[280px] '>
                               <MoreModal
                                 type={reply.member.nickname === user?.nickname ? 'owner' : 'user'}
                                 where='comment'
-                                handleReply={() =>
-                                  handleReply(comment.member.nickname, reply.id, comment.id)
-                                }
                                 setIsCommentMoreModalOpen={setIsCommentMoreModalOpen}
-                                commentId={comment.id}
                                 targetId={reply.id}
                               />
                             </div>
