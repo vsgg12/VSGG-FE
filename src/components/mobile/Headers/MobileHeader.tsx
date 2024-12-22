@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import BackArrowIcon from '../../../public/svg/mobile/backArrrowIcon.svg';
+import BackArrowIcon from '../../../../public/svg/mobile/backArrrowIcon.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 

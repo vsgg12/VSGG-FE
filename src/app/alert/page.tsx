@@ -4,7 +4,7 @@ import getAlarms from '@/api/getAlarms';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../login/store/useAuthStore';
-import MobileHeader from '@/components/mobile/MobileHeader';
+import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import AlarmList from '../home/_component/AlarmList';
 import Loading from '@/components/Loading';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
@@ -29,9 +29,9 @@ function Alert() {
   const router = useRouter();
 
   useEffect(() => {
-    !isMobileVersion && router.replace('/home') 
+    !isMobileVersion && router.replace('/home');
     setIsPageLoading(false);
-  },[])
+  }, []);
 
   const filteredAlarms =
     alarmsData?.alarmList && alarmType !== '전체'
@@ -41,7 +41,7 @@ function Alert() {
       : alarmsData?.alarmList;
 
   return (
-    <div className='pb-[20px]'>
+    <div className='pb-[20px] '>
       {isPageLoading ? null : (
         <>
           <MobileHeader headerTitle='알림' />
