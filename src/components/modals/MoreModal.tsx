@@ -47,8 +47,8 @@ function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postI
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setPostVoteResult([]);
     },
-    onError: () => {
-      alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
+    onError: (error) => {
+      alert(error.message);
     },
     onSettled: () => {
       setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
