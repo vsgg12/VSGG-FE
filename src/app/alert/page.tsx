@@ -42,7 +42,11 @@ function Alert() {
 
   return (
     <div className='pb-[20px]'>
-      {isPageLoading ? null : (
+      {isPageLoading ? (
+        <div className='w-full h-[100dvh] items-center flex'>
+          <Loading />
+        </div>
+      ) : (
         <>
           <MobileHeader headerTitle='알림' />
           <div className='mobile-layout h-[100dvh] flex flex-col items-center px-[20px] py-[20px]'>
