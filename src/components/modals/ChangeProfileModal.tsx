@@ -83,8 +83,7 @@ function ChangeProfileModal({
       setIsModalOpen(false);
     },
     onError: (error) => {
-      console.error(error.message);
-      alert('닉네임 변경에 실패하셨습니다.');
+      alert(error.message);
     },
   });
 
