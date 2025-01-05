@@ -33,10 +33,6 @@ function MyPage_Mobile() {
     setIsPageLoading(false);
   }, []);
 
-  const handleGoEditProfile = () => {
-    router.push('/myPage/mobile/modifyProfile');
-  };
-
   return (
     <div className='px-[10px]'>
       {isPageLoading ? (
