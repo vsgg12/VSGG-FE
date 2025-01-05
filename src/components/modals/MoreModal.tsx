@@ -64,7 +64,7 @@ function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postI
       case '삭제':
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
-        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
+        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니까?')) {
           deleteComment();
         }
         break;

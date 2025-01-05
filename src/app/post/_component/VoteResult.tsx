@@ -87,7 +87,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                               <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
                             </div>
                           </div>
-                          <p className={`text-[#8A1F21] gitd self-center mb-1 font-[14px]`}>
+                          <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
                             과실 {champion.averageRatio}
                           </p>
                         </div>

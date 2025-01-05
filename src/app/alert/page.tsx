@@ -29,9 +29,11 @@ function Alert() {
   const router = useRouter();
 
   useEffect(() => {
-    !isMobileVersion && router.replace('/home') 
+    if (isMobileVersion === false) {
+      router.replace('/home');
+    }
     setIsPageLoading(false);
-  },[])
+  }, []);
 
   const filteredAlarms =
     alarmsData?.alarmList && alarmType !== '전체'
