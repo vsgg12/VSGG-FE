@@ -34,9 +34,9 @@ function MyPage_Mobile() {
   }, []);
 
   return (
-    <div className='px-[10px]'>
+    <div className='px-[10px] h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full h-[100dvh] items-center flex'>
+        <div className='w-full items-center flex'>
           <Loading />
         </div>
       ) : (
@@ -44,7 +44,7 @@ function MyPage_Mobile() {
           {userProfileData && (
             <>
               <MobileHeader headerTitle='마이페이지' />
-              <div className='mobile-layout h-[100dvh] flex flex-col items-center px-[10px] py-[20px] gap-[20px]'>
+              <div className='mobile-layout flex flex-col flex-grow items-center px-[10px] py-[20px] gap-[20px]'>
                 <div className='w-full h-[100px] bg-white rounded-[20px] p-[20px] flex justify-between items-center'>
                   <div className='flex gap-[10px]'>
                     <div className='h-[60px] w-[60px] rounded-full relative'>
