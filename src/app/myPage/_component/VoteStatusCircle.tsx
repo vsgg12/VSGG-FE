@@ -23,7 +23,7 @@ function VoteStatusCircle({ text }: IVoteStatusCircleProps) {
   };
   return (
     <div
-      className={`text-[#333333] font-medium text-[12px] rounded-[50px] px-[10px] py-[5px] bg-opacity-30 ${textClass()} h-[21px] flex justify-center items-center `}
+      className={`text-[#333333] font-medium text-[12px] rounded-[50px] px-[10px] py-[5px] bg-opacity-30 ${textClass()} h-[21px] flex justify-center items-center whitespace-nowrap`}
     >
       {text}
     </div>

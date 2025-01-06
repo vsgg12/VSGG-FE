@@ -218,15 +218,15 @@ function ModifyProfile_Mobile() {
   }, []);
 
   return (
-    <div className='px-[10px]'>
+    <div className='px-[10px] h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full h-[100dvh] items-center flex'>
+        <div className='w-full  items-center flex'>
           <Loading />
         </div>
       ) : (
         <>
           <MobileHeader headerTitle='프로필 변경' />
-          <div className='mobile-layout h-[100dvh] flex flex-col items-center px-[21px] py-[20px] gap-[80px] pt-[40px]'>
+          <div className='mobile-layout flex flex-col flex-grow items-center px-[21px] py-[20px] gap-[80px] pt-[40px]'>
             <div>
               <div className='flex gap-[35px] items-center mb-[10px] justify-center'>
                 <p className='font-semibold text-[22px] text-[#333333]'>닉네임</p>

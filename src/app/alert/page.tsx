@@ -43,15 +43,15 @@ function Alert() {
       : alarmsData?.alarmList;
 
   return (
-    <div className='pb-[20px]'>
+    <div className='pb-[20px] h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full h-[100dvh] items-center flex'>
+        <div className='w-full items-center flex'>
           <Loading />
         </div>
       ) : (
         <>
           <MobileHeader headerTitle='알림' />
-          <div className='mobile-layout h-[100dvh] flex flex-col items-center px-[20px] py-[20px]'>
+          <div className='mobile-layout flex flex-col flex-grow items-center px-[20px] py-[20px]'>
             <div className='w-full h-[32px] border-b-1 border-[#ECECEC] flex mb-[20px]'>
               {alarmTypes.map((alarm, idx) => (
                 <div
@@ -69,10 +69,12 @@ function Alert() {
                 <Loading />
               </div>
             ) : (
-              alarmsData && <AlarmList alarms={filteredAlarms} />
+              <div className='w-full h-[750px]'>
+                <AlarmList alarms={filteredAlarms} />
+              </div>
             )}
             {filteredAlarms && (
-              <div className='relative mt-[20px]'>
+              <div className='relative mt-[10px]'>
                 <div className='border-b-1 border-[#8A1F21] w-[301px]' />
                 <span
                   className='text-[#828282] font-medium text-[10px] bg-[#F3F3F3] px-2 whitespace-nowrap'
