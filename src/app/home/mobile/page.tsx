@@ -74,7 +74,7 @@ export default function HomeMobile() {
   };
 
   return (
-    <div className='w-full h-[100dvh] overflow-scroll border-2 border-[#8A1F21]'>
+    <div className='w-full h-[100dvh] overflow-scroll'>
       {isPageLoading ? (
         <div className='items-center flex'>
           <Loading />
