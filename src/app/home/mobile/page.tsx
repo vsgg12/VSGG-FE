@@ -24,7 +24,7 @@ export default function HomeMobile() {
   const { keyword } = useSearchStore();
   //const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
-  const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
+  //const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
 
   const {
     data: postData,
@@ -58,12 +58,12 @@ export default function HomeMobile() {
     }
   };
 
-  useEffect(() => {
-    if (postData && postData.postDTO && postData.postDTO.length > 0) {
-      const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
-      setExistData(filteredData);
-    }
-  }, [postData]);
+  // useEffect(() => {
+  //   if (postData && postData.postDTO && postData.postDTO.length > 0) {
+  //     const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
+  //     setExistData(filteredData);
+  //   }
+  // }, [postData]);
 
   const handleSearch = () => {
     if (!isLogin) {
