@@ -5,13 +5,13 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import BarChart from '@/components/BarChart';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import Loading from '@/components/Loading';
-import MobileHeader from '@/components/mobile/MobileHeader';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import BackArrowIcon from '../../../../public/svg/mobile/backArrowIcon.svg';
+import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 
 function MyPage_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
