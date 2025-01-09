@@ -3,12 +3,12 @@
 import getMyJudgeList from '@/api/getMyJudgeList';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import MobileHeader from '@/components/mobile/MobileHeader';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import MyJudgeItem from '../_component/MyJudgeItem';
+import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 
 function JudgeRecord_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);

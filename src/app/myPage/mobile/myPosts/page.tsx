@@ -2,12 +2,12 @@
 import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import MobileHeader from '@/components/mobile/MobileHeader';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import MyPostItem from '../_component/MyPostItem';
+import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 
 function MyPost_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);

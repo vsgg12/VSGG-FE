@@ -5,7 +5,7 @@ import getMyProfileDTO from '@/api/getMyProfileDTO';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import MobileHeader from '@/components/mobile/MobileHeader';
+import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -80,7 +80,7 @@ function ModifyProfile_Mobile() {
       await queryClient.invalidateQueries({
         queryKey: ['MY_PROFILE_INFO'],
       });
-      
+
       if (isNickNameCheck && nickName !== prevNickName) {
         changeNickname();
       } else if (isNickNameCheck && nickName === prevNickName) {
