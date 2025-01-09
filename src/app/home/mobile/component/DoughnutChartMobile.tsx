@@ -62,7 +62,7 @@ const DoughnutChartMobile: React.FC<DoughnutChartPropsHome> = ({
 
   return (
     <div
-      className={`flex ${size === 'home' ? 'h-[70px] w-[70px]' : 'h-[100px] w-[100px]'} flex-col items-center justify-center`}
+      className={`flex ${size === 'home' ? 'h-[50%] w-[50%]' : 'h-[100px] w-[100px]'} flex-col items-center justify-center`}
     >
       <Doughnut data={data} options={options} />
     </div>

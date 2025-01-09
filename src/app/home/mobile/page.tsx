@@ -100,7 +100,7 @@ export default function HomeMobile() {
                 </div>
               ) : (
                 postData?.postDTO.map((post, idx) => (
-                  <div key={idx} className='flex flex-col'>
+                  <div key={idx} className='flex flex-col w-full'>
                     {isListed ? (
                       <ListedPostItemMobile post={post} />
                     ) : (

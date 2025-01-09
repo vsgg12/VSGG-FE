@@ -23,11 +23,10 @@ export default function PostItemMobile({
   const { user } = useAuthStore.getState();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
-  const videoStyle =
-    'p-content-rounded p-content-s-mb p-content-mr aspect-video h-[184.33px] w-[328px]';
+  const videoStyle = 'p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full';
 
   useEffect(() => {
-    setFormattedDate(moment(post.createdAt).format('YYYY-MM-DD'));
+    setFormattedDate(moment(post.createdAt).format('YYYY.MM.DD. HH:mm'));
     if (post) {
       const inGameInfo = post.inGameInfoList[0] || { championName: 'Unknown', tier: 'Unknown' };
 
@@ -53,7 +52,7 @@ export default function PostItemMobile({
 
   return (
     <div
-      className='h-[600px] w-[370px] rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[20px] p-[20px]'
+      className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[30px] gap-[15px]'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
@@ -78,10 +77,12 @@ export default function PostItemMobile({
         </div>
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
-      <div>
-        <div className='text-black text-[15px] '>{post.title}</div>
-        <p className='text-[#C8C8C8] text-[12px]'>
-          | 조회수 {formatNumberWithCommas(post.viewCount)}
+      <div className='flex'>
+        <p className='text-black text-[15px] whitespace-nowrap'>
+          {post.title}
+          <span className='text-[#C8C8C8] text-[12px] ml-[10px]'>
+            | 조회수 {formatNumberWithCommas(post.viewCount)}
+          </span>
         </p>
       </div>
       <div className='flex flex-col'>
@@ -106,7 +107,7 @@ export default function PostItemMobile({
             allowFullScreen
           ></iframe>
         )}
-        <div className='flex flex-col overflow-hidden w-full'>
+        <div className='flex flex-col overflow-hidden w-full gap-[20px]'>
           <div className='line-clamp-[8] h-[70px] overflow-hidden text-ellipsis decoration-solid'>
             {contentsArr.pTags.map((content, idx) => {
               const displayContent =
@@ -115,7 +116,7 @@ export default function PostItemMobile({
             })}
           </div>
           <PostTagMobile hashtags={post.hashtagList.length !== 0 ? post.hashtagList : noHashTag} />
-          <div className='flex '>
+          <div className='flex w-full min-h-[150px] min-w-[350px] rounded-[10px] items-center'>
             {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
               <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
             ) : (

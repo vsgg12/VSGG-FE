@@ -11,12 +11,12 @@ function PostDeadLineMobile({ deadLine }: { deadLine: number }) {
     } else if (deadLine < 0) {
       setMessage('투표 마감');
     } else {
-      setMessage(`투표 마감까지 ${deadLine}일`);
+      setMessage(`${deadLine}일`);
     }
   }, [deadLine]);
 
   return (
-    <div className='flex items-center justify-center gap-[2px] max-w-[100px] px-[10px] py-[2px] h-[22px] rounded-[20px] bg-[#8A1F21]'>
+    <div className='flex items-center justify-center gap-[4px]  px-[10px] py-[2px] h-[22px] rounded-[20px] bg-[#8A1F21]'>
       <Image src={timerIcon} width={14} height={14} alt='timer' />
       <p className='text-white text-[12px]'>{message}</p>
     </div>
