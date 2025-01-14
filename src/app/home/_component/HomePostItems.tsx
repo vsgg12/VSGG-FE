@@ -1,7 +1,6 @@
 'use client';
 import PostTag from '@/app/post/_component/PostTag';
 import HomeNotVoted from './HomeNotVoted';
-import { IoPersonCircleSharp } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 import HomeVoted from './HomeVoted';
 import { useEffect, useState } from 'react';
@@ -55,21 +54,28 @@ export default function HomePostItems({
       <div>
         {post && (
           <div
-            className='px-[55px] pt-[40px] pb-[30px] h-fit min-w-[1205px] mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
+            className='px-[55px] pt-[40px] pb-[30px] h-fit w-full mb-[50px] rounded-[1.875rem] bg-[#ffffff] cursor-pointer flex flex-col gap-[10px]'
             onClick={() => {
               router.push(`/post/${post.id}/`);
             }}
           >
             <div className='flex w-full font-medium justify-center items-center gap-[8px]'>
-              <div className='text-black text-[1.563rem]'>{post.title}</div>
-              <div className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
+              <div className='h-[40px] text-black text-[1.563rem] '>{post.title}</div>
+              <p className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
                 | 조회수 {formatNumberWithCommas(post.viewCount)}
-              </div>
+              </p>
               <PostDeadLine deadLine={post.daysUntilEnd} />
             </div>
             <div className='justify-start font-medium'>
               <div className='flex'>
-                <IoPersonCircleSharp className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]' />
+                <img
+                  src={
+                    post.memberDTO.profileImage === null
+                      ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                      : post.memberDTO.profileImage
+                  }
+                  className='mr-[0.625rem] h-[2.5rem] w-[2.5rem] rounded-full  text-[#D9D9D9]'
+                />
                 <div className='flex flex-col'>
                   <div className='flex'>
                     <div className='mr-[0.625rem] text-[0.75rem] text-[#333333]'>
@@ -125,10 +131,8 @@ export default function HomePostItems({
                   })}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ||
-                  post.memberDTO.nickname === user?.nickname ||
-                  post.status === 'FINISHED' ? (
-                    <HomeVoted voteInfos={voteInfos} />
+                  {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
+                    <HomeVoted voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />
                   )}

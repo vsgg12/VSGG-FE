@@ -27,7 +27,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
         className='w-[354px] h-[443px] border border-[#8A1F21] rounded-[18px] p-[15px] bg-[#FFFFFF] '
         style={{ position: 'absolute', transform: 'translate(-195px,250px)', zIndex: 100 }}
       >
-        <div className='flex flex-col flex-grow'>
+        <div className='flex flex-col flex-grow '>
           <p className='text-[#8A1F21] text-[14px] font-semibold mb-[10px]'>알림</p>
           <div className='mb-[10px]'>
             {alarmTypes.map((alarm, idx) => (
@@ -40,7 +40,9 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
               </button>
             ))}
           </div>
-          <AlarmList alarms={filteredAlarms} />
+          <div className='h-[348px]'>
+            <AlarmList alarms={filteredAlarms} />
+          </div>
         </div>
         <div className='relative'>
           <hr className='border-[#8A1F21]' />

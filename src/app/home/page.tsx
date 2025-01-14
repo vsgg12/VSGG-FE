@@ -14,9 +14,9 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
-import videoPostListsIcon from '../../../public/svg/videoPostListsIcon.svg';
-import Icon_ListedIcon from '../../../public/svg/Icon_ListedPost.svg';
 import ListedPostItem from './_component/ListedPostItem';
+import NewPopularToggleButton from './_component/NewPopularToggleButton';
+import AlignModeToggleButton from './_component/AlignModeToggleButton';
 
 export default function Home() {
   const router = useRouter();
@@ -76,7 +76,7 @@ export default function Home() {
     if (postData && postData.postDTO && postData.postDTO.length > 0) {
       const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
       setExistData(filteredData);
-    } 
+    }
   }, [postData]);
 
   const handleSearch = () => {
@@ -91,7 +91,7 @@ export default function Home() {
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
 
   const loadMore = useCallback(() => {
-    const postLength = existData ?existData.length : 0;
+    const postLength = existData ? existData.length : 0;
     const currentPostData = getPostData();
     const currentPostIndex = getPostIndex();
     if (currentPostData) {
@@ -132,83 +132,33 @@ export default function Home() {
   }, [loaderRef, loadMore, getPostIndex, getPostData]);
 
   return (
-    <div className='min-w-[1400px]'>
+    <div className='min-w-[1400px] '>
       <Header />
       <main className='px-[50px]'>
         <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
-        <section className='flex justify-center'>
-          <div className='relative w-full mx-28'>
-            <button
-              onClick={handleWriteClick}
-              className='fixed bottom-[60px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
-            >
-              <Image
-                className='h-[32px] w-[32px]'
-                width={48}
-                height={48}
-                src={writeSVG}
-                alt='writeIcon'
-              />
-              <div className='text-[0.875rem]'>글쓰기</div>
-            </button>
-            <div className='mb-[40px] min-w-[1205px] flex flex-row items-center justify-between'>
-              <div className='flex h-[34px] w-[184.5px] border-2 border-[#8A1F21] rounded-[150px] relative bg-[#FFFFFF]'>
-                <button
-                  className={`toggle-button flex-1 h-full w-[94px] rounded-[150px] transition-all duration-300 ${
-                    activeButton === 'createdatetime'
-                      ? 'bg-[#8A1F21] text-white'
-                      : 'bg-white text-[#8A1F21]'
-                  }`}
-                  onClick={() => setActiveButton('createdatetime')}
-                  style={{
-                    zIndex: activeButton === 'createdatetime' ? 2 : 1,
-                    position: 'absolute',
-                  }}
-                >
-                  최신순
-                </button>
-                <button
-                  className={`toggle-button flex-1 h-full rounded-[150px] w-[94px] transition-all duration-300 ${
-                    activeButton === 'view' ? 'bg-[#8A1F21] text-white' : 'bg-white text-[#8A1F21]'
-                  }`}
-                  onClick={() => setActiveButton('view')}
-                  style={{
-                    zIndex: activeButton === 'view' ? 2 : 1,
-                    position: 'absolute',
-                    left: '87.55px',
-                  }}
-                >
-                  인기순
-                </button>
-              </div>
-              <button onClick={() => setIsListed(!isListed)}>
-                <Image
-                  src={isListed ? Icon_ListedIcon : videoPostListsIcon}
-                  width={32}
-                  height={32}
-                  alt='영상게시글아이콘'
-                />
-              </button>
-            </div>
-            {isLoading ? (
-              <Loading />
-            ) : visiblePosts.length === 0 ? (
-              <div className='flex flex-col flex-grow items-center justify-center'>
-                현재 작성된 게시물이 없습니다.
-              </div>
-            ) : (
-              visiblePosts.map((post, idx) => (
-                <div key={idx}>
-                  {isListed ? (
-                    <ListedPostItem post={post} />
-                  ) : (
-                    <HomePostItems post={post} voteInfos={post.inGameInfoList} />
-                  )}
-                </div>
-              ))
-            )}
-            <div ref={loaderRef} style={{ minHeight: '30px' }} />
+        <section className='flex flex-col justify-center relative w-full items-center'>
+          <div className='min-w-[1400px] px-[50px] mb-[40px] flex flex-row items-center justify-between'>
+            <NewPopularToggleButton activeButton={activeButton} setActiveButton={setActiveButton} />
+            <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
           </div>
+          {isLoading ? (
+            <Loading />
+          ) : visiblePosts.length === 0 ? (
+            <div className='flex flex-col flex-grow items-center justify-center'>
+              현재 작성된 게시물이 없습니다.
+            </div>
+          ) : (
+            visiblePosts.map((post, idx) => (
+              <div key={idx} className='min-w-[1205px]'>
+                {isListed ? (
+                  <ListedPostItem post={post} />
+                ) : (
+                  <HomePostItems post={post} voteInfos={post.inGameInfoList} />
+                )}
+              </div>
+            ))
+          )}
+          <div ref={loaderRef} style={{ minHeight: '30px' }} />
         </section>
       </main>
       {isLoginModalOpen && (
@@ -216,6 +166,19 @@ export default function Home() {
           <AlertLoginModal />
         </ModalLayout>
       )}
+      <button
+        onClick={handleWriteClick}
+        className='fixed bottom-[70px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
+      >
+        <Image
+          className='h-[32px] w-[32px]'
+          width={48}
+          height={48}
+          src={writeSVG}
+          alt='writeIcon'
+        />
+        <div className='text-[0.875rem]'>글쓰기</div>
+      </button>
     </div>
   );
 }

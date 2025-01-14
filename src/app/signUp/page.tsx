@@ -64,7 +64,7 @@ export default function SignUp() {
         setIsNickNameCheck(true);
       }
     },
-    onError: (error) => console.log(error),
+    onError: (error) => alert(error.message),
   });
 
   // 닉네임 중복 체크
@@ -103,8 +103,8 @@ export default function SignUp() {
           agreePromotion: checkboxes.agreePromotion,
         },
       }),
-    onError: () => {
-      alert('네트워크 또는 기타 문제로 오류가 발생하였습니다. \n 다시 시도해주세요.');
+    onError: (error) => {
+      alert(error.message);
     },
     onSuccess: (data) => {
       useAuthStore.setState({

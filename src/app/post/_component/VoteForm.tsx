@@ -42,7 +42,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
   };
 
   return (
-    <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full min-w-[1000px]  flex-col bg-white '>
+    <div>
       <div className='relative flex w-full flex-row justify-around'>
         <div className='flex flex-col justify-around'>
           {voteInfo.map((champion, index) => (

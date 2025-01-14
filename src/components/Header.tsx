@@ -17,23 +17,37 @@ export default function Header() {
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const { accessToken, user, isLogin } = useAuthStore.getState();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin,
   });
+
+  useEffect(() => {
+    if (userProfileData && userInfo) {
+      const currentState = useAuthStore.getState();
+      const newUser = {
+        nickname: userProfileData.memberProfileDTO.nickName,
+        profile_image: userProfileData.memberProfileDTO.profileUrl,
+        email: userInfo.email,
+      };
+
+      if (
+        currentState.user?.nickname !== newUser.nickname ||
+        currentState.user?.profile_image !== newUser.profile_image
+      ) {
+        useAuthStore.setState({ user: newUser });
+      }
+    }
+  }, [userProfileData, userInfo]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['alarms'],
-    queryFn: () => {
-      if (isLogin) {
-        return getAlarms(accessToken);
-      } else {
-        return Promise.resolve(null);
-      }
-    },
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin,
   });
 
   useEffect(() => {
@@ -78,7 +92,7 @@ export default function Header() {
 
   return (
     <>
-      <div className='w-full h-[100px] top-0 flex flex-row items-center justify-end bg-[#f3f3f3] z-100 px-24'>
+      <div className='w-[1400px] h-[100px] top-0 flex flex-row items-center justify-end bg-[#f3f3f3] z-100'>
         <div className='flex flex-row items-center gap-6'>
           {!isLoading && isLogin ? (
             <>
@@ -144,17 +158,22 @@ export default function Header() {
                   프로필
                 </span>
               </button>
-              {isProfileModalOpen && user && (
-                <ProfileModal
-                  handleLogoutClick={handleLogoutBtnClick}
-                  email={user.email}
-                  profileImage={
-                    userProfileData?.memberProfileDTO.profileUrl === 'none'
-                      ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
-                      : userProfileData?.memberProfileDTO.profileUrl
-                  }
-                  nickname={user.nickname}
-                />
+              {isProfileModalOpen && userProfileData && userInfo && (
+                <div
+                  className='w-[250px] min-h-[205px] border border-[#8A1F21] rounded-[18px] p-[13px] bg-[#FFFFFF] z-50'
+                  style={{ position: 'absolute', transform: 'translate(-37%,63%)' }}
+                >
+                  <ProfileModal
+                    handleLogoutClick={handleLogoutBtnClick}
+                    email={userInfo.email}
+                    profileImage={
+                      userProfileData?.memberProfileDTO.profileUrl === 'none'
+                        ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+                        : userProfileData.memberProfileDTO.profileUrl
+                    }
+                    nickname={userProfileData.memberProfileDTO.nickName}
+                  />
+                </div>
               )}
             </>
           ) : (

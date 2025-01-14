@@ -15,11 +15,19 @@ interface IVoteResultProps {
 
 export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResultProps) {
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
+  const [votes, setVotes] = useState<IGetInGameInfoType[]>();
+  useEffect(() => {
+    if (voteInfos) {
+      const filterVotes = voteInfos.filter((voteInfo) => voteInfo.averageRatio === 0);
+      setVotes(filterVotes);
+    }
+  }, [voteInfos]);
 
   useEffect(() => {
-    const votes = voteInfos?.filter((voteInfo) => voteInfo.averageRatio === 0);
-    if (voteInfos?.length === votes?.length) setIsNoOneVoted(true);
-  }, [voteInfos]);
+    if (votes && voteInfos && voteInfos.length === votes.length) {
+      setIsNoOneVoted(true);
+    }
+  }, [votes]);
 
   const getPositionSrc = (position: string) => {
     if (voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0)) {
@@ -33,10 +41,10 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
     <>
       {voteInfos && (
         <>
-          <div className='p-content-pd p-content-rounded p-last-mb flex h-fit w-full min-w-[840px] flex-col bg-white'>
+          <div>
             <div className='relative flex w-full justify-between'>
               <div className='flex flex-col ml-10 justify-around'>
-                {isOwner && isNoOneVoted
+                {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished)
                   ? voteInfos.map((champion, index) => (
                       <>
                         <div
@@ -79,7 +87,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                               <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
                             </div>
                           </div>
-                          <p className={`text-[#8A1F21] gitd self-center mb-1 font-[14px]`}>
+                          <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
                             과실 {champion.averageRatio}
                           </p>
                         </div>
@@ -88,10 +96,14 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               </div>
               <div className='flex flex-col items-center justify-center min-w-[230.5px]'>
                 <div className='mb-[20px] flex text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</div>
-                {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
+                {(isOwner && isNoOneVoted) ||
+                (!isOwner && isNoOneVoted && isFinished) ||
+                (isOwner && isNoOneVoted && isFinished) ? (
                   <div className='flex relative w-[340px] justify-center'>
                     <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
-                      {isFinished ? "투표한 사람이 없는 게시글입니다.":"아직 투표한 사람이 없는 게시글입니다."}
+                      {isFinished
+                        ? '투표한 사람이 없는 게시글입니다.'
+                        : '아직 투표한 사람이 없는 게시글입니다.'}
                     </p>
                     <Image className='mr-7' src={Doughnut} width={175} height={175} alt='noVote' />
                   </div>
@@ -101,11 +113,13 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               </div>
 
               <div className='flex flex-col justify-end mr-10'>
-                {isFinished ? null : !isOwner && (
-                  <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
-                    제출완료
-                  </button>
-                )}
+                {isFinished
+                  ? null
+                  : !isOwner && (
+                      <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+                        제출완료
+                      </button>
+                    )}
               </div>
             </div>
           </div>

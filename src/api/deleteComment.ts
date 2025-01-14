@@ -10,5 +10,6 @@ export default async function DeleteComment(commentId: number, token: string) {
     endpoint: `/comment/${commentId}`,
     authorization: token,
   });
+
   return data;
 }

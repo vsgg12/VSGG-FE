@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MyPostList from '../_component/MyPostList';
+import IsNotExistList from '../_component/IsNotExistList';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
@@ -31,22 +32,28 @@ export default function MyPosts() {
       <div className='flex justify-center w-full'>
         <div className='flex w-full flex-col mx-28'>
           {myPostLists && (
-            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px]'>
-              <div className='flex items-center gap-5 mb-[8px]'>
+            <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] font-medium'>
+              <div className='flex items-center gap-5 mb-[8px] text-[20px]'>
                 <p>내가 쓴 글</p>
               </div>
-              <div className='flex justify-between items-center text-xs text-[#C3C3C3]'>
+              <div className='flex justify-between items-center text-[12px] text-[#C3C3C3]'>
                 <div>제목</div>
-                <div className='w-[250px] flex justify-between'>
+                <div className='w-[300px] flex justify-between'>
                   <div>댓글수</div>
                   <div className='mr-[20px]'>작성일</div>
                 </div>
               </div>
               <div className='h-full flex-grow'>
-                <MyPostList myPostList={myPostLists.postList} />
+                {myPostLists && myPostLists.postList.length !== 0 ? (
+                  <MyPostList myPostList={myPostLists.postList} />
+                ) : (
+                  <div className='flex justify-center items-center w-full h-full'>
+                    <IsNotExistList type='myPost' />
+                  </div>
+                )}
               </div>
               <div className='flex justify-center pb-4'>
-                <Pagination
+                {myPostLists && myPostLists.postList.length !== 0 ? <Pagination
                   activePage={page}
                   totalItemsCount={myPostLists.pageInfo.totalPageNum}
                   pageRangeDisplayed={5}
@@ -54,7 +61,8 @@ export default function MyPosts() {
                   nextPageText={'>'}
                   onChange={handlePageChange}
                   activeLinkClass='active-page'
-                />
+                />: null}
+                
               </div>
             </div>
           )}

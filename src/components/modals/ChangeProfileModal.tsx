@@ -50,7 +50,7 @@ function ChangeProfileModal({
         setIsNickNameCheck(true);
       }
     },
-    onError: (error) => console.error(error),
+    onError: (error) => alert(error.message),
   });
 
   const { mutate: deleteProfileImage } = useMutation({
@@ -64,7 +64,7 @@ function ChangeProfileModal({
       changeNickname();
     },
     onError: (error) => {
-      console.error(error);
+      console.error(error.message);
       alert('이미지 변경에 실패하셨습니다.');
     },
   });
@@ -82,8 +82,8 @@ function ChangeProfileModal({
       alert('프로필 수정에 성공하셨습니다.');
       setIsModalOpen(false);
     },
-    onError: () => {
-      alert('닉네임 변경에 실패하셨습니다.');
+    onError: (error) => {
+      alert(error.message);
     },
   });
 

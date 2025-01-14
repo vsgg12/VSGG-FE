@@ -6,16 +6,14 @@ export default function Logo() {
   const router = useRouter();
 
   return (
-    <>
-      <div
-        className="font-['SBAggroB'] text-[52px] text-[#8A1F21] cursor-pointer"
-        onClick={() => {
-          router.push('/home');
-          setKeyword('');
-        }}
-      >
-        VS.GG
-      </div>
-    </>
+    <div
+      className="font-['SBAggroB'] text-[40px] text-[#8A1F21] cursor-pointer"
+      onClick={() => {
+        router.push('/home');
+        setKeyword('');
+      }}
+    >
+      VS.GG
+    </div>
   );
 }

@@ -4,13 +4,28 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 
-export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
+export default function HomeVoted({
+  voteInfos,
+  isFinished,
+}: {
+  voteInfos: IGetInGameInfoType[];
+  isFinished: boolean;
+}) {
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
+  const [votes, setVotes] = useState<IGetInGameInfoType[]>();
+  useEffect(() => {
+    if (voteInfos) {
+      const filterVotes = voteInfos.filter((voteInfo) => voteInfo.averageRatio === 0);
+      setVotes(filterVotes);
+    }
+  }, [voteInfos, isNoOneVoted]);
 
   useEffect(() => {
-    const votes = voteInfos?.filter((voteInfo) => voteInfo.averageRatio === 0);
-    if (voteInfos?.length === votes?.length) setIsNoOneVoted(true);
-  }, [voteInfos]);
+    if (votes && voteInfos && voteInfos.length === votes.length) {
+      setIsNoOneVoted(true);
+    }
+  }, [votes]);
+
   return (
     <>
       <div className='flex h-full rounded-[1.875em] items-center'>
@@ -35,7 +50,9 @@ export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoType
           {isNoOneVoted ? (
             <div className='flex relative w-[340px] justify-center mr-[80px]'>
               <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
-                아직 투표한 사람이 없는 게시글입니다.
+                {isFinished
+                  ? '투표한 사람이 없는 게시글입니다.'
+                  : '아직 투표한 사람이 없는 게시글입니다.'}
               </p>
               <Image src={Doughnut} width={146} height={146} alt='doughnut' />
             </div>

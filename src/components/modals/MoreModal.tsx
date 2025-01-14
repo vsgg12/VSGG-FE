@@ -9,32 +9,20 @@ import React, { Dispatch, SetStateAction } from 'react';
 interface Props {
   type: 'owner' | 'user';
   where: 'post' | 'comment';
-  handleReply?: (commentId: number, targetId: number) => void;
   setIsCommentMoreModalOpen?: Dispatch<SetStateAction<number | null>>;
   targetId?: number;
-  commentId?: number;
   postId?: number;
-  hasChildrenComment?: boolean;
 }
 
-function MoreModal({
-  type,
-  where,
-  targetId = 0,
-  commentId = 0,
-  handleReply,
-  setIsCommentMoreModalOpen,
-  postId,
-  hasChildrenComment,
-}: Props) {
+function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postId }: Props) {
   const items =
     where === 'post'
       ? type === 'owner'
         ? ['수정', '삭제']
         : ['신고']
       : type === 'owner'
-        ? ['수정', '삭제']
-        : ['답글', '신고'];
+        ? ['삭제', '취소']
+        : ['신고', '취소'];
 
   const { accessToken } = useAuthStore();
   const router = useRouter();
@@ -48,7 +36,7 @@ function MoreModal({
       router.push('/home');
     },
     onError: (error) => {
-      alert(error);
+      alert(error.message);
     },
   });
 
@@ -59,8 +47,8 @@ function MoreModal({
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setPostVoteResult([]);
     },
-    onError: (err) => {
-      alert(err);
+    onError: (error) => {
+      alert(error.message);
     },
     onSettled: () => {
       setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
@@ -76,22 +64,16 @@ function MoreModal({
       case '삭제':
         if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
           deletePostItem();
-        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니다?')) {
-          if (hasChildrenComment) {
-            alert('대댓글이 있는 댓글은 삭제할 수 없습니다.');
-            setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
-          } else {
-            deleteComment();
-          }
+        } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니까?')) {
+          deleteComment();
         }
         break;
       case '신고':
         // 이건 어떻게 할지 아직 모름
         alert('준비중입니다.');
         break;
-      case '답글':
-        alert('준비중입니다.');
-        handleReply && handleReply(commentId, targetId);
+      case '취소':
+        setIsCommentMoreModalOpen && setIsCommentMoreModalOpen(null);
         break;
       default:
         break;
@@ -99,7 +81,7 @@ function MoreModal({
   };
 
   return (
-    <div className='w-[62px] max-h-[45px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8]'>
+    <div className='w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8] z-100 bg-white'>
       <div className='flex flex-col text-[12px] font-medium h-full text-[#828282] text-center justify-center gap-[3px]'>
         {items.map((item, index) => (
           <React.Fragment key={index}>
