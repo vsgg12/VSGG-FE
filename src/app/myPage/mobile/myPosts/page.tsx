@@ -79,7 +79,7 @@ function MyPost_Mobile() {
       ) : (
         <>
           <MobileHeader headerTitle='내가 쓴 글' />
-          <div className='mobile-layout flex flex-col flex-grow items-center px-[20px] pt-[20px]'>
+          <div className='mobile-layout flex flex-col flex-grow items-center px-[20px] pt-[20px] mobile-scroll'>
             {myPostLists &&
               myPostLists.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>

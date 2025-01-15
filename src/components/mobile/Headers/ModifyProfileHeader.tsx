@@ -7,7 +7,7 @@ import XIcon from "../../../../public/svg/mobile/XIcon.svg"
 function ModifyProfileHeader({ handleSaveClick }: { handleSaveClick: () => void }) {
     const router = useRouter();
   return (
-    <div className='flex px-[10px] py-[20px] h-[32px] items-center mobile-layout sticky top-0 z-[40] justify-between'>
+    <div className='flex px-[10px] py-[20px] h-[50px] items-center mobile-layout sticky top-0 z-[40] justify-between'>
       <Image
         src={XIcon}
         alt='X-Icon'
