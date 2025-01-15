@@ -39,7 +39,6 @@ button {
   scrollbar-width: none; /* Firefox */
 }
 
-
 .root-bg {
   @apply h-full w-full bg-[#f3f3f3];
   /* @apply h-full w-full bg-[#000000]; */
@@ -108,7 +107,7 @@ button {
   @apply mr-[0.625em] text-[1.375em] font-semibold;
 }
 .p-voing-bar-element {
-  @apply mr-[0.125em] h-[1.5em] w-[3.125em] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
+  @apply mr-[0.125em] h-[1.5em] w-[30px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
 }
 
 .p-tab-title {
@@ -159,13 +158,13 @@ button {
 }
 
 .mobile-layout {
- @apply min-w-[390px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
+  @apply min-w-[390px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
 }
 
-.mobile-scroll{
+.mobile-scroll {
   @apply overflow-auto;
   height: calc(100% - 40px); /* 추가된 속성 */
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 .mobile-scroll::-webkit-scrollbar {

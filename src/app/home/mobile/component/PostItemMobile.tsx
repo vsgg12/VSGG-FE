@@ -23,7 +23,7 @@ export default function PostItemMobile({
   const { user } = useAuthStore.getState();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
-  const videoStyle = 'p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full';
+  const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full';
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY.MM.DD. HH:mm'));
@@ -54,7 +54,7 @@ export default function PostItemMobile({
     <div
       className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[30px] gap-[15px]'
       onClick={() => {
-        router.push(`/post/${post.id}/`);
+        router.push(`/post/${post.id}/mobile`);
       }}
     >
       <div className='flex w-full justify-between'>
@@ -107,7 +107,7 @@ export default function PostItemMobile({
             allowFullScreen
           ></iframe>
         )}
-        <div className='flex flex-col overflow-hidden w-full gap-[20px]'>
+        <div className='flex flex-col w-full gap-[20px]'>
           <div className='line-clamp-[8] h-[70px] overflow-hidden text-ellipsis decoration-solid'>
             {contentsArr.pTags.map((content, idx) => {
               const displayContent =
@@ -116,7 +116,7 @@ export default function PostItemMobile({
             })}
           </div>
           <PostTagMobile hashtags={post.hashtagList.length !== 0 ? post.hashtagList : noHashTag} />
-          <div className='flex w-full min-h-[150px] min-w-[350px] rounded-[10px] items-center'>
+          <div className='flex w-full min-h-[150px] rounded-[10px] items-center'>
             {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
               <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
             ) : (

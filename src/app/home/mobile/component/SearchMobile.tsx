@@ -1,7 +1,7 @@
 import { GoSearch } from 'react-icons/go';
-import LogoMobile from '../../../../components/Logo';
 import useSearchStore from '../../store/useSearchStore';
 import { useState } from 'react';
+import LogoMobile from '@/components/mobile/LogoMobile';
 
 export default function SearchMobile({
   handleSearch,
@@ -22,7 +22,7 @@ export default function SearchMobile({
   return (
     <>
       <div className='w-[60%] mt-[30px] flex flex-col items-center justify-center gap-[25px]'>
-        <LogoMobile />
+        <LogoMobile size='default' />
         <div className='relative flex flex-row w-full'>
           <input
             className='h-[30px] w-full rounded-[43px] border-2 border-[#8A1F21] pl-[30px] pr-[40px] text-[13px] focus:outline-none'

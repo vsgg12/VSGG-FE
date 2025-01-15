@@ -7,7 +7,7 @@ export default function HomeNotVotedMobile({ voteInfos }: { voteInfos: IGetInGam
       <PostVotingChampList voteInfos={voteInfos} />
       <DoughnutChartMobile voteInfos={voteInfos} size='home' />
       <div
-        className='flex w-[45%] h-[120px] flex-col items-center justify-center rounded-[10px] bg-[#ffffff] p-2 shadow-md'
+        className='flex min-w-[261px] h-[120px] flex-col items-center justify-center rounded-[10px] bg-[#ffffff] p-2 shadow-md'
         style={{
           position: 'absolute',
           transform: 'translate(0%,10%)',
@@ -17,7 +17,7 @@ export default function HomeNotVotedMobile({ voteInfos }: { voteInfos: IGetInGam
           판결이 궁금하시다구요? <br />
           판결에 참여하고, 결과를 확인하세요
         </div>
-        <button className='w-[65%] rounded-[30px] bg-[#8A1F21] px-[10px] py-[5px] text-[14px] text-white text-nowrap'>
+        <button className='min-w-[160px] rounded-[30px] bg-[#8A1F21] px-[10px] py-[5px] text-[14px] text-white text-nowrap'>
           지금 바로 판결하기
         </button>
       </div>
