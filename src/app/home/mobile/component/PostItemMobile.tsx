@@ -54,7 +54,7 @@ export default function PostItemMobile({
     <div
       className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[30px] gap-[15px]'
       onClick={() => {
-        router.push(`/post/${post.id}/`);
+        router.push(`/post/${post.id}/mobile`);
       }}
     >
       <div className='flex w-full justify-between'>

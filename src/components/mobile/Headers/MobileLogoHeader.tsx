@@ -52,9 +52,13 @@ function MobileLogoHeader() {
     }
   }, [data]);
 
-  const handleAlarmBtnClick = (): void => {};
+  const handleAlarmBtnClick = (): void => {
+    router.push('/alert/mobile');
+  };
 
-  const handleProfileBtnClick = (): void => {};
+  const handleProfileBtnClick = (): void => {
+    router.push('/myPage/mobile');
+  };
 
   const handleLoginBtnClick = (): void => {
     router.push('/login');
@@ -72,13 +76,13 @@ function MobileLogoHeader() {
           router.push('/home');
         }}
       />
-      <div className=' text-[#8A1F21] font-bold text-[22px]'>
+      <div className='pl-[25px]'>
         <LogoMobile size='small' />
       </div>
       {isLoading ? (
         <div></div>
       ) : isLogin ? (
-        <div className='flex'>
+        <div className='flex gap-[8px]'>
           <button
             className={`relative group/alarm hd-items cursor-pointer `}
             onClick={() => {

@@ -10,7 +10,7 @@ import Icon_more from '../../../../../../public/svg/Icon_more.svg';
 import Image from 'next/image';
 import useCommentStore from '../../store/useCommentStore';
 import PostCommentInput from './CommentInputMobile';
-import Comment from './CommentMobile';
+import CommentMobile from './CommentMobile';
 
 interface ICommentArea {
   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -84,9 +84,9 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   return (
-    <div className='p-content-rounded relative mb-11 h-[500px] w-[420px] bg-white px-[20px] pb-[30px]'>
-      <div className='bg-[#ffffff] pt-[30px]'>
-        <div className='p-content-s-mb text-lg'>댓글</div>
+    <div className='relative min-h-[400px] w-full rounded-[30px] flex flex-col mb-[30px] p-[30px] gap-[15px]'>
+      <div>
+        <p className='p-content-s-mb text-[16px]'>댓글</p>
         <div className='flex flex-row w-full'>
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
@@ -100,23 +100,23 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
       </div>
       <div className='mt-[20px]'>
         {commentData?.comments.length === 0 ? (
-          <div className='flex justify-center'>
+          <div className='flex justify-center items-center h-[60px]'>
             <div>아직 댓글이 없습니다.</div>
           </div>
         ) : (
-          <div className='scroll overflow-hidden h-[300px] pl-[2px] w-full relative flex flex-col gap-[15px]'>
+          <div className='pl-[2px] w-full relative flex flex-col gap-[15px]'>
             {commentData &&
               commentData?.comments.map((comment: IGetCommentItemType, index) => (
                 <div key={index} className='relative text-[13px]'>
                   <div className='relative flex justify-between'>
-                    <Comment
+                    <CommentMobile
                       comment={comment}
                       handleReply={() => {
                         handleReply(comment.member.nickname, comment.id, comment.id);
                       }}
                     />
                     {isCommentMoreModalOpen === comment.id && (
-                      <div className='absolute translate-x-[295px]'>
+                      <div className='absolute right-[20px]'>
                         <MoreModal
                           type={comment.member.nickname === user?.nickname ? 'owner' : 'user'}
                           where='comment'
@@ -153,7 +153,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
                     <div className='pl-6'>
                       {comment.children?.map((reply: IGetCommentItemType, index: number) => (
                         <div key={index} className='flex justify-between relative mb-[20px]'>
-                          <Comment
+                          <CommentMobile
                             comment={reply}
                             targetComment={targetComment}
                             handleReply={() =>
@@ -161,7 +161,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
                             }
                           />
                           {isCommentMoreModalOpen === reply.id && (
-                            <div className='absolute translate-x-[270px] '>
+                            <div className='absolute right-[20px]'>
                               <MoreModal
                                 type={reply.member.nickname === user?.nickname ? 'owner' : 'user'}
                                 where='comment'

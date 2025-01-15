@@ -8,8 +8,6 @@ import Loading from '@/components/Loading';
 import ContentAreaMobile from './components/ContentAreaMobile';
 import CommentAreaMobile from './components/CommentAreaMobile';
 import VoteAreaMobile from './components/VoteAreaMobile';
-import MobileHeader from '@/components/mobile/Headers/MobileHeader';
-import LogoMobile from '@/components/mobile/LogoMobile';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';

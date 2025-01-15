@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 function MobileHeader({ headerTitle }: { headerTitle: '마이페이지' | '알림' | string }) {
   const router = useRouter();
   return (
-    <div className='flex pl-[10px] py-[20px] h-[32px] items-center mobile-layout sticky top-0 z-[40]'>
+    <div className='flex pl-[10px] py-[25px] h-[32px] items-center mobile-layout sticky top-0 z-[40]'>
       <Image
         src={BackArrowIcon}
         alt='뒤로가기 아이콘'

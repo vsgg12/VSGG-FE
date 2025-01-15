@@ -85,7 +85,7 @@ function ContentAreaMobile({ isOwner, setIsOwner, setVoteData }: IContentArea) {
       {post && (
         <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] p-[30px] gap-[15px]'>
           <div className='flex w-full justify-between'>
-            <div className='flex gap-[8px]'>
+            <div className='flex gap-[10px]'>
               <img
                 className='h-[32px] w-[32px] rounded-full'
                 src={
@@ -101,8 +101,8 @@ function ContentAreaMobile({ isOwner, setIsOwner, setVoteData }: IContentArea) {
                 </div>
                 <p className='text-[12px] text-[#C8C8C8]'>{formattedDate}</p>
               </div>
+              <PostDeadLineMobile deadLine={post.postDTO.daysUntilEnd} />
             </div>
-            <PostDeadLineMobile deadLine={post.postDTO.daysUntilEnd} />
             <div className='flex'>
               {isMoreModalOpen && (
                 <div className='mt-[4px] mr-[5px]'>
@@ -138,13 +138,11 @@ function ContentAreaMobile({ isOwner, setIsOwner, setVoteData }: IContentArea) {
             >
               <source src={post.postDTO.video.url} type='video/webm' />
             </video>
-            <div className='flex flex-col overflow-hidden w-full gap-[20px]'>
-              <div className='line-clamp-[8] h-[70px] overflow-hidden text-ellipsis decoration-solid'>
-                <div
-                  className='w-full mt-7 p-1 break-words'
-                  dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
-                ></div>
-              </div>
+            <div className='flex flex-col w-full gap-[20px]'>
+              <div
+                className='w-full mt-[10px] p-1 break-words line-clamp-[8] h-fit text-ellipsis decoration-solid'
+                dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+              ></div>
               <PostTagMobile
                 hashtags={
                   post.postDTO.hashtagList.length !== 0 ? post.postDTO.hashtagList : noHashTag

@@ -38,7 +38,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
   };
 
   return (
-    <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] p-[30px] gap-[15px]'>
+    <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col p-[30px] gap-[15px]'>
       {(voteData && isOwner) || post?.postDTO.isVote || post?.postDTO.status === 'FINISHED' ? (
         <VoteResult
           voteInfos={voteData}
