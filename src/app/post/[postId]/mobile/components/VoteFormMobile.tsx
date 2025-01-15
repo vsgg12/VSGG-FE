@@ -75,8 +75,10 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
         ))}
       </div>
       <div className='flex flex-col items-center '>
-        <div className='text-[20px] mb-[5rem]'>이 게임의 과실은 몇 대 몇~?</div>
-
+        <p className='text-[20px] mb-[10px]'>이 게임의 과실은 몇 대 몇~?</p>
+        <p className='text-[12px] text-[#7B7B7B] mb-[2rem]'>
+          {voteInfo[selectedChampIdx]?.championName}의 과실을 선택해주세요
+        </p>
         <div className='flex flex-col items-center'>
           <div className='p-content-s-mb flex flex-row'>
             {voteResult.map((vote, index) => (
@@ -90,9 +92,6 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
           </div>
           <div className='p-content-s-mb flex flex-row'>
             <VotingGraphMobile />
-          </div>
-          <div className='text-[12px] text-[#7B7B7B] mb-[2rem]'>
-            {voteInfo[selectedChampIdx]?.championName}의 과실을 선택해주세요
           </div>
         </div>
       </div>

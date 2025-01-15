@@ -41,67 +41,71 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
       {voteInfos && (
         <div className='w-full'>
           <div className='flex flex-col ml-10 justify-around'>
-            {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished)
-              ? voteInfos.map((champion, index) => (
-                  <div>
-                    <div
-                      key={index}
-                      className={`bg-[#ECECEC] absolute flex justify-center rounded-full w-[48px] h-[48px]`}
-                    >
-                      <Image
-                        src={getPositionSrc(champion.position)}
-                        alt='position'
-                        width={24}
-                        height={24}
-                      />
-                    </div>
+            {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
+              <div></div>
+            ) : (
+              // (
+              //   voteInfos.map((champion, index) => (
+              //     <div key={index} className='relative group'>
+              //       <div
+              //         className={`bg-[#ECECEC] absolute flex justify-center rounded-full w-[48px] h-[48px]`}
+              //       >
+              //         <Image
+              //           src={getPositionSrc(champion.position)}
+              //           alt='position'
+              //           width={24}
+              //           height={24}
+              //         />
+              //       </div>
+              //     </div>
+              //   ))
+              // ) :
+              voteInfos.map((champion, index) => (
+                <div key={index} className='relative group'>
+                  <div
+                    className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
+                  >
+                    <Image
+                      src={getPositionSrc(champion.position)}
+                      alt='position'
+                      width={24}
+                      height={24}
+                    />
                   </div>
-                ))
-              : voteInfos.map((champion, index) => (
-                  <div key={index} className='relative group'>
+                  <div className={`flex`}>
                     <div
-                      className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
+                      className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
                     >
-                      <Image
-                        src={getPositionSrc(champion.position)}
-                        alt='position'
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    <div className={`flex`}>
-                      <div
-                        className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
-                      >
-                        <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
-                          {champion.position}
-                        </p>
-                        <div className='w-[50%]'>
-                          <p className='text=[#33333] text-[14px] font-semibold'>
-                            {champion.championName}
-                          </p>
-                          <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
-                        </div>
-                      </div>
-                      <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
-                        과실 {champion.averageRatio}
+                      <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
+                        {champion.position}
                       </p>
+                      <div className='w-[50%]'>
+                        <p className='text=[#33333] text-[14px] font-semibold'>
+                          {champion.championName}
+                        </p>
+                        <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
+                      </div>
                     </div>
+                    <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
+                      과실 {champion.averageRatio}
+                    </p>
                   </div>
-                ))}
+                </div>
+              ))
+            )}
           </div>
           <div className='flex flex-col items-center justify-center'>
-            <div className='mb-[20px] flex text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</div>
+            <p className='mb-[20px] text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</p>
             {(isOwner && isNoOneVoted) ||
             (!isOwner && isNoOneVoted && isFinished) ||
             (isOwner && isNoOneVoted && isFinished) ? (
-              <div className='flex relative justify-center'>
-                <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
+              <div className='flex relative justify-center w-full'>
+                <p className='flex justify-center items-center absolute text-[15px] inset-0 text-[#828282]'>
                   {isFinished
                     ? '투표한 사람이 없는 게시글입니다.'
                     : '아직 투표한 사람이 없는 게시글입니다.'}
                 </p>
-                <Image className='mr-7' src={Doughnut} width={175} height={175} alt='noVote' />
+                <Image className='mr-7' src={Doughnut} width={150} height={150} alt='noVote' />
               </div>
             ) : (
               <DoughnutChart voteInfos={voteInfos} size='post' />

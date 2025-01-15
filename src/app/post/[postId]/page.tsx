@@ -55,7 +55,7 @@ export default function PostRead() {
               <NavigationArea />
             </div>
             <div className='flex flex-row gap-[30px] justify-center'>
-              <ContentArea isOwner={isOwner} setIsOwner={setIsOwner} setVoteData={setVoteData} />
+              <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
               <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
             </div>
             <VoteArea

@@ -5,9 +5,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import PostTag from './PostTag';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
-import { useQuery } from '@tanstack/react-query';
-import getPostItem from '@/api/getPostItem';
-import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 import moment from 'moment';
@@ -15,24 +12,17 @@ import DOMPurify from 'dompurify';
 
 interface IContentArea {
   isOwner: boolean;
-  setIsOwner: Dispatch<SetStateAction<boolean>>;
   setVoteData: Dispatch<SetStateAction<IGetInGameInfoType[]>>;
+  post: IGetPostItemType;
 }
 
-function ContentArea({ isOwner, setIsOwner, setVoteData }: IContentArea) {
-  const { postId } = useParams();
-  const id: string = postId as string;
-  const { accessToken, isLogin, user } = useAuthStore.getState();
+function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
+  const { user } = useAuthStore.getState();
   const { voteResult, setPostVoteResult } = usePostIdStore();
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
-
-  const { data: post } = useQuery<IGetPostItemType>({
-    queryKey: ['POST_ITEM', id],
-    queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
-  });
 
   useEffect(() => {
     if (post) {
@@ -70,9 +60,6 @@ function ContentArea({ isOwner, setIsOwner, setVoteData }: IContentArea) {
         }),
       );
       setPostVoteResult(newPostVoteResult);
-      if (user.email === post.postDTO.memberDTO.email) {
-        setIsOwner(true);
-      }
     }
   }, [post, voteResult, setPostVoteResult, user]);
 
