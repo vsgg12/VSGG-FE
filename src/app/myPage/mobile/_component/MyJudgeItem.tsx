@@ -11,11 +11,11 @@ function MyJudgeItem_Mobile({ judgeItem }: { judgeItem: IVotedPostItem }) {
         <div className='text-[12px] font-medium text-[#909090]'>{judgeItem.authorTier}</div>
       </div>
       <div className='flex gap-[12px]'>
-        <div className='text-[15px] text-black font-semibold'>{judgeItem.title}</div>
+        <div className='text-[15px] text-black font-semibold overflow-hidden text-ellipsis whitespace-nowrap'>
+          {judgeItem.title}
+        </div>
         <VoteStatusCircle
-          text={
-            judgeItem.myVoteResult === null ? judgeItem.voteStatus : judgeItem.myVoteResult
-          }
+          text={judgeItem.myVoteResult === null ? judgeItem.voteStatus : judgeItem.myVoteResult}
         />
       </div>
       <div className='text-[#C8C8C8] text-[12px] font-medium'>
