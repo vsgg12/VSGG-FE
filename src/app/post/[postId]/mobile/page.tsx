@@ -45,7 +45,7 @@ export default function PostRead() {
         <Loading />
       ) : (
         post && (
-          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px]'>
+          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] scroll'>
             <ContentAreaMobile post={post} isOwner={isOwner} setVoteData={setVoteData} />
             <VoteAreaMobile
               isOwner={isOwner}

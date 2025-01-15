@@ -42,18 +42,18 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
   };
 
   return (
-    <div className='relative flex w-full justify-around'>
-      <div className='flex flex-col justify-around'>
+    <div className='relative flex flex-col w-full justify-around gap-[20px]'>
+      <div className='flex justify-around'>
         {voteInfo.map((champion, index) => (
           <div
             key={index}
-            className='relative group'
+            className='relative group flex w-[100px]'
             onClick={() => {
               setSelectedChampIdx(index);
             }}
           >
             <div
-              className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
+              className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[30px] h-[30px] cursor-pointer`}
             >
               <Image
                 src={getPositionSrc(champion.position)}
@@ -63,10 +63,10 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
               />
             </div>
             <div
-              className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
+              className={`v-label flex  h-[30px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
             >
-              <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>{champion.position}</p>
-              <div className='w-[50%]'>
+              <p className='ml-10 text-[16px] font-semibold text-[#8A1F21]'>{champion.position}</p>
+              <div>
                 <p className='text=[#33333] text-[14px] font-semibold'>{champion.championName}</p>
                 <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
               </div>
@@ -97,7 +97,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
       </div>
       <div className='flex flex-col justify-end'>
         <button
-          className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
+          className='h-[20px] w-[80px] rounded-full bg-[#8A1F21] text-[15px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
           onClick={handleVoteSubmit}
           disabled={isNotAbleSubmit}
         >
