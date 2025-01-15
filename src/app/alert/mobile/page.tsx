@@ -3,9 +3,9 @@
 import getAlarms from '@/api/getAlarms';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import { useAuthStore } from '../login/store/useAuthStore';
+import { useAuthStore } from '../../login/store/useAuthStore';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
-import AlarmList from '../home/_component/AlarmList';
+import AlarmList from '../../home/_component/AlarmList';
 import Loading from '@/components/Loading';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useRouter } from 'next/navigation';
@@ -45,7 +45,7 @@ function Alert() {
   return (
     <div className='pb-[20px] h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full items-center flex'>
+        <div className='w-full items-center flex h-full'>
           <Loading />
         </div>
       ) : (

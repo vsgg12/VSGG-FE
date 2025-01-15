@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import BackArrowIcon from '../../../../public/svg/mobile/backArrowIcon.svg';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
+import IsNotExistList from '../_component/IsNotExistList';
 
 function MyPage_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
@@ -36,7 +37,7 @@ function MyPage_Mobile() {
   return (
     <div className='px-[10px] h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full items-center flex'>
+        <div className='w-full items-center flex h-full'>
           <Loading />
         </div>
       ) : (
@@ -76,44 +77,58 @@ function MyPage_Mobile() {
                 </div>
                 <div className='flex w-full h-[176px] rounded-[20px] bg-white p-[20px] relative'>
                   <div className='text-[18px] font-bold text-[#333333]'>판결 승률</div>
-                  <div className='absolute w-[160px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                    <HalfDoughnutChart
-                      win={userProfileData.memberProfileDTO.predicateResult}
-                      lose={
-                        userProfileData.memberProfileDTO.joinedResult -
-                        userProfileData.memberProfileDTO.predicateResult
-                      }
-                      isMobile={true}
-                    />
-                  </div>
-                  <div className='text-[#828282] text-[12px] absolute whitespace-nowrap font-[400] bottom-[23px] left-[50%] translate-x-[-50%]'>
-                    {userProfileData.memberProfileDTO.joinedResult}전{' '}
-                    {userProfileData.memberProfileDTO.predicateResult}승{' '}
-                    {userProfileData.memberProfileDTO.joinedResult -
-                      userProfileData.memberProfileDTO.predicateResult}
-                    패
-                  </div>
+                  {userProfileData.memberProfileDTO.joinedResult === 0 ? (
+                    <div className='absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-25%]'>
+                      <IsNotExistList type='myJudge' isMobile={true} />
+                    </div>
+                  ) : (
+                    <>
+                      <div className='absolute w-[160px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                        <HalfDoughnutChart
+                          win={userProfileData.memberProfileDTO.predicateResult}
+                          lose={
+                            userProfileData.memberProfileDTO.joinedResult -
+                            userProfileData.memberProfileDTO.predicateResult
+                          }
+                          isMobile={true}
+                        />
+                      </div>
+                      <div className='text-[#828282] text-[12px] absolute whitespace-nowrap font-[400] bottom-[23px] left-[50%] translate-x-[-50%]'>
+                        {userProfileData.memberProfileDTO.joinedResult}전{' '}
+                        {userProfileData.memberProfileDTO.predicateResult}승{' '}
+                        {userProfileData.memberProfileDTO.joinedResult -
+                          userProfileData.memberProfileDTO.predicateResult}
+                        패
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className='flex flex-col w-full h-[176px] p-[20px] rounded-[20px] gap-[15px] bg-white'>
                   <div className='text-[18px] font-bold text-[#333333]'>
                     {userProfileData.memberProfileDTO.nextTier} 까지
                   </div>
-                  <div className='flex flex-col gap-[5px]'>
-                    <div className='flex flex-col items-center justify-center gap-[4px]'>
-                      <BarChart
-                        num={userProfileData.memberProfileDTO.joinedResult}
-                        isMobile={true}
-                      />
-                      <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
+                  {userProfileData.memberProfileDTO.joinedResult === 0 ? (
+                    <div className='flex justify-center items-center'>
+                      <IsNotExistList type='myJudge' isMobile={true} />
                     </div>
-                    <div className='flex flex-col items-center justify-center gap-[4px]'>
-                      <BarChart
-                        num={userProfileData.memberProfileDTO.predicateResult}
-                        isMobile={true}
-                      />
-                      <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
+                  ) : (
+                    <div className='flex flex-col gap-[5px]'>
+                      <div className='flex flex-col items-center justify-center gap-[4px]'>
+                        <BarChart
+                          num={userProfileData.memberProfileDTO.joinedResult}
+                          isMobile={true}
+                        />
+                        <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
+                      </div>
+                      <div className='flex flex-col items-center justify-center gap-[4px]'>
+                        <BarChart
+                          num={userProfileData.memberProfileDTO.predicateResult}
+                          isMobile={true}
+                        />
+                        <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <div
                   className='flex justify-between items-center p-[20px] w-full h-[72px] rounded-[20px] bg-white cursor-pointer'

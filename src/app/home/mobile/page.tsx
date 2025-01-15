@@ -76,7 +76,7 @@ export default function HomeMobile() {
   return (
     <div className='w-full h-[100dvh] overflow-scroll'>
       {isPageLoading ? (
-        <div className='items-center flex'>
+        <div className='w-full items-center flex h-full'>
           <Loading />
         </div>
       ) : (
