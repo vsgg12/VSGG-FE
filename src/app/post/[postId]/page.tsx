@@ -17,7 +17,7 @@ import VoteArea from '../_component/VoteArea';
 export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
@@ -27,6 +27,12 @@ export default function PostRead() {
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (post?.postDTO.memberDTO.nickname === user?.nickname) {
+      setIsOwner(true);
+    }
+  }, [post]);
 
   useEffect(() => {
     if (post?.postDTO.isDeleted === 'TRUE') {

@@ -105,7 +105,7 @@ function ContentAreaMobile({ isOwner, setIsOwner, setVoteData }: IContentArea) {
             </div>
             <div className='flex'>
               {isMoreModalOpen && (
-                <div className='mt-[4px] mr-[5px]'>
+                <div className='absolute right-[75px] translate-y-[5px]'>
                   {isOwner ? (
                     <MoreModal type='owner' where='post' postId={post.postDTO.id} />
                   ) : (
