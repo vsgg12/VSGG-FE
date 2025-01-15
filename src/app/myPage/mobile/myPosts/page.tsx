@@ -73,7 +73,7 @@ function MyPost_Mobile() {
   return (
     <div className='px-[10px]  h-[100dvh]'>
       {isPageLoading ? (
-        <div className='w-full items-center flex'>
+        <div className='w-full items-center flex h-full'>
           <Loading />
         </div>
       ) : (

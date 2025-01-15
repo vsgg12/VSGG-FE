@@ -16,7 +16,7 @@ function MobileHeader({ headerTitle }: { headerTitle: '마이페이지' | '알�
         height={32}
         className='flex justify-start cursor-pointer'
         onClick={() => {
-          router.push('/home');
+          router.back();
         }}
       />
       <div className='absolute left-[50%] translate-x-[-50%] text-[#8A1F21] font-bold text-[22px]'>

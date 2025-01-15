@@ -49,9 +49,13 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
     }
   }, [data]);
 
-  const handleAlarmBtnClick = (): void => {};
+  const handleAlarmBtnClick = (): void => {
+    router.push('/alert/mobile');
+  };
 
-  const handleProfileBtnClick = (): void => {};
+  const handleProfileBtnClick = (): void => {
+    router.push('/myPage/mobile')
+  };
 
   const handleLoginBtnClick = (): void => {
     router.push('/login');
@@ -71,9 +75,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
             <>
               <button
                 className={`relative group/alarm hd-items cursor-pointer `}
-                onClick={() => {
-                  handleAlarmBtnClick;
-                }}
+                onClick={handleAlarmBtnClick}
               >
                 <IoMdNotificationsOutline />
                 <span
@@ -96,7 +98,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
                     {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
                   </span>
                 </span>
-                <span className='absolute top-[50px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
+                <span className='absolute top-[45px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
                   알림
                 </span>
               </button>
@@ -109,7 +111,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
                   alt='profileImage'
                   className='h-[24px] w-[24px] rounded-full border-[#8A1F21] border-[2px]'
                 />
-                <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
+                <span className='absolute top-[40px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
                   프로필
                 </span>
               </button>
