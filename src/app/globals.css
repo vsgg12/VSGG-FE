@@ -159,7 +159,17 @@ button {
 }
 
 .mobile-layout {
-  @apply min-w-[390px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
+ @apply min-w-[390px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
+}
+
+.mobile-scroll{
+  @apply overflow-auto;
+  height: calc(100% - 40px); /* 추가된 속성 */
+  scrollbar-width: none; 
+}
+
+.mobile-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge에서 스크롤바 숨기기 */
 }
 
 /* HTML: <div class="loader"></div> */

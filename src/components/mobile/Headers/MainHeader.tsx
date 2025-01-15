@@ -69,7 +69,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
   //   };
 
   return (
-    <div className='flex gap-[10px] py-[20px] h-[32px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
+    <div className='flex gap-[10px] py-[20px] h-[50px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
       {page === '메인'
         ? isLogin && (
             <>
