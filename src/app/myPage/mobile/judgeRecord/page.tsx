@@ -80,7 +80,7 @@ function JudgeRecord_Mobile() {
       ) : (
         <>
           <MobileHeader headerTitle='판결 전적' />
-          <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px]'>
+          <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px] mobile-scroll'>
             {myJudgeLists &&
               myJudgeLists.pages.map((page, pageIndex) => (
                 <React.Fragment key={pageIndex}>

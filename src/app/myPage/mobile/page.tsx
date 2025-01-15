@@ -45,7 +45,7 @@ function MyPage_Mobile() {
           {userProfileData && (
             <>
               <MobileHeader headerTitle='마이페이지' />
-              <div className='mobile-layout flex flex-col flex-grow items-center px-[10px] py-[20px] gap-[20px]'>
+              <div className='mobile-layout flex flex-col flex-grow items-center px-[10px] py-[20px] gap-[20px] mobile-scroll'>
                 <div className='w-full h-[100px] bg-white rounded-[20px] p-[20px] flex justify-between items-center'>
                   <div className='flex gap-[10px]'>
                     <div className='h-[60px] w-[60px] rounded-full relative'>
@@ -75,7 +75,7 @@ function MyPage_Mobile() {
                     프로필 수정
                   </div>
                 </div>
-                <div className='flex w-full h-[176px] rounded-[20px] bg-white p-[20px] relative'>
+                <div className='flex w-full min-h-[176px] rounded-[20px] bg-white p-[20px] relative'>
                   <div className='text-[18px] font-bold text-[#333333]'>판결 승률</div>
                   {userProfileData.memberProfileDTO.joinedResult === 0 ? (
                     <div className='absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-25%]'>
@@ -103,7 +103,7 @@ function MyPage_Mobile() {
                     </>
                   )}
                 </div>
-                <div className='flex flex-col w-full h-[176px] p-[20px] rounded-[20px] gap-[15px] bg-white'>
+                <div className='flex flex-col w-full min-h-[176px] p-[20px] rounded-[20px] gap-[15px] bg-white'>
                   <div className='text-[18px] font-bold text-[#333333]'>
                     {userProfileData.memberProfileDTO.nextTier} 까지
                   </div>
