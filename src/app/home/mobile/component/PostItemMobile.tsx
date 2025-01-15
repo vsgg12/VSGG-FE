@@ -78,7 +78,7 @@ export default function PostItemMobile({
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
       <div className='flex'>
-        <p className='text-black text-[15px] whitespace-nowrap'>
+        <p className='text-black text-[15px] whitespace-wrap'>
           {post.title}
           <span className='text-[#C8C8C8] text-[12px] ml-[10px]'>
             | 조회수 {formatNumberWithCommas(post.viewCount)}
