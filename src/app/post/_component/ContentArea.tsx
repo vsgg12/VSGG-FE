@@ -47,7 +47,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
   }, [post]);
 
   useEffect(() => {
-    if (post && user) {
+    if (post) {
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
