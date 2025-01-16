@@ -74,15 +74,15 @@ export default function HomeMobile() {
   };
 
   return (
-    <div className='w-full h-[100dvh] overflow-scroll'>
+    <div className='w-full h-[100dvh]'>
       {isPageLoading ? (
-        <div className='items-center flex'>
+        <div className='w-full items-center flex h-full'>
           <Loading />
         </div>
       ) : (
         <>
           <MainHeader page='메인' />
-          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px]'>
+          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] mobile-scroll'>
             <SearchMobile handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
             <section className='flex flex-col justify-center relative w-full items-center mt-[80px]'>
               <div className='w-full mb-[40px] flex flex-row items-center justify-between'>

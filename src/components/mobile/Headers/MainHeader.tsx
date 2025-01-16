@@ -49,9 +49,13 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
     }
   }, [data]);
 
-  const handleAlarmBtnClick = (): void => {};
+  const handleAlarmBtnClick = (): void => {
+    router.push('/alert/mobile');
+  };
 
-  const handleProfileBtnClick = (): void => {};
+  const handleProfileBtnClick = (): void => {
+    router.push('/myPage/mobile');
+  };
 
   const handleLoginBtnClick = (): void => {
     router.push('/login');
@@ -65,22 +69,20 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
   //   };
 
   return (
-    <div className='flex gap-[10px] py-[20px] h-[32px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
+    <div className='flex gap-[10px] py-[20px] h-[50px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
       {page === '메인'
         ? isLogin && (
             <>
               <button
                 className={`relative group/alarm hd-items cursor-pointer `}
-                onClick={() => {
-                  handleAlarmBtnClick;
-                }}
+                onClick={handleAlarmBtnClick}
               >
                 <IoMdNotificationsOutline />
                 <span
                   className={`text-[#8A1F21] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
                   style={{
                     position: 'absolute',
-                    transform: 'translate(6.5px,-22px)',
+                    transform: 'translate(5.5px,-22px)',
                   }}
                 >
                   {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
@@ -96,7 +98,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
                     {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
                   </span>
                 </span>
-                <span className='absolute top-[50px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
+                <span className='absolute top-[45px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
                   알림
                 </span>
               </button>
@@ -109,7 +111,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
                   alt='profileImage'
                   className='h-[24px] w-[24px] rounded-full border-[#8A1F21] border-[2px]'
                 />
-                <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
+                <span className='absolute top-[40px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
                   프로필
                 </span>
               </button>
