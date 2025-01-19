@@ -18,7 +18,7 @@ function MyPage_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
 
   const { isMobileVersion } = useMobileVersionStore.getState();
-  const { accessToken, user } = useAuthStore.getState();
+  const { accessToken, user, isLogin } = useAuthStore.getState();
 
   const router = useRouter();
 
@@ -33,6 +33,16 @@ function MyPage_Mobile() {
     }
     setIsPageLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
 
   return (
     <div className='px-[10px] h-[100dvh]'>

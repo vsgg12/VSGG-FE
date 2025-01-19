@@ -46,6 +46,16 @@ export default function HomeMobile() {
   }, []);
 
   useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
+
+  useEffect(() => {
     if (keyword === '') {
       refetch();
     }

@@ -8,17 +8,26 @@ import getNaverURL from '@/api/naver/getNaverURL';
 
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/useAuthStore';
+import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 
 export default function Login_Mobile() {
   const { isLogin } = useAuthStore.getState();
   const router = useRouter();
+  const { isMobileVersion } = useMobileVersionStore.getState();
+
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
     queryFn: async () => getNaverURL(),
   });
 
   useEffect(() => {
-    if (isLogin) router.push('/home/mobile');
+    if (isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/home/mobile');
+      } else {
+        router.push('/home');
+      }
+    }
   }, [isLogin, router]);
 
   const NaverLogin = () => {
