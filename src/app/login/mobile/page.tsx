@@ -13,22 +13,22 @@ import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 export default function Login_Mobile() {
   const { isLogin } = useAuthStore.getState();
   const router = useRouter();
-  const { isMobileVersion } = useMobileVersionStore.getState();
+    const { isMobileVersion } = useMobileVersionStore.getState();
 
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
     queryFn: async () => getNaverURL(),
   });
 
-  useEffect(() => {
-    if (isLogin) {
-      if (isMobileVersion === true) {
-        router.push('/home/mobile');
-      } else {
-        router.push('/home');
+    useEffect(() => {
+      if (isLogin) {
+        if (isMobileVersion === true) {
+          router.push('/home/mobile');
+        } else {
+          router.push('/home');
+        }
       }
-    }
-  }, [isLogin, router]);
+    }, [isLogin, router]);
 
   const NaverLogin = () => {
     if (NAVER_AUTH_URL) {
@@ -37,7 +37,7 @@ export default function Login_Mobile() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center'>
+    <div className='flex h-screen flex-col items-center justify-center mobile-layout'>
       {isLoading ? (
         <LoadingFull />
       ) : (
