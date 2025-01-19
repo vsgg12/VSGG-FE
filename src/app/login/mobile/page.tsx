@@ -5,20 +5,30 @@ import { useEffect } from 'react';
 import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
-import { useAuthStore } from './store/useAuthStore';
-import { useRouter } from 'next/navigation';
 
-export default function Login() {
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../store/useAuthStore';
+import { useMobileVersionStore } from '@/store/useMobileVersionStore';
+
+export default function Login_Mobile() {
   const { isLogin } = useAuthStore.getState();
   const router = useRouter();
+    const { isMobileVersion } = useMobileVersionStore.getState();
+
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
     queryFn: async () => getNaverURL(),
   });
 
-  useEffect(() => {
-    if (isLogin) router.push('/home');
-  }, [isLogin, router]);
+    useEffect(() => {
+      if (isLogin) {
+        if (isMobileVersion === true) {
+          router.push('/home/mobile');
+        } else {
+          router.push('/home');
+        }
+      }
+    }, [isLogin, router]);
 
   const NaverLogin = () => {
     if (NAVER_AUTH_URL) {
@@ -27,21 +37,23 @@ export default function Login() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center'>
+    <div className='flex h-screen flex-col items-center justify-center mobile-layout'>
       {isLoading ? (
         <LoadingFull />
       ) : (
         <>
-          <div className="mb-10 mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21] md:text-8xl">
+          <div className="mb-[131px] mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21]">
             <div>VS.GG</div>
           </div>
           <div onClick={NaverLogin} className='cursor-pointer'>
-            <div className='mb-3 flex items-center justify-center gap-2 rounded-3xl bg-black p-2 px-32 '>
+            <div className='flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px]'>
               <SiNaver color='white' />
-              <button className='text-white'>네이버로 3초만에 시작하기</button>
+              <button className='text-white font-bold whitespace-nowrap text-[20px]'>
+                네이버로 3초만에 시작하기
+              </button>
             </div>
           </div>
-          <div className='mb-20 mt-auto flex gap-5'>
+          <div className='mb-[50px] mt-auto flex gap-5'>
             <div>이용약관</div>
             <div className='text-gray-400'>개인정보처리방침</div>
           </div>

@@ -26,7 +26,7 @@ function ModifyProfile_Mobile() {
   const [nickName, setNickName] = useState<string>();
   const [prevNickName, setPrevNickName] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore.getState();
   const queryClient = useQueryClient();
   const formData = new FormData();
 
@@ -214,10 +214,20 @@ function ModifyProfile_Mobile() {
 
   useEffect(() => {
     if (isMobileVersion === false) {
-      router.replace('/myPage/judgeRecord');
+      router.replace('/myPage');
     }
     setIsPageLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
 
   return (
     <div className='px-[10px] h-[100dvh]'>

@@ -61,7 +61,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
       );
       setPostVoteResult(newPostVoteResult);
     }
-  }, [post, voteResult, setPostVoteResult, user]);
+  }, [post, voteResult, setPostVoteResult]);
 
   const handleMoreIconClick = () => {
     setIsMoreModalOpen(!isMoreModalOpen);

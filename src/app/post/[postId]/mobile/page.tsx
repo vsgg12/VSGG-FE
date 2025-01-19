@@ -11,6 +11,7 @@ import VoteAreaMobile from './components/VoteAreaMobile';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
+import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -20,11 +21,27 @@ export default function PostRead() {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-
+  const { isMobileVersion } = useMobileVersionStore.getState();
   const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (isMobileVersion === false) {
+      router.replace(`/post/${post?.postDTO.id}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
 
   useEffect(() => {
     if (post?.postDTO.memberDTO.nickname === user?.nickname) {
