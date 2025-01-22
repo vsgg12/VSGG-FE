@@ -33,6 +33,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
   const handleVoteSubmit = () => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
+      return;
     }
     postVote();
   };

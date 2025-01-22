@@ -24,6 +24,12 @@ export default function SignUp() {
   });
   const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (user?.nickname !== "") {
+      router.replace('/home')
+    }
+  },[])
+
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
       agreeAge: checked,

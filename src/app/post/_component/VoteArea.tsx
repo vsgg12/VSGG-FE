@@ -27,12 +27,13 @@ function VoteArea({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteArea) {
       await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
       await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
     },
-    onError: (err) => alert(err.message)
+    onError: (err) => alert(err.message),
   });
 
   const handleVoteSubmit = () => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
+      return;
     }
     postVote();
   };

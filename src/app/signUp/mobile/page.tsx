@@ -8,14 +8,12 @@ import { useMutation } from '@tanstack/react-query';
 import PostSignUp from '@/api/PostSignUp';
 import { useAuthStore } from '../../login/store/useAuthStore';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
-import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 
 export default function SignUp_Mobile() {
   const router = useRouter();
   const { user } = useAuthStore.getState();
   const [nickname, setNickname] = useState<string>('');
   const [isSameNickname, setIsSameNickname] = useState<boolean>(true); // 닉네임 중복인지 아닌지
-    const { isMobileVersion } = useMobileVersionStore.getState();
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isAllValid, setIsAllValid] = useState<boolean>(false);
   const [checkboxes, setCheckboxes] = useState({
@@ -26,12 +24,12 @@ export default function SignUp_Mobile() {
   });
   const [isNickNameCheck, setIsNickNameCheck] = useState<boolean>(false);
 
-    useEffect(() => {
-      if (isMobileVersion === false) {
-        router.replace('/signUp');
-      }
-    }, []);
-    
+  useEffect(() => {
+    if (user?.nickname !== '') {
+      router.replace('/home');
+    }
+  }, []);
+
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
       agreeAge: checked,
