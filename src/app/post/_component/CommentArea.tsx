@@ -52,7 +52,6 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
       setNewCommentId(commentId);
       setIsCommentInProgress(false);
       commentMethods.reset();
-      setTargetComment({ id: null, nickname: '' });
     },
     onError: (error) => console.error(error.message),
   });
@@ -66,8 +65,9 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
         handleCommentScroll(newCommentId);
         setNewCommentId(null);
       }
+      setTargetComment({ id: null, nickname: '' });
     }
-  }, [newCommentId]);
+  }, [newCommentId, targetComment.id]);
 
   const handleReplyScroll = (id: number) => {
     if (replyRef.current[id]) {
@@ -127,10 +127,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
         <div className='flex flex-row w-full'>
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
-              <PostCommentInput
-                targetNickname={targetComment.nickname}
-                setTargetComment={setTargetComment}
-              />
+              <PostCommentInput targetNickname={targetComment.nickname} />
             </form>
           </FormProvider>
         </div>

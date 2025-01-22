@@ -6,12 +6,6 @@ import { useFormContext } from 'react-hook-form';
 
 interface IPostCommentInputProps {
   targetNickname: string;
-  setTargetComment: React.Dispatch<
-    React.SetStateAction<{
-      id: number | null;
-      nickname: string;
-    }>
-  >;
 }
 
 export default function PostCommentInput({ targetNickname }: IPostCommentInputProps) {
