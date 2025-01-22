@@ -25,6 +25,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const replyRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
     id: null,
@@ -57,11 +58,23 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   });
 
   useEffect(() => {
-    if (newCommentId !== null) {
-      handleCommentScroll(newCommentId);
-      setNewCommentId(null);
+    if (newCommentId) {
+      if (targetComment.id) {
+        handleReplyScroll(newCommentId);
+        setNewCommentId(null);
+      } else {
+        handleCommentScroll(newCommentId);
+        setNewCommentId(null);
+      }
     }
   }, [newCommentId]);
+
+  const handleReplyScroll = (id: number) => {
+    if (replyRef.current[id]) {
+      replyRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      console.log(replyRef.current);
+    }
+  };
 
   const handleCommentScroll = (id: number) => {
     if (commentRef.current[id]) {
@@ -132,7 +145,12 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
             {commentData &&
               commentData?.comments.map((comment: IGetCommentItemType, index) => (
                 <div key={index} className='relative text-[13px]'>
-                  <div className='relative flex justify-between'>
+                  <div
+                    className='relative flex justify-between'
+                    ref={(el) => {
+                      commentRef.current[comment.id] = el;
+                    }}
+                  >
                     <Comment
                       comment={comment}
                       handleReply={() => {
@@ -180,7 +198,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           key={index}
                           className='flex justify-between relative mb-[20px]'
                           ref={(el) => {
-                            commentRef.current[reply.id] = el;
+                            replyRef.current[reply.id] = el;
                           }}
                         >
                           <Comment
