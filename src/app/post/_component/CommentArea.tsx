@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
@@ -30,6 +30,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     id: null,
     nickname: '',
   });
+  const [newCommentId, setNewCommentId] = useState<number | null>(null);
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -43,30 +44,29 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
         { parentId: targetComment.id, content: data },
         accessToken,
       );
-      return response.resultCode;
+      return response.commentId;
     },
-    onSuccess: async (resultCode) => {
+    onSuccess: async (commentId) => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+      setNewCommentId(commentId);
       setIsCommentInProgress(false);
       commentMethods.reset();
-      if (resultCode) {
-        console.log(resultCode);
-      }
-      if (targetComment.id !== null) {
-        handleCommentScroll(targetComment.id);
-      }
       setTargetComment({ id: null, nickname: '' });
     },
     onError: (error) => console.error(error.message),
   });
 
+  useEffect(() => {
+    if (newCommentId !== null) {
+      handleCommentScroll(newCommentId);
+      setNewCommentId(null);
+    }
+  }, [newCommentId]);
+
   const handleCommentScroll = (id: number) => {
-    // const key = targetComment.id ?? -1;
     if (commentRef.current[id]) {
       commentRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       console.log(commentRef.current);
-    } else {
-      console.error('Target comment not found in commentRef.');
     }
   };
 
@@ -180,7 +180,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                           key={index}
                           className='flex justify-between relative mb-[20px]'
                           ref={(el) => {
-                            commentRef.current[comment.id] = el;
+                            commentRef.current[reply.id] = el;
                           }}
                         >
                           <Comment

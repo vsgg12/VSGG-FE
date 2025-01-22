@@ -8,6 +8,7 @@ interface IPostComment {
 type IResultType = {
   resultCode: number;
   resultMsg: string;
+  commentId: number;
 };
 
 export default async function PostComment(postId: string, body: IPostComment, token: string) {
