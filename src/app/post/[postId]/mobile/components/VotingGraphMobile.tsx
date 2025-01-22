@@ -57,7 +57,7 @@ export default function VotingGraphMobile() {
         return (
           <div
             key={index}
-            className={`p-voing-bar-element ${roundedClass} ${colorClass}`}
+            className={`p-voting-bar-mobile ${roundedClass} ${colorClass}`}
             onClick={() => {
               handleClick(index);
             }}

@@ -57,7 +57,7 @@ export default function VotingGraph() {
         return (
           <div
             key={index}
-            className={`p-voing-bar-element ${roundedClass} ${colorClass}`}
+            className={`p-voting-bar-element ${roundedClass} ${colorClass}`}
             onClick={() => {
               handleClick(index);
             }}
