@@ -64,7 +64,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
                 />
               </div>
               <div
-                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
+                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible `}
               >
                 <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
                   {champion.position}
