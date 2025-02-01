@@ -61,13 +61,6 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
     router.push('/login');
   };
 
-  //   const handleLogoutBtnClick = (): void => {
-  //     // 로그아웃 기능 후 페이지는 제자리
-  //     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-  //     localStorage.clear();
-  //     router.push('/');
-  //   };
-
   return (
     <div className='flex gap-[10px] py-[20px] h-[50px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
       {page === '메인'
