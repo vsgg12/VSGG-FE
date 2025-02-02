@@ -100,7 +100,7 @@ type IAlarmsType = {
   commentContent: string;
   alarmType: 'POST' | 'COMMENT';
   isRead: boolean;
-  createDateTime: string;
+  createdDateTime: string;
 };
 
 type IGetMyPostsType = {
