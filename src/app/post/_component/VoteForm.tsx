@@ -44,7 +44,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
   return (
     <div>
       <div className='relative flex w-full flex-row justify-around'>
-        <div className='flex flex-col justify-around'>
+        <div className='flex flex-col justify-around gap-[20px]'>
           {voteInfo.map((champion, index) => (
             <div
               key={index}
