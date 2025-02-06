@@ -14,7 +14,7 @@ function JudgeRecord_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const { isMobileVersion } = useMobileVersionStore.getState();
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore.getState();
 
   const router = useRouter();
 
@@ -24,6 +24,16 @@ function JudgeRecord_Mobile() {
     }
     setIsPageLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
 
   const {
     data: myJudgeLists,

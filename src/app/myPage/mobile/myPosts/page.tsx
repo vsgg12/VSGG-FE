@@ -13,16 +13,26 @@ function MyPost_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
 
   const { isMobileVersion } = useMobileVersionStore.getState();
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore.getState();
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (isMobileVersion === false) {
-      router.replace('/myPage/judgeRecord');
+      router.replace('/myPage/myPosts');
     }
     setIsPageLoading(false);
   }, []);
+
+    useEffect(() => {
+      if (!isLogin) {
+        if (isMobileVersion === true) {
+          router.push('/login/mobile');
+        } else {
+          router.push('/login');
+        }
+      }
+    }, [isLogin, router]);
 
   const {
     data: myPostLists,

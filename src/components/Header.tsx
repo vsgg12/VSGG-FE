@@ -75,7 +75,6 @@ export default function Header() {
   };
 
   const handleLogoutBtnClick = (): void => {
-    // 로그아웃 기능 후 페이지는 제자리
     setIsProfileModalOpen(false);
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     localStorage.clear();

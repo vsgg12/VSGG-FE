@@ -5,8 +5,14 @@ interface IPostComment {
   content: string | null;
 }
 
+type IResultType = {
+  resultCode: number;
+  resultMsg: string;
+  commentId: number;
+};
+
 export default async function PostComment(postId: string, body: IPostComment, token: string) {
-  const data = await api.post({
+  const data = await api.post<IPostComment, IResultType>({
     endpoint: `/post/${postId}/comment`,
     body,
     authorization: token,

@@ -5,7 +5,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import PostTag from './PostTag';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
 import usePostIdStore from '../[postId]/store/usePostIdStore';
 import moment from 'moment';
 import DOMPurify from 'dompurify';
@@ -17,7 +16,6 @@ interface IContentArea {
 }
 
 function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
-  const { user } = useAuthStore.getState();
   const { voteResult, setPostVoteResult } = usePostIdStore();
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
@@ -61,7 +59,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
       );
       setPostVoteResult(newPostVoteResult);
     }
-  }, [post, voteResult, setPostVoteResult, user]);
+  }, [post, voteResult, setPostVoteResult]);
 
   const handleMoreIconClick = () => {
     setIsMoreModalOpen(!isMoreModalOpen);

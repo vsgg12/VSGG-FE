@@ -35,6 +35,16 @@ function Alert() {
     setIsPageLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
+
   const filteredAlarms =
     alarmsData?.alarmList && alarmType !== '전체'
       ? alarmsData.alarmList.filter(
@@ -69,7 +79,7 @@ function Alert() {
                 <Loading />
               </div>
             ) : (
-              <div className='w-full h-[750px] overflow-auto' >
+              <div className='w-full h-[750px] overflow-auto'>
                 <AlarmList alarms={filteredAlarms} />
               </div>
             )}

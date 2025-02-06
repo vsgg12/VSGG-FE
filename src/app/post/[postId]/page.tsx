@@ -29,9 +29,12 @@ export default function PostRead() {
   });
 
   useEffect(() => {
-    if (post?.postDTO.memberDTO.nickname === user?.nickname) {
-      setIsOwner(true);
+    if (post && user) {
+      if (post.postDTO.memberDTO.nickname === user.nickname) {
+        setIsOwner(true);
+      }
     }
+    
   }, [post]);
 
   useEffect(() => {

@@ -44,7 +44,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
   return (
     <div>
       <div className='relative flex w-full flex-row justify-around'>
-        <div className='flex flex-col justify-around'>
+        <div className='flex flex-col justify-around gap-[20px]'>
           {voteInfo.map((champion, index) => (
             <div
               key={index}
@@ -64,7 +64,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
                 />
               </div>
               <div
-                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
+                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible `}
               >
                 <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
                   {champion.position}

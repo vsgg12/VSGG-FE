@@ -18,7 +18,7 @@ function MyPage_Mobile() {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
 
   const { isMobileVersion } = useMobileVersionStore.getState();
-  const { accessToken, user } = useAuthStore.getState();
+  const { accessToken, user, isLogin } = useAuthStore.getState();
 
   const router = useRouter();
 
@@ -33,6 +33,22 @@ function MyPage_Mobile() {
     }
     setIsPageLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!isLogin) {
+      if (isMobileVersion === true) {
+        router.push('/login/mobile');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isLogin, router]);
+
+  const handleLogoutBtnClick = (): void => {
+    useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+    localStorage.clear();
+    router.push('/home/mobile');
+  };
 
   return (
     <div className='px-[10px] h-[100dvh]'>
@@ -143,6 +159,12 @@ function MyPage_Mobile() {
                 >
                   <div className='text-[18px] font-bold text-[#333333]'>내가 쓴 글</div>
                   <Image src={BackArrowIcon} alt='ArrowIcon' className='rotate-180' />
+                </div>
+                <div
+                  className='text-[#7B7B7B] text-[14px] font-medium mt-[39px] cursor-pointer'
+                  onClick={handleLogoutBtnClick}
+                >
+                  로그아웃
                 </div>
               </div>
             </>

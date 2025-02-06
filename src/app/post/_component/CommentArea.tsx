@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
@@ -25,10 +25,13 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const replyRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
     id: null,
     nickname: '',
   });
+  const [newCommentId, setNewCommentId] = useState<number | null>(null);
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -36,16 +39,49 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   });
 
   const { mutate: writeComment } = useMutation({
-    mutationFn: (data: string) =>
-      PostComment(id, { parentId: targetComment.id, content: data }, accessToken),
-    onSuccess: async () => {
+    mutationFn: async (data: string) => {
+      const response = await PostComment(
+        id,
+        { parentId: targetComment.id, content: data },
+        accessToken,
+      );
+      return response.commentId;
+    },
+    onSuccess: async (commentId) => {
       await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+      setNewCommentId(commentId);
       setIsCommentInProgress(false);
       commentMethods.reset();
-      setTargetComment({ id: null, nickname: '' });
     },
     onError: (error) => console.error(error.message),
   });
+
+  useEffect(() => {
+    if (newCommentId) {
+      if (targetComment.id) {
+        handleReplyScroll(newCommentId);
+        setNewCommentId(null);
+      } else {
+        handleCommentScroll(newCommentId);
+        setNewCommentId(null);
+      }
+      setTargetComment({ id: null, nickname: '' });
+    }
+  }, [newCommentId, targetComment.id]);
+
+  const handleReplyScroll = (id: number) => {
+    if (replyRef.current[id]) {
+      replyRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      console.log(replyRef.current);
+    }
+  };
+
+  const handleCommentScroll = (id: number) => {
+    if (commentRef.current[id]) {
+      commentRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      console.log(commentRef.current);
+    }
+  };
 
   const handleOpenCommentMoreModal = (commentId: number) => {
     setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
@@ -55,12 +91,13 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
   };
 
-  const handleReply = (targetNickname: string, targetId: number, parentId: number) => {
+  const handleWriteReply = (targetNickname: string, targetId: number, parentId: number) => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
+    } else {
+      setTargetComment({ id: targetId, nickname: targetNickname });
+      setShowReply(parentId);
     }
-    setTargetComment({ id: targetId, nickname: targetNickname });
-    setShowReply(parentId);
   };
 
   const handleOpenReply = (commentId: number) => {
@@ -90,10 +127,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
         <div className='flex flex-row w-full'>
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
-              <PostCommentInput
-                targetNickname={targetComment.nickname}
-                setTargetComment={setTargetComment}
-              />
+              <PostCommentInput targetNickname={targetComment.nickname} />
             </form>
           </FormProvider>
         </div>
@@ -108,11 +142,16 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
             {commentData &&
               commentData?.comments.map((comment: IGetCommentItemType, index) => (
                 <div key={index} className='relative text-[13px]'>
-                  <div className='relative flex justify-between'>
+                  <div
+                    className='relative flex justify-between'
+                    ref={(el) => {
+                      commentRef.current[comment.id] = el;
+                    }}
+                  >
                     <Comment
                       comment={comment}
                       handleReply={() => {
-                        handleReply(comment.member.nickname, comment.id, comment.id);
+                        handleWriteReply(comment.member.nickname, comment.id, comment.id);
                       }}
                     />
                     {isCommentMoreModalOpen === comment.id && (
@@ -152,12 +191,18 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
                   {showReply === comment.id && (
                     <div className='pl-6'>
                       {comment.children?.map((reply: IGetCommentItemType, index: number) => (
-                        <div key={index} className='flex justify-between relative mb-[20px]'>
+                        <div
+                          key={index}
+                          className='flex justify-between relative mb-[20px]'
+                          ref={(el) => {
+                            replyRef.current[reply.id] = el;
+                          }}
+                        >
                           <Comment
                             comment={reply}
                             targetComment={targetComment}
                             handleReply={() =>
-                              handleReply(reply.member.nickname, reply.id, comment.id)
+                              handleWriteReply(reply.member.nickname, reply.id, comment.id)
                             }
                           />
                           {isCommentMoreModalOpen === reply.id && (

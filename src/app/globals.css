@@ -106,8 +106,11 @@ button {
 .p-voting-number-element {
   @apply mr-[0.625em] text-[1.375em] font-semibold;
 }
-.p-voing-bar-element {
+.p-voting-bar-mobile {
   @apply mr-[0.125em] h-[1.5em] w-[30px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
+}
+.p-voting-bar-element {
+  @apply mr-[0.125em] h-[1.5em] w-[49px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
 }
 
 .p-tab-title {

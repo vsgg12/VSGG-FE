@@ -81,7 +81,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
                         ? `${truncateText(alarm.alarmContents)}`
                         : `${truncateText(alarm.commentContent)}`}
                     </p>
-                    <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createDateTime)}</p>
+                    <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createdDateTime)}</p>
                     {alarm.isRead === false && (
                       <span
                         className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
