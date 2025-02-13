@@ -33,7 +33,7 @@ function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postI
     mutationFn: () => deletePost(postId, accessToken),
     onSuccess: () => {
       alert('게시글이 삭제되었습니다.');
-      router.push('/home');
+      router.push('/');
     },
     onError: (error) => {
       alert(error.message);
