@@ -38,6 +38,14 @@ export const voteColors: IVoteColorsType[] = [
   },
 ];
 
+export const mobileVoteColors = [
+  { name: '탑', background: 'bg-[#000000]' },
+  { name: '정글', background: 'bg-[#9E2426]' },
+  { name: '미드', background: 'bg-[#AAAAAA]' },
+  { name: '원딜', background: 'bg-[#70191B]' },
+  { name: '서폿', background: 'bg-[#555555]' },
+];
+
 export const positionInfo = [
   {
     name: '탑',
@@ -68,5 +76,33 @@ export const positionInfo = [
     svgw: '/svg/supporter-w.svg',
     svg: '/svg/supporter.svg',
     svgDisabled: '/svg/disabled/Support_disabled.svg',
+  },
+];
+
+export const mobilePositionIcons = [
+  {
+    name: '탑',
+    svg: '/svg/mobile/champion/top.svg',
+    svgw: '/svg/mobile/champion/top_w.svg',
+  },
+  {
+    name: '정글',
+    svg: '/svg/mobile/champion/jungle.svg',
+    svgw: '/svg/mobile/champion/jungle_w.svg',
+  },
+  {
+    name: '미드',
+    svg: '/svg/mobile/champion/mid.svg',
+    svgw: '/svg/mobile/champion/mid_w.svg',
+  },
+  {
+    name: '원딜',
+    svg: '/svg/mobile/champion/onedeal.svg',
+    svgw: '/svg/mobile/champion/onedeal_w.svg',
+  },
+  {
+    name: '서폿',
+    svg: '/svg/mobile/champion/support.svg',
+    svgw: '/svg/mobile/champion/support_w.svg',
   },
 ];

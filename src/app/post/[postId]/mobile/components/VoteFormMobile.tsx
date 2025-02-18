@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import Image from 'next/image';
-import { voteColors, positionInfo } from '../../../../../data/championData';
+import { voteColors } from '../../../../../data/championData';
 import usePostIdStore from '../../store/usePostIdStore';
 import VotingGraphMobile from './VotingGraphMobile';
+import VoteChampionItem from './VoteChampionItem';
 
 interface IVoteFormProps {
   voteInfo: IGetInGameInfoType[];
@@ -12,14 +12,8 @@ interface IVoteFormProps {
 }
 
 export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteFormProps) {
-  const {
-    voteResult,
-    setVoteResult,
-    selectedChampIdx,
-    setSelectedChampIdx,
-    isNotAbleSubmit,
-    setIsNotAbleSubmit,
-  } = usePostIdStore();
+  const { voteResult, setVoteResult, selectedChampIdx, isNotAbleSubmit, setIsNotAbleSubmit } =
+    usePostIdStore();
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -37,42 +31,59 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
     }
   }, [voteResult, setIsNotAbleSubmit]);
 
-  const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
-  };
-
   return (
-    <div className='relative flex flex-col w-full justify-around gap-[20px]'>
-      <div className='flex justify-around'>
-        {voteInfo.map((champion, index) => (
-          <div
-            key={index}
-            className='relative group flex w-[100px]'
-            onClick={() => {
-              setSelectedChampIdx(index);
-            }}
-          >
-            <div
-              className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[30px] h-[30px] cursor-pointer`}
-            >
-              <Image
-                src={getPositionSrc(champion.position)}
-                alt='position'
-                width={24}
-                height={24}
-              />
-            </div>
-            <div
-              className={`v-label flex  h-[30px] cursor-pointer ${voteColors[index].border} group-hover:visible ${selectedChampIdx === index ? 'visible' : 'invisible'}`}
-            >
-              <p className='ml-10 text-[16px] font-semibold text-[#8A1F21]'>{champion.position}</p>
-              <div>
-                <p className='text=[#33333] text-[14px] font-semibold'>{champion.championName}</p>
-                <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
+    <div className='relative flex flex-col w-full justify-around gap-[40px]'>
+      <div className='w-full ju'>
+        {voteInfo.length <= 3 ? (
+          <div className='flex w-full justify-around'>
+            {voteInfo.map((champion, index) => (
+              <div key={index}>
+                <VoteChampionItem
+                  index={index}
+                  bg={voteColors[index].background}
+                  champion={champion}
+                />
               </div>
+            ))}
+          </div>
+        ) : voteInfo.length === 4 ? (
+          <div className='grid grid-cols-2'>
+            {voteInfo.map((champion, index) => (
+              <div key={index} className='flex justify-center mb-[10px]'>
+                <VoteChampionItem
+                  index={index}
+                  bg={voteColors[index].background}
+                  champion={champion}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className='flex flex-col justify-center items-center gap-5'>
+            <div className='flex w-full justify-around'>
+              {voteInfo.slice(0, 3).map((champion, index) => (
+                <div key={index}>
+                  <VoteChampionItem
+                    index={index}
+                    bg={voteColors[index].background}
+                    champion={champion}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className='flex w-full px-[50px] justify-around'>
+              {voteInfo.slice(3, 5).map((champion, index) => (
+                <div key={index}>
+                  <VoteChampionItem
+                    index={index + 3}
+                    bg={voteColors[index + 3].background}
+                    champion={champion}
+                  />
+                </div>
+              ))}
             </div>
           </div>
-        ))}
+        )}
       </div>
       <div className='flex flex-col items-center '>
         <p className='text-[20px] mb-[10px]'>이 게임의 과실은 몇 대 몇~?</p>
