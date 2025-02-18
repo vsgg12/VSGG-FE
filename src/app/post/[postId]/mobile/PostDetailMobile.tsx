@@ -13,7 +13,7 @@ import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
 import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 
-export default function PostRead() {
+export default function PostDetailMobile() {
   const { postId } = useParams();
   const id: string = postId as string;
   const { accessToken, isLogin, user } = useAuthStore.getState();

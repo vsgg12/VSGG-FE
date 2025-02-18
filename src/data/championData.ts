@@ -38,6 +38,49 @@ export const voteColors: IVoteColorsType[] = [
   },
 ];
 
+export const mobileVoteColors = [
+  {
+    name: '탑',
+    background: 'bg-[#000000]',
+    border: 'border-[#000000]',
+
+    svgw: '/svg/top-w.svg',
+    svg: '/svg/mobile/champion/top_mobile.svg',
+  },
+  {
+    name: '정글',
+    background: 'bg-[#9E2426]',
+    border: 'border-[#9E2426]',
+
+    svgw: '/svg/jungle-w.svg',
+    svg: '/svg/mobile/champion/jungle_mobile.svg',
+  },
+  {
+    name: '미드',
+    background: 'bg-[#AAAAAA]',
+    border: 'border-[#AAAAAA]',
+
+    svgw: '/svg/mid-w.svg',
+    svg: '/svg/mobile/champion/mid_mobile.svg',
+  },
+  {
+    name: '원딜',
+    background: 'bg-[#70191B]',
+    border: 'border-[#70191B]',
+
+    svgw: '/svg/onedeal-w.svg',
+    svg: '/svg/mobile/champion/onedeal_mobile.svg',
+  },
+  {
+    name: '서폿',
+    background: 'bg-[#555555]',
+    border: 'border-[#555555]',
+
+    svgw: '/svg/supporter-w.svg',
+    svg: '/svg/mobile/champion/support_mobile.svg',
+  },
+];
+
 export const positionInfo = [
   {
     name: '탑',
@@ -70,3 +113,31 @@ export const positionInfo = [
     svgDisabled: '/svg/disabled/Support_disabled.svg',
   },
 ];
+
+// export const mobilePositionIcons = [
+//   {
+//     name: '탑',
+//     svg: '/svg/mobile/champion/top.svg',
+//     svgw: '/svg/mobile/champion/top_w.svg',
+//   },
+//   {
+//     name: '정글',
+//     svg: '/svg/mobile/champion/jungle.svg',
+//     svgw: '/svg/mobile/champion/jungle_w.svg',
+//   },
+//   {
+//     name: '미드',
+//     svg: '/svg/mobile/champion/mid.svg',
+//     svgw: '/svg/mobile/champion/mid_w.svg',
+//   },
+//   {
+//     name: '원딜',
+//     svg: '/svg/mobile/champion/onedeal.svg',
+//     svgw: '/svg/mobile/champion/onedeal_w.svg',
+//   },
+//   {
+//     name: '서폿',
+//     svg: '/svg/mobile/champion/support.svg',
+//     svgw: '/svg/mobile/champion/support_w.svg',
+//   },
+// ];

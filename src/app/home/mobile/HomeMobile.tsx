@@ -82,9 +82,9 @@ export default function HomeMobile() {
       ) : (
         <>
           <MainHeader page='메인' />
-          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] mobile-scroll'>
+          <div className='mobile-layout flex flex-col items-center px-[20px] py-[10px] mobile-scroll'>
             <SearchMobile handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
-            <section className='flex flex-col justify-center relative w-full items-center mt-[80px]'>
+            <section className='flex flex-col justify-center relative w-full items-center mt-[70px]'>
               <div className='w-full mb-[40px] flex flex-row items-center justify-between'>
                 <NewPopularToggleButtonMobile
                   activeButton={activeButton}

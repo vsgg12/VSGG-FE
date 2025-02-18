@@ -37,11 +37,7 @@ function Alert() {
 
   useEffect(() => {
     if (!isLogin) {
-      if (isMobileVersion === true) {
-        router.push('/login/mobile');
-      } else {
-        router.push('/login');
-      }
+      router.push('/login');
     }
   }, [isLogin, router]);
 
