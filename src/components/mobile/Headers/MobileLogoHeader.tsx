@@ -53,7 +53,7 @@ function MobileLogoHeader() {
   }, [data]);
 
   const handleAlarmBtnClick = (): void => {
-    router.push('/alert');
+    router.push('/alert/mobile');
   };
 
   const handleProfileBtnClick = (): void => {
