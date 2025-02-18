@@ -23,10 +23,21 @@ export default function PostRead() {
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
-  const { data: post, isLoading } = useQuery<IGetPostItemType>({
+  const {
+    data: post,
+    isLoading,
+    error,
+  } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    if (error?.message === '존재하지 않는 게시글 입니다.') {
+      alert(error.message);
+      router.replace('/');
+    }
+  }, [error]);
 
   useEffect(() => {
     if (post && user) {
@@ -34,7 +45,6 @@ export default function PostRead() {
         setIsOwner(true);
       }
     }
-    
   }, [post]);
 
   useEffect(() => {
