@@ -1,20 +1,35 @@
 import Image from 'next/image';
 import React from 'react';
 import usePostIdStore from '../../store/usePostIdStore';
-import { positionInfo } from '../../../../../data/championData';
+import { mobileVoteColors } from '../../../../../data/championData';
 
 interface Props {
   index: number;
-  bg: string;
   champion: IGetInGameInfoType;
 }
 
-function VoteChampionItem({ index, bg, champion }: Props) {
-  const { setSelectedChampIdx } = usePostIdStore();
+function VoteChampionItem({ index, champion }: Props) {
+  const { setSelectedChampIdx, selectedChampIdx } = usePostIdStore();
 
-  const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
+  const getPositionSrc = (position: string, type: string) => {
+    switch (type) {
+      case 'icon_default':
+        return mobileVoteColors.find((pos) => pos.name === position)?.svg ?? '';
+      case 'icon_selected':
+        return mobileVoteColors.find((pos) => pos.name === position)?.svgw ?? '';
+      case 'background':
+        return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
+      case 'border':
+        return mobileVoteColors.find((pos) => pos.name === position)?.border ?? '';
+      default:
+        return '';
+    }
   };
+
+  const colorData =
+    selectedChampIdx === index
+      ? `${getPositionSrc(champion.position, 'background')}`
+      : ` ${getPositionSrc(champion.position, 'border')} bg-white border-[2px]`;
 
   return (
     <div
@@ -24,9 +39,18 @@ function VoteChampionItem({ index, bg, champion }: Props) {
       }}
     >
       <div
-        className={`${bg} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
+        className={`${colorData} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
       >
-        <Image src={getPositionSrc(champion.position)} alt='position' width={32} height={32} />
+        <Image
+          src={
+            selectedChampIdx === index
+              ? getPositionSrc(champion.position, 'icon_selected')
+              : getPositionSrc(champion.position, 'icon_default')
+          }
+          alt='position'
+          width={32}
+          height={32}
+        />
       </div>
       <div className='flex flex-col items-center justify-center'>
         <p className='text-[#33333] text-[12px] font-semibold'>{champion.championName}</p>

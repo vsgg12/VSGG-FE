@@ -38,11 +38,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
           <div className='flex w-full justify-around'>
             {voteInfo.map((champion, index) => (
               <div key={index}>
-                <VoteChampionItem
-                  index={index}
-                  bg={voteColors[index].background}
-                  champion={champion}
-                />
+                <VoteChampionItem index={index} champion={champion} />
               </div>
             ))}
           </div>
@@ -50,11 +46,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
           <div className='grid grid-cols-2'>
             {voteInfo.map((champion, index) => (
               <div key={index} className='flex justify-center mb-[10px]'>
-                <VoteChampionItem
-                  index={index}
-                  bg={voteColors[index].background}
-                  champion={champion}
-                />
+                <VoteChampionItem index={index} champion={champion} />
               </div>
             ))}
           </div>
@@ -63,22 +55,14 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
             <div className='flex w-full justify-around'>
               {voteInfo.slice(0, 3).map((champion, index) => (
                 <div key={index}>
-                  <VoteChampionItem
-                    index={index}
-                    bg={voteColors[index].background}
-                    champion={champion}
-                  />
+                  <VoteChampionItem index={index} champion={champion} />
                 </div>
               ))}
             </div>
             <div className='flex w-full px-[50px] justify-around'>
               {voteInfo.slice(3, 5).map((champion, index) => (
                 <div key={index}>
-                  <VoteChampionItem
-                    index={index + 3}
-                    bg={voteColors[index + 3].background}
-                    champion={champion}
-                  />
+                  <VoteChampionItem index={index + 3} champion={champion} />
                 </div>
               ))}
             </div>
