@@ -17,7 +17,6 @@ import PostItemMobile from './component/PostItemMobile';
 
 export default function HomeMobile() {
   const router = useRouter();
-  const isMobile = use;
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const { isMobileVersion } = useMobileVersionStore.getState();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');

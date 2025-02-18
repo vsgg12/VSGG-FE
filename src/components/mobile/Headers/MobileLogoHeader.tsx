@@ -53,11 +53,11 @@ function MobileLogoHeader() {
   }, [data]);
 
   const handleAlarmBtnClick = (): void => {
-    router.push('/alert/mobile');
+    router.push('/alert');
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage/mobile');
+    router.push('/myPage');
   };
 
   const handleLoginBtnClick = (): void => {
