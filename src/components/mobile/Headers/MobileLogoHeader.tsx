@@ -57,7 +57,7 @@ function MobileLogoHeader() {
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage/mobile');
+    router.push('/myPage');
   };
 
   const handleLoginBtnClick = (): void => {
