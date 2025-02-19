@@ -4,11 +4,10 @@ import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import BarChart from '@/components/BarChart';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
-import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import BackArrowIcon from '../../../../public/svg/mobile/backArrowIcon.svg';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import IsNotExistList from '../_component/IsNotExistList';
@@ -32,7 +31,7 @@ function MyPage_Mobile() {
   const handleLogoutBtnClick = (): void => {
     useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
     localStorage.clear();
-    router.push('/home/mobile');
+    router.push('/');
   };
 
   return (
@@ -65,7 +64,7 @@ function MyPage_Mobile() {
               </div>
               <div
                 className='w-[85px] h-[29px] rounded-[5px] bg-[#ECECEC] text-[#333333] flex justify-center items-center p-[6px] text-[14px] font-semibold whitespace-nowrap cursor-pointer'
-                onClick={() => router.push('/myPage/mobile/modifyProfile')}
+                onClick={() => router.push('/myPage/modifyProfile')}
               >
                 프로필 수정
               </div>
@@ -124,14 +123,14 @@ function MyPage_Mobile() {
             </div>
             <div
               className='flex justify-between items-center p-[20px] w-full h-[72px] rounded-[20px] bg-white cursor-pointer'
-              onClick={() => router.push('/myPage/mobile/judgeRecord')}
+              onClick={() => router.push('/myPage/judgeRecord')}
             >
               <div className='text-[18px] font-bold text-[#333333]'>판결 전적</div>
               <Image src={BackArrowIcon} alt='ArrowIcon' className='rotate-180' />
             </div>
             <div
               className='flex justify-between items-center p-[20px] w-full h-[72px] rounded-[20px] bg-white cursor-pointer'
-              onClick={() => router.push('/myPage/mobile/myPosts')}
+              onClick={() => router.push('/myPage/myPosts')}
             >
               <div className='text-[18px] font-bold text-[#333333]'>내가 쓴 글</div>
               <Image src={BackArrowIcon} alt='ArrowIcon' className='rotate-180' />

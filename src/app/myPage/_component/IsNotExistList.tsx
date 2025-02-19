@@ -11,18 +11,9 @@ function IsNotExistList({ type, isMobile }: Props) {
 
   const handleBtnClick = () => {
     if (type === 'myPost') {
-      if (isMobile) {
-        // 모바일 게시글 작성 페이지로 이동
-        return;
-      } else {
-        router.push('/post/write');
-      }
+      router.push('/post/write');
     } else if (type === 'myJudge') {
-      if (isMobile) {
-        router.push('/home/mobile');
-      } else {
-        router.push('/home');
-      }
+      router.push('/home');
     }
   };
 

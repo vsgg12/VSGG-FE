@@ -8,7 +8,7 @@ import getNaverURL from '@/api/naver/getNaverURL';
 import { useAuthStore } from './store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useMediaQuery } from 'react-responsive';
-import Login_Mobile from './mobile/page';
+import Login_Mobile from './mobile/LoginMobile';
 
 export default function Login() {
   const { isLogin } = useAuthStore.getState();

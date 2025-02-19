@@ -12,7 +12,7 @@ import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from '../_component/MyJudgeList';
 import IsNotExistList from '../_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
-import JudgeRecord_Mobile from '../mobile/judgeRecord/page';
+import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);

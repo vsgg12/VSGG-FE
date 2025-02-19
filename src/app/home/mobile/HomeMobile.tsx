@@ -2,7 +2,6 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SearchMobile from './component/SearchMobile';
@@ -17,8 +16,6 @@ import PostItemMobile from './component/PostItemMobile';
 
 export default function HomeMobile() {
   const router = useRouter();
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
-  const { isMobileVersion } = useMobileVersionStore.getState();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
@@ -39,11 +36,6 @@ export default function HomeMobile() {
       throw new Error('Invalid activeButton value');
     },
   });
-
-  useEffect(() => {
-    !isMobileVersion && router.replace('/home');
-    setIsPageLoading(false);
-  }, []);
 
   useEffect(() => {
     if (keyword === '') {
@@ -75,12 +67,7 @@ export default function HomeMobile() {
 
   return (
     <div className='w-full h-[100dvh]'>
-      {isPageLoading ? (
-        <div className='w-full items-center flex h-full'>
-          <Loading />
-        </div>
-      ) : (
-        <>
+      
           <MainHeader page='메인' />
           <div className='mobile-layout flex flex-col items-center px-[20px] py-[10px] mobile-scroll'>
             <SearchMobile handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
@@ -111,8 +98,6 @@ export default function HomeMobile() {
               )}
             </section>
           </div>
-        </>
-      )}
     </div>
   );
 }

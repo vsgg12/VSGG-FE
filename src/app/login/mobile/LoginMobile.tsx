@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
-
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/useAuthStore'
 

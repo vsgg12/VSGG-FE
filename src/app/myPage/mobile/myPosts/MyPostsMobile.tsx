@@ -57,7 +57,7 @@ function MyPost_Mobile() {
     };
   }, [bottomRef, fetchNextPage, hasNextPage]);
 
-  if (isLoading) {
+  if (isLoading || !myPostLists || !myPostLists.pages) {
     return (
       <div className='w-full h-[100dvh] items-center flex'>
         <Loading />
@@ -72,7 +72,7 @@ function MyPost_Mobile() {
         {myPostLists &&
           myPostLists.pages?.map((page, pageIndex) => (
             <React.Fragment key={pageIndex}>
-              {page.postList.map((postItem: IGetMyPostItemsType) => (
+              {page.postList?.map((postItem: IGetMyPostItemsType) => (
                 <MyPostItem postItem={postItem} />
               ))}
             </React.Fragment>

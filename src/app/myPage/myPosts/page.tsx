@@ -9,7 +9,7 @@ import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
-import MyPost_Mobile from '../mobile/myPosts/page';
+import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
 
 export default function MyPosts() {
