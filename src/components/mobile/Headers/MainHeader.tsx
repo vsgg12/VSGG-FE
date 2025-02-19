@@ -54,7 +54,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage/mobile');
+    router.push('/myPage');
   };
 
   const handleLoginBtnClick = (): void => {

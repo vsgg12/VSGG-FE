@@ -35,7 +35,7 @@ export default function PostRead() {
   useEffect(() => {
     if (error?.message === '존재하지 않는 게시글 입니다.') {
       alert(error.message);
-      router.replace('/');
+      router.replace('/notFound');
     }
   }, [error]);
 
@@ -46,12 +46,6 @@ export default function PostRead() {
       }
     }
   }, [post]);
-
-  useEffect(() => {
-    if (post?.postDTO.isDeleted === 'TRUE') {
-      router.push('/notFound');
-    }
-  }, [post, router]);
 
   return (
     <div className='min-w-[1400px] flex-col items-center'>

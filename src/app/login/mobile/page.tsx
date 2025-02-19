@@ -7,13 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
 
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../store/useAuthStore';
-import { useMobileVersionStore } from '@/store/useMobileVersionStore';
+import { useAuthStore } from '../store/useAuthStore'
 
 export default function Login_Mobile() {
   const { isLogin } = useAuthStore.getState();
   const router = useRouter();
-    const { isMobileVersion } = useMobileVersionStore.getState();
 
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
     queryKey: ['NAVER_URL'],
@@ -22,11 +20,7 @@ export default function Login_Mobile() {
 
     useEffect(() => {
       if (isLogin) {
-        if (isMobileVersion === true) {
-          router.push('/home/mobile');
-        } else {
-          router.push('/home');
-        }
+          router.push('/');
       }
     }, [isLogin, router]);
 

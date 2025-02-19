@@ -3,35 +3,20 @@
 import getMyJudgeList from '@/api/getMyJudgeList';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import MyJudgeItem from '../_component/MyJudgeItem';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 
 function JudgeRecord_Mobile() {
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const { isMobileVersion } = useMobileVersionStore.getState();
   const { accessToken, isLogin } = useAuthStore.getState();
-
   const router = useRouter();
 
   useEffect(() => {
-    if (isMobileVersion === false) {
-      router.replace('/myPage/judgeRecord');
-    }
-    setIsPageLoading(false);
-  }, []);
-
-  useEffect(() => {
     if (!isLogin) {
-      if (isMobileVersion === true) {
-        router.push('/login/mobile');
-      } else {
-        router.push('/login');
-      }
+      router.push('/login');
     }
   }, [isLogin, router]);
 
@@ -51,6 +36,11 @@ function JudgeRecord_Mobile() {
     },
     initialPageParam: 1,
   });
+
+    useEffect(() => {
+      console.log(myJudgeLists);
+    }, [myJudgeLists]);
+
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -73,7 +63,7 @@ function JudgeRecord_Mobile() {
     };
   }, [bottomRef, fetchNextPage, hasNextPage]);
 
-  if (isLoading) {
+  if (isLoading || !myJudgeLists || !myJudgeLists.pages) {
     return (
       <div className='w-full h-[100dvh] items-center flex'>
         <Loading />
@@ -81,33 +71,26 @@ function JudgeRecord_Mobile() {
     );
   }
 
+
   return (
     <div className='px-[10px] h-[100dvh]'>
-      {isPageLoading ? (
-        <div className='w-full items-center flex h-full'>
+      <MobileHeader headerTitle='판결 전적' />
+      <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px] mobile-scroll'>
+        {myJudgeLists.pages[0].postList.length > 0 &&
+          myJudgeLists.pages?.map((page, pageIndex) => (
+            <React.Fragment key={pageIndex}>
+              {page.postList?.map((judgeItem: IVotedPostItem) => (
+                <MyJudgeItem judgeItem={judgeItem} key={judgeItem.id} />
+              ))}
+            </React.Fragment>
+          ))}
+      </div>
+      {isFetchingNextPage && (
+        <div className='w-full flex justify-center py-[10px]'>
           <Loading />
         </div>
-      ) : (
-        <>
-          <MobileHeader headerTitle='판결 전적' />
-          <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px] mobile-scroll'>
-            {myJudgeLists &&
-              myJudgeLists.pages.map((page, pageIndex) => (
-                <React.Fragment key={pageIndex}>
-                  {page.postList.map((judgeItem: IVotedPostItem) => (
-                    <MyJudgeItem judgeItem={judgeItem} />
-                  ))}
-                </React.Fragment>
-              ))}
-          </div>
-          {isFetchingNextPage && (
-            <div className='w-full flex justify-center py-[10px]'>
-              <Loading />
-            </div>
-          )}
-          <div ref={bottomRef} />
-        </>
       )}
+      <div ref={bottomRef} />
     </div>
   );
 }
