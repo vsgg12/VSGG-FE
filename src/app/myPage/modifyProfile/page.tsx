@@ -4,19 +4,15 @@ import { DeleteMyProfileImage, PatchMyNickname, PatchMyProfileImage } from '@/ap
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import Loading from '@/components/Loading';
 import CameraIcon from '../../../../../public/svg/mobile/cameraIcon.svg';
 import ModifyProfileHeader from '@/components/mobile/Headers/ModifyProfileHeader';
-import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 function ModifyProfile_Mobile() {
-  const { isMobileVersion } = useMobileVersionStore.getState();
   const router = useRouter();
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [patchImage, setPatchImage] = useState<File | undefined>();
   const [isSameNickName, setIsSameNickName] = useState<boolean>(false);
@@ -26,7 +22,7 @@ function ModifyProfile_Mobile() {
   const [nickName, setNickName] = useState<string>();
   const [prevNickName, setPrevNickName] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
   const queryClient = useQueryClient();
   const formData = new FormData();
 
@@ -213,63 +209,46 @@ function ModifyProfile_Mobile() {
   };
 
   useEffect(() => {
-    if (isMobileVersion === false) {
-      router.replace('/myPage');
-    }
-    setIsPageLoading(false);
-  }, []);
-
-  useEffect(() => {
     if (!isLogin) {
-      if (isMobileVersion === true) {
-        router.push('/login/mobile');
-      } else {
-        router.push('/login');
-      }
+      router.push('/login');
     }
   }, [isLogin, router]);
 
   return (
     <div className='px-[10px] h-[100dvh]'>
-      {isPageLoading ? (
-        <div className='w-full items-center flex h-full'>
-          <Loading />
-        </div>
-      ) : (
-        <>
-          <ModifyProfileHeader handleSaveClick={handleSave} />
-          <div className='mobile-layout flex flex-col flex-grow items-center px-[21px] py-[20px] gap-[100px] pt-[80px]'>
-            <div className='w-full flex flex-col gap-[20px]'>
-              {/* <div className='font-semibold text-[22px] text-[#333333]'>프로필 이미지</div> */}
-              <div className='flex gap-[15px] justify-center'>
-                <img
-                  src={profileImage}
-                  alt='profileImage'
-                  className='w-[145px] h-[145px] rounded-full object-fill'
-                />
-                <div className='flex gap-[10px] absolute translate-x-[95px] translate-y-[115px]'>
-                  <input
-                    type='file'
-                    accept='image/*'
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                  />
-                  <div
-                    className='border border-gray rounded-[5px] text-[#333333] bg-white w-[33px] h-[32px] flex justify-center items-center cursor-pointer'
-                    onClick={handleChangeImage}
-                  >
-                    <Image src={CameraIcon} alt='Camera-Icon' width={16} height={16} />
-                  </div>
+      <ModifyProfileHeader handleSaveClick={handleSave} />
+      <div className='mobile-layout flex flex-col flex-grow items-center px-[21px] py-[20px] gap-[100px] pt-[80px]'>
+        <div className='w-full flex flex-col gap-[20px]'>
+          {/* <div className='font-semibold text-[22px] text-[#333333]'>프로필 이미지</div> */}
+          <div className='flex gap-[15px] justify-center'>
+            <img
+              src={profileImage}
+              alt='profileImage'
+              className='w-[145px] h-[145px] rounded-full object-fill'
+            />
+            <div className='flex gap-[10px] absolute translate-x-[95px] translate-y-[115px]'>
+              <input
+                type='file'
+                accept='image/*'
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+              <div
+                className='border border-gray rounded-[5px] text-[#333333] bg-white w-[33px] h-[32px] flex justify-center items-center cursor-pointer'
+                onClick={handleChangeImage}
+              >
+                <Image src={CameraIcon} alt='Camera-Icon' width={16} height={16} />
+              </div>
 
-                  <div
-                    className='border border-gray rounded-[5px] text-[#333333] bg-white w-[48px] h-[32px] cursor-pointer flex justify-center items-center'
-                    onClick={handleDeleteImage}
-                  >
-                    삭제
-                  </div>
-                </div>
-                {/* <div className='flex flex-col justify-between'> 
+              <div
+                className='border border-gray rounded-[5px] text-[#333333] bg-white w-[48px] h-[32px] cursor-pointer flex justify-center items-center'
+                onClick={handleDeleteImage}
+              >
+                삭제
+              </div>
+            </div>
+            {/* <div className='flex flex-col justify-between'> 
                    <div className='flex flex-col'>
                     <p className='text-[14px] font-medium text-[#909090]'>
                       파일 형식 : jpg, jpeg, png
@@ -277,36 +256,34 @@ function ModifyProfile_Mobile() {
                     <p className='text-[14px] font-medium text-[#909090]'>파일 크기 : 2MB 이내</p>
                   </div> 
                 </div> */}
-              </div>
-            </div>
-
-            <div className='flex flex-col gap-[10px] px-[25px]'>
-              <div className='flex gap-[10px] items-center'>
-                <p className='font-semibold text-[15px] text-[#333333]'>닉네임</p>
-                <p className='font-medium text-[15px] text-[#909090]'>
-                  닉네임은 7일에 한번만 변경할 수 있습니다.
-                </p>
-              </div>
-              <div className='flex gap-3 items-center justify-center'>
-                <input
-                  type='text'
-                  className='min-w-[263.5px] h-[30px] px-[2px] font-medium text-[20px] bg-inherit text-[#333333] border-b-2 border-gray focus:outline-none'
-                  value={nickName}
-                  placeholder='닉네임을 입력하세요.'
-                  onChange={handleChangeNickname}
-                />
-                <button
-                  className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-[#333333] w-[76px] h-[32px] whitespace-nowrap cursor-pointer'
-                  onClick={handleCheckNickname}
-                >
-                  중복확인
-                </button>
-              </div>
-              <div className='text-[14px] text-[#8A1F21] flex items-center'>{errorMessage}</div>
-            </div>
           </div>
-        </>
-      )}
+        </div>
+
+        <div className='flex flex-col gap-[10px] px-[25px]'>
+          <div className='flex gap-[10px] items-center'>
+            <p className='font-semibold text-[15px] text-[#333333]'>닉네임</p>
+            <p className='font-medium text-[15px] text-[#909090]'>
+              닉네임은 7일에 한번만 변경할 수 있습니다.
+            </p>
+          </div>
+          <div className='flex gap-3 items-center justify-center'>
+            <input
+              type='text'
+              className='min-w-[263.5px] h-[30px] px-[2px] font-medium text-[20px] bg-inherit text-[#333333] border-b-2 border-gray focus:outline-none'
+              value={nickName}
+              placeholder='닉네임을 입력하세요.'
+              onChange={handleChangeNickname}
+            />
+            <button
+              className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-[#333333] w-[76px] h-[32px] whitespace-nowrap cursor-pointer'
+              onClick={handleCheckNickname}
+            >
+              중복확인
+            </button>
+          </div>
+          <div className='text-[14px] text-[#8A1F21] flex items-center'>{errorMessage}</div>
+        </div>
+      </div>
     </div>
   );
 }

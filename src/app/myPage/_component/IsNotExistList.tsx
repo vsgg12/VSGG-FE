@@ -11,23 +11,14 @@ function IsNotExistList({ type, isMobile }: Props) {
 
   const handleBtnClick = () => {
     if (type === 'myPost') {
-      if (isMobile) {
-        // 모바일 게시글 작성 페이지로 이동
-        return;
-      } else {
-        router.push('/post/write');
-      }
+      router.push('/post/write');
     } else if (type === 'myJudge') {
-      if (isMobile) {
-        router.push('/home/mobile');
-      } else {
-        router.push('/home');
-      }
+      router.push('/home');
     }
   };
 
   return (
-    <div className='w-[202px] h-[101px] flex flex-col gap-[10px] bg-white items-center'>
+    <div className='w-[202px] h-[101px] flex flex-col gap-[10px] bg-inherit items-center'>
       <div
         className={`${isMobile ? 'text-[#333333] text-[14px]' : 'text-black text-[16px]'} font-medium flex flex-col justify-center items-center`}
       >

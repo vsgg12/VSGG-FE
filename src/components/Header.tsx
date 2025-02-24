@@ -17,7 +17,7 @@ export default function Header() {
   const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const currentUrl = usePathname();
-  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
@@ -28,7 +28,6 @@ export default function Header() {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
-      const currentState = useAuthStore.getState();
       const newUser = {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
@@ -36,8 +35,8 @@ export default function Header() {
       };
 
       if (
-        currentState.user?.nickname !== newUser.nickname ||
-        currentState.user?.profile_image !== newUser.profile_image
+        userInfo.nickname !== newUser.nickname ||
+        userInfo.profile_image !== newUser.profile_image
       ) {
         useAuthStore.setState({ user: newUser });
       }

@@ -20,7 +20,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const { accessToken, isLogin, user } = useAuthStore.getState();
+  const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
@@ -38,7 +38,7 @@ export default function PostRead() {
   useEffect(() => {
     if (error?.message === '존재하지 않는 게시글 입니다.') {
       alert(error.message);
-      router.replace('/');
+      router.replace('/notFound');
     }
   }, [error]);
 
@@ -49,12 +49,6 @@ export default function PostRead() {
       }
     }
   }, [post]);
-
-  useEffect(() => {
-    if (post?.postDTO.isDeleted === 'TRUE') {
-      router.push('/notFound');
-    }
-  }, [post, router]);
 
   return (
     <>

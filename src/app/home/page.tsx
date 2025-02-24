@@ -24,7 +24,7 @@ export default function Home() {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin, accessToken } = useAuthStore.getState();
+  const { isLogin, accessToken } = useAuthStore();
   const { keyword } = useSearchStore();
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);

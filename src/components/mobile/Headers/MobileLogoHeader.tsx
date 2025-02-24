@@ -13,7 +13,7 @@ import LogoMobile from '../LogoMobile';
 
 function MobileLogoHeader() {
   const router = useRouter();
-  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
@@ -24,7 +24,7 @@ function MobileLogoHeader() {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
-      const currentState = useAuthStore.getState();
+      const currentState = useAuthStore();
       const newUser = {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
