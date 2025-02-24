@@ -11,7 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import Login_Mobile from './mobile/LoginMobile';
 
 export default function Login() {
-  const { isLogin } = useAuthStore.getState();
+  const { isLogin } = useAuthStore();
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({

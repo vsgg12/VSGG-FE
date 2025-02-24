@@ -22,7 +22,7 @@ function ModifyProfile_Mobile() {
   const [nickName, setNickName] = useState<string>();
   const [prevNickName, setPrevNickName] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
   const queryClient = useQueryClient();
   const formData = new FormData();
 

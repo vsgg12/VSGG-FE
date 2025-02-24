@@ -13,7 +13,7 @@ import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import IsNotExistList from '../_component/IsNotExistList';
 
 function MyPage_Mobile() {
-  const { accessToken, user, isLogin } = useAuthStore.getState();
+  const { accessToken, user, isLogin } = useAuthStore();
 
   const router = useRouter();
 

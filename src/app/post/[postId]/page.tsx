@@ -20,7 +20,7 @@ export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const { accessToken, isLogin, user } = useAuthStore.getState();
+  const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);

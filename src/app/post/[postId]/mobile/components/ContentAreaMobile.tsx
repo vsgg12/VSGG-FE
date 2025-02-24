@@ -17,7 +17,7 @@ interface IContentArea {
 }
 
 function ContentAreaMobile({ isOwner, setVoteData, post }: IContentArea) {
-  const { user } = useAuthStore.getState();
+  const { user } = useAuthStore();
   const { voteResult, setPostVoteResult } = usePostIdStore();
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');

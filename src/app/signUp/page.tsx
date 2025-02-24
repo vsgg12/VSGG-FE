@@ -8,12 +8,12 @@ import { useMutation } from '@tanstack/react-query';
 import PostSignUp from '@/api/PostSignUp';
 import { useAuthStore } from '../login/store/useAuthStore';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive';
 import SignUp_Mobile from './mobile/page';
 
 export default function SignUp() {
   const router = useRouter();
-  const { user } = useAuthStore.getState();
+  const { user } = useAuthStore();
   const [nickname, setNickname] = useState<string>('');
   const [isSameNickname, setIsSameNickname] = useState<boolean>(true); // 닉네임 중복인지 아닌지
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -28,10 +28,10 @@ export default function SignUp() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
-    if (user?.nickname !== "") {
-      router.replace('/')
+    if (user?.nickname !== '') {
+      router.replace('/');
     }
-  },[])
+  }, []);
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({
@@ -134,7 +134,7 @@ export default function SignUp() {
 
   const handleSignUpBtnClick = (): void => {
     if (!isAllValid || isNickNameCheck === false) {
-      alert('닉네임 중복 확인이 필요합니다.')
+      alert('닉네임 중복 확인이 필요합니다.');
       return;
     }
     signUp();
@@ -142,8 +142,9 @@ export default function SignUp() {
 
   return (
     <>
-      {isMobile ? <SignUp_Mobile/>
-         : (
+      {isMobile ? (
+        <SignUp_Mobile />
+      ) : (
         <div className='flex justify-center'>
           <div className='mt-12 w-[600px] flex h-full flex-col items-center justify-center gap-10'>
             <div className="font-['SBAggroB'] text-4xl text-[#8A1F21]">VS.GG</div>

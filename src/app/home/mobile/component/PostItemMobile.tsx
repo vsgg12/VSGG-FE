@@ -20,7 +20,7 @@ export default function PostItemMobile({
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
-  const { user } = useAuthStore.getState();
+  const { user } = useAuthStore();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full';

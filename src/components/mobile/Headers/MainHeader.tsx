@@ -10,7 +10,7 @@ import getAlarms from '@/api/getAlarms';
 
 function MainHeader({ page }: { page: '메인' | '게시글' }) {
   const router = useRouter();
-  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
@@ -21,7 +21,6 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
-      const currentState = useAuthStore.getState();
       const newUser = {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
@@ -29,8 +28,8 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
       };
 
       if (
-        currentState.user?.nickname !== newUser.nickname ||
-        currentState.user?.profile_image !== newUser.profile_image
+        userInfo.nickname !== newUser.nickname ||
+        userInfo.profile_image !== newUser.profile_image
       ) {
         useAuthStore.setState({ user: newUser });
       }

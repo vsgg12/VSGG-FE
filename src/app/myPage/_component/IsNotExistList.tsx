@@ -18,7 +18,7 @@ function IsNotExistList({ type, isMobile }: Props) {
   };
 
   return (
-    <div className='w-[202px] h-[101px] flex flex-col gap-[10px] bg-white items-center'>
+    <div className='w-[202px] h-[101px] flex flex-col gap-[10px] bg-inherit items-center'>
       <div
         className={`${isMobile ? 'text-[#333333] text-[14px]' : 'text-black text-[16px]'} font-medium flex flex-col justify-center items-center`}
       >

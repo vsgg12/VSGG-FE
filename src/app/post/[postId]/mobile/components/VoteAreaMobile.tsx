@@ -19,7 +19,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
   const { postVoteResult } = usePostIdStore();
   const { postId } = useParams();
   const id: string = postId as string;
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
 
   const { mutate: postVote } = useMutation({
     mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),

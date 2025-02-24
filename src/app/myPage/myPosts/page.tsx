@@ -14,7 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken } = useAuthStore();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { data: myPostLists } = useQuery({
@@ -63,7 +63,8 @@ export default function MyPosts() {
                     {myPostLists && myPostLists.postList.length !== 0 ? (
                       <Pagination
                         activePage={page}
-                        totalItemsCount={myPostLists.pageInfo.totalPageNum}
+                        totalItemsCount={myPostLists.pageInfo.totalPageNum * 10}
+                        itemsCountPerPage={10}
                         pageRangeDisplayed={5}
                         prevPageText={'<'}
                         nextPageText={'>'}

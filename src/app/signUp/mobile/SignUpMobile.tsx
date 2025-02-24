@@ -11,7 +11,7 @@ import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck'
 
 export default function SignUp_Mobile() {
   const router = useRouter();
-  const { user } = useAuthStore.getState();
+  const { user } = useAuthStore();
   const [nickname, setNickname] = useState<string>('');
   const [isSameNickname, setIsSameNickname] = useState<boolean>(true); // 닉네임 중복인지 아닌지
   const [errorMessage, setErrorMessage] = useState<string>('');

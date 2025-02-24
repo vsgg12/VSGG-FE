@@ -15,12 +15,16 @@ import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
 export default function PostDetailMobile() {
   const { postId } = useParams();
   const id: string = postId as string;
-  const { accessToken, isLogin, user } = useAuthStore.getState();
+  const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const { data: post, isLoading, error } = useQuery<IGetPostItemType>({
+  const {
+    data: post,
+    isLoading,
+    error,
+  } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });

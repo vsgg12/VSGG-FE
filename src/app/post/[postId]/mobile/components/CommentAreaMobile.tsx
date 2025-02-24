@@ -20,7 +20,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken, isLogin, user } = useAuthStore.getState();
+  const { accessToken, isLogin, user } = useAuthStore();
   const commentMethods = useForm<{ commentContent: string }>();
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();

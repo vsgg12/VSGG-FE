@@ -6,10 +6,10 @@ import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/naver/getNaverURL';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../store/useAuthStore'
+import { useAuthStore } from '../store/useAuthStore';
 
 export default function Login_Mobile() {
-  const { isLogin } = useAuthStore.getState();
+  const { isLogin } = useAuthStore();
   const router = useRouter();
 
   const { data: NAVER_AUTH_URL, isLoading } = useQuery({
@@ -17,11 +17,11 @@ export default function Login_Mobile() {
     queryFn: async () => getNaverURL(),
   });
 
-    useEffect(() => {
-      if (isLogin) {
-          router.push('/');
-      }
-    }, [isLogin, router]);
+  useEffect(() => {
+    if (isLogin) {
+      router.push('/');
+    }
+  }, [isLogin, router]);
 
   const NaverLogin = () => {
     if (NAVER_AUTH_URL) {

@@ -6,12 +6,13 @@ import Loading from '@/components/Loading';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
-import MyJudgeItem from '../_component/MyJudgeItem';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
+import IsNotExistList from '../../_component/IsNotExistList';
+import MyJudgeItem_Mobile from '../_component/MyJudgeItem';
 
 function JudgeRecord_Mobile() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -20,29 +21,33 @@ function JudgeRecord_Mobile() {
     }
   }, [isLogin, router]);
 
-  const {
-    data: myJudgeLists,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['MY_JUDGE_LISTS'],
     queryFn: ({ pageParam = 1 }) =>
       getMyJudgeList({ token: accessToken, size: '10', page: String(pageParam) }),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || !lastPage.pageInfo) return undefined;
+
+      const nextPage = lastPage.pageInfo.page + 1;
       return nextPage <= lastPage.pageInfo.totalPageNum ? nextPage : undefined;
     },
     initialPageParam: 1,
   });
 
-    useEffect(() => {
-      console.log(myJudgeLists);
-    }, [myJudgeLists]);
-
+  const myJudgeLists = data ?? { pages: [], pageParams: [] };
 
   useEffect(() => {
+    if (!isLoading && myJudgeLists) {
+      console.log('myJudgeLists:', myJudgeLists);
+      console.log('myJudgeLists.pages:', myJudgeLists?.pages);
+      console.log('myJudgeLists.pages[0]?.postList:', myJudgeLists?.pages?.[0]?.postList);
+    }
+  }, [myJudgeLists]);
+
+  useEffect(() => {
+    if (!bottomRef.current) {
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
@@ -52,9 +57,7 @@ function JudgeRecord_Mobile() {
       { threshold: 1.0 },
     );
 
-    if (bottomRef.current) {
-      observer.observe(bottomRef.current);
-    }
+    observer.observe(bottomRef.current);
 
     return () => {
       if (bottomRef.current) {
@@ -63,7 +66,7 @@ function JudgeRecord_Mobile() {
     };
   }, [bottomRef, fetchNextPage, hasNextPage]);
 
-  if (isLoading || !myJudgeLists || !myJudgeLists.pages) {
+  if (isLoading) {
     return (
       <div className='w-full h-[100dvh] items-center flex'>
         <Loading />
@@ -71,19 +74,25 @@ function JudgeRecord_Mobile() {
     );
   }
 
-
   return (
     <div className='px-[10px] h-[100dvh]'>
       <MobileHeader headerTitle='판결 전적' />
       <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px] mobile-scroll'>
-        {myJudgeLists.pages[0].postList.length > 0 &&
-          myJudgeLists.pages?.map((page, pageIndex) => (
-            <React.Fragment key={pageIndex}>
-              {page.postList?.map((judgeItem: IVotedPostItem) => (
-                <MyJudgeItem judgeItem={judgeItem} key={judgeItem.id} />
-              ))}
-            </React.Fragment>
-          ))}
+        {isLoading ? (
+          <div className='w-full h-full flex justify-center items-center'>
+            <Loading />
+          </div>
+        ) : myJudgeLists.pages[0]?.postList.length < 1 ? (
+          <div className='flex justify-center items-center w-full h-full'>
+            <IsNotExistList type='myJudge' />
+          </div>
+        ) : (
+          myJudgeLists.pages.map((page) =>
+            page?.postList?.map((judgeItem: IVotedPostItem) => (
+              <MyJudgeItem_Mobile judgeItem={judgeItem} key={judgeItem.id} />
+            )),
+          )
+        )}
       </div>
       {isFetchingNextPage && (
         <div className='w-full flex justify-center py-[10px]'>

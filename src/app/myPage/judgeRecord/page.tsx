@@ -16,17 +16,19 @@ import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken } = useAuthStore();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
+    enabled: !isMobile,
   });
 
   const { data: myJudgeLists } = useQuery({
     queryKey: ['MY_JUDGE_LISTS', page],
     queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
+    enabled: !isMobile,
   });
 
   const handlePageChange = (page: number) => {
@@ -94,8 +96,9 @@ export default function JudgeRecord() {
                   {myJudgeLists && myJudgeLists.postList.length !== 0 ? (
                     <Pagination
                       activePage={page}
-                      totalItemsCount={myJudgeLists.pageInfo.totalPageNum}
+                      totalItemsCount={myJudgeLists.pageInfo.totalPageNum * 10}
                       pageRangeDisplayed={5}
+                      itemsCountPerPage={10}
                       prevPageText={'<'}
                       nextPageText={'>'}
                       onChange={handlePageChange}

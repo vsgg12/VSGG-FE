@@ -76,7 +76,7 @@ const _fetch = async <T = unknown, R = unknown>({
 
     if (!res.ok) {
       if (res.status === 401) {
-        const { refreshToken } = useAuthStore.getState();
+        const { refreshToken } = useAuthStore();
         if (refreshToken) {
           try {
             const newToken: IPostRefreshType = await postRefresh(refreshToken);
