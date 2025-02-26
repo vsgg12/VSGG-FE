@@ -13,7 +13,7 @@ import LogoMobile from '../LogoMobile';
 
 function MobileLogoHeader() {
   const router = useRouter();
-  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();;
+  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
