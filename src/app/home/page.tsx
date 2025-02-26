@@ -24,7 +24,7 @@ export default function Home() {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin, accessToken } = useAuthStore();
+  const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
@@ -32,7 +32,7 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
-
+  
   const {
     data: postData,
     isLoading,

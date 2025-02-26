@@ -9,7 +9,7 @@ import PostSignUp from '@/api/PostSignUp';
 import { useAuthStore } from '../login/store/useAuthStore';
 import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
 import { useMediaQuery } from 'react-responsive';
-import SignUp_Mobile from './mobile/page';
+import SignUp_Mobile from './mobile/SignUpMobile';
 
 export default function SignUp() {
   const router = useRouter();
