@@ -1,11 +1,12 @@
 import React from 'react'
 import VoteStatusCircle from '../../_component/VoteStatusCircle';
 import formatDate from '@/utils/formatDate';
+import { useRouter } from 'next/navigation';
 
 function MyPostItem_Mobile({ postItem }: { postItem: IGetMyPostItemsType }) {
-    // const router = useRouter();
+    const router = useRouter();
   return (
-    <div className='flex flex-col w-full gap-[4px]'>
+    <div className='flex flex-col w-full gap-[4px] cursor-pointer' onClick={() => router.push(`post/${postItem.id}`)}>
       <div className='flex gap-[8px] items-center'>
         <div className='text-[15px] text-black font-semibold overflow-hidden text-ellipsis whitespace-nowrap'>
           {postItem.title}

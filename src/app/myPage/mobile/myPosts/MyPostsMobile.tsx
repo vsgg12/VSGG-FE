@@ -2,16 +2,19 @@
 import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import MyPostItem_Mobile from '../_component/MyPostItem';
+import IsNotExistList from '../../_component/IsNotExistList';
 
 function MyPost_Mobile() {
   const { accessToken, isLogin } = useAuthStore.getState();
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const [page, setPage] = useState<number>(1);
+  const [myPostLists, setMyPostLists] = useState<IGetMyPostItemsType[]>([]);
 
   useEffect(() => {
     if (!isLogin) {
@@ -20,78 +23,51 @@ function MyPost_Mobile() {
   }, [isLogin, router]);
 
   const {
-    data: myPostLists,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    data = { pageInfo: { page: 1, size: 10, totalPageNum: 1 }, postList: [] },
+    refetch,
     isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['MY_POST_LISTS'],
-    queryFn: async ({ pageParam = 1 }) => {
-      if (!accessToken) {
-        return null;
-      }
-      const result = await getMyPostLists({ token: accessToken, size: '10', page: String(pageParam) });
-      return result;
-    },
-    getNextPageParam: (lastPage, allPages) => {
-      if (!lastPage || !lastPage?.pageInfo?.totalPageNum) return undefined;
-      const nextPage = allPages.length + 1;
-      return nextPage <= lastPage.pageInfo.totalPageNum ? nextPage : undefined;
-    },
-    initialPageParam: 1,
-    enabled: !!accessToken,
+    isFetching,
+  } = useQuery({
+    queryKey: ['MY_POST_LISTS', page],
+    queryFn: () => getMyPostLists({ token: accessToken, size: '10', page: String(page) }),
+    staleTime: 1000 * 60 * 5,
   });
 
   useEffect(() => {
+    if (!isLoading && data.postList.length > 0 || !isFetching && data.postList.length > 0) {
+      setMyPostLists((prev) => [...prev, ...data.postList]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!bottomRef.current) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
+        if (entries[0].isIntersecting && data.pageInfo.totalPageNum > page) {
+          setPage((prev) => prev + 1);
         }
       },
       { threshold: 1.0 },
     );
 
-    const refElement = bottomRef.current;
-    if (refElement) {
-      observer.observe(refElement);
-    }
+    observer.observe(bottomRef.current);
 
     return () => {
-      if (refElement) {
-        observer.unobserve(refElement);
-      }
+      if (bottomRef.current) observer.unobserve(bottomRef.current);
     };
-  }, [bottomRef, fetchNextPage, hasNextPage]);
+  }, [data, page]);
 
   useEffect(() => {
-    console.log(myPostLists);
-  }, [myPostLists]);
+    if (page > 1) {
+      refetch();
+    }
+  }, [page, refetch]);
 
-  if (isLoading || myPostLists === undefined) {
+  if (isLoading && page === 1) {
     return (
       <div className='w-full h-[100dvh] items-center flex'>
         <Loading />
-      </div>
-    );
-  }
-
-  if (!myPostLists || !myPostLists.pages || myPostLists.pages.length === 0) {
-    return (
-      <div className='w-full h-[100dvh] flex items-center justify-center'>
-        <p>게시글이 없습니다.</p>
-      </div>
-    );
-  }
-
-  const firstPage = myPostLists.pages[0];
-  const postList = firstPage?.postList ?? [];
-
-  if (postList.length === 0) {
-    return (
-      <div className='w-full h-[100dvh] flex items-center justify-center'>
-        <p>게시글이 없습니다.</p>
       </div>
     );
   }
@@ -100,13 +76,17 @@ function MyPost_Mobile() {
     <div className='px-[10px] h-[100dvh]'>
       <MobileHeader headerTitle='내가 쓴 글' />
       <div className='mobile-layout flex flex-col flex-grow items-center px-[20px] pt-[20px] mobile-scroll'>
-        {myPostLists.pages.map((page) =>
-          (page?.postList ?? []).map((postItem: IGetMyPostItemsType) => (
+        {myPostLists.length === 0 ? (
+          <div className='flex justify-center items-center w-full h-full'>
+            <IsNotExistList type='myPost' />
+          </div>
+        ) : (
+          myPostLists.map((postItem: IGetMyPostItemsType) => (
             <MyPostItem_Mobile postItem={postItem} key={postItem.id} />
-          )),
+          ))
         )}
       </div>
-      {isFetchingNextPage && (
+      {isFetching && (
         <div className='w-full flex justify-center py-[10px]'>
           <Loading />
         </div>

@@ -18,7 +18,7 @@ export default function PostTagMobile({ hashtags }: { hashtags: IHashTagListType
     <div className='flex w-full gap-[10px]'>
       {hashtags.map((hashtag: IHashTagListType, index: number) => (
         <div
-          className={`flex items-center justify-center border-1 rounded-[150px] px-[10px] h-[23px] w-fit text-[12px] whitespace-nowrap ${changeIngameInfoColor(index)}`}
+          className={`flex items-center justify-center border-1 rounded-[150px] px-[10px] h-[23px] w-fit text-[12px] whitespace-nowrap ${changeIngameInfoColor(index)}`} key={hashtag.id}
         >
           # {hashtag.name}
         </div>

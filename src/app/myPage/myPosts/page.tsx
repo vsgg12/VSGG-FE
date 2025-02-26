@@ -14,7 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken } = useAuthStore();
+  const { accessToken } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const { data: myPostLists } = useQuery({

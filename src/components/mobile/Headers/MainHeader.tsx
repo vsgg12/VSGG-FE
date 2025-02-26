@@ -10,7 +10,7 @@ import getAlarms from '@/api/getAlarms';
 
 function MainHeader({ page }: { page: '메인' | '게시글' }) {
   const router = useRouter();
-  const { accessToken, user: userInfo, isLogin } = useAuthStore();
+  const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
 
   const { data: userProfileData } = useQuery({
@@ -36,7 +36,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
     }
   }, [userProfileData, userInfo]);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
     enabled: isLogin,
@@ -109,16 +109,13 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
               </button>
             </>
           )
-        : !isLoading &&
-          !isLogin && (
-            <>
-              <button
-                className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
-                onClick={handleLoginBtnClick}
-              >
-                로그인
-              </button>
-            </>
+        : (
+            <button
+              className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+              onClick={handleLoginBtnClick}
+            >
+              로그인
+            </button>
           )}
     </div>
   );

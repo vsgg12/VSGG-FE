@@ -27,7 +27,7 @@ export default function MyPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const user = useAuthStore((state) => state.user);
-  const { accessToken } = useAuthStore();
+  const { accessToken } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const handleLogoutBtnClick = (): void => {

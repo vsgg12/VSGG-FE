@@ -3,9 +3,9 @@
 import getMyJudgeList from '@/api/getMyJudgeList';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
 import IsNotExistList from '../../_component/IsNotExistList';
 import MyJudgeItem_Mobile from '../_component/MyJudgeItem';
@@ -14,6 +14,8 @@ function JudgeRecord_Mobile() {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const { accessToken, isLogin } = useAuthStore();
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [judgeList, setJudgeList] = useState<IVotedPostItem[]>([]);
 
   useEffect(() => {
     if (!isLogin) {
@@ -21,37 +23,24 @@ function JudgeRecord_Mobile() {
     }
   }, [isLogin, router]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ['MY_JUDGE_LISTS'],
-    queryFn: ({ pageParam = 1 }) =>
-      getMyJudgeList({ token: accessToken, size: '10', page: String(pageParam) }),
-    getNextPageParam: (lastPage) => {
-      if (!lastPage || !lastPage.pageInfo) return undefined;
-
-      const nextPage = lastPage.pageInfo.page + 1;
-      return nextPage <= lastPage.pageInfo.totalPageNum ? nextPage : undefined;
-    },
-    initialPageParam: 1,
+  const { data, refetch, isLoading, isFetching } = useQuery({
+    queryKey: ['MY_JUDGE_LISTS', page],
+    queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) })
   });
 
-  const myJudgeLists = data ?? { pages: [], pageParams: [] };
+  useEffect(() => {
+    if (data?.postList) {
+      setJudgeList((prev) => [...prev, ...data.postList]); 
+    }
+  }, [data]);
 
   useEffect(() => {
-    if (!isLoading && myJudgeLists) {
-      console.log('myJudgeLists:', myJudgeLists);
-      console.log('myJudgeLists.pages:', myJudgeLists?.pages);
-      console.log('myJudgeLists.pages[0]?.postList:', myJudgeLists?.pages?.[0]?.postList);
-    }
-  }, [myJudgeLists]);
+    if (!bottomRef.current) return;
 
-  useEffect(() => {
-    if (!bottomRef.current) {
-      return;
-    }
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
+        if (entries[0].isIntersecting && data!.pageInfo.totalPageNum > page) {
+          setPage((prev) => prev + 1); // 페이지 증가
         }
       },
       { threshold: 1.0 },
@@ -60,13 +49,17 @@ function JudgeRecord_Mobile() {
     observer.observe(bottomRef.current);
 
     return () => {
-      if (bottomRef.current) {
-        observer.unobserve(bottomRef.current);
-      }
+      if (bottomRef.current) observer.unobserve(bottomRef.current);
     };
-  }, [bottomRef, fetchNextPage, hasNextPage]);
+  }, [data, page]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (page > 1) {
+      refetch(); // 🔹 페이지 증가 시 refetch 실행
+    }
+  }, [page, refetch]);
+
+  if (isLoading && page === 1) {
     return (
       <div className='w-full h-[100dvh] items-center flex'>
         <Loading />
@@ -78,23 +71,17 @@ function JudgeRecord_Mobile() {
     <div className='px-[10px] h-[100dvh]'>
       <MobileHeader headerTitle='판결 전적' />
       <div className='mobile-layout flex-grow flex flex-col items-center px-[20px] pt-[20px] mobile-scroll'>
-        {isLoading ? (
-          <div className='w-full h-full flex justify-center items-center'>
-            <Loading />
-          </div>
-        ) : myJudgeLists.pages[0]?.postList.length < 1 ? (
+        {judgeList.length === 0 ? (
           <div className='flex justify-center items-center w-full h-full'>
             <IsNotExistList type='myJudge' />
           </div>
         ) : (
-          myJudgeLists.pages.map((page) =>
-            page?.postList?.map((judgeItem: IVotedPostItem) => (
-              <MyJudgeItem_Mobile judgeItem={judgeItem} key={judgeItem.id} />
-            )),
-          )
+          judgeList.map((judgeItem) => (
+            <MyJudgeItem_Mobile judgeItem={judgeItem} key={judgeItem.id} />
+          ))
         )}
       </div>
-      {isFetchingNextPage && (
+      {isFetching && (
         <div className='w-full flex justify-center py-[10px]'>
           <Loading />
         </div>
