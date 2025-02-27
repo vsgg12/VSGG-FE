@@ -1,6 +1,6 @@
 import MoreModal from '@/components/modals/MoreModal';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon_more from '../../../../../../public/svg/Icon_more.svg';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
