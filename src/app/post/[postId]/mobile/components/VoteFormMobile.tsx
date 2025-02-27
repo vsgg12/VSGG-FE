@@ -33,7 +33,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
 
   return (
     <div className='relative flex flex-col w-full justify-around gap-[40px]'>
-      <div className='w-full ju'>
+      <div className='w-full justify-center'>
         {voteInfo.length <= 3 ? (
           <div className='flex w-full justify-around'>
             {voteInfo.map((champion, index) => (
@@ -50,7 +50,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
               </div>
             ))}
           </div>
-        ) : (
+        ) :voteInfo.length === 5 && (
           <div className='flex flex-col justify-center items-center gap-5'>
             <div className='flex w-full justify-around'>
               {voteInfo.slice(0, 3).map((champion, index) => (
