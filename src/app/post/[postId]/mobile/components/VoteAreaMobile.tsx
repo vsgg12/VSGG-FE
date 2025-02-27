@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import usePostIdStore from '../../store/usePostIdStore';
-import VoteFormMobile from './VoteFormMobile';
+import VoteForm from './VoteFormMobile';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];
@@ -19,7 +19,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
   const { postVoteResult } = usePostIdStore();
   const { postId } = useParams();
   const id: string = postId as string;
-  const { accessToken, isLogin } = useAuthStore();
+  const { accessToken, isLogin } = useAuthStore.getState();
 
   const { mutate: postVote } = useMutation({
     mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
@@ -50,7 +50,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
         post &&
         !isOwner &&
         post.postDTO.status === 'PROGRESS' && (
-          <VoteFormMobile voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
+          <VoteForm voteInfo={voteData} handleVoteSubmit={handleVoteSubmit} />
         )
       )}
     </div>

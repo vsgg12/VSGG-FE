@@ -24,6 +24,7 @@ function MobileLogoHeader() {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
+      const currentState = useAuthStore.getState();
       const newUser = {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
@@ -31,8 +32,8 @@ function MobileLogoHeader() {
       };
 
       if (
-        userInfo.nickname !== newUser.nickname ||
-        userInfo.profile_image !== newUser.profile_image
+        currentState.user?.nickname !== newUser.nickname ||
+        currentState.user?.profile_image !== newUser.profile_image
       ) {
         useAuthStore.setState({ user: newUser });
       }
@@ -56,7 +57,7 @@ function MobileLogoHeader() {
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage');
+    router.push('/myPage/mobile');
   };
 
   const handleLoginBtnClick = (): void => {

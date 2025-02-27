@@ -16,7 +16,7 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
         className='flex justify-between items-center text-xs text-[#C3C3C3] cursor-pointer font-medium'
         key={myJudgeItem.id}
         onClick={() => {
-          router.push(`/post/${myJudgeItem.id}`);
+          router.push(`/post/${myJudgeItem.id}/`);
         }}
       >
         <div className='flex gap-[10px] items-center'>

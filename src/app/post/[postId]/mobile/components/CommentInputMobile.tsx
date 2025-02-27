@@ -18,7 +18,7 @@ export default function CommentInputMobile({ targetNickname }: IPostCommentInput
   const { register } = useFormContext<{ commentContent: string }>();
   const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const { isLogin } = useAuthStore();
+  const { isLogin } = useAuthStore.getState();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ export default function PostItemMobile({
   const router = useRouter();
   const [formattedDate, setFormattedDate] = useState<string>();
   const contentsArr = useConvertHTML(post.content);
-  const { user } = useAuthStore();
+  const { user } = useAuthStore.getState();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full';
@@ -52,13 +52,13 @@ export default function PostItemMobile({
 
   return (
     <div
-      className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[25px] gap-[15px]'
+      className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[30px] gap-[15px]'
       onClick={() => {
-        router.push(`/post/${post.id}`);
+        router.push(`/post/${post.id}/mobile`);
       }}
     >
       <div className='flex w-full justify-between'>
-        <div className='flex gap-[12px]'>
+        <div className='flex gap-[8px]'>
           <img
             className='h-[32px] w-[32px] rounded-full'
             src={
@@ -68,9 +68,9 @@ export default function PostItemMobile({
             }
           />
           <div className='flex flex-col'>
-            <div className='text-[12px] text-[#333333] max-w-[170px]'>
-              {post.memberDTO.nickname}
-              <span className='ml-[8px] text-[12px] text-[#909090]'>{post.memberDTO.tier}</span>
+            <div className='flex gap-[8px]'>
+              <p className='text-[12px] text-[#333333]'>{post.memberDTO.nickname}</p>
+              <p className='text-[12px] text-[#909090]'>{post.memberDTO.tier}</p>
             </div>
             <p className='text-[12px] text-[#C8C8C8]'>{formattedDate}</p>
           </div>

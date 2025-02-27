@@ -11,7 +11,7 @@ interface IAlarmListProps {
 
 export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const router = useRouter();
-  const { accessToken } = useAuthStore();
+  const { accessToken } = useAuthStore.getState();
   const queryClient = useQueryClient();
   const [postId, setPostId] = useState<number>();
 

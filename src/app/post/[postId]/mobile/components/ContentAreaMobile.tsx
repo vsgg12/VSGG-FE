@@ -1,6 +1,6 @@
 import MoreModal from '@/components/modals/MoreModal';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Icon_more from '../../../../../../public/svg/Icon_more.svg';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -13,10 +13,11 @@ import PostDeadLineMobile from '@/app/home/mobile/component/PostDeadLineMobile';
 interface IContentArea {
   isOwner: boolean;
   post: IGetPostItemType;
+  setVoteData: Dispatch<SetStateAction<IGetInGameInfoType[]>>;
 }
 
-function ContentAreaMobile({ isOwner, post }: IContentArea) {
-  const { user } = useAuthStore();
+function ContentAreaMobile({ isOwner, setVoteData, post }: IContentArea) {
+  const { user } = useAuthStore.getState();
   const { voteResult, setPostVoteResult } = usePostIdStore();
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
@@ -50,6 +51,7 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
+      setVoteData(post.postDTO.inGameInfoList);
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
         (ingameInfo: IGetInGameInfoType, idx: number) => ({

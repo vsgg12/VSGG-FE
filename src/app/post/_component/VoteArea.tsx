@@ -19,7 +19,7 @@ function VoteArea({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteArea) {
   const { postVoteResult } = usePostIdStore();
   const { postId } = useParams();
   const id: string = postId as string;
-  const { accessToken, isLogin } = useAuthStore();
+  const { accessToken, isLogin } = useAuthStore.getState();
 
   const { mutate: postVote } = useMutation({
     mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
