@@ -18,7 +18,6 @@ export default function PostDetailMobile() {
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const {
     data: post,
@@ -53,11 +52,11 @@ export default function PostDetailMobile() {
       ) : (
         post && (
           <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] scroll'>
-            <ContentAreaMobile post={post} isOwner={isOwner} setVoteData={setVoteData} />
+            <ContentAreaMobile post={post} isOwner={isOwner} />
             <VoteAreaMobile
               isOwner={isOwner}
               post={post}
-              voteData={voteData}
+              voteData={post.postDTO.inGameInfoList}
               setIsLoginModalOpen={setIsLoginModalOpen}
             />
             <CommentAreaMobile setIsLoginModalOpen={setIsLoginModalOpen} />

@@ -13,10 +13,9 @@ import PostDeadLineMobile from '@/app/home/mobile/component/PostDeadLineMobile';
 interface IContentArea {
   isOwner: boolean;
   post: IGetPostItemType;
-  setVoteData: Dispatch<SetStateAction<IGetInGameInfoType[]>>;
 }
 
-function ContentAreaMobile({ isOwner, setVoteData, post }: IContentArea) {
+function ContentAreaMobile({ isOwner, post }: IContentArea) {
   const { user } = useAuthStore();
   const { voteResult, setPostVoteResult } = usePostIdStore();
   const [formattedDate, setFormattedDate] = useState<string>('');
@@ -51,7 +50,6 @@ function ContentAreaMobile({ isOwner, setVoteData, post }: IContentArea) {
       setFormattedDate(moment(post.postDTO.createdAt).format('YYYY-MM-DD'));
       const sanitize = DOMPurify.sanitize(post.postDTO.content);
       setSanitizedHtml(sanitize);
-      setVoteData(post.postDTO.inGameInfoList);
 
       const newPostVoteResult = post.postDTO.inGameInfoList.map(
         (ingameInfo: IGetInGameInfoType, idx: number) => ({
