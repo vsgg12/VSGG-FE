@@ -17,7 +17,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
   const router = useRouter();
   return (
     <div
-      className='flex flex-col w-full h-[135px] bg-white mb-[20px] rounded-[30px] p-[30px] gap-[10px] cursor-pointer'
+      className='flex flex-col w-full  min-h-[135px] bg-white mb-[20px] rounded-[30px] p-[25px] gap-[20px] cursor-pointer'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
@@ -37,7 +37,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
         <PostDeadLine deadLine={post.daysUntilEnd} />
       </div> */}
       <div className='flex w-full justify-between'>
-        <div className='flex gap-[8px]'>
+        <div className='flex gap-[12px]'>
           <img
             className='h-[32px] w-[32px] rounded-full'
             src={
@@ -47,9 +47,9 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
             }
           />
           <div className='flex flex-col'>
-            <div className='flex gap-[8px]'>
-              <p className='text-[12px] text-[#333333]'>{post.memberDTO.nickname}</p>
-              <p className='text-[12px] text-[#909090]'>{post.memberDTO.tier}</p>
+            <div className='text-[12px] text-[#333333] max-w-[170px]'>
+              {post.memberDTO.nickname}
+              <span className='ml-[8px] text-[12px] text-[#909090]'>{post.memberDTO.tier}</span>
             </div>
             <p className='text-[12px] text-[#C8C8C8]'>{formattedDate}</p>
           </div>
