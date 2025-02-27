@@ -67,7 +67,7 @@ export default function HomeMobile() {
 
   return (
     <div className='w-full h-[100dvh]'>
-      <MainHeader page='메인' />
+      <MainHeader />
       <div className='mobile-layout flex flex-col items-center px-[20px] py-[10px] mobile-scroll'>
         <SearchMobile handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex flex-col justify-center relative w-full items-center mt-[70px]'>
