@@ -8,7 +8,7 @@ import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getAlarms from '@/api/getAlarms';
 
-function MainHeader({ page }: { page: '메인' | '게시글' }) {
+function MainHeader() {
   const router = useRouter();
   const { accessToken, user: userInfo, isLogin } = useAuthStore.getState();
   const [noReadAlarms, setNoReadAlarms] = useState<number>(0);
@@ -21,7 +21,6 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
 
   useEffect(() => {
     if (userProfileData && userInfo) {
-      const currentState = useAuthStore.getState();
       const newUser = {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
@@ -29,15 +28,15 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
       };
 
       if (
-        currentState.user?.nickname !== newUser.nickname ||
-        currentState.user?.profile_image !== newUser.profile_image
+        userInfo.nickname !== newUser.nickname ||
+        userInfo.profile_image !== newUser.profile_image
       ) {
         useAuthStore.setState({ user: newUser });
       }
     }
   }, [userProfileData, userInfo]);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
     enabled: isLogin,
@@ -54,7 +53,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage/mobile');
+    router.push('/myPage');
   };
 
   const handleLoginBtnClick = (): void => {
@@ -63,8 +62,7 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
 
   return (
     <div className='flex gap-[10px] py-[20px] h-[50px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
-      {page === '메인'
-        ? isLogin && (
+      {isLogin ?(
             <>
               <button
                 className={`relative group/alarm hd-items cursor-pointer `}
@@ -110,16 +108,13 @@ function MainHeader({ page }: { page: '메인' | '게시글' }) {
               </button>
             </>
           )
-        : !isLoading &&
-          !isLogin && (
-            <>
-              <button
-                className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
-                onClick={handleLoginBtnClick}
-              >
-                로그인
-              </button>
-            </>
+        : (
+            <button
+              className='rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+              onClick={handleLoginBtnClick}
+            >
+              로그인
+            </button>
           )}
     </div>
   );

@@ -9,7 +9,7 @@ export default function LogoMobile({ size }: { size: 'default' | 'small' }) {
     <div
       className={`${size === 'default' ? 'text-[32px]' : 'text-[25px]'} font-['SBAggroB']  text-[#8A1F21] cursor-pointer`}
       onClick={() => {
-        router.push('/home/mobile');
+        router.push('/home');
         setKeyword('');
       }}
     >

@@ -1,11 +1,13 @@
 import React from 'react';
 import VoteStatusCircle from '../../_component/VoteStatusCircle';
 import formatDate from '@/utils/formatDate';
+import { useRouter } from 'next/navigation';
 
 function MyJudgeItem_Mobile({ judgeItem }: { judgeItem: IVotedPostItem }) {
-  // const router = useRouter();
+  const router = useRouter();
   return (
-    <div className='flex flex-col w-full gap-[4px]'>
+    <div className='flex flex-col w-full gap-[4px] cursor-pointer'
+    onClick={() => router.push(`/post/${judgeItem.id}`)}>
       <div className='flex gap-[12px]'>
         <div className='font-medium text-[#333333] text-[12px]'>{judgeItem.authorNickname}</div>
         <div className='text-[12px] font-medium text-[#909090]'>{judgeItem.authorTier}</div>
