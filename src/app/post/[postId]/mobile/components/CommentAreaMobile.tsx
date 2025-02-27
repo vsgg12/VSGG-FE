@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
 import getComments from '@/api/getComments';
@@ -20,18 +20,15 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   const { postId } = useParams();
   const id: string = postId as string;
   const queryClient = useQueryClient();
-  const { accessToken, isLogin, user } = useAuthStore();
+  const { accessToken, isLogin, user } = useAuthStore.getState();
   const commentMethods = useForm<{ commentContent: string }>();
   const [showReply, setShowReply] = useState<null | number>(null);
   const { isCommentInProgress, setIsCommentInProgress } = useCommentStore();
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
-  const replyRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
-  const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
     id: null,
     nickname: '',
   });
-  const [newCommentId, setNewCommentId] = useState<number | null>(null);
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -50,31 +47,12 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
     onError: (error) => console.error(error.message),
   });
 
-  useEffect(() => {
-    if (newCommentId) {
-      if (targetComment.id) {
-        handleReplyScroll(newCommentId);
-        setNewCommentId(null);
-      } else {
-        handleCommentScroll(newCommentId);
-        setNewCommentId(null);
-      }
-      setTargetComment({ id: null, nickname: '' });
-    }
-  }, [newCommentId, targetComment.id]);
-
-  const handleReplyScroll = (id: number) => {
-    if (replyRef.current[id]) {
-      replyRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(replyRef.current);
-    }
+  const handleOpenCommentMoreModal = (commentId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
   };
 
-  const handleCommentScroll = (id: number) => {
-    if (commentRef.current[id]) {
-      commentRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(commentRef.current);
-    }
+  const handleOpenReplyMoreModal = (replyId: number) => {
+    setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
   };
 
   const handleReply = (targetNickname: string, targetId: number, parentId: number) => {
@@ -95,14 +73,6 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
       setShowReply(commentId);
       setIsCommentMoreModalOpen(null);
     }
-  };
-
-  const handleOpenCommentMoreModal = (commentId: number) => {
-    setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
-  };
-
-  const handleOpenReplyMoreModal = (replyId: number) => {
-    setIsCommentMoreModalOpen(isCommentMoreModalOpen === replyId ? null : replyId);
   };
 
   const onCommentSubmit = (data: { commentContent: string }) => {

@@ -11,38 +11,39 @@ import VoteAreaMobile from './components/VoteAreaMobile';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
+import { useMobileVersionStore } from '@/store/useMobileVersionStore';
 
-export default function PostDetailMobile() {
+export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
   const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const {
-    data: post,
-    isLoading,
-    error,
-  } = useQuery<IGetPostItemType>({
+  const { isMobileVersion } = useMobileVersionStore.getState();
+  const { data: post, isLoading } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
 
   useEffect(() => {
-    if (error?.message === '존재하지 않는 게시글 입니다.') {
-      alert(error.message);
-      router.replace('/notFound');
+    if (isMobileVersion === false) {
+      router.replace(`/post/${post?.postDTO.id}`);
     }
-  }, [error]);
-
+  }, []);
 
   useEffect(() => {
-    if (post && user) {
-      if (post.postDTO.memberDTO.nickname === user.nickname) {
-        setIsOwner(true);
-      }
+    if (post?.postDTO.memberDTO.nickname === user?.nickname) {
+      setIsOwner(true);
     }
   }, [post]);
+
+  useEffect(() => {
+    if (post?.postDTO.isDeleted === 'TRUE') {
+      router.push('/notFound');
+    }
+  }, [post, router]);
 
   return (
     <div className='w-full h-[100dvh] overflow-scroll'>
@@ -52,11 +53,11 @@ export default function PostDetailMobile() {
       ) : (
         post && (
           <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] scroll'>
-            <ContentAreaMobile post={post} isOwner={isOwner} />
+            <ContentAreaMobile post={post} isOwner={isOwner} setVoteData={setVoteData} />
             <VoteAreaMobile
               isOwner={isOwner}
               post={post}
-              voteData={post.postDTO.inGameInfoList}
+              voteData={voteData}
               setIsLoginModalOpen={setIsLoginModalOpen}
             />
             <CommentAreaMobile setIsLoginModalOpen={setIsLoginModalOpen} />

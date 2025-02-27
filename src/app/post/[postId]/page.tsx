@@ -13,14 +13,11 @@ import CommentArea from '../_component/CommentArea';
 import ContentArea from '../_component/ContentArea';
 import NavigationArea from '../_component/NavigationArea';
 import VoteArea from '../_component/VoteArea';
-import { useMediaQuery } from 'react-responsive';
-import PostDetailMobile from './mobile/PostDetailMobile';
 
 export default function PostRead() {
   const { postId } = useParams();
   const id: string = postId as string;
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  const { accessToken, isLogin, user } = useAuthStore();
+  const { accessToken, isLogin, user } = useAuthStore.getState();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
@@ -38,7 +35,7 @@ export default function PostRead() {
   useEffect(() => {
     if (error?.message === '존재하지 않는 게시글 입니다.') {
       alert(error.message);
-      router.replace('/notFound');
+      router.replace('/');
     }
   }, [error]);
 
@@ -50,44 +47,44 @@ export default function PostRead() {
     }
   }, [post]);
 
+  useEffect(() => {
+    if (post?.postDTO.isDeleted === 'TRUE') {
+      router.push('/notFound');
+    }
+  }, [post, router]);
+
   return (
-    <>
-      {isMobile ? (
-        <PostDetailMobile />
+    <div className='min-w-[1400px] flex-col items-center'>
+      <Header />
+      <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
+        <Logo />
+      </div>
+      {isLoading ? (
+        <Loading />
       ) : (
-        <div className='min-w-[1400px] flex-col items-center'>
-          <Header />
-          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
-            <Logo />
+        post && (
+          <div className='flex flex-col items-center justify-center px-[50px]'>
+            <div>
+              <NavigationArea />
+            </div>
+            <div className='flex flex-row gap-[30px] justify-center'>
+              <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
+              <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
+            </div>
+            <VoteArea
+              isOwner={isOwner}
+              post={post}
+              voteData={voteData}
+              setIsLoginModalOpen={setIsLoginModalOpen}
+            />
           </div>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            post && (
-              <div className='flex flex-col items-center justify-center px-[50px]'>
-                <div>
-                  <NavigationArea />
-                </div>
-                <div className='flex flex-row gap-[30px] justify-center'>
-                  <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
-                  <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
-                </div>
-                <VoteArea
-                  isOwner={isOwner}
-                  post={post}
-                  voteData={voteData}
-                  setIsLoginModalOpen={setIsLoginModalOpen}
-                />
-              </div>
-            )
-          )}
-          {isLoginModalOpen && (
-            <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <AlertLoginModal />
-            </ModalLayout>
-          )}
-        </div>
-      )}{' '}
-    </>
+        )
+      )}
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
+      )}
+    </div>
   );
 }

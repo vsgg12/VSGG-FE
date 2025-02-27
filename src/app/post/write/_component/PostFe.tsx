@@ -118,7 +118,7 @@ const tiers = [
 ];
 
 export default function PostForm() {
-  const { isLogin, accessToken } = useAuthStore();
+  const { isLogin, accessToken } = useAuthStore.getState();
   const router = useRouter();
   const [nowDate] = useState(moment().format('YYYY / MM / DD'));
   const [selectedDate, setSelectedDate] = useState<string | null>(
