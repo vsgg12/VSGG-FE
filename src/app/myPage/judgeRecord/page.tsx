@@ -14,13 +14,11 @@ import IsNotExistList from '../_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
 import getAlarms from '@/api/getAlarms';
-import { useRouter } from 'next/navigation';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const router = useRouter();
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],

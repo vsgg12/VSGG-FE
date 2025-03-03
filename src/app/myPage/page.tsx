@@ -19,7 +19,7 @@ import getMyJudgeList from '@/api/getMyJudgeList';
 import MyJudgeList from './_component/MyJudgeList';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import IsNotExistList from './_component/IsNotExistList';
-import { useMediaQuery } from 'react-responsive';;
+import { useMediaQuery } from 'react-responsive';
 import MyPage_Mobile from './mobile/MyPageMobile';
 import getAlarms from '@/api/getAlarms';
 

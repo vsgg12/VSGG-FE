@@ -11,7 +11,6 @@ import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
 import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
-import { useRouter } from 'next/navigation';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import getAlarms from '@/api/getAlarms';
 
@@ -19,7 +18,6 @@ export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-  const router = useRouter();
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],

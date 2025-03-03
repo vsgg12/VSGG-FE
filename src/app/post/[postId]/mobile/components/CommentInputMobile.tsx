@@ -1,7 +1,6 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
 import AlertLoginModal_Mobile from '@/components/mobile/modals/AlertLoginModalMobile';
 
