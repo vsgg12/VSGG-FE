@@ -20,6 +20,7 @@ function MyPage_Mobile() {
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin,
   });
 
   useEffect(() => {

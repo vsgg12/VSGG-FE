@@ -29,7 +29,7 @@ export default function HomeVoted({
   return (
     <>
       <div className='flex h-full rounded-[1.875em] items-center'>
-        <div className='flex items-center justify-center p-[1rem] text-[0.625em] gap-[90px]'>
+        <div className={`flex items-center justify-center p-[1rem] text-[0.625em] ${isNoOneVoted ? "gap-[90px]" : "gap-[50px]"}`}>
           <div className='flex flex-col'>
             {voteInfos.map((champion, index) => {
               // voteColors 배열의 길이를 넘지 않는지 확인

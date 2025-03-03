@@ -13,22 +13,31 @@ import MyJudgeList from '../_component/MyJudgeList';
 import IsNotExistList from '../_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
+import getAlarms from '@/api/getAlarms';
+import { useRouter } from 'next/navigation';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const router = useRouter();
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
-    enabled: !isMobile,
+    enabled: isLogin && !isMobile,
+  });
+
+  const { data: alarmData } = useQuery({
+    queryKey: ['alarms'],
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin && !isMobile,
   });
 
   const { data: myJudgeLists } = useQuery({
     queryKey: ['MY_JUDGE_LISTS', page],
     queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
-    enabled: !isMobile,
+    enabled: isLogin && !isMobile,
   });
 
   const handlePageChange = (page: number) => {
@@ -41,7 +50,7 @@ export default function JudgeRecord() {
         <JudgeRecord_Mobile />
       ) : (
         <div className='min-w-[1480px]'>
-          <Header />
+          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

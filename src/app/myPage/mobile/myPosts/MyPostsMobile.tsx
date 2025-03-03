@@ -31,6 +31,7 @@ function MyPost_Mobile() {
     queryKey: ['MY_POST_LISTS', page],
     queryFn: () => getMyPostLists({ token: accessToken, size: '10', page: String(page) }),
     staleTime: 1000 * 60 * 5,
+    enabled: isLogin,
   });
 
   useEffect(() => {

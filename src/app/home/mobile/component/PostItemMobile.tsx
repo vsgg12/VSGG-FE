@@ -85,27 +85,35 @@ export default function PostItemMobile({
           </span>
         </p>
       </div>
-      <div className='flex flex-col'>
+      <div className='flex flex-col relative'>
+        {/* isImageClick이 true면 무조건 비디오를 보여줌 */}
         {isImageClick ? (
-          <video muted controls autoPlay className={videoStyle}>
-            <source src={post.video.url} type='video/webm' />
-          </video>
-        ) : post.thumbnailURL ? (
-          <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
-        ) : post.video.type === 'FILE' ? (
-          <video muted controls className={videoStyle}>
+          <video muted controls autoPlay playsInline className={`${videoStyle} block visible`}>
             <source src={post.video.url} type='video/webm' />
           </video>
         ) : (
-          //외부영상 첨부할 때 사용
-          <iframe
-            className={videoStyle}
-            src={post.video.url}
-            title={post.title}
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-            referrerPolicy='strict-origin-when-cross-origin'
-            allowFullScreen
-          ></iframe>
+          // isImageClick이 false일 때만 썸네일 or 비디오 판단
+          <>
+            {post.thumbnailURL ? (
+              // 썸네일이 있으면 클릭 가능하도록 렌더링
+              <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
+            ) : post.video.type === 'FILE' ? (
+              // FILE 타입이면 자동 재생 없이 비디오 렌더링
+              <video muted controls className={videoStyle}>
+                <source src={post.video.url} type='video/webm' />
+              </video>
+            ) : (
+              // 외부 영상의 경우 iframe으로 렌더링
+              <iframe
+                className={videoStyle}
+                src={post.video.url}
+                title={post.title}
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                referrerPolicy='strict-origin-when-cross-origin'
+                allowFullScreen
+              ></iframe>
+            )}
+          </>
         )}
         <div className='flex flex-col w-full gap-[20px]'>
           <div className='line-clamp-[8] h-[70px] overflow-hidden text-ellipsis decoration-solid'>

@@ -19,6 +19,8 @@ import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
+import getMyProfileDTO from '@/api/getMyProfileDTO';
+import getAlarms from '@/api/getAlarms';
 
 export default function Home() {
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
-  
+
   const {
     data: postData,
     isLoading,
@@ -45,6 +47,18 @@ export default function Home() {
       }
       throw new Error('Invalid activeButton value');
     },
+  });
+
+  const { data: userProfileData } = useQuery({
+    queryKey: ['MY_PROFILE_INFO'],
+    queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin,
+  });
+
+  const { data: alarmData } = useQuery({
+    queryKey: ['alarms'],
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin,
   });
 
   useEffect(() => {
@@ -139,12 +153,12 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className='min-w-[1400px] '>
-          <Header />
+        <div className='w-screen'>
+          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <main className='px-[50px]'>
             <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
             <section className='flex flex-col justify-center relative w-full items-center'>
-              <div className='min-w-[1400px] px-[50px] mb-[40px] flex flex-row items-center justify-between'>
+              <div className='w-full mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
                 <NewPopularToggleButton
                   activeButton={activeButton}
                   setActiveButton={setActiveButton}
@@ -154,12 +168,12 @@ export default function Home() {
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className='flex flex-col flex-grow items-center justify-center'>
+                <div className='flex min-w-[800px] w-full flex-col flex-grow items-center justify-center'>
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (
                 visiblePosts.map((post, idx) => (
-                  <div key={idx} className='min-w-[1205px]'>
+                  <div key={idx} className='min-w-[800px] w-full'>
                     {isListed ? (
                       <ListedPostItem post={post} />
                     ) : (

@@ -119,7 +119,15 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
           <div className='flex flex-col'>
             <video
               controls
-              className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full'
+              playsInline
+              key={post.postDTO.video.url}
+              className='block visible p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full'
+              onClick={(e) => {
+                const video = e.currentTarget;
+                if (video.paused) {
+                  video.play();
+                }
+              }}
             >
               <source src={post.postDTO.video.url} type='video/webm' />
             </video>
