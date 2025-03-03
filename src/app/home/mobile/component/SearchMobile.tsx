@@ -2,6 +2,8 @@ import { GoSearch } from 'react-icons/go';
 import useSearchStore from '../../store/useSearchStore';
 import { useState } from 'react';
 import LogoMobile from '@/components/mobile/LogoMobile';
+import Image from 'next/image';
+import BannerMobile from '../../../../../public/svg/banner/bannerMobile.svg';
 
 export default function SearchMobile({
   handleSearch,
@@ -19,6 +21,10 @@ export default function SearchMobile({
     setSearchKeyword(e.target.value);
   };
 
+  const handleFeedbackBannerClick = () => {
+    
+  }
+
   return (
     <div className='w-[60%] mt-[20px] flex flex-col items-center justify-center gap-[20px]'>
       <LogoMobile size='default' />
@@ -33,6 +39,16 @@ export default function SearchMobile({
         <button onClick={handleSearch}>
           <GoSearch className='absolute right-5 top-[8px]  text-[#8A1F21]' />
         </button>
+      </div>
+      <div className="w-full">
+        <Image
+          src={BannerMobile}
+          alt='feedback banner'
+          width={150.8}
+          height={59.47}
+          className='flex justify-self-end cursor-pointer'
+          onClick={handleFeedbackBannerClick}
+        />
       </div>
     </div>
   );

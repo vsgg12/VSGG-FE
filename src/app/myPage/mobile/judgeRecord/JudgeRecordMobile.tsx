@@ -25,7 +25,8 @@ function JudgeRecord_Mobile() {
 
   const { data, refetch, isLoading, isFetching } = useQuery({
     queryKey: ['MY_JUDGE_LISTS', page],
-    queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) })
+    queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
+    enabled: isLogin
   });
 
   useEffect(() => {

@@ -11,15 +11,30 @@ import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
 import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
+import getMyProfileDTO from '@/api/getMyProfileDTO';
+import getAlarms from '@/api/getAlarms';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  const { data: userProfileData } = useQuery({
+    queryKey: ['MY_PROFILE_INFO'],
+    queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin && !isMobile,
+  });
+
+  const { data: alarmData } = useQuery({
+    queryKey: ['alarms'],
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin && !isMobile,
+  });
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS', page],
     queryFn: () => getMyPostLists({ token: accessToken, size: '10', page: String(page) }),
+    enabled: isLogin && !isMobile,
   });
 
   const handlePageChange = (page: number) => {
@@ -32,7 +47,7 @@ export default function MyPosts() {
         <MyPost_Mobile />
       ) : (
         <div className='min-w-[1350px]'>
-          <Header />
+          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

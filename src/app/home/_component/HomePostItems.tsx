@@ -93,13 +93,13 @@ export default function HomePostItems({
                   muted
                   controls
                   autoPlay
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
                 >
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : post.thumbnailURL ? (
                 <img
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
                   src={post.thumbnailURL}
                   onClick={handleImageClick}
                 />
@@ -107,14 +107,14 @@ export default function HomePostItems({
                 <video
                   muted
                   controls
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
                 >
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : (
                 //외부영상 첨부할 때 사용
                 <iframe
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-full w-[50%]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
                   src={post.video.url}
                   title={post.title}
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'

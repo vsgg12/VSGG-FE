@@ -2,6 +2,8 @@ import { GoSearch } from 'react-icons/go';
 import Logo from '../../../components/Logo';
 import useSearchStore from '../store/useSearchStore';
 import { useState } from 'react';
+import Image from 'next/image';
+import Banner from '../../../../public/svg/banner/banner.svg';
 
 export default function Search({
   handleSearch,
@@ -19,8 +21,10 @@ export default function Search({
     setSearchKeyword(e.target.value);
   };
 
+  const handleFeedbackBannerClick = () => {};
+
   return (
-    <>
+    <div className='flex w-full justify-center relative'>
       <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
         <Logo />
         <div className='relative flex flex-row'>
@@ -36,6 +40,14 @@ export default function Search({
           </button>
         </div>
       </div>
-    </>
+      <Image
+        src={Banner}
+        alt='feedback banner'
+        width={284}
+        height={112}
+        className='absolute right-0 top-[50%] translate-y-[-50%] cursor-pointer'
+        onClick={handleFeedbackBannerClick}
+      />
+    </div>
   );
 }
