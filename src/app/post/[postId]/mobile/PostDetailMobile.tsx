@@ -9,8 +9,8 @@ import ContentAreaMobile from './components/ContentAreaMobile';
 import CommentAreaMobile from './components/CommentAreaMobile';
 import VoteAreaMobile from './components/VoteAreaMobile';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
+import AlertLoginModal_Mobile from '@/components/mobile/modals/AlertLoginModalMobile';
 
 export default function PostDetailMobile() {
   const { postId } = useParams();
@@ -34,7 +34,6 @@ export default function PostDetailMobile() {
       router.replace('/notFound');
     }
   }, [error]);
-
 
   useEffect(() => {
     if (post && user) {
@@ -65,7 +64,7 @@ export default function PostDetailMobile() {
       )}
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
+          <AlertLoginModal_Mobile />
         </ModalLayout>
       )}
     </div>
