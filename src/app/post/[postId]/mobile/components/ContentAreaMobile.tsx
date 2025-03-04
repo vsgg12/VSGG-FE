@@ -118,9 +118,11 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
           </div>
           <div className='flex flex-col'>
             <video
+              muted
               controls
               playsInline
-              key={post.postDTO.video.url}
+              poster={post.postDTO.thumbnailURL}
+              // key={post.postDTO.video.url}
               className='block visible p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full'
               onClick={(e) => {
                 const video = e.currentTarget;
@@ -129,6 +131,7 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
                 }
               }}
             >
+              <source src={post.postDTO.video.url} type='video/mp4' />
               <source src={post.postDTO.video.url} type='video/webm' />
             </video>
             <div className='flex flex-col w-full gap-[20px]'>

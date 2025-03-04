@@ -23,7 +23,7 @@ export default function PostItemMobile({
   const { user } = useAuthStore();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
-  const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full';
+  const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full block visible';
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY.MM.DD. HH:mm'));
@@ -88,7 +88,8 @@ export default function PostItemMobile({
       <div className='flex flex-col relative'>
         {/* isImageClick이 true면 무조건 비디오를 보여줌 */}
         {isImageClick ? (
-          <video muted controls autoPlay playsInline className={`${videoStyle} block visible`}>
+          <video muted controls playsInline className={videoStyle} poster={post.thumbnailURL}>
+            <source src={post.video.url} type='video/mp4' />
             <source src={post.video.url} type='video/webm' />
           </video>
         ) : (
@@ -99,8 +100,9 @@ export default function PostItemMobile({
               <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
             ) : post.video.type === 'FILE' ? (
               // FILE 타입이면 자동 재생 없이 비디오 렌더링
-              <video muted controls className={videoStyle}>
+              <video muted playsInline controls className={videoStyle} poster={post.thumbnailURL}>
                 <source src={post.video.url} type='video/webm' />
+                <source src={post.video.url} type='video/mp4' />
               </video>
             ) : (
               // 외부 영상의 경우 iframe으로 렌더링
