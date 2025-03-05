@@ -93,13 +93,15 @@ export default function HomePostItems({
                   muted
                   controls
                   autoPlay
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
+                  poster={post.thumbnailURL}
+                  className='block visible p-content-rounded p-content-s-mb p-content-mr h-fit aspect-video w-[50%]'
                 >
+                  <source src={post.video.url} type='video/mp4' />
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : post.thumbnailURL ? (
                 <img
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
+                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video h-fit w-[50%]'
                   src={post.thumbnailURL}
                   onClick={handleImageClick}
                 />
@@ -107,8 +109,11 @@ export default function HomePostItems({
                 <video
                   muted
                   controls
-                  className='p-content-rounded p-content-s-mb p-content-mr aspect-video w-[50%]'
+                  playsInline
+                  poster={post.thumbnailURL}
+                  className='block visible p-content-rounded p-content-s-mb p-content-mr h-fit aspect-video w-[50%]'
                 >
+                  <source src={post.video.url} type='video/mp4' />
                   <source src={post.video.url} type='video/webm' />
                 </video>
               ) : (
@@ -131,7 +136,9 @@ export default function HomePostItems({
                   })}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
+                  {post.isVote ||
+                  user?.email === post.memberDTO.email ||
+                  post.status === 'FINISHED' ? (
                     <HomeVoted voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />

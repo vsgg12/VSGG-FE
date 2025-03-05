@@ -119,9 +119,13 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
             </div>
           </div>
           <video
+            muted
             controls
-            className='p-content-s-mb h-fit w-full max-h-[25rem] overflow-hidden rounded-[30px]'
+            playsInline
+            poster={post.postDTO.thumbnailURL}
+            className='p-content-s-mb h-fit w-full rounded-[30px] block visible'
           >
+            <source src={post.postDTO.video.url} type='video/mp4' />
             <source src={post.postDTO.video.url} type='video/webm' />
           </video>
           <div className='w-full'>
