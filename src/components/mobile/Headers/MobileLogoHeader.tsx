@@ -84,9 +84,7 @@ function MobileLogoHeader() {
         <div className='flex gap-[8px]'>
           <button
             className={`relative group/alarm hd-items cursor-pointer `}
-            onClick={() => {
-              handleAlarmBtnClick;
-            }}
+            onClick={handleAlarmBtnClick}
           >
             <IoMdNotificationsOutline />
             <span
