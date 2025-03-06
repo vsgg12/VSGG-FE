@@ -4,6 +4,7 @@ import useSearchStore from '../store/useSearchStore';
 import { useState } from 'react';
 import Image from 'next/image';
 import Banner from '../../../../public/svg/banner/banner.svg';
+import { useRouter } from 'next/navigation';
 
 export default function Search({
   handleSearch,
@@ -14,6 +15,7 @@ export default function Search({
 }) {
   const { setKeyword } = useSearchStore();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const router = useRouter();
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedKeyword = e.target.value.trim();
@@ -21,7 +23,9 @@ export default function Search({
     setSearchKeyword(e.target.value);
   };
 
-  const handleFeedbackBannerClick = () => {};
+  const handleFeedbackBannerClick = () => {
+    router.push('https://forms.gle/iszzzg32YAeSLJPq9');
+  };
 
   return (
     <div className='flex w-full justify-center relative'>
