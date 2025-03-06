@@ -80,9 +80,9 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
                 }
               />
               <div className='flex flex-col'>
-                <div className='flex gap-[8px]'>
-                  <p className='text-[12px] text-[#333333]'>{post.postDTO.memberDTO.nickname}</p>
-                  <p className='text-[12px] text-[#909090]'>{post.postDTO.memberDTO.tier}</p>
+                <div className='text-[12px] text-[#333333] max-w-[170px]'>
+                  {post.postDTO.memberDTO.nickname}
+                  <span className='ml-[8px] text-[12px] text-[#909090]'>{post.postDTO.memberDTO.tier}</span>
                 </div>
                 <p className='text-[12px] text-[#C8C8C8]'>{formattedDate}</p>
               </div>
