@@ -130,7 +130,7 @@ export default function PostItemMobile({
             {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
               <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
             ) : (
-              <HomeNotVotedMobile voteInfos={voteInfos} />
+              <HomeNotVotedMobile />
             )}
           </div>
         </div>
