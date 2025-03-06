@@ -95,6 +95,7 @@ export default function HomePostItems({
                   autoPlay
                   poster={post.thumbnailURL}
                   className='block visible p-content-rounded p-content-s-mb p-content-mr h-fit aspect-video w-[50%]'
+                  onClick={(e) => e.stopPropagation}
                 >
                   <source src={post.video.url} type='video/mp4' />
                   <source src={post.video.url} type='video/webm' />

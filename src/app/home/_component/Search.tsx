@@ -45,7 +45,7 @@ export default function Search({
         alt='feedback banner'
         width={284}
         height={112}
-        className='absolute right-0 top-[50%] translate-y-[-50%] cursor-pointer'
+        className='absolute right-0 top-[20%] translate-y-[-50%] cursor-pointer'
         onClick={handleFeedbackBannerClick}
       />
     </div>

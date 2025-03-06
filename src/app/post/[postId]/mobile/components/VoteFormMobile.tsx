@@ -50,23 +50,25 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
               </div>
             ))}
           </div>
-        ) :voteInfo.length === 5 && (
-          <div className='flex flex-col justify-center items-center gap-5'>
-            <div className='flex w-full justify-around'>
-              {voteInfo.slice(0, 3).map((champion, index) => (
-                <div key={index}>
-                  <VoteChampionItem index={index} champion={champion} />
-                </div>
-              ))}
+        ) : (
+          voteInfo.length === 5 && (
+            <div className='flex flex-col justify-center items-center gap-5'>
+              <div className='flex w-full justify-around'>
+                {voteInfo.slice(0, 3).map((champion, index) => (
+                  <div key={index}>
+                    <VoteChampionItem index={index} champion={champion} />
+                  </div>
+                ))}
+              </div>
+              <div className='flex w-full px-[50px] justify-around'>
+                {voteInfo.slice(3, 5).map((champion, index) => (
+                  <div key={index}>
+                    <VoteChampionItem index={index + 3} champion={champion} />
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className='flex w-full px-[50px] justify-around'>
-              {voteInfo.slice(3, 5).map((champion, index) => (
-                <div key={index}>
-                  <VoteChampionItem index={index + 3} champion={champion} />
-                </div>
-              ))}
-            </div>
-          </div>
+          )
         )}
       </div>
       <div className='flex flex-col items-center '>
