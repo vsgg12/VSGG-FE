@@ -88,7 +88,9 @@ export default function PostItemMobile({
       <div className='flex flex-col relative'>
         {/* isImageClick이 true면 무조건 비디오를 보여줌 */}
         {isImageClick ? (
-          <video muted controls playsInline className={videoStyle} poster={post.thumbnailURL} onClick={(e) => e.stopPropagation}>
+          <video muted controls playsInline className={videoStyle} poster={post.thumbnailURL} onClick={(e) => {
+    e.stopPropagation()
+  }}>
             <source src={post.video.url} type='video/mp4' />
             <source src={post.video.url} type='video/webm' />
           </video>
@@ -106,7 +108,9 @@ export default function PostItemMobile({
                 controls
                 className={videoStyle}
                 poster={post.thumbnailURL}
-                onClick={(e) => e.stopPropagation}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
               >
                 <source src={post.video.url} type='video/webm' />
                 <source src={post.video.url} type='video/mp4' />
