@@ -4,6 +4,7 @@ import { useState } from 'react';
 import LogoMobile from '@/components/mobile/LogoMobile';
 import Image from 'next/image';
 import BannerMobile from '../../../../../public/svg/banner/bannerMobile.svg';
+import { useRouter } from 'next/navigation';
 
 export default function SearchMobile({
   handleSearch,
@@ -14,6 +15,7 @@ export default function SearchMobile({
 }) {
   const { setKeyword } = useSearchStore();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const router = useRouter();
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedKeyword = e.target.value.trim();
@@ -22,8 +24,8 @@ export default function SearchMobile({
   };
 
   const handleFeedbackBannerClick = () => {
-    
-  }
+    router.push('https://forms.gle/iszzzg32YAeSLJPq9');
+  };
 
   return (
     <div className='w-[60%] mt-[20px] flex flex-col items-center justify-center gap-[20px]'>
@@ -40,7 +42,7 @@ export default function SearchMobile({
           <GoSearch className='absolute right-5 top-[8px]  text-[#8A1F21]' />
         </button>
       </div>
-      <div className="w-full">
+      <div className='w-full'>
         <Image
           src={BannerMobile}
           alt='feedback banner'
