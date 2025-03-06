@@ -100,7 +100,14 @@ export default function PostItemMobile({
               <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
             ) : post.video.type === 'FILE' ? (
               // FILE 타입이면 자동 재생 없이 비디오 렌더링
-              <video muted playsInline controls className={videoStyle} poster={post.thumbnailURL}>
+              <video
+                muted
+                playsInline
+                controls
+                className={videoStyle}
+                poster={post.thumbnailURL}
+                onClick={(e) => e.stopPropagation}
+              >
                 <source src={post.video.url} type='video/webm' />
                 <source src={post.video.url} type='video/mp4' />
               </video>
