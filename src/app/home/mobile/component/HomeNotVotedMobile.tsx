@@ -1,11 +1,8 @@
-import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
-import DoughnutChartMobile from './DoughnutChartMobile';
-
-export default function HomeNotVotedMobile({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
+export default function HomeNotVotedMobile() {
   return (
     <div className='flex w-full h-full items-center rounded-[10px] justify-center bg-gradient-to-b from-[#D9D9D9]/30 to-[#FFFFFF]/30'>
-      <PostVotingChampList voteInfos={voteInfos} />
-      <DoughnutChartMobile voteInfos={voteInfos} size='home' />
+      {/* <PostVotingChampList voteInfos={voteInfos} />
+      <DoughnutChartMobile voteInfos={voteInfos} size='home' /> */}
       <div
         className='flex min-w-[261px] h-[120px] flex-col items-center justify-center rounded-[10px] bg-[#ffffff] p-2 shadow-md'
         style={{
