@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 interface ICommentProps {
   comment: IGetCommentItemType;
   targetComment?: {
@@ -9,6 +11,15 @@ interface ICommentProps {
 
 export default function CommentMobile({ comment, targetComment, handleReply }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
+  const [nickname, setNickname] = useState<string>('');
+
+  useEffect(() => {
+    if (comment.member.nickname.length > 15) {
+      setNickname(comment.member.nickname.slice(0, 15) + '...');
+    } else {
+      setNickname(comment.member.nickname);
+    }
+  }, []);
 
   const ONE_MINUTE = 60000;
   const ONE_HOUR = 3600000;
@@ -34,7 +45,7 @@ export default function CommentMobile({ comment, targetComment, handleReply }: I
     <div>
       <div className='flex flex-row relative font-medium items-center mb-[5px]'>
         <p className='mr-[5px] text-[14px] text-[#333333] whitespace-nowrap font-semibold'>
-          {comment.member.nickname}
+          {nickname}
         </p>
         <p className='text-[14px] text-[#909090] min-w-fit'>{comment.member.tier}</p>
         <p className='text-[12px] text-[#C8C8C8] ml-2 min-w-fit'>
