@@ -92,7 +92,7 @@ export default function VoteFormMobile({ voteInfo, handleVoteSubmit }: IVoteForm
           </div>
         </div>
       </div>
-      <div className='flex flex-col justify-end'>
+      <div className='flex flex-col justify-self-end mt-[20px]'>
         <button
           className='h-[30px] w-[80px] rounded-full bg-[#8A1F21] text-[15px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
           onClick={handleVoteSubmit}
