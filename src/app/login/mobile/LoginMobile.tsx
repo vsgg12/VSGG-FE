@@ -36,7 +36,14 @@ export default function Login_Mobile() {
       ) : (
         <>
           <div className="mb-[131px] mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21]">
-            <div>VS.GG</div>
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                router.push('/');
+              }}
+            >
+              VS.GG
+            </div>
           </div>
           <div onClick={NaverLogin} className='cursor-pointer'>
             <div className='flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px]'>

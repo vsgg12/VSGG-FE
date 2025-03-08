@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import VoteResult from './VoteResultMobile';
+import VoteResultMobile from './VoteResultMobile';
 import PostVote from '@/api/postVote';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -41,7 +41,7 @@ function VoteAreaMobile({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteA
   return (
     <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col p-[30px] gap-[15px]'>
       {(voteData && isOwner) || post?.postDTO.isVote || post?.postDTO.status === 'FINISHED' ? (
-        <VoteResult
+        <VoteResultMobile
           voteInfos={voteData}
           isOwner={isOwner}
           isFinished={post?.postDTO.status === 'FINISHED'}
