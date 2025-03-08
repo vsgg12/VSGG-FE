@@ -112,7 +112,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
             )}
           </div>
 
-          <div className='flex flex-col justify-end mr-10'>
+          <div className='flex flex-col mt-[20px] justify-self-end'>
             {isFinished
               ? null
               : !isOwner && (
