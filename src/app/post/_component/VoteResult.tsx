@@ -78,10 +78,10 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                           {champion.position}
                         </p>
                         <div className='w-[50%]'>
-                          <p className='text=[#33333] text-[14px] font-semibold'>
+                          <p className='text=[#333333] text-[14px] font-semibold'>
                             {champion.championName}
                           </p>
-                          <p className='text=[#33333] text-[12px]'>{champion.tier}</p>
+                          <p className='text=[#333333] text-[12px]'>{champion.tier}</p>
                         </div>
                       </div>
                       <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
