@@ -571,7 +571,7 @@ export default function PostForm() {
       isClickedFirst.current = true;
     }
 
-    fetch('https://ddragon.leagueoflegends.com/cdn/14.9.1/data/ko_KR/champion.json')
+    fetch('https://ddragon.leagueoflegends.com/cdn/15.5.1/data/ko_KR/champion.json')
       .then((response) => response.json())
       .then((data: ChampionDataProps) => {
         const loadedChampions = Object.keys(data.data).map((key) => data.data[key].name);
