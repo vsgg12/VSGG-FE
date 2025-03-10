@@ -65,8 +65,15 @@ interface ICreateImageData {
 
 export interface ChampionDataProps {
   data: {
-    [key: string]: {
-      name: string;
-    };
+    [key: string]: ChampionType;
   };
+}
+
+type ChampionType = {
+  name: string;
+  image: {
+    full: string;
+    sprite: string;
+    group: string;
+  }
 }
