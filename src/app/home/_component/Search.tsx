@@ -2,9 +2,9 @@ import { GoSearch } from 'react-icons/go';
 import Logo from '../../../components/Logo';
 import useSearchStore from '../store/useSearchStore';
 import { useState } from 'react';
-import Image from 'next/image';
-import Banner from '../../../../public/svg/banner/banner.svg';
-import { useRouter } from 'next/navigation';
+// import Image from 'next/image';
+// import Banner from '../../../../public/svg/banner/banner.svg';
+// import { useRouter } from 'next/navigation';
 
 export default function Search({
   handleSearch,
@@ -15,7 +15,7 @@ export default function Search({
 }) {
   const { setKeyword } = useSearchStore();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedKeyword = e.target.value.trim();
@@ -23,9 +23,9 @@ export default function Search({
     setSearchKeyword(e.target.value);
   };
 
-  const handleFeedbackBannerClick = () => {
-    router.push('https://forms.gle/iszzzg32YAeSLJPq9');
-  };
+  // const handleFeedbackBannerClick = () => {
+  //   router.push('https://forms.gle/iszzzg32YAeSLJPq9');
+  // };
 
   return (
     <div className='flex w-full justify-center relative'>
@@ -44,14 +44,14 @@ export default function Search({
           </button>
         </div>
       </div>
-      <Image
+      {/* <Image
         src={Banner}
         alt='feedback banner'
         width={284}
         height={112}
         className='absolute right-0 top-[20%] translate-y-[-50%] cursor-pointer'
         onClick={handleFeedbackBannerClick}
-      />
+      /> */}
     </div>
   );
 }
