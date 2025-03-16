@@ -76,7 +76,12 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
                 {isMoreModalOpen && (
                   <div className='mt-[4px] mr-[5px]'>
                     {isOwner ? (
-                      <MoreModal type='owner' where='post' postId={post.postDTO.id} />
+                      <MoreModal
+                        type='owner'
+                        where='post'
+                        postId={post.postDTO.id}
+                        isEditPostPossible={post.postDTO.daysUntilEnd !== 0}
+                      />
                     ) : (
                       <MoreModal type='user' where='post' />
                     )}

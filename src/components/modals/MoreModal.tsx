@@ -12,9 +12,17 @@ interface Props {
   setIsCommentMoreModalOpen?: Dispatch<SetStateAction<number | null>>;
   targetId?: number;
   postId?: number;
+  isEditPostPossible?: boolean;
 }
 
-function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postId }: Props) {
+function MoreModal({
+  type,
+  where,
+  targetId = 0,
+  setIsCommentMoreModalOpen,
+  postId,
+  isEditPostPossible,
+}: Props) {
   const items =
     where === 'post'
       ? type === 'owner'
@@ -59,10 +67,15 @@ function MoreModal({ type, where, targetId = 0, setIsCommentMoreModalOpen, postI
     switch (text) {
       case '수정':
         // where에 따른 댓글 수정, 게시글 수정 api 호출 다르게
-        alert('준비중입니다.');
+        if (where === 'post') {
+          if (!isEditPostPossible) {
+          return  alert("게시글은 판결기간 종료 24시간 전까지만 수정이 가능합니다.")
+          }
+          router.push(`/post/${postId}/edit`);
+        }
         break;
       case '삭제':
-        if (where === 'post' && confirm('글을 삭제하시겠습니까?')) {
+        if (where === 'post' && confirm('이 게시글을 삭제하면 복구할 수 없습니다.\n게시글을 삭제하시겠습니까?')) {
           deletePostItem();
         } else if (where === 'comment' && confirm('댓글을 삭제하시겠습니까?')) {
           deleteComment();
