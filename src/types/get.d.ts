@@ -79,7 +79,7 @@ type IGetVoteType = {
 };
 
 type IGetInGameInfoType = {
-  averageRatio: number | null;
+  averageRatio?: number | null;
   championName: string;
   inGameInfoId: number;
   position: string;

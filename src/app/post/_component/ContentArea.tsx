@@ -80,7 +80,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
                         type='owner'
                         where='post'
                         postId={post.postDTO.id}
-                        isEditPostPossible={post.postDTO.daysUntilEnd !== 0}
+                        isEditPostPossible={post.postDTO.daysUntilEnd > 0}
                       />
                     ) : (
                       <MoreModal type='user' where='post' />

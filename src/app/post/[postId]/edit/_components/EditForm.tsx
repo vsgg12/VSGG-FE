@@ -1,144 +1,41 @@
 'use client';
 import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import ReactQuill from 'react-quill';
-
-import PostUploadDesc from './PostUploadDesc';
-import { useRouter } from 'next/navigation';
-
-import Image from 'next/image';
-import topSVG from '../../../../../public/svg/top.svg';
-import midSVG from '../../../../../public/svg/mid.svg';
-import jungleSVG from '../../../../../public/svg/jungle.svg';
-import onedealSVG from '../../../../../public/svg/onedeal.svg';
-import supportSVG from '../../../../../public/svg/supporter.svg';
-
-import topWSVG from '../../../../../public/svg/top-w.svg';
-import midWSVG from '../../../../../public/svg/mid-w.svg';
-import jungleWSVG from '../../../../../public/svg/jungle-w.svg';
-import onedealWSVG from '../../../../../public/svg/onedeal-w.svg';
-import supportWSVG from '../../../../../public/svg/supporter-w.svg';
-
-import Icon_calendar from '../../../../../public/svg/Icon_calendar.svg';
-import moment from 'moment';
-
-import { IoIosClose } from 'react-icons/io';
+import { useParams, useRouter } from 'next/navigation';
 
 import {
   IoVideocamOutline,
   IoEaselOutline,
-  IoAddCircleOutline,
   IoSaveOutline,
   IoDocumentOutline,
   IoCloseOutline,
 } from 'react-icons/io5';
-
-import dynamic from 'next/dynamic';
-import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/types/form';
+import { ICreatePostFormProps } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
+import { saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
-import Calendar from './Calendar';
+import PostUploadDesc from '@/app/post/write/_component/PostUploadDesc';
+import {
+  positions,
+  quillPlaceHolder,
+  ReactQuillBase,
+  tabs,
+  tiers,
+} from '@/app/post/write/_component/PostFe';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import getPostItem from '@/api/getPostItem';
+import patchEditPost from '@/api/patchEditPost';
 
-export const ReactQuillBase = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill');
-
-    return function forwardRef({ forwardedRef, ...props }: IWrappedComponent) {
-      const newProps = {
-        ...props,
-        modules: {
-          ...props.modules,
-        },
-      };
-      return <RQ ref={forwardedRef} {...newProps} />;
-    };
-  },
-  { ssr: false },
-);
-
-export const tabs = [
-  { id: 0, title: '파일 불러오기' },
-  { id: 1, title: '썸네일 업로드' },
-];
-
-export const positions = [
-  {
-    id: 'TOP',
-    value: 'TOP',
-    content: '탑',
-    svg: <Image alt='TOP' src={topSVG} width={18} height={18} />,
-    svgW: <Image alt='TOP' src={topWSVG} width={18} height={18} />,
-  },
-  {
-    id: 'jungle',
-    value: 'JUNGLE',
-    content: '정글',
-    svg: <Image alt='jungle' src={jungleSVG} width={18} height={18} />,
-    svgW: <Image alt='jungle' src={jungleWSVG} width={18} height={18} />,
-  },
-  {
-    id: 'mid',
-    value: 'MID',
-    content: '미드',
-    svg: <Image alt='mid' src={midSVG} width={18} height={18} />,
-    svgW: <Image alt='mid' src={midWSVG} width={18} height={18} />,
-  },
-  {
-    id: 'onedeal',
-    value: 'ADCARRY',
-    content: '원딜',
-    svg: <Image alt='onedeal' src={onedealSVG} width={18} height={18} />,
-    svgW: <Image alt='onedeal' src={onedealWSVG} width={18} height={18} />,
-  },
-  {
-    id: 'support',
-    value: 'SUPPORT',
-    content: '서폿',
-    svg: <Image alt='support' src={supportSVG} width={18} height={18} />,
-    svgW: <Image alt='support' src={supportWSVG} width={18} height={18} />,
-  },
-];
-
-export const tiers = [
-  { id: undefined, value: undefined, content: '티어 선택' },
-  { id: 'unrank', value: 'UNRANK', content: '언랭' },
-  { id: 'iron', value: 'IRON', content: '아이언' },
-  { id: 'bronze', value: 'BRONZE', content: '브론즈' },
-  { id: 'silver', value: 'SILVER', content: '실버' },
-  { id: 'gold', value: 'GOLD', content: '골드' },
-  { id: 'platinum', value: 'PLATINUM', content: '플래티넘' },
-  { id: 'emerald', value: 'EMERALD', content: '에메랄드' },
-  { id: 'diamond', value: 'DIAMOND', content: '다이아몬드' },
-  { id: 'master', value: 'MASTER', content: '마스터' },
-  { id: 'grand_master', value: 'GRANDMASTER', content: '그랜드마스터' },
-  { id: 'challenger', value: 'CHALLENGER', content: '챌린저' },
-];
-
-export const quillPlaceHolder =
-  '[판결 게시글 내용 작성 가이드]\n\n' +
-  '1. 판결 받고 싶은 게임 영상을 업로드해주세요.\n' +
-  '\t\t파일 크기 제한 : 500MB\n' +
-  '\t\t파일 형식: mp4\n' +
-  '\t\t영상을 업로드하기 전에 불필요한 부분을 편집하여 핵심 상황만 포함해주세요.' +
-  '2. 영상에 대한 상황을 구체적으로 작성해주세요.\n' +
-  '3. (선택사항) 임 상황의 이해를 도울 수 있는 이미지도 함께 첨부해주세요\n' +
-  '\t\t이미지 개수 제한 : 3개 이내\n' +
-  '\t\t파일 크기 제한 : 2MB\n' +
-  '\t\t파일 형식: jpg, jpeg, png\n\n' +
-  '정보통신망 이용촉진 및 정보 보호 등에 관한 법률 제 44조의7(불법정보의 유통금지 등)\n' +
-  '부적절한 콘텐트 또는 게시글, 댓글 등은 금지되어있습니다. 모든 롤 유저가 재밌게 즐기는 깨끗한 VS.GG를 위해 함께해 주시기 바랍니다.';
-
-export default function PostForm() {
+export default function EditForm() {
   const { isLogin, accessToken } = useAuthStore();
   const router = useRouter();
-  const [nowDate] = useState(moment().format('YYYY / MM / DD'));
-  const [selectedDate, setSelectedDate] = useState<string | null>(
-    moment().add(72, 'hours').format('YYYY / MM / DD'),
-  );
-  const [endDate, setEndDate] = useState<number>(3);
+  const { postId } = useParams<{ postId: string }>();
+
+  const { data: post } = useQuery<IGetPostItemType>({
+    queryKey: ['POST_ITEM', postId],
+    queryFn: async () => getPostItem(postId, isLogin ? accessToken : ''),
+  });
 
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -149,26 +46,62 @@ export default function PostForm() {
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
-  const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
-    { inGameInfoId: 0, position: '탑', championName: '', tier: '' },
-    { inGameInfoId: 1, position: '탑', championName: '', tier: '' },
-  ]);
-  const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
-  const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>({
-    0: 0,
-    1: 0,
-  });
-  const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [postCreated, setPostCreated] = useState<boolean>(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [ingameInfos, setIngameInfos] = useState<IGetInGameInfoType[]>();
 
-  const isClickedFirst = useRef(false);
+  const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>();
+
+  useEffect(() => {
+    if (post) {
+      const initialSelectedPos = post?.postDTO.inGameInfoList.reduce(
+        (acc, info) => {
+          const posIndex = positions.findIndex((pos) => pos.content === info.position);
+          if (posIndex !== -1) {
+            acc[info.inGameInfoId] = posIndex;
+          }
+          return acc;
+        },
+        {} as { [key: number]: number },
+      );
+        setContent(post.postDTO.content)
+      setSelectedPos(initialSelectedPos);
+      setIngameInfos(post.postDTO.inGameInfoList);
+      setHashtags(post.postDTO.hashtagList.map((hashtag) => hashtag.name));
+    }
+  }, [post]);
+    
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [postEdited, setPostEdited] = useState<boolean>(false);
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const quillRef = useRef<ReactQuill>(null);
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
+
+  const usePatchEditPost = (authorization: string, postId: string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: (body: FormData) => patchEditPost(body, authorization, postId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['POST_ITEM'],
+        });
+        setPostEdited(true);
+        router.back();
+      },
+      onError: (error) => {
+        if (error.message === 'VIDEO_REQUIRED') {
+          alert('영상 첨부는 필수입니다!');
+        } else if (error.message === 'POST_EDIT_RESTRICTED_WITHIN_24H') {
+          alert('게시글 수정은 판결 종료 24시간 이내의 게시글만 가능합니다.');
+          router.back();
+        }
+      },
+    });
+  };
+
+  const { mutate: editPost } = usePatchEditPost(accessToken, postId);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -197,29 +130,22 @@ export default function PostForm() {
       }
     }
 
-    const inGameInfoRequests = ingameInfos.map(({ championName, position, tier }) => ({
+    const inGameInfoRequests = ingameInfos?.map(({ championName, position, tier }) => ({
       championName: championName,
       position: position,
       tier: tier,
     }));
 
-    for (const info of inGameInfoRequests) {
-      if (!info.championName || !info.position || !info.tier) {
-        alert('모든 챔피언, 포지션 및 티어를 입력해주세요.');
-        return;
-      }
-    }
-
     const contentData = new Blob([content], { type: 'text/html' });
 
     hashtags.length === 0 &&
+      inGameInfoRequests &&
       setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
     const postRequestData = {
       title: data.title,
       videoType: 'FILE',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
-      voteEndDate: moment(selectedDate).format('YYYYMMDD'),
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -249,38 +175,10 @@ export default function PostForm() {
 
     postFormData.append('content', contentData, 'content.html');
 
-    const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
-    if (postComfirm) {
+    const postConfirm = confirm('게시글 수정을 완료하시겠습니까?');
+    if (postConfirm) {
       setIsLoading(true);
-      try {
-        // for (const [key, value] of postFormData.entries()) {
-        //   console.log(key, value);
-        //   if (key === 'postAddRequest') {
-        //     const fileReader = new FileReader();
-        //     fileReader.onload = function (event) {
-        //       console.log(`Decoded JSON data for ${key}:`, event.target?.result);
-        //     };
-        //     fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
-        //   } else {
-        //     console.log(`${key}:`, value);
-        //   }
-        // }
-        const res = await createPost(postFormData, accessToken);
-        if (res.status === 200) {
-          alert('게시글 작성이 완료되었습니다!');
-          setPostCreated(true);
-          setRedirect(true);
-          setSelectedDate(null);
-        } else if (res.status === 500) {
-          alert('문제가 생겨 게시글을 업로드 할 수 없습니다.');
-        } else if (res.status === 400) {
-          alert('영상을 업로드 또는 판결 종료 기간 설정을 다시 확인해주세요!');
-        }
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setIsLoading(false);
-      }
+      editPost(postFormData);
     } else {
       return;
     }
@@ -293,7 +191,7 @@ export default function PostForm() {
   const changeTabContentStyle = (index: number): string => {
     return `p-tab-content ${selectedTab === index ? '' : 'hidden'}`;
   };
-  
+
   const changePositionRadioStyle = (checked: boolean) => {
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
@@ -333,7 +231,7 @@ export default function PostForm() {
         return;
       }
 
-      setUploadedVideo(file); // 확인 완료
+      setUploadedVideo(file);
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -455,45 +353,18 @@ export default function PostForm() {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
-  const addIngameInfo = (): void => {
-    const newInfo = {
-      inGameInfoId: ingameInfos.length,
-      position: '탑',
-      championName: '',
-      tier: '',
-    };
-    setIngameInfos(ingameInfos.concat(newInfo));
-
-    const updatedSelectedPos = {
-      ...selectedPos,
-      [newInfo.inGameInfoId]: 0,
-    };
-    setSelectedPos(updatedSelectedPos);
-  };
-
   const handlePositionChange = (position: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
+    const updatedIngameInfos = ingameInfos?.map((info, idx) =>
       idx === index ? { ...info, position } : info,
     );
     setIngameInfos(updatedIngameInfos);
   };
 
-  const handleChampionChange = (championName: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
-      idx === index ? { ...info, championName } : info,
-    );
-    setIngameInfos(updatedIngameInfos);
-  };
-
   const handleTierChange = (tier: string, index: number) => {
-    const updatedIngameInfos = ingameInfos.map((info, idx) =>
+    const updatedIngameInfos = ingameInfos?.map((info, idx) =>
       idx === index ? { ...info, tier } : info,
     );
     setIngameInfos(updatedIngameInfos);
-  };
-
-  const removeIngameInfo = (index: number): void => {
-    setIngameInfos(ingameInfos.filter((_, idx) => idx !== index));
   };
 
   // 사용자가 업로드한 이미지 url 배열에 추가
@@ -572,40 +443,20 @@ export default function PostForm() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isClickedFirst.current) {
-      history.pushState(null, '', '');
-      isClickedFirst.current = true;
-    }
-
-    fetch('https://ddragon.leagueoflegends.com/cdn/15.5.1/data/ko_KR/champion.json')
-      .then((response) => response.json())
-      .then((data: ChampionDataProps) => {
-        const loadedChampions = Object.keys(data.data).map((key) => data.data[key].name);
-
-        const sortedChampions = loadedChampions.sort(function (a, b) {
-          return a.localeCompare(b);
-        });
-
-        setChampions((prev) => [...prev, ...sortedChampions]);
-      })
-      .catch((error) => console.error('Error loading the champions:', error));
-  }, []);
-
   const beforeUnloadHandler = useCallback(
     (event: BeforeUnloadEvent) => {
-      if (isLogin && !postCreated) {
-        const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+      if (isLogin && !postEdited) {
+        const message = '페이지를 떠나면 수정된 내용이 사라집니다.';
         event.preventDefault();
         return message;
       }
     },
-    [isLogin, postCreated],
+    [isLogin, postEdited],
   );
 
   const handlePopState = useCallback(async () => {
-    if (isLogin && !postCreated) {
-      const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
+    if (isLogin && !postEdited) {
+      const message = '페이지를 떠나면 수정된 내용이 사라집니다.';
       if (!confirm(message)) {
         history.pushState(null, '', '');
         return;
@@ -614,14 +465,14 @@ export default function PostForm() {
       await handleDelete();
       history.back();
     }
-  }, [isLogin, postCreated]);
+  }, [isLogin, postEdited]);
 
   useEffect(() => {
     const originalPush = router.push;
 
     const newPush = async (href: string): Promise<void> => {
-      const message = '페이지를 떠나면 작성된 내용이 사라집니다.';
-      if (isLogin && !postCreated && confirm(message)) {
+      const message = '페이지를 떠나면 수정된 내용이 사라집니다.';
+      if (isLogin && !postEdited && confirm(message)) {
         await handleDelete();
         originalPush(href);
       } else {
@@ -636,7 +487,7 @@ export default function PostForm() {
       router.push = originalPush;
       window.onbeforeunload = null;
     };
-  }, [isLogin, postCreated, beforeUnloadHandler, router]);
+  }, [isLogin, postEdited, beforeUnloadHandler, router]);
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
@@ -662,14 +513,14 @@ export default function PostForm() {
 
   const handleDelete = async () => {
     const deleteData = { imageUrl: contentImgUrls };
-    if (!postCreated) {
+    if (!postEdited) {
       return await sendDeleteRequestToS3(deleteData, accessToken);
     }
   };
   useEffect(() => {
     if (redirect) {
       setRedirect(false); // 리디렉션 상태 초기화
-      router.push('/home');
+      router.back();
     }
   }, [redirect, router]);
 
@@ -717,6 +568,8 @@ export default function PostForm() {
                       >
                         {uploadedVideo ? (
                           <div>{uploadedVideo.name}</div>
+                        ) : post?.postDTO.video.url ? (
+                          <div>{post.postDTO.video.url}</div>
                         ) : (
                           <>
                             <IoDocumentOutline className='mr-[10px] text-[20px]' />
@@ -744,6 +597,8 @@ export default function PostForm() {
                       >
                         {uploadedThumbnail ? (
                           <div>{uploadedThumbnail.name}</div>
+                        ) : post?.postDTO.thumbnailURL ? (
+                          <div>{post.postDTO.thumbnailURL}</div>
                         ) : (
                           <>
                             <IoDocumentOutline className='mr-[10px] text-[20px]' />
@@ -770,15 +625,16 @@ export default function PostForm() {
               onInput={handleTitleChange}
               className=' grow rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[15px] text-[20px]  outline-none'
               placeholder='최대 35글자 입력 가능합니다.'
+              defaultValue={post?.postDTO.title}
               {...register('title')}
             />
           </div>
-          <div className='p-content-mb h-[700px] overflow-hidden rounded-[30px] border-[1.5px] border-[#828282] text-[16px]'>
+          <div className='p-content-mb h-[700px] overflow-hidden  rounded-[30px] border-[1.5px] border-[#828282] text-[16px]'>
             <ReactQuillBase
               theme='snow'
               forwardedRef={quillRef}
               modules={modules}
-              className=' h-[100%] w-full whitespace-pre-wrap outline-none'
+              className='h-[100%] w-full whitespace-pre-wrap outline-none'
               value={content}
               onChange={handleChange}
               placeholder={quillPlaceHolder}
@@ -814,77 +670,68 @@ export default function PostForm() {
               판결 참여자 입력
             </div>
             <div className='text-[12px] text-[#333333]'>
-              본인을 포함해 판결에 참여할 대상의 정보를 입력해주세요
+              본인을 포함한 판결에 참여할 대상의 티어만 수정 가능합니다.
             </div>
           </div>
 
-          {ingameInfos.map((ingameInfo, index) => (
+          {ingameInfos?.map((ingameInfo, index) => (
             <div key={index}>
               {index === 0 ? (
                 <div className='flex flex-row justify-between'>
                   <div className='mb-[15px] text-[12px] text-[#333333]'>
-                    본인의 챔피언, 포지션, 티어를 선택해주세요.
+                    본인의 티어만 수정가능합니다.
                   </div>
                 </div>
               ) : index === 1 ? (
                 <div className='flex flex-row justify-between'>
                   <div className='mb-[15px] mt-[20px] text-[12px] text-[#333333]'>
-                    상대의 챔피언, 포지션, 티어를 선택해주세요.
+                    상대의 티어만 수정가능합니다.
                   </div>
                   <hr />
                 </div>
               ) : (
                 ''
               )}
-
               <div className='relative mb-[20px] flex flex-col overflow-hidden rounded-[30px] border-2 border-[#8A1F21] p-[20px]'>
                 <div className='flex w-[100%] items-center'>
-                  {positions.map((pos, index) => (
-                    <div key={index}>
-                      <input
-                        type='radio'
-                        name={`position-${ingameInfo.inGameInfoId}`}
-                        id={`${pos.id}-${ingameInfo.inGameInfoId}`}
-                        value={pos.content}
-                        className='p-input-hidden'
-                        onChange={() => {
-                          const updatedSelectedPos = { ...selectedPos };
-                          updatedSelectedPos[ingameInfo.inGameInfoId] = index;
-                          setSelectedPos(updatedSelectedPos);
-
-                          handlePositionChange(pos.content, ingameInfo.inGameInfoId);
-                        }}
-                        checked={selectedPos[ingameInfo.inGameInfoId] === index}
-                      />
-                      <label
-                        htmlFor={`${pos.id}-${ingameInfo.inGameInfoId}`}
-                        className={changePositionRadioStyle(
-                          selectedPos[ingameInfo.inGameInfoId] === index,
-                        )}
-                      >
-                        <div className='mr-1 py-1'>
-                          {' '}
-                          {selectedPos[ingameInfo.inGameInfoId] === index ? pos.svgW : pos.svg}
-                        </div>
-                        <div>{pos.content}</div>
-                      </label>
-                    </div>
-                  ))}
+                  {selectedPos &&
+                    positions.map((pos, index) => (
+                      <div key={index}>
+                        <input
+                          type='radio'
+                          name={`position-${ingameInfo.inGameInfoId}`}
+                          id={`${pos.id}-${ingameInfo.inGameInfoId}`}
+                          value={pos.content}
+                          className='p-input-hidden'
+                          disabled={true}
+                          checked={selectedPos[ingameInfo.inGameInfoId] === index}
+                        />
+                        <label
+                          htmlFor={`${pos.id}-${ingameInfo.inGameInfoId}`}
+                          className={changePositionRadioStyle(
+                            selectedPos[ingameInfo.inGameInfoId] === index,
+                          )}
+                        >
+                          <div className='mr-1 py-1'>
+                            {selectedPos[ingameInfo.inGameInfoId] === index ? pos.svgW : pos.svg}
+                          </div>
+                          <div>{pos.content}</div>
+                        </label>
+                      </div>
+                    ))}
                   <select
                     id='champions-select'
                     className='p-select'
-                    onChange={(e) => handleChampionChange(e.target.value, index)}
+                    disabled={true}
+                    defaultValue={post?.postDTO.inGameInfoList[index].championName}
                   >
-                    {champions.map((champion, index) => (
-                      <option key={index} value={champion}>
-                        {champion}
-                      </option>
-                    ))}
+                    <option>{post?.postDTO.inGameInfoList[index].championName}</option>
                   </select>
                   <select
                     id='tiers-select'
                     className='p-select'
                     onChange={(e) => handleTierChange(e.target.value, index)}
+                    defaultValue={post?.postDTO.inGameInfoList[index].tier} // 기본값 설정
                   >
                     {tiers.map((tier, index) => (
                       <option key={index} id={tier.id} value={tier.content}>
@@ -892,64 +739,10 @@ export default function PostForm() {
                       </option>
                     ))}
                   </select>
-                  {ingameInfo.inGameInfoId === ingameInfos.length - 1 &&
-                  ingameInfo.inGameInfoId > 1 ? (
-                    <IoIosClose
-                      onClick={() => removeIngameInfo(index)}
-                      className='absolute right-2 z-10 cursor-pointer text-[23px] text-[#8A1F21] '
-                    />
-                  ) : (
-                    ''
-                  )}
                 </div>
               </div>
             </div>
           ))}
-
-          {ingameInfos.length < 5 && (
-            <div
-              onClick={addIngameInfo}
-              className='flex cursor-pointer flex-row justify-center text-[50px] text-[#333333]'
-            >
-              <IoAddCircleOutline className='text-[#8A1F21]' />
-            </div>
-          )}
-        </div>
-        <div className='p-content-pd p-content-rounded mb-[44px] h-[360px] w-full relative bg-[#ffffff]'>
-          <p className='mb-[70px] text-[20px] font-semibold text-[#8A1F21]'>판결 기간 설정</p>
-          <div className='flex items-center gap-5 mb-[70px]'>
-            <p className='text-[#333333] text-[16px]'>판결을 받고싶은 기간을 설정해주세요.</p>
-            <p className='text-[#828282] text-[12px]'>
-              오늘을 기준으로 30일 뒤까지 설정할 수 있습니다. (종료날 23시 59분 판결 종료)
-            </p>
-          </div>
-          <div className='flex justify-between w-[653px] ml-[30px]'>
-            <div>
-              <p className='text-[18px] text-[#828282] font-semibold'>판결 시작 날짜</p>
-              <p className='text-[20px] text-[#333333] mt-[10px]'>{nowDate}</p>
-            </div>
-            <div className='relative flex border-t-1 border-black w-[236px] transform translate-y-1/2'>
-              <p className='text-[#8A1F21] text-[20px] ml-[130px] font-semibold'>판결 종료</p>
-              <div className='w-[88px] h-[88px] bg-[#8A1F21] rounded-full absolute flex justify-center items-center translate-y-[-40px] translate-x-[30px]'>
-                <p className='text-[#FFFFFF] text-[20px]'>{endDate}일 뒤</p>
-              </div>
-            </div>
-
-            <div>
-              <p className='text-[18px] text-[#828282] font-semibold'>판결 종료 날짜</p>
-              <div className='bg-[#f8f8f8] flex p-[10px] rounded-full w-[204px] justify-center items-center'>
-                <p className='text-[20px] text-[#333333]'>{selectedDate}</p>
-                <Image
-                  src={Icon_calendar}
-                  width={24}
-                  height={24}
-                  alt='calendar'
-                  className='mx-[10px] cursor-pointer'
-                  onClick={() => setIsCalendarOpen((prev) => !prev)}
-                />
-              </div>
-            </div>
-          </div>
         </div>
         <div className='flex flex-row justify-end'>
           <button
@@ -957,20 +750,10 @@ export default function PostForm() {
             className='flex flex-row items-center rounded-[50px] bg-[#8A1F21] px-[22px] py-[14px] text-[17px] text-white'
           >
             <IoSaveOutline className='mr-[5px]' />
-            작성완료
+            수정완료
           </button>
         </div>
       </form>
-      {isCalendarOpen && (
-        <div className='absolute z-40 translate-x-[770px] translate-y-[-520px]'>
-          <Calendar
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            setIsCalendarOpen={setIsCalendarOpen}
-            setEndDate={setEndDate}
-          />
-        </div>
-      )}
     </>
   );
 }

@@ -6,6 +6,12 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
+import EditForm from './_components/EditForm';
+import Link from 'next/link';
+import Logo from '@/components/Logo';
+import Header from '@/components/Header';
+import getMyProfileDTO from '@/api/getMyProfileDTO';
+import getAlarms from '@/api/getAlarms';
 
 /* 수정 가능 항목
     1.제목
@@ -16,37 +22,49 @@ import React from 'react';
     6. 챔피언 티어 수정 가능
 */
 function EditPost() {
-  const { postId } = useParams<{ postId: string }>();
   const { isLogin, accessToken } = useAuthStore.getState();
-  const router = useRouter();
 
-  const {
-    data: post
-  } = useQuery<IGetPostItemType>({
-    queryKey: ['POST_ITEM', postId],
-    queryFn: async () => getPostItem(postId, isLogin ? accessToken : ''),
+  const { data: userProfileData } = useQuery({
+    queryKey: ['MY_PROFILE_INFO'],
+    queryFn: () => getMyProfileDTO(accessToken),
+    enabled: isLogin,
   });
 
-  const usePatchEditPost = (authorization: string, postId: string) => {
-    const queryClient = useQueryClient();
-    return useMutation({
-      mutationFn: (body: IPatchEditPostRequestBodyType) =>
-        patchEditPost(body, authorization, postId),
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['POST_ITEM'],
-        });
-        router.back();
-      },
-      onError: (error) => {
-        if (error.message === "VIDEO_REQUIRED") {
-          alert("영상 첨부는 필수입니다!")
-        }
-      },
-    });
-  };
+  const { data: alarmData } = useQuery({
+    queryKey: ['alarms'],
+    queryFn: () => getAlarms(accessToken),
+    enabled: isLogin,
+  });
 
-  return <div>EditPost</div>;
+  return (
+    <div className='min-w-[1400px]'>
+      <Header userProfileData={userProfileData} alarmData={alarmData} />
+      <div>
+        <div className='flex items-center justify-center w-full'>
+          <Logo />
+        </div>
+        <section className='flex justify-center'>
+          <div className='min-w-[1300px] w-full px-[80px]'>
+            <div className='mb-[44px] flex items-center justify-between min-w-[1200px]'>
+              <button
+                onClick={() => {
+                  history.back();
+                }}
+                className=' box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
+              >
+                <div className='text-[13px]'>뒤로가기</div>
+              </button>
+              <div className='text-[12px] text-[#909090]'>
+                <Link href='/'>홈</Link>
+                {' > '}게시글
+              </div>
+            </div>
+            <EditForm />
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }
 
 export default EditPost;
