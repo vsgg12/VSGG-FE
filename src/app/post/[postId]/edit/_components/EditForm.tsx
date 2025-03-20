@@ -62,13 +62,13 @@ export default function EditForm() {
         },
         {} as { [key: number]: number },
       );
-        setContent(post.postDTO.content)
+      setContent(post.postDTO.content);
       setSelectedPos(initialSelectedPos);
       setIngameInfos(post.postDTO.inGameInfoList);
       setHashtags(post.postDTO.hashtagList.map((hashtag) => hashtag.name));
     }
   }, [post]);
-    
+
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [postEdited, setPostEdited] = useState<boolean>(false);
 
@@ -406,7 +406,12 @@ export default function EditForm() {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       const maxSize = 2 * 1024 * 1024; // 2MB
 
-      if (!validTypes.includes(fileType)) {
+      if (
+        !validTypes.includes(fileType) ||
+        !fileType.endsWith('.png') ||
+        !fileType.endsWith('.jpg') ||
+        fileType.endsWith('.jpeg')
+      ) {
         alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
         return;
       }
