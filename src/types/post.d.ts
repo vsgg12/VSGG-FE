@@ -23,7 +23,7 @@ type IPostWriteType = {
 };
 
 type IInGameInfoType = {
-  id: number;
+  inGameInfoId: number;
   championName: string;
   position: string;
   tier: string;

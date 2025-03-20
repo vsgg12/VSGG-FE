@@ -7,11 +7,11 @@ type IPatchResult = {
 };
 
 export default async function patchEditPost(
-  body: IPatchEditPostRequestBodyType,
+  body: FormData,
   authorization: string,
   postId: string,
 ) {
-  const data = await api.patch<IPatchEditPostRequestBodyType, IPatchResult>({
+  const data = await api.patch<FormData, IPatchResult>({
     endpoint: `/post/${postId}`,
     body,
     authorization,
