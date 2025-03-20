@@ -543,10 +543,7 @@ export default function PostForm() {
 
     
       if (
-        !validTypes.includes(fileType) ||
-        !fileType.endsWith('.png') ||
-        !fileType.endsWith('.jpg') ||
-        fileType.endsWith('.jpeg')
+        !validTypes.includes(fileType)
       ) {
         alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
         return;

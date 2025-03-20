@@ -406,12 +406,7 @@ export default function EditForm() {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       const maxSize = 2 * 1024 * 1024; // 2MB
 
-      if (
-        !validTypes.includes(fileType) ||
-        !fileType.endsWith('.png') ||
-        !fileType.endsWith('.jpg') ||
-        fileType.endsWith('.jpeg')
-      ) {
+      if (!validTypes.includes(fileType)) {
         alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
         return;
       }
@@ -619,6 +614,22 @@ export default function EditForm() {
               ))}
             </div>
           </div>
+          
+          {selectedTab === 0 && post && !uploadedVideo ? (
+              <video
+                muted
+                controls
+                playsInline
+                poster={post.postDTO.thumbnailURL}
+                className='p-content-s-mb h-fit w-[500px] rounded-[30px] block visible'
+              >
+                <source src={post.postDTO.video.url} type='video/mp4' />
+                <source src={post.postDTO.video.url} type='video/webm' />
+              </video>
+            ) : 
+              selectedTab === 1 && post && !uploadedThumbnail && <img src={post.postDTO.thumbnailURL} className="w-[500px] h-fit"></img>
+            
+          }
         </div>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full bg-[#ffffff]'>
           <div className='p-content-mb  text-[20px] font-semibold text-[#8A1F21]'>글 작성</div>
