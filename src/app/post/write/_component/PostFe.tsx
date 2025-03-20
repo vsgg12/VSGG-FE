@@ -535,7 +535,13 @@ export default function PostForm() {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       const maxSize = 2 * 1024 * 1024; // 2MB
 
-      if (!validTypes.includes(fileType)) {
+    
+      if (
+        !validTypes.includes(fileType) ||
+        !fileType.endsWith('.png') ||
+        !fileType.endsWith('.jpg') ||
+        fileType.endsWith('.jpeg')
+      ) {
         alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
         return;
       }
