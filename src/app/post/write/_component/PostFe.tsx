@@ -42,7 +42,7 @@ import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@
 import LoadingFull from '@/components/LoadingFull';
 import Calendar from './Calendar';
 
-const ReactQuillBase = dynamic(
+export const ReactQuillBase = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
 
@@ -59,12 +59,12 @@ const ReactQuillBase = dynamic(
   { ssr: false },
 );
 
-const tabs = [
+export const tabs = [
   { id: 0, title: '파일 불러오기' },
   { id: 1, title: '썸네일 업로드' },
 ];
 
-const positions = [
+export const positions = [
   {
     id: 'TOP',
     value: 'TOP',
@@ -102,7 +102,7 @@ const positions = [
   },
 ];
 
-const tiers = [
+export const tiers = [
   { id: undefined, value: undefined, content: '티어 선택' },
   { id: 'unrank', value: 'UNRANK', content: '언랭' },
   { id: 'iron', value: 'IRON', content: '아이언' },
@@ -116,6 +116,20 @@ const tiers = [
   { id: 'grand_master', value: 'GRANDMASTER', content: '그랜드마스터' },
   { id: 'challenger', value: 'CHALLENGER', content: '챌린저' },
 ];
+
+export const quillPlaceHolder =
+  '[판결 게시글 내용 작성 가이드]\n\n' +
+  '1. 판결 받고 싶은 게임 영상을 업로드해주세요.\n' +
+  '\t\t파일 크기 제한 : 500MB\n' +
+  '\t\t파일 형식: mp4\n' +
+  '\t\t영상을 업로드하기 전에 불필요한 부분을 편집하여 핵심 상황만 포함해주세요.' +
+  '2. 영상에 대한 상황을 구체적으로 작성해주세요.\n' +
+  '3. (선택사항) 임 상황의 이해를 도울 수 있는 이미지도 함께 첨부해주세요\n' +
+  '\t\t이미지 개수 제한 : 3개 이내\n' +
+  '\t\t파일 크기 제한 : 2MB\n' +
+  '\t\t파일 형식: jpg, jpeg, png\n\n' +
+  '정보통신망 이용촉진 및 정보 보호 등에 관한 법률 제 44조의7(불법정보의 유통금지 등)\n' +
+  '부적절한 콘텐트 또는 게시글, 댓글 등은 금지되어있습니다. 모든 롤 유저가 재밌게 즐기는 깨끗한 VS.GG를 위해 함께해 주시기 바랍니다.';
 
 export default function PostForm() {
   const { isLogin, accessToken } = useAuthStore();
@@ -136,8 +150,8 @@ export default function PostForm() {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
-    { id: 0, position: '탑', championName: '', tier: '' },
-    { id: 1, position: '탑', championName: '', tier: '' },
+    { inGameInfoId: 0, position: '탑', championName: '', tier: '' },
+    { inGameInfoId: 1, position: '탑', championName: '', tier: '' },
   ]);
   const [champions, setChampions] = useState<string[]>(['챔피언 선택']);
   const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>({
@@ -153,18 +167,6 @@ export default function PostForm() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const quillRef = useRef<ReactQuill>(null);
-
-  const quillPlaceHolder =
-    '[게시글 내용 작성 가이드]\n\n' +
-    '1. 리플레이 영상 업로드는 필수! 판결을 받고 싶은 부분만 편집해 업로드 하기\n' +
-    '- 파일 크기 제한 : 500MB\n' +
-    '- 파일 형식: mp4\n' +
-    "2. 게임 상황의 이해를 돕기 위해 '플레이 정보를 담은 전적 캡처 이미지'를 첨부하기\n" +
-    '- 이미지 개수 제한 : 3개 이내\n' +
-    '- 파일 크기 제한 : 2MB\n' +
-    '- 파일 형식: jpg, jpeg, png\n' +
-    '3. 상황 설명은 자세하게 글로 작성하기\n' +
-    '- 문자 수 제한 : 1000자 이내\n';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
 
@@ -321,7 +323,12 @@ export default function PostForm() {
         return;
       }
 
-      if (file.type !== fileType) {
+      if (!file.type) {
+        alert('파일 형식을 확인할 수 없습니다.');
+        return;
+      }
+
+      if (file.type !== fileType || !file.name.endsWith('.mp4')) {
         alert('파일 형식이 mp4가 아닙니다.');
         return;
       }
@@ -450,7 +457,7 @@ export default function PostForm() {
 
   const addIngameInfo = (): void => {
     const newInfo = {
-      id: ingameInfos.length,
+      inGameInfoId: ingameInfos.length,
       position: '탑',
       championName: '',
       tier: '',
@@ -459,7 +466,7 @@ export default function PostForm() {
 
     const updatedSelectedPos = {
       ...selectedPos,
-      [newInfo.id]: 0,
+      [newInfo.inGameInfoId]: 0,
     };
     setSelectedPos(updatedSelectedPos);
   };
@@ -766,7 +773,7 @@ export default function PostForm() {
               {...register('title')}
             />
           </div>
-          <div className='p-content-mb h-[700px] overflow-hidden  rounded-[30px] border-[1.5px] border-[#828282]'>
+          <div className='p-content-mb h-[700px] overflow-hidden rounded-[30px] border-[1.5px] border-[#828282] text-[16px]'>
             <ReactQuillBase
               theme='snow'
               forwardedRef={quillRef}
@@ -836,26 +843,28 @@ export default function PostForm() {
                     <div key={index}>
                       <input
                         type='radio'
-                        name={`position-${ingameInfo.id}`}
-                        id={`${pos.id}-${ingameInfo.id}`}
+                        name={`position-${ingameInfo.inGameInfoId}`}
+                        id={`${pos.id}-${ingameInfo.inGameInfoId}`}
                         value={pos.content}
                         className='p-input-hidden'
                         onChange={() => {
                           const updatedSelectedPos = { ...selectedPos };
-                          updatedSelectedPos[ingameInfo.id] = index;
+                          updatedSelectedPos[ingameInfo.inGameInfoId] = index;
                           setSelectedPos(updatedSelectedPos);
 
-                          handlePositionChange(pos.content, ingameInfo.id);
+                          handlePositionChange(pos.content, ingameInfo.inGameInfoId);
                         }}
-                        checked={selectedPos[ingameInfo.id] === index}
+                        checked={selectedPos[ingameInfo.inGameInfoId] === index}
                       />
                       <label
-                        htmlFor={`${pos.id}-${ingameInfo.id}`}
-                        className={changePositionRadioStyle(selectedPos[ingameInfo.id] === index)}
+                        htmlFor={`${pos.id}-${ingameInfo.inGameInfoId}`}
+                        className={changePositionRadioStyle(
+                          selectedPos[ingameInfo.inGameInfoId] === index,
+                        )}
                       >
                         <div className='mr-1 py-1'>
                           {' '}
-                          {selectedPos[ingameInfo.id] === index ? pos.svgW : pos.svg}
+                          {selectedPos[ingameInfo.inGameInfoId] === index ? pos.svgW : pos.svg}
                         </div>
                         <div>{pos.content}</div>
                       </label>
@@ -883,7 +892,8 @@ export default function PostForm() {
                       </option>
                     ))}
                   </select>
-                  {ingameInfo.id === ingameInfos.length - 1 && ingameInfo.id > 1 ? (
+                  {ingameInfo.inGameInfoId === ingameInfos.length - 1 &&
+                  ingameInfo.inGameInfoId > 1 ? (
                     <IoIosClose
                       onClick={() => removeIngameInfo(index)}
                       className='absolute right-2 z-10 cursor-pointer text-[23px] text-[#8A1F21] '
