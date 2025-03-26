@@ -155,16 +155,18 @@ export default function PostForm() {
   const quillRef = useRef<ReactQuill>(null);
 
   const quillPlaceHolder =
-    '[게시글 내용 작성 가이드]\n\n' +
-    '1. 리플레이 영상 업로드는 필수! 판결을 받고 싶은 부분만 편집해 업로드 하기\n' +
-    '- 파일 크기 제한 : 500MB\n' +
-    '- 파일 형식: mp4\n' +
-    "2. 게임 상황의 이해를 돕기 위해 '플레이 정보를 담은 전적 캡처 이미지'를 첨부하기\n" +
-    '- 이미지 개수 제한 : 3개 이내\n' +
-    '- 파일 크기 제한 : 2MB\n' +
-    '- 파일 형식: jpg, jpeg, png\n' +
-    '3. 상황 설명은 자세하게 글로 작성하기\n' +
-    '- 문자 수 제한 : 1000자 이내\n';
+    '[판결 게시글 내용 작성 가이드]\n\n' +
+    '1. 판결 받고 싶은 게임 영상을 업로드해주세요.\n' +
+    '\t\t파일 크기 제한 : 500MB\n' +
+    '\t\t파일 형식: mp4\n' +
+    '\t\t영상을 업로드하기 전에 불필요한 부분을 편집하여 핵심 상황만 포함해주세요.' +
+    '2. 영상에 대한 상황을 구체적으로 작성해주세요.\n' +
+    '3. (선택사항) 게임 상황의 이해를 도울 수 있는 이미지도 함께 첨부해주세요\n' +
+    '\t\t이미지 개수 제한 : 3개 이내\n' +
+    '\t\t파일 크기 제한 : 2MB\n' +
+    '\t\t파일 형식: jpg, jpeg, png\n\n' +
+    '정보통신망 이용촉진 및 정보 보호 등에 관한 법률 제 44조의7(불법정보의 유통금지 등)\n' +
+    '부적절한 콘텐트 또는 게시글, 댓글 등은 금지되어있습니다. 모든 롤 유저가 재밌게 즐기는 깨끗한 VS.GG를 위해 함께해 주시기 바랍니다.';
 
   const { register, handleSubmit, setValue } = useForm<ICreatePostFormProps>();
 
@@ -247,8 +249,8 @@ export default function PostForm() {
 
     postFormData.append('content', contentData, 'content.html');
 
-    const postComfirm = confirm('게시글 작성을 완료하시겠습니까?');
-    if (postComfirm) {
+    const postConfirm = confirm('게시글 작성을 완료하시겠습니까?');
+    if (postConfirm) {
       setIsLoading(true);
       try {
         // for (const [key, value] of postFormData.entries()) {
@@ -321,7 +323,12 @@ export default function PostForm() {
         return;
       }
 
-      if (file.type !== fileType) {
+      if (!file.type) {
+        alert('파일 형식을 확인할 수 없습니다.');
+        return;
+      }
+
+      if (file.type !== fileType || !file.name.endsWith('.mp4')) {
         alert('파일 형식이 mp4가 아닙니다.');
         return;
       }

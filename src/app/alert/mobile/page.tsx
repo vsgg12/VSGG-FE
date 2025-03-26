@@ -17,19 +17,19 @@ const alarmTypes = [
 
 function Alert() {
   const [alarmType, setAlarmType] = useState<string>('전체');
-  const { accessToken, isLogin } = useAuthStore();
+  const { accessToken } = useAuthStore.getState();
   const { data: alarmsData, isLoading } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
-    enabled: isLogin,
+    enabled: !!accessToken
   });
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLogin) {
-      router.push('/login');
+    if (!accessToken) {
+      router.replace('/login');
     }
-  }, [isLogin, router]);
+  }, [accessToken]);
 
   const filteredAlarms =
     alarmsData?.alarmList && alarmType !== '전체'
