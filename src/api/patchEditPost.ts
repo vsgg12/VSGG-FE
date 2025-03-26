@@ -1,5 +1,4 @@
 import api from '@/_lib/fetcher';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type IPatchResult = {
   resultCode: number;

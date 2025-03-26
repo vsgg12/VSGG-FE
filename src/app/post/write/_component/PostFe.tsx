@@ -148,6 +148,7 @@ export default function PostForm() {
   const [content, setContent] = useState<string>('');
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [videoLink, setVideoLink] = useState<string>('');
   const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
     { inGameInfoId: 0, position: '탑', championName: '', tier: '' },
@@ -214,12 +215,13 @@ export default function PostForm() {
 
     hashtags.length === 0 &&
       setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
-    const postRequestData = {
+    const postRequestData:IPostAddRequestType = {
       title: data.title,
-      videoType: 'FILE',
+      type: uploadedVideo ? 'FILE' : 'LINK',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
       voteEndDate: moment(selectedDate).format('YYYYMMDD'),
+      
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -231,10 +233,10 @@ export default function PostForm() {
       'postAddRequest',
       new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
     );
-    if (uploadedVideo) {
+    if (uploadedVideo && !videoLink) {
       postFormData.append('uploadVideos', uploadedVideo);
-    } else {
-      postFormData.append('uploadVideos', emptyFile);
+    } else if (!uploadedVideo && videoLink) {
+      postRequestData.videoLink = videoLink
     }
 
     if (!uploadedThumbnail) {
@@ -293,7 +295,7 @@ export default function PostForm() {
   const changeTabContentStyle = (index: number): string => {
     return `p-tab-content ${selectedTab === index ? '' : 'hidden'}`;
   };
-  
+
   const changePositionRadioStyle = (checked: boolean) => {
     return checked ? 'p-position p-position-selected' : 'p-position p-position-n-selected';
   };
@@ -340,6 +342,7 @@ export default function PostForm() {
       }
 
       setUploadedVideo(file); // 확인 완료
+      setVideoLink("");
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -541,10 +544,7 @@ export default function PostForm() {
       const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       const maxSize = 2 * 1024 * 1024; // 2MB
 
-    
-      if (
-        !validTypes.includes(fileType)
-      ) {
+      if (!validTypes.includes(fileType)) {
         alert('jpg, jpeg, png 형식의 파일만 업로드 가능합니다.');
         return;
       }
