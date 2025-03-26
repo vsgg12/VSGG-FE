@@ -97,9 +97,7 @@ export default function Home() {
   }, [postData]);
 
   const handleSearch = () => {
-    if (!isLogin) {
-      router.push('/login');
-    } else if (keyword.trim() !== '') {
+    if (keyword.trim() !== '') {
       refetch();
     }
   };

@@ -2,7 +2,6 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SearchMobile from './component/SearchMobile';
 import { useQuery } from '@tanstack/react-query';
@@ -15,13 +14,10 @@ import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
 
 export default function HomeMobile() {
-  const router = useRouter();
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { isLogin, accessToken } = useAuthStore();
   const { keyword } = useSearchStore();
-  //const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
-  //const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
 
   const {
     data: postData,
@@ -50,17 +46,8 @@ export default function HomeMobile() {
     }
   };
 
-  // useEffect(() => {
-  //   if (postData && postData.postDTO && postData.postDTO.length > 0) {
-  //     const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
-  //     setExistData(filteredData);
-  //   }
-  // }, [postData]);
-
   const handleSearch = () => {
-    if (!isLogin) {
-      router.push('/login');
-    } else if (keyword.trim() !== '') {
+    if (keyword.trim() !== '') {
       refetch();
     }
   };
