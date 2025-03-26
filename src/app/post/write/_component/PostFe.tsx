@@ -323,7 +323,12 @@ export default function PostForm() {
         return;
       }
 
-      if (file.type !== fileType) {
+      if (!file.type) {
+        alert('파일 형식을 확인할 수 없습니다.');
+        return;
+      }
+
+      if (file.type !== fileType || !file.name.endsWith('.mp4')) {
         alert('파일 형식이 mp4가 아닙니다.');
         return;
       }
