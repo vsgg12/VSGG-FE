@@ -1,31 +1,23 @@
 'use client';
 import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import ReactQuill from 'react-quill';
-
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
-
 import Image from 'next/image';
 import topSVG from '../../../../../public/svg/top.svg';
 import midSVG from '../../../../../public/svg/mid.svg';
 import jungleSVG from '../../../../../public/svg/jungle.svg';
 import onedealSVG from '../../../../../public/svg/onedeal.svg';
 import supportSVG from '../../../../../public/svg/supporter.svg';
-
 import topWSVG from '../../../../../public/svg/top-w.svg';
 import midWSVG from '../../../../../public/svg/mid-w.svg';
 import jungleWSVG from '../../../../../public/svg/jungle-w.svg';
 import onedealWSVG from '../../../../../public/svg/onedeal-w.svg';
 import supportWSVG from '../../../../../public/svg/supporter-w.svg';
-
 import Icon_calendar from '../../../../../public/svg/Icon_calendar.svg';
 import moment from 'moment';
-
 import { IoIosClose } from 'react-icons/io';
-
 import {
   IoVideocamOutline,
   IoEaselOutline,
@@ -34,7 +26,6 @@ import {
   IoDocumentOutline,
   IoCloseOutline,
 } from 'react-icons/io5';
-
 import dynamic from 'next/dynamic';
 import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
