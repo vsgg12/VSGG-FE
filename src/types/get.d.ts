@@ -80,9 +80,9 @@ type IGetVoteType = {
 
 type IGetInGameInfoType = {
   averageRatio?: number | null;
-  championName: string;
+  championName?: string;
   inGameInfoId: number;
-  position: string;
+  position?: string;
   tier: string;
 };
 

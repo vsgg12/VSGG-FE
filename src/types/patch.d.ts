@@ -1,16 +1,20 @@
 type IPatchEditPostRequestBodyType = {
   uploadVideos?: File;
   thumbnailImage?: File;
-  postAddRequest?: {
-    title?: string;
-    type?: string;
-    hashtag?: string[];
-  };
+  postUpdateRequest?: IEditPostUpdateRequest;
   content?: string;
-  inGameInfoRequest?: {
-    inGameInfoId: string;
-    tier: string;
-  }[];
   videoUrl?: string;
-  voteEndDate?: string;
+};
+
+type IEditPostUpdateRequest = {
+  title?: string;
+  type?: string;
+  hashtag?: string[];
+  videoLink?: string;
+  InGameTierUpdateRequest? : IEditInGameInfoRequest[]
+}
+
+type IEditInGameInfoRequest = {
+  inGameInfoId: string;
+  tier: string;
 };

@@ -31,7 +31,7 @@ export default function EditForm() {
   const { isLogin, accessToken } = useAuthStore();
   const router = useRouter();
   const { postId } = useParams<{ postId: string }>();
-
+  const [videoLink, setVideoLink] = useState<string>('');
   const { data: post } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', postId],
     queryFn: async () => getPostItem(postId, isLogin ? accessToken : ''),
@@ -45,6 +45,7 @@ export default function EditForm() {
   const [content, setContent] = useState<string>('');
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [title, setTitle] = useState<string>('');
   const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IGetInGameInfoType[]>();
 
@@ -63,6 +64,7 @@ export default function EditForm() {
         {} as { [key: number]: number },
       );
       setContent(post.postDTO.content);
+      setTitle(post.postDTO.title);
       setSelectedPos(initialSelectedPos);
       setIngameInfos(post.postDTO.inGameInfoList);
       setHashtags(post.postDTO.hashtagList.map((hashtag) => hashtag.name));
@@ -88,6 +90,7 @@ export default function EditForm() {
           queryKey: ['POST_ITEM'],
         });
         setPostEdited(true);
+        alert('수정완료');
         router.back();
       },
       onError: (error) => {
@@ -97,7 +100,13 @@ export default function EditForm() {
           alert('게시글 수정은 판결 종료 24시간 이내의 게시글만 가능합니다.');
           router.back();
         }
+        else {
+          alert(`게시글 수정 실패 :  ${error.message}`)
+        }
       },
+      onSettled: () => {
+        setIsLoading(false);
+      }
     });
   };
 
@@ -107,18 +116,21 @@ export default function EditForm() {
     const value = e.target.value;
     if (value.length > 35) {
       setValue('title', value.slice(0, 35));
+      setTitle(value.slice(0, 35));
     }
   };
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
-    if (!uploadedVideo) {
-      alert('영상을 업로드 해주세요');
-      return;
+    const postUpdateRequest: IEditPostUpdateRequest = {};
+    let isChanged = false;
+    if (data.title === '') {
+      data.title = title;
     }
 
-    if (data.title === '') {
-      alert('제목을 입력해주세요');
-      return;
+    // postUpdateRequest.title 수정
+    if (data.title !== title) {
+      postUpdateRequest.title = data.title;
+      isChanged = true;
     }
 
     if (quillRef.current) {
@@ -129,54 +141,104 @@ export default function EditForm() {
         return;
       }
     }
-
-    const inGameInfoRequests = ingameInfos?.map(({ championName, position, tier }) => ({
-      championName: championName,
-      position: position,
+    // postUpdateRequest.InGameTierUpdateRequest 수정
+    const previousInGameInfo = post?.postDTO.inGameInfoList.map(({ inGameInfoId, tier }) => ({
+      inGameInfoId: String(inGameInfoId),
       tier: tier,
     }));
 
-    const contentData = new Blob([content], { type: 'text/html' });
+    const inGameInfoRequests = ingameInfos?.map(({ inGameInfoId, tier }) => ({
+      inGameInfoId: String(inGameInfoId),
+      tier: tier,
+    }));
 
-    hashtags.length === 0 &&
-      inGameInfoRequests &&
-      setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
-    const postRequestData = {
-      title: data.title,
-      videoType: 'FILE',
-      hashtag: hashtags,
-      inGameInfoRequests: inGameInfoRequests,
-    };
+    if (JSON.stringify(previousInGameInfo) !== JSON.stringify(inGameInfoRequests)) {
+      postUpdateRequest.InGameTierUpdateRequest = inGameInfoRequests;
+      isChanged = true;
+    }
+
+    if (JSON.stringify(hashtags) !== JSON.stringify(post?.postDTO.hashtagList)) {
+      if (post?.postDTO.hashtagList.length !== 0 && hashtags.length === 0 && ingameInfos) {
+        postUpdateRequest.hashtag = [`${ingameInfos[0].championName}`, `${ingameInfos[0].tier}`];
+        isChanged = true;
+        return;
+      }
+      postUpdateRequest.hashtag = hashtags;
+      isChanged = true;
+    }
+
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
     const emptyFile = new File([emptyBlob], '');
 
     const postFormData = new FormData();
 
-    postFormData.append(
-      'postAddRequest',
-      new Blob([JSON.stringify(postRequestData)], { type: 'application/json' }),
-    );
-    if (uploadedVideo) {
-      postFormData.append('uploadVideos', uploadedVideo);
-    } else {
-      postFormData.append('uploadVideos', emptyFile);
+    // postUpdateRequest.type, uploadVideo 및 videoLink 수정
+    if (post) {
+      // 영상파일 -> 링크로 수정
+      if (post.postDTO.video.type === 'FILE' && !uploadedVideo && videoLink) {
+        postUpdateRequest.type = 'LINK';
+        postUpdateRequest.videoLink = videoLink;
+        postFormData.append('uploadVideo', emptyFile);
+        isChanged = true;
+      }
+      // 링크 -> 영상파일로 수정
+      else if (post.postDTO.video.type === 'LINK' && uploadedVideo && !videoLink) {
+        postFormData.append('uploadVideo', uploadedVideo);
+        postUpdateRequest.type = 'FILE';
+        postUpdateRequest.videoLink = '';
+        isChanged = true;
+      } else if (post.postDTO.video.type === 'FILE' && uploadedVideo) {
+        postFormData.append('uploadVideo', uploadedVideo);
+        isChanged = true;
+      } else if (post.postDTO.video.type === 'LINK' && post.postDTO.video.url !== videoLink) {
+        postUpdateRequest.videoLink = videoLink;
+        isChanged = true;
+      }
     }
 
+    if (JSON.stringify(postUpdateRequest) !== '{}') {
+      postFormData.append(
+        'postUpdateRequest',
+        new Blob([JSON.stringify(postUpdateRequest)], { type: 'application/json' }),
+      );
+    }
+
+    // thumbnailImage 수정
     if (!uploadedThumbnail) {
-      if (thumbnail) {
+      if (thumbnail && uploadedVideo) {
         postFormData.append('thumbnailImage', thumbnail);
-      } else {
-        postFormData.append('thumbnailImage', emptyFile);
+        isChanged = true;
       }
     } else {
       postFormData.append('thumbnailImage', uploadedThumbnail);
+      isChanged = true;
     }
 
-    postFormData.append('content', contentData, 'content.html');
+    // content 수정
+    const contentData = new Blob([content], { type: 'text/html' });
+    if (post?.postDTO.content !== content) {
+      postFormData.append('content', contentData, 'content.html');
+      isChanged = true;
+    }
+    for (const [key, value] of postFormData.entries()) {
+      if (key === 'postUpdateRequest') {
+        const fileReader = new FileReader();
+        fileReader.onload = function (event) {
+          console.log(`Decoded JSON data for ${key}:`, event.target?.result);
+        };
+        fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
+      } else {
+        console.log(`${key}:`, value);
+      }
+    }
 
     const postConfirm = confirm('게시글 수정을 완료하시겠습니까?');
     if (postConfirm) {
+      if (!isChanged) {
+        router.back();
+        return;
+      }
       setIsLoading(true);
       editPost(postFormData);
     } else {
@@ -232,6 +294,7 @@ export default function EditForm() {
       }
 
       setUploadedVideo(file);
+      setVideoLink("")
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -353,13 +416,6 @@ export default function EditForm() {
     setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
-  const handlePositionChange = (position: string, index: number) => {
-    const updatedIngameInfos = ingameInfos?.map((info, idx) =>
-      idx === index ? { ...info, position } : info,
-    );
-    setIngameInfos(updatedIngameInfos);
-  };
-
   const handleTierChange = (tier: string, index: number) => {
     const updatedIngameInfos = ingameInfos?.map((info, idx) =>
       idx === index ? { ...info, tier } : info,
@@ -443,16 +499,16 @@ export default function EditForm() {
     };
   }, []);
 
-  const beforeUnloadHandler = useCallback(
-    (event: BeforeUnloadEvent) => {
-      if (isLogin && !postEdited) {
-        const message = '페이지를 떠나면 수정된 내용이 사라집니다.';
-        event.preventDefault();
-        return message;
-      }
-    },
-    [isLogin, postEdited],
-  );
+  // const beforeUnloadHandler = useCallback(
+  //   (event: BeforeUnloadEvent) => {
+  //     if (isLogin && !postEdited) {
+  //       const message = '페이지를 떠나면 수정된 내용이 사라집니다.';
+  //       event.preventDefault();
+  //       return message;
+  //     }
+  //   },
+  //   [isLogin, postEdited],
+  // );
 
   const handlePopState = useCallback(async () => {
     if (isLogin && !postEdited) {
@@ -481,13 +537,13 @@ export default function EditForm() {
     };
 
     router.push = newPush;
-    window.onbeforeunload = beforeUnloadHandler;
+    // window.onbeforeunload = beforeUnloadHandler;
 
     return () => {
       router.push = originalPush;
       window.onbeforeunload = null;
     };
-  }, [isLogin, postEdited, beforeUnloadHandler, router]);
+  }, [isLogin, postEdited, router]);
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
@@ -597,14 +653,14 @@ export default function EditForm() {
                       >
                         {uploadedThumbnail ? (
                           <div>{uploadedThumbnail.name}</div>
-                        ) : post?.postDTO.thumbnailURL ? (
-                          <div>{post.postDTO.thumbnailURL}</div>
-                        ) : (
+                        ) : uploadedVideo ? (
                           <>
                             <IoDocumentOutline className='mr-[10px] text-[20px]' />
                             <div>파일을 끌어오거나 클릭 후 업로드 하세요</div>
                           </>
-                        )}
+                        ) : post?.postDTO.thumbnailURL ? (
+                          <div>{post.postDTO.thumbnailURL}</div>
+                        ) : null}
                       </label>
                     </div>
                   ) : (
@@ -614,22 +670,25 @@ export default function EditForm() {
               ))}
             </div>
           </div>
-          
+
           {selectedTab === 0 && post && !uploadedVideo ? (
-              <video
-                muted
-                controls
-                playsInline
-                poster={post.postDTO.thumbnailURL}
-                className='p-content-s-mb h-fit w-[500px] rounded-[30px] block visible'
-              >
-                <source src={post.postDTO.video.url} type='video/mp4' />
-                <source src={post.postDTO.video.url} type='video/webm' />
-              </video>
-            ) : 
-              selectedTab === 1 && post && !uploadedThumbnail && <img src={post.postDTO.thumbnailURL} className="w-[500px] h-fit"></img>
-            
-          }
+            <video
+              muted
+              controls
+              playsInline
+              poster={post.postDTO.thumbnailURL}
+              className='p-content-s-mb h-fit w-[500px] rounded-[30px] block visible'
+            >
+              <source src={post.postDTO.video.url} type='video/mp4' />
+              <source src={post.postDTO.video.url} type='video/webm' />
+            </video>
+          ) : (
+            selectedTab === 1 &&
+            post &&
+            !uploadedThumbnail && (
+             !uploadedVideo ?  <img src={post.postDTO.thumbnailURL} className='w-[500px] h-fit'/>:null
+            )
+          )}
         </div>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full bg-[#ffffff]'>
           <div className='p-content-mb  text-[20px] font-semibold text-[#8A1F21]'>글 작성</div>
