@@ -90,7 +90,7 @@ export default function Login_Mobile() {
             <div className='flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px] cursor-pointer'>
               <Image src={kakaoIcon} width={17} height={16} alt='카카오아이콘' />
               <button className='text-white font-bold whitespace-nowrap text-[20px]'>
-                카카오로 로그인
+              카카오톡으로 로그인
               </button>
             </div>
           </div>
