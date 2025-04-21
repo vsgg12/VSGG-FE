@@ -6,14 +6,14 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import postSocialLogin from '@/api/login/postSocialLogin';
 
-export default function Naver() {
+export default function Google() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
   const { mutate: login } = useMutation({
-    mutationFn: () => postSocialLogin({ code, state }, "naver"),
+    mutationFn: () => postSocialLogin({ code, state }, 'google'),
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
@@ -39,7 +39,7 @@ export default function Naver() {
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>
-      <h1>네이버 로그인 중...</h1>
+      <h1>구글 로그인 중...</h1>
     </div>
   );
 }
