@@ -1,4 +1,4 @@
-import getNaverURL from '@/api/naver/getNaverURL';
+import getNaverURL from '@/api/login/getNaverURL';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { SiNaver } from 'react-icons/si';
@@ -11,7 +11,7 @@ function AlertLoginModal() {
 
   const NaverLogin = () => {
     if (NAVER_AUTH_URL) {
-      window.location.href = NAVER_AUTH_URL.naverLoginUrl;
+      window.location.href = NAVER_AUTH_URL.loginUrl;
     }
   };
   return (
