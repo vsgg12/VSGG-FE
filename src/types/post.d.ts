@@ -45,7 +45,7 @@ type IVoteType = {
 // 로그인
 type IPostLoginRequestType = {
   code: string | null;
-  state: string | null;
+  state?: string | null;
 };
 
 type IPostLoginType = {

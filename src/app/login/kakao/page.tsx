@@ -10,10 +10,10 @@ export default function Kakao() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
-  const state = searchParams.get('state');
+  //   const state = searchParams.get('state');
 
   const { mutate: login } = useMutation({
-    mutationFn: () => postSocialLogin({ code, state }, 'kakao'),
+    mutationFn: () => postSocialLogin({ code }, 'kakao'),
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
