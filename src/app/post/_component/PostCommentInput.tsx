@@ -14,10 +14,19 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const { setValue, getValues } = useFormContext();
 
   useEffect(() => {
     handleFocusTextarea();
-  }, [targetNickname]);
+
+    if (targetNickname) {
+      const currentValue = getValues('commentContent');
+      if (!currentValue?.startsWith(`@${targetNickname}`)) {
+        // setTargetComment({ id: null, nickname: '' });
+        setValue('commentContent', `@${targetNickname}`);
+      }
+    }
+  }, [targetNickname, setValue, getValues]);
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
