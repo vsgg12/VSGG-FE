@@ -22,8 +22,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
     if (targetNickname) {
       const currentValue = getValues('commentContent');
       if (!currentValue?.startsWith(`@${targetNickname}`)) {
-        // setTargetComment({ id: null, nickname: '' });
-        setValue('commentContent', `@${targetNickname}`);
+        setValue('commentContent', `@${targetNickname} `);
       }
     }
   }, [targetNickname, setValue, getValues]);
