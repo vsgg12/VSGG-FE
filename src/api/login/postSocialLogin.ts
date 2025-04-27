@@ -15,14 +15,17 @@ export default async function postSocialLogin(
   body: IPostLoginRequestType,
   socialLoginType: 'google' | 'kakao' | 'naver',
 ) {
-  const request = new Request(`/auth/${socialLoginType}/callback`, {
-    method: 'GET',
-    body: JSON.stringify(body),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+  const request = new Request(
+    `${process.env.NEXT_PUBLIC_PROXY_URL}/auth/${socialLoginType}/callback`,
+    {
+      method: 'GET',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     },
-  });
+  );
   try {
     const response = await fetch(request);
 
