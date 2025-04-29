@@ -4,16 +4,15 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
-import postSocialLogin from '@/api/login/postSocialLogin';
+import getSocialLogin from '@/api/login/getSocialLogin';
 
 export default function Google() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
-  //   const state = searchParams.get('state');
 
   const { mutate: login } = useMutation({
-    mutationFn: () => postSocialLogin({ code }, 'google'),
+    mutationFn: () => getSocialLogin(code! , 'google'),
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
