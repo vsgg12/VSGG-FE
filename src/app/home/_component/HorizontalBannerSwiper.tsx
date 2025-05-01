@@ -17,7 +17,7 @@ function HorizontalBannerSwiper() {
   };
 
   return (
-    <div className='w-full flex flex-col gap-[10px] relative'>
+    <div className='w-full flex flex-col gap-[10px]'>
       <Swiper
         modules={[Autoplay, Pagination]}
         spaceBetween={30}
@@ -30,7 +30,7 @@ function HorizontalBannerSwiper() {
           disableOnInteraction: false,
         }}
         loop={true}
-        className='w-[304px] h-[134.89px] relative'
+        className='w-[304px] h-[134.89px]'
       >
         <SwiperSlide>
           <img
