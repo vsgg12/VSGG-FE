@@ -17,7 +17,7 @@ export default function Google() {
     onSuccess: (data) => {
       if (data.resultCode === 409) {
         useAuthStore.setState({
-          user: { email: data.email, nickname: '', profile_image: data.profileImage, socialLoginType: "KAKAO" },
+          user: { email: data.email, nickname: '', profile_image: data.profileImage, socialLoginType: "GOOGLE" },
         }),
           router.push('/signUp');
       } else if (data.resultCode === 200) {
