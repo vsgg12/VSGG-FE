@@ -17,7 +17,7 @@ export default function Naver() {
     onSuccess: (data) => {
       if (data.resultCode === 409) {
         useAuthStore.setState({
-          user: { email: data.email, nickname: '', profile_image: data.profileImage },
+          user: { email: data.email, nickname: '', profile_image: data.profileImage, socialLoginType: "NAVER" },
         }),
           router.push('/signUp');
       } else if (data.resultCode === 200) {
@@ -25,7 +25,12 @@ export default function Naver() {
           isLogin: true,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
-          user: { email: data.email, nickname: data.nickname, profile_image: data.profileImage },
+          user: {
+            email: data.email,
+            nickname: data.nickname,
+            profile_image: data.profileImage,
+            socialLoginType: 'NAVER',
+          },
         });
         router.push('/home');
       }
