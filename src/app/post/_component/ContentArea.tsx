@@ -24,16 +24,13 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
 
   useEffect(() => {
     if (post) {
-      const inGameInfo = post.postDTO.inGameInfoList[0] || {
-        championName: 'Unknown',
-        tier: 'Unknown',
-      };
+      const inGameInfo = post.postDTO.inGameInfoList[0];
 
       if (post.postDTO.hashtagList.length === 0) {
         setNoHashTag([
           {
             id: 0,
-            name: inGameInfo.championName,
+            name: inGameInfo.championName!,
           },
           {
             id: 1,
