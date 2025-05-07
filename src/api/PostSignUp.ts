@@ -4,6 +4,7 @@ interface IPostSignUp {
   email: string | undefined;
   profileImage: string | undefined;
   nickname: string;
+  oAuthProvider: string | undefined;
   agrees: {
     agreeAge: boolean;
     agreeTerms: boolean;

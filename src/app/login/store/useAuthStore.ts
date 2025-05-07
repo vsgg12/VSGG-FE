@@ -7,6 +7,7 @@ interface IUserState {
   email: string;
   nickname: string;
   profile_image: string;
+  socialLoginType?: string;
 }
 
 type LoginState = {
