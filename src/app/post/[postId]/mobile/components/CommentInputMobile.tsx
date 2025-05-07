@@ -6,12 +6,6 @@ import AlertLoginModal_Mobile from '@/components/mobile/modals/AlertLoginModalMo
 
 interface IPostCommentInputProps {
   targetNickname: string;
-  setTargetComment: React.Dispatch<
-    React.SetStateAction<{
-      id: number | null;
-      nickname: string;
-    }>
-  >;
 }
 
 export default function CommentInputMobile({ targetNickname }: IPostCommentInputProps) {
@@ -20,10 +14,18 @@ export default function CommentInputMobile({ targetNickname }: IPostCommentInput
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const { setValue, getValues } = useFormContext();
 
   useEffect(() => {
     handleFocusTextarea();
-  }, [targetNickname]);
+
+    if (targetNickname) {
+      const currentValue = getValues('commentContent');
+      if (!currentValue?.startsWith(`@${targetNickname}`)) {
+        setValue('commentContent', `@${targetNickname} `);
+      }
+    }
+  }, [targetNickname, setValue, getValues]);
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
@@ -44,7 +46,6 @@ export default function CommentInputMobile({ targetNickname }: IPostCommentInput
 
       if (currentLines > maxTextLines) {
         const text = textareaRef.current.value.split('\n');
-        // 최대 줄 수에 맞게 텍스트를 잘라냄
         textareaRef.current.value = text.slice(0, maxTextLines).join('\n');
       }
 

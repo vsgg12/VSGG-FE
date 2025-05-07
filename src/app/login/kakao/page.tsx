@@ -6,13 +6,13 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import getSocialLogin from '@/api/login/getSocialLogin';
 
-export default function Naver() {
+export default function Kakao() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
 
   const { mutate: login } = useMutation({
-    mutationFn: () => getSocialLogin(code!, 'naver'),
+    mutationFn: () => getSocialLogin(code!, 'kakao'),
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
@@ -38,7 +38,7 @@ export default function Naver() {
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>
-      <h1>네이버 로그인 중...</h1>
+      <h1>카카오 로그인 중...</h1>
     </div>
   );
 }

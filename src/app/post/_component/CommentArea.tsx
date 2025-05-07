@@ -32,6 +32,7 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
     nickname: '',
   });
   const [newCommentId, setNewCommentId] = useState<number | null>(null);
+  const { getValues } = commentMethods;
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -113,10 +114,22 @@ function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   const onCommentSubmit = (data: { commentContent: string }) => {
+    console.log(data);
     if (isCommentInProgress) {
       return;
     }
     setIsCommentInProgress(true);
+
+    if (targetComment) {
+      const commentValue = getValues('commentContent');
+      if (commentValue?.startsWith(`@${targetComment.nickname}`)) {
+        if (commentValue.includes(`@${targetComment.nickname}`)) {
+          const cleanedComment = commentValue.replace(`@${targetComment.nickname}`, '').trim();
+          writeComment(cleanedComment);
+          return;
+        }
+      }
+    }
     writeComment(data.commentContent.trim());
   };
 

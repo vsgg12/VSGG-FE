@@ -32,6 +32,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
     nickname: '',
   });
   const [newCommentId, setNewCommentId] = useState<number | null>(null);
+  const { getValues } = commentMethods;
 
   const { data: commentData } = useQuery({
     queryKey: ['COMMENTS'],
@@ -110,6 +111,17 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
       return;
     }
     setIsCommentInProgress(true);
+
+    if (targetComment) {
+      const commentValue = getValues('commentContent');
+      if (commentValue?.startsWith(`@${targetComment.nickname}`)) {
+        if (commentValue.includes(`@${targetComment.nickname}`)) {
+          const cleanedComment = commentValue.replace(`@${targetComment.nickname}`, '').trim();
+          writeComment(cleanedComment);
+          return;
+        }
+      }
+    }
     writeComment(data.commentContent.trim());
   };
 
@@ -120,10 +132,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
         <div className='flex flex-row w-full'>
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>
-              <PostCommentInput
-                targetNickname={targetComment.nickname}
-                setTargetComment={setTargetComment}
-              />
+              <PostCommentInput targetNickname={targetComment.nickname} />
             </form>
           </FormProvider>
         </div>
