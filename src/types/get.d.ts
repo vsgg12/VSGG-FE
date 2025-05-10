@@ -155,3 +155,8 @@ type IVotedPostItem = {
   createdDate: string;
   authorTier: string;
 };
+
+// 로그인 url
+type ILoginUrlType = {
+  loginUrl: string;
+}
