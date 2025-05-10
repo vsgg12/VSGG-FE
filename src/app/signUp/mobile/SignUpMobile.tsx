@@ -102,6 +102,7 @@ export default function SignUp_Mobile() {
         email: user?.email,
         profileImage: user?.profile_image,
         nickname,
+        oAuthProvider: user?.socialLoginType,
         agrees: {
           agreeAge: checkboxes.agreeAge,
           agreeTerms: checkboxes.agreeTerms,
@@ -121,6 +122,7 @@ export default function SignUp_Mobile() {
           email: user ? user.email : '',
           nickname,
           profile_image: user ? user.profile_image : '',
+          socialLoginType: user ? user.socialLoginType : ''
         },
       });
       localStorage.setItem('nickname', nickname);
