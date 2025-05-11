@@ -13,7 +13,8 @@ type IPostWriteType = {
 
 type IPostAddRequestType = {
   title: string;
-  type: "LINK" | "FILE";
+  type?: "LINK" | "FILE";
+  videoType?: "LINK" | "FILE"
   hashtag: string[];
   inGameInfoRequests: {
     championName: string;

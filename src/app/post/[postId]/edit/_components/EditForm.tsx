@@ -141,7 +141,7 @@ export default function EditForm() {
         return;
       }
     }
-    // postUpdateRequest.InGameTierUpdateRequest 수정
+    // postUpdateRequest.inGameTierUpdateRequest 수정
     const previousInGameInfo = post?.postDTO.inGameInfoList.map(({ inGameInfoId, tier }) => ({
       inGameInfoId: String(inGameInfoId),
       tier: tier,
@@ -153,7 +153,7 @@ export default function EditForm() {
     }));
 
     if (JSON.stringify(previousInGameInfo) !== JSON.stringify(inGameInfoRequests)) {
-      postUpdateRequest.InGameTierUpdateRequest = inGameInfoRequests;
+      postUpdateRequest.inGameTierUpdateRequest = inGameInfoRequests;
       isChanged = true;
     }
 

@@ -11,7 +11,7 @@ type IEditPostUpdateRequest = {
   type?: string;
   hashtag?: string[];
   videoLink?: string;
-  InGameTierUpdateRequest? : IEditInGameInfoRequest[]
+  inGameTierUpdateRequest? : IEditInGameInfoRequest[]
 }
 
 type IEditInGameInfoRequest = {
