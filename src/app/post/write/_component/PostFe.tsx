@@ -217,7 +217,7 @@ export default function PostForm() {
       setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
     const postRequestData:IPostAddRequestType = {
       title: data.title,
-      type: uploadedVideo ? 'FILE' : 'LINK',
+      videoType: uploadedVideo ? 'FILE' : 'LINK',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
       voteEndDate: moment(selectedDate).format('YYYYMMDD'),
