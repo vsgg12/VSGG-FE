@@ -67,7 +67,10 @@ const _fetch = async <T = unknown, R = unknown>({
     credentials: 'include',
   };
 
-  if (body) {
+  if (body instanceof FormData) {
+    delete headers['Content-Type'];
+    requestOptions.body = body;
+  } else if (body) {
     requestOptions.body = JSON.stringify(body);
   }
 
