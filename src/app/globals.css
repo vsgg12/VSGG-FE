@@ -240,6 +240,7 @@ button {
   gap: 8px;
   z-index: 100;
   cursor: pointer;
+  --swiper-pagination-bullet-vertical-gap: 0px;
 }
 
 .custom-pagination .swiper-pagination-bullet {
