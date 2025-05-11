@@ -18,7 +18,7 @@ function VerticalBannerSwiper() {
   };
 
   return (
-    <div className='w-full flex gap-[10px]'>
+    <div className='w-full flex gap-[10px] items-end'>
       <Swiper
         direction='vertical'
         mousewheel={true}
@@ -52,7 +52,7 @@ function VerticalBannerSwiper() {
           />
         </SwiperSlide>
       </Swiper>
-      <div className='custom-pagination h-full flex self-end rotate-90' />
+      <div className='custom-pagination flex flex-col' />
     </div>
   );
 }

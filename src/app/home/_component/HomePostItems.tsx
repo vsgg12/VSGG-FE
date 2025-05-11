@@ -60,7 +60,7 @@ export default function HomePostItems({
             }}
           >
             <div className='flex w-full font-medium justify-center items-center gap-[8px]'>
-              <div className='h-[40px] text-black text-[1.563rem] '>{post.title}</div>
+              <div className='max-w-[70%] text-black text-[1.563rem] '>{post.title}</div>
               <p className='text-[#C8C8C8] flex-grow text-[0.75rem]'>
                 | 조회수 {formatNumberWithCommas(post.viewCount)}
               </p>

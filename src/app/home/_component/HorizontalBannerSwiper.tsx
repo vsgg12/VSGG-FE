@@ -30,7 +30,7 @@ function HorizontalBannerSwiper() {
           disableOnInteraction: false,
         }}
         loop={true}
-        className='w-[304px] h-[134.89px]'
+        className='w-[304px] h-[134.89px] flex'
       >
         <SwiperSlide>
           <img
@@ -49,7 +49,7 @@ function HorizontalBannerSwiper() {
           />
         </SwiperSlide>
       </Swiper>
-      <div className='custom-pagination flex self-end'></div>
+      <div className='custom-pagination flex justify-end'></div>
     </div>
   );
 }
