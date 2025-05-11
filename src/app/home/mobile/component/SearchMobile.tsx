@@ -1,10 +1,9 @@
+'use client'
 import { GoSearch } from 'react-icons/go';
 import useSearchStore from '../../store/useSearchStore';
 import { useState } from 'react';
 import LogoMobile from '@/components/mobile/LogoMobile';
-// import Image from 'next/image';
-// import BannerMobile from '../../../../../public/svg/banner/bannerMobile.svg';
-// import { useRouter } from 'next/navigation';
+import VerticalBannerSwiper from './VerticalBannerSwiper';
 
 export default function SearchMobile({
   handleSearch,
@@ -15,7 +14,6 @@ export default function SearchMobile({
 }) {
   const { setKeyword } = useSearchStore();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  // const router = useRouter();
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedKeyword = e.target.value.trim();
@@ -23,12 +21,9 @@ export default function SearchMobile({
     setSearchKeyword(e.target.value);
   };
 
-  // const handleFeedbackBannerClick = () => {
-  //   router.push('https://forms.gle/iszzzg32YAeSLJPq9');
-  // };
-
   return (
     <div className='w-[60%] mt-[20px] flex flex-col items-center justify-center gap-[20px]'>
+
       <LogoMobile size='default' />
       <div className='relative flex flex-row w-full'>
         <input
@@ -42,16 +37,9 @@ export default function SearchMobile({
           <GoSearch className='absolute right-5 top-[8px]  text-[#8A1F21]' />
         </button>
       </div>
-      {/* <div className='w-full'>
-        <Image
-          src={BannerMobile}
-          alt='feedback banner'
-          width={150.8}
-          height={59.47}
-          className='flex justify-self-end cursor-pointer'
-          onClick={handleFeedbackBannerClick}
-        />
-      </div> */}
+      <div className='self-end'>
+        <VerticalBannerSwiper />
+      </div>
     </div>
   );
 }

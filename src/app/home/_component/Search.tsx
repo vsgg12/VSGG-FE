@@ -1,10 +1,9 @@
+'use client'
 import { GoSearch } from 'react-icons/go';
 import Logo from '../../../components/Logo';
 import useSearchStore from '../store/useSearchStore';
 import { useState } from 'react';
-// import Image from 'next/image';
-// import Banner from '../../../../public/svg/banner/banner.svg';
-// import { useRouter } from 'next/navigation';
+import HorizontalBannerSwiper from './HorizontalBannerSwiper';
 
 export default function Search({
   handleSearch,
@@ -15,17 +14,12 @@ export default function Search({
 }) {
   const { setKeyword } = useSearchStore();
   const [searchKeyword, setSearchKeyword] = useState<string>('');
-  // const router = useRouter();
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedKeyword = e.target.value.trim();
     setKeyword(trimmedKeyword);
     setSearchKeyword(e.target.value);
   };
-
-  // const handleFeedbackBannerClick = () => {
-  //   router.push('https://forms.gle/iszzzg32YAeSLJPq9');
-  // };
 
   return (
     <div className='flex w-full justify-center relative'>
@@ -40,18 +34,13 @@ export default function Search({
             value={searchKeyword}
           />
           <button onClick={handleSearch}>
-            <GoSearch className='absolute right-5 top-2.5  text-[#8A1F21]' />
+            <GoSearch className='absolute right-5 top-2.5 text-[#8A1F21]' />
           </button>
         </div>
       </div>
-      {/* <Image
-        src={Banner}
-        alt='feedback banner'
-        width={284}
-        height={112}
-        className='absolute right-0 top-[20%] translate-y-[-50%] cursor-pointer'
-        onClick={handleFeedbackBannerClick}
-      /> */}
+      <div className='absolute right-0 top-1/2 -translate-y-1/2'>
+        <HorizontalBannerSwiper />
+      </div>
     </div>
   );
 }

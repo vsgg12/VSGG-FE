@@ -234,3 +234,20 @@ button {
     transform: rotate(1turn);
   }
 }
+
+.custom-pagination {
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+  cursor: pointer;
+  --swiper-pagination-bullet-vertical-gap: 0px;
+}
+
+.custom-pagination .swiper-pagination-bullet {
+  background-color: #999999;
+  width: 5px;
+  height: 5px;
+}
+.custom-pagination .swiper-pagination-bullet-active {
+  background-color: #8a1f21;
+}

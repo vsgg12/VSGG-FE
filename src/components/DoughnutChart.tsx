@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import VoteResultCard from './VoteResultCard';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -15,18 +16,25 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
 }: DoughnutChartPropsHome) => {
   const [championNames, setChampionNames] = useState<string[]>([]);
   const [averageValues, setAverageValues] = useState<(number | null)[]>([]);
+  const [championPositions, setChampionPositions] = useState<string[]>([]);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
+  const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
 
   useEffect(() => {
     const newChampionNames: string[] = [];
     const newAverageValues: (number | null)[] = [];
+    const newChampionPositions: string[] = [];
 
     voteInfos.forEach((info) => {
       newChampionNames.push(info.championName);
       newAverageValues.push(info.averageRatio);
+      newChampionPositions.push(info.position);
     });
 
     setChampionNames(newChampionNames);
     setAverageValues(newAverageValues);
+    setChampionPositions(newChampionPositions);
   }, [voteInfos]);
 
   const data = {
@@ -53,7 +61,16 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
           label: function (context: TooltipItem<'doughnut'>) {
             const label = context.label || '';
             const value = context.raw as number;
-            return `${label}: ${value}`;
+
+            const index = championNames.indexOf(label);
+            if (index !== -1) {
+              setSelectedPosition(championPositions[index]);
+            }
+
+            setSelectedLabel(label);
+            setSelectedValue(value);
+
+            return `${label}`;
           },
         },
       },
@@ -61,10 +78,15 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   };
 
   return (
-    <div
-      className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} flex-col items-center justify-center`}
-    >
-      <Doughnut data={data} options={options} />
+    <div className='flex relative'>
+      <div
+        className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} items-center justify-center`}
+      >
+        <Doughnut data={data} options={options} />
+      </div>
+      {selectedLabel && (
+        <VoteResultCard name={selectedLabel} value={selectedValue} position={selectedPosition} />
+      )}
     </div>
   );
 };
