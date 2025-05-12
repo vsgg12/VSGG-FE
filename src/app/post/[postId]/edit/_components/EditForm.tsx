@@ -173,23 +173,23 @@ export default function EditForm() {
 
     const postFormData = new FormData();
 
-    // postUpdateRequest.type, uploadVideo 및 videoLink 수정
+    // postUpdateRequest.type, uploadVideos 및 videoLink 수정
     if (post) {
       // 영상파일 -> 링크로 수정
       if (post.postDTO.video.type === 'FILE' && !uploadedVideo && videoLink) {
         postUpdateRequest.type = 'LINK';
         postUpdateRequest.videoLink = videoLink;
-        postFormData.append('uploadVideo', emptyFile);
+        postFormData.append('uploadVideos', emptyFile);
         isChanged = true;
       }
       // 링크 -> 영상파일로 수정
       else if (post.postDTO.video.type === 'LINK' && uploadedVideo && !videoLink) {
-        postFormData.append('uploadVideo', uploadedVideo);
+        postFormData.append('uploadVideos', uploadedVideo);
         postUpdateRequest.type = 'FILE';
         postUpdateRequest.videoLink = '';
         isChanged = true;
       } else if (post.postDTO.video.type === 'FILE' && uploadedVideo) {
-        postFormData.append('uploadVideo', uploadedVideo);
+        postFormData.append('uploadVideos', uploadedVideo);
         isChanged = true;
       } else if (post.postDTO.video.type === 'LINK' && post.postDTO.video.url !== videoLink) {
         postUpdateRequest.videoLink = videoLink;

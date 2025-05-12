@@ -13,6 +13,7 @@ if [ $? -eq 0 ]; then
     # 실행 중인 경우
     echo "vsgg 프로세스가 실행 중입니다."
     pm2 reload vsgg
+    pm2 update vsgg
 else
     # 실행 중이 아닌 경우
     echo "vsgg 프로세스가 실행되지 않았습니다."
