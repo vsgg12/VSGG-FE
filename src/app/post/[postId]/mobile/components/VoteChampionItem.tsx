@@ -28,8 +28,8 @@ function VoteChampionItem({ index, champion }: Props) {
 
   const colorData =
     selectedChampIdx === index
-      ? `${getPositionSrc(champion.position, 'background')}`
-      : ` ${getPositionSrc(champion.position, 'border')} bg-white border-[2px]`;
+      ? `${getPositionSrc(champion.position!, 'background')}`
+      : ` ${getPositionSrc(champion.position!, 'border')} bg-white border-[2px]`;
 
   return (
     <div
@@ -44,8 +44,8 @@ function VoteChampionItem({ index, champion }: Props) {
         <Image
           src={
             selectedChampIdx === index
-              ? getPositionSrc(champion.position, 'icon_selected')
-              : getPositionSrc(champion.position, 'icon_default')
+              ? getPositionSrc(champion.position!, 'icon_selected')
+              : getPositionSrc(champion.position!, 'icon_default')
           }
           alt='position'
           width={32}

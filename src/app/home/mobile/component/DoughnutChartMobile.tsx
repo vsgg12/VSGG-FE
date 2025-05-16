@@ -21,8 +21,8 @@ const DoughnutChartMobile: React.FC<DoughnutChartPropsHome> = ({
     const newAverageValues: (number | null)[] = [];
 
     voteInfos.forEach((info) => {
-      newChampionNames.push(info.championName);
-      newAverageValues.push(info.averageRatio);
+      newChampionNames.push(info.championName!);
+      newAverageValues.push(info.averageRatio!);
     });
 
     setChampionNames(newChampionNames);

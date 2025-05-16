@@ -34,7 +34,7 @@ export default function PostItemMobile({
         setNoHashTag([
           {
             id: 0,
-            name: inGameInfo.championName,
+            name: inGameInfo.championName!,
           },
           {
             id: 1,

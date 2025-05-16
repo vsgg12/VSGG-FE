@@ -34,7 +34,7 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
         setNoHashTag([
           {
             id: 0,
-            name: inGameInfo.championName,
+            name: inGameInfo.championName!,
           },
           {
             id: 1,
