@@ -27,9 +27,9 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
     const newChampionPositions: string[] = [];
 
     voteInfos.forEach((info) => {
-      newChampionNames.push(info.championName);
-      newAverageValues.push(info.averageRatio);
-      newChampionPositions.push(info.position);
+      newChampionNames.push(info.championName!);
+      newAverageValues.push(info.averageRatio!);
+      newChampionPositions.push(info.position!);
     });
 
     setChampionNames(newChampionNames);
