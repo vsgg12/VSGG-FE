@@ -1,10 +1,7 @@
 'use client';
 
-import getPostItem from '@/api/getPostItem';
-import patchEditPost from '@/api/patchEditPost';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import EditForm from './_components/EditForm';
 import Link from 'next/link';
@@ -50,7 +47,7 @@ function EditPost() {
                 onClick={() => {
                   history.back();
                 }}
-                className=' box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
+                className='box-content flex h-[34px] w-[92px] items-center justify-center rounded-[150px] bg-[#8A1F21] text-white'
               >
                 <div className='text-[13px]'>뒤로가기</div>
               </button>
