@@ -1,17 +1,17 @@
 type IPatchEditPostRequestBodyType = {
-  uploadVideos?: File;
-  thumbnailImage?: File;
-  postUpdateRequest?: IEditPostUpdateRequest;
-  content?: string;
-  videoUrl?: string;
+  uploadVideos: File | null;
+  thumbnailImage: File | null;
+  postUpdateRequest: IEditPostUpdateRequest | null;
+  content: string | null;
+  videoUrl: string | null;
 };
 
 type IEditPostUpdateRequest = {
-  title?: string;
-  type?: string;
-  hashtag?: string[];
-  videoLink?: string;
-  inGameTierUpdateRequest? : IEditInGameInfoRequest[]
+  title: string | null;
+  type: string | null;
+  hashtag: string[] | null;
+  videoLink: string | null;
+  inGameTierUpdateRequest: IEditInGameInfoRequest[] | null;
 }
 
 type IEditInGameInfoRequest = {

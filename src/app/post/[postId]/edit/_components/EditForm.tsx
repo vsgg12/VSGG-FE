@@ -99,14 +99,13 @@ export default function EditForm() {
         } else if (error.message === 'POST_EDIT_RESTRICTED_WITHIN_24H') {
           alert('게시글 수정은 판결 종료 24시간 이내의 게시글만 가능합니다.');
           router.back();
-        }
-        else {
-          alert(`게시글 수정 실패 :  ${error.message}`)
+        } else {
+          alert(`게시글 수정 실패 :  ${error.message}`);
         }
       },
       onSettled: () => {
         setIsLoading(false);
-      }
+      },
     });
   };
 
@@ -121,7 +120,13 @@ export default function EditForm() {
   };
 
   const onSubmit: SubmitHandler<ICreatePostFormProps> = async (data) => {
-    const postUpdateRequest: IEditPostUpdateRequest = {};
+    const postUpdateRequest: IEditPostUpdateRequest = {
+      title: null,
+      type: null,
+      hashtag: null,
+      videoLink: null,
+      inGameTierUpdateRequest: null
+    };
     let isChanged = false;
     if (data.title === '') {
       data.title = title;
@@ -131,6 +136,8 @@ export default function EditForm() {
     if (data.title !== title) {
       postUpdateRequest.title = data.title;
       isChanged = true;
+    } else {
+      postUpdateRequest.title = null;
     }
 
     if (quillRef.current) {
@@ -153,8 +160,10 @@ export default function EditForm() {
     }));
 
     if (JSON.stringify(previousInGameInfo) !== JSON.stringify(inGameInfoRequests)) {
-      postUpdateRequest.inGameTierUpdateRequest = inGameInfoRequests;
+      postUpdateRequest.inGameTierUpdateRequest = inGameInfoRequests!;
       isChanged = true;
+    } else {
+      postUpdateRequest.inGameTierUpdateRequest = null
     }
 
     if (JSON.stringify(hashtags) !== JSON.stringify(post?.postDTO.hashtagList)) {
@@ -165,6 +174,8 @@ export default function EditForm() {
       }
       postUpdateRequest.hashtag = hashtags;
       isChanged = true;
+    } else {
+      postUpdateRequest.hashtag = null;
     }
 
     //아무것도 없을 때 보내는거
@@ -175,6 +186,11 @@ export default function EditForm() {
 
     // postUpdateRequest.type, uploadVideos 및 videoLink 수정
     if (post) {
+      if (!uploadedVideo && !videoLink) {
+        postFormData.append('uploadVideos', 'null');
+        postUpdateRequest.videoLink = null;
+        postUpdateRequest.type = null;
+      }
       // 영상파일 -> 링크로 수정
       if (post.postDTO.video.type === 'FILE' && !uploadedVideo && videoLink) {
         postUpdateRequest.type = 'LINK';
@@ -197,18 +213,13 @@ export default function EditForm() {
       }
     }
 
-    if (JSON.stringify(postUpdateRequest) !== '{}') {
-      postFormData.append(
-        'postUpdateRequest',
-        new Blob([JSON.stringify(postUpdateRequest)], { type: 'application/json' }),
-      );
-    }
-
     // thumbnailImage 수정
     if (!uploadedThumbnail) {
       if (thumbnail && uploadedVideo) {
         postFormData.append('thumbnailImage', thumbnail);
         isChanged = true;
+      } else {
+        postFormData.append('thumbnailImage', 'null');
       }
     } else {
       postFormData.append('thumbnailImage', uploadedThumbnail);
@@ -220,18 +231,28 @@ export default function EditForm() {
     if (post?.postDTO.content !== content) {
       postFormData.append('content', contentData, 'content.html');
       isChanged = true;
+    } else {
+      postFormData.append('content', 'null');
     }
-    for (const [key, value] of postFormData.entries()) {
-      if (key === 'postUpdateRequest') {
-        const fileReader = new FileReader();
-        fileReader.onload = function (event) {
-          console.log(`Decoded JSON data for ${key}:`, event.target?.result);
-        };
-        fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
-      } else {
-        console.log(`${key}:`, value);
-      }
+
+    if (JSON.stringify(postUpdateRequest) !== '{}') {
+      postFormData.append(
+        'postUpdateRequest',
+        new Blob([JSON.stringify(postUpdateRequest)], { type: 'application/json' }),
+      );
     }
+
+    // for (const [key, value] of postFormData.entries()) {
+    //   if (key === 'postUpdateRequest') {
+    //     const fileReader = new FileReader();
+    //     fileReader.onload = function (event) {
+    //       console.log(`Decoded JSON data for ${key}:`, event.target?.result);
+    //     };
+    //     fileReader.readAsText(value as Blob); // Blob을 다시 텍스트로 변환
+    //   } else {
+    //     console.log(`${key}:`, value);
+    //   }
+    // }
 
     const postConfirm = confirm('게시글 수정을 완료하시겠습니까?');
     if (postConfirm) {
@@ -294,7 +315,7 @@ export default function EditForm() {
       }
 
       setUploadedVideo(file);
-      setVideoLink("")
+      setVideoLink('');
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -685,9 +706,10 @@ export default function EditForm() {
           ) : (
             selectedTab === 1 &&
             post &&
-            !uploadedThumbnail && (
-             !uploadedVideo ?  <img src={post.postDTO.thumbnailURL} className='w-[500px] h-fit'/>:null
-            )
+            !uploadedThumbnail &&
+            (!uploadedVideo ? (
+              <img src={post.postDTO.thumbnailURL} className='w-[500px] h-fit' />
+            ) : null)
           )}
         </div>
         <div className='p-content-pd p-content-rounded mb-[44px] h-fit w-full bg-[#ffffff]'>
