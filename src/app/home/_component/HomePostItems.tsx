@@ -33,7 +33,7 @@ export default function HomePostItems({
         setNoHashTag([
           {
             id: 0,
-            name: inGameInfo.championName,
+            name: inGameInfo.championName!,
           },
           {
             id: 1,

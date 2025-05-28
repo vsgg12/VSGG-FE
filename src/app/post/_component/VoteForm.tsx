@@ -57,7 +57,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
                 className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
               >
                 <Image
-                  src={getPositionSrc(champion.position)}
+                  src={getPositionSrc(champion.position!)}
                   alt='position'
                   width={24}
                   height={24}

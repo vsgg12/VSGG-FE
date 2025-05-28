@@ -18,7 +18,7 @@ function PostDeadLine({deadLine}:{deadLine: number}) {
     }, [deadLine])
 
   return (
-    <div className='flex items-center justify-center gap-[4px] max-w-[190px] px-[10px] py-[4px] h-[28px] rounded-[20px] bg-[#8A1F21]'>
+    <div className='flex items-center justify-center gap-[4px] max-w-[190px] px-[10px] py-[4px] h-[28px] rounded-[20px] bg-[#8A1F21] whitespace-nowrap'>
       <Image src={timerIcon} width={20} height={20} alt='timer' />
       <span className='text-white text-[18px]'>{message}</span>
     </div>
