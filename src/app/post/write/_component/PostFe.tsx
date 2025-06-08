@@ -1,31 +1,23 @@
 'use client';
 import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
-
 import ReactQuill from 'react-quill';
-
 import PostUploadDesc from './PostUploadDesc';
 import { useRouter } from 'next/navigation';
-
 import Image from 'next/image';
 import topSVG from '../../../../../public/svg/top.svg';
 import midSVG from '../../../../../public/svg/mid.svg';
 import jungleSVG from '../../../../../public/svg/jungle.svg';
 import onedealSVG from '../../../../../public/svg/onedeal.svg';
 import supportSVG from '../../../../../public/svg/supporter.svg';
-
 import topWSVG from '../../../../../public/svg/top-w.svg';
 import midWSVG from '../../../../../public/svg/mid-w.svg';
 import jungleWSVG from '../../../../../public/svg/jungle-w.svg';
 import onedealWSVG from '../../../../../public/svg/onedeal-w.svg';
 import supportWSVG from '../../../../../public/svg/supporter-w.svg';
-
 import Icon_calendar from '../../../../../public/svg/Icon_calendar.svg';
 import moment from 'moment';
-
 import { IoIosClose } from 'react-icons/io';
-
 import {
   IoVideocamOutline,
   IoEaselOutline,
@@ -34,7 +26,6 @@ import {
   IoDocumentOutline,
   IoCloseOutline,
 } from 'react-icons/io5';
-
 import dynamic from 'next/dynamic';
 import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -215,13 +206,12 @@ export default function PostForm() {
 
     hashtags.length === 0 &&
       setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
-    const postRequestData:IPostAddRequestType = {
+    const postRequestData: IPostAddRequestType = {
       title: data.title,
       videoType: uploadedVideo ? 'FILE' : 'LINK',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
       voteEndDate: moment(selectedDate).format('YYYYMMDD'),
-      
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -236,7 +226,7 @@ export default function PostForm() {
     if (uploadedVideo && !videoLink) {
       postFormData.append('uploadVideos', uploadedVideo);
     } else if (!uploadedVideo && videoLink) {
-      postRequestData.videoLink = videoLink
+      postRequestData.videoLink = videoLink;
     }
 
     if (!uploadedThumbnail) {
@@ -331,18 +321,12 @@ export default function PostForm() {
       }
 
       if (file.type !== fileType || !file.name.endsWith('.mp4')) {
-      if (!file.type) {
-        alert('파일 형식을 확인할 수 없습니다.');
-        return;
-      }
-
-      if (file.type !== fileType || !file.name.endsWith('.mp4')) {
         alert('파일 형식이 mp4가 아닙니다.');
         return;
       }
 
       setUploadedVideo(file); // 확인 완료
-      setVideoLink("");
+      setVideoLink('');
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
