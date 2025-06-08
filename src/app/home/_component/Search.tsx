@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { GoSearch } from 'react-icons/go';
 import Logo from '../../../components/Logo';
 import useSearchStore from '../store/useSearchStore';
