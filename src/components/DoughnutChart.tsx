@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Chart, ArcElement, Tooltip, Legend, TooltipItem } from 'chart.js';
+import { Chart, ArcElement, Tooltip, Legend, TooltipModel } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import VoteResultCard from './VoteResultCard';
 
@@ -56,22 +56,24 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
         display: false, // 범례를 숨깁니다.
       },
       tooltip: {
-        enabled: true,
-        callbacks: {
-          label: function (context: TooltipItem<'doughnut'>) {
-            const label = context.label || '';
-            const value = context.raw as number;
+        enabled: false,
+        external: (context: { chart: Chart; tooltip: TooltipModel<'doughnut'> }) => {
+          const tooltipModel = context.tooltip;
 
-            const index = championNames.indexOf(label);
-            if (index !== -1) {
-              setSelectedPosition(championPositions[index]);
-            }
+          if (tooltipModel.opacity === 0 || !tooltipModel.dataPoints?.length) {
+            return;
+          }
 
-            setSelectedLabel(label);
-            setSelectedValue(value);
+          const label = tooltipModel.dataPoints[0].label;
+          const value = tooltipModel.dataPoints[0].raw as number;
 
-            return `${label}`;
-          },
+          const index = championNames.indexOf(label);
+          if (index !== -1) {
+            setSelectedPosition(championPositions[index]);
+          }
+
+          setSelectedLabel(label);
+          setSelectedValue(value);
         },
       },
     },
