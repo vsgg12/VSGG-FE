@@ -1,10 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { voteColors, positionInfo } from '@/data/championData';
+// import { positionInfo } from '@/data/championData';
 import Doughnut from '../../../../../../public/svg/Doughnut_Big.svg';
 import { useEffect, useState } from 'react';
 import DoughnutChart from '@/components/DoughnutChart';
+import VoteChampionItem from './VoteChampionItem';
+import { voteColors } from '@/data/championData';
 
 interface IVoteResultProps {
   voteInfos: IGetInGameInfoType[] | undefined;
@@ -28,74 +30,57 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
     }
   }, [votes]);
 
-  const getPositionSrc = (position: string) => {
-    if (voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0)) {
-      return positionInfo.find((pos) => pos.name === position)?.svgDisabled ?? '';
-    } else {
-      return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
-    }
-  };
+  // const getPositionSrc = (position: string) => {
+  //   if (voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0)) {
+  //     return positionInfo.find((pos) => pos.name === position)?.svgDisabled ?? '';
+  //   } else {
+  //     return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
+  //   }
+  // };
 
   return (
     <div>
       {voteInfos && (
         <div className='w-full'>
-          <div className='flex flex-col ml-10 justify-around'>
+          <div className='flex flex-col ml-10 justify-around mb-[100px]'>
             {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
               <div></div>
+            ) : voteInfos.length <= 3 ? (
+              <div className='flex w-full justify-around'>
+                {voteInfos.map((champion, index) => (
+                  <div key={index}>
+                    <VoteChampionItem index={index} champion={champion} isResult={true} />
+                  </div>
+                ))}
+              </div>
+            ) : voteInfos.length === 4 ? (
+              <div className='grid grid-cols-2'>
+                {voteInfos.map((champion, index) => (
+                  <div key={index} className='flex justify-center mb-[10px]'>
+                    <VoteChampionItem index={index} champion={champion} isResult={true} />
+                  </div>
+                ))}
+              </div>
             ) : (
-              // (
-              //   voteInfos.map((champion, index) => (
-              //     <div key={index} className='relative group'>
-              //       <div
-              //         className={`bg-[#ECECEC] absolute flex justify-center rounded-full w-[48px] h-[48px]`}
-              //       >
-              //         <Image
-              //           src={getPositionSrc(champion.position)}
-              //           alt='position'
-              //           width={24}
-              //           height={24}
-              //         />
-              //       </div>
-              //     </div>
-              //   ))
-              // ) :
-              voteInfos.map((champion, index) => (
-                <div key={index} className='relative group'>
-                  <div
-                    className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
-                  >
-                    <Image
-                      src={getPositionSrc(champion.position!)}
-                      alt='position'
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                  <div className={`flex`}>
-                    <div
-                      className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
-                    >
-                      <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
-                        {champion.position}
-                      </p>
-                      <div className='w-[50%]'>
-                        <p className='text=[#333333] text-[14px] font-semibold'>
-                          {champion.championName}
-                        </p>
-                        <p className='text=[#333333] text-[12px]'>{champion.tier}</p>
-                      </div>
+              <div className='flex flex-col justify-center items-center gap-5'>
+                <div className='flex w-full justify-around'>
+                  {voteInfos.slice(0, 3).map((champion, index) => (
+                    <div key={index}>
+                      <VoteChampionItem index={index} champion={champion} isResult={true} />
                     </div>
-                    <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
-                      과실 {champion.averageRatio}
-                    </p>
-                  </div>
+                  ))}
                 </div>
-              ))
+                <div className='flex w-full px-[50px] justify-around'>
+                  {voteInfos.slice(3, 5).map((champion, index) => (
+                    <div key={index}>
+                      <VoteChampionItem index={index + 3} champion={champion} isResult={true} />
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
           <div className='flex flex-col items-center justify-center'>
-            <p className='mb-[20px] text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</p>
             {(isOwner && isNoOneVoted) ||
             (!isOwner && isNoOneVoted && isFinished) ||
             (isOwner && isNoOneVoted && isFinished) ? (
@@ -108,10 +93,35 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
                 <Image className='mr-7' src={Doughnut} width={150} height={150} alt='noVote' />
               </div>
             ) : (
-              <DoughnutChart voteInfos={voteInfos} size='post' />
+              <div className='flex items-center gap-[50px]'>
+                <div className='flex flex-col gap-[10px]'>
+                  {voteInfos
+                    .filter((_, index) => index % 2 === 1)
+                    .map((champion, index) => (
+                      <div key={index} className='flex items-center gap-[10px]'>
+                        <div
+                          className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
+                        ></div>
+                        <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                      </div>
+                    ))}
+                </div>
+                <DoughnutChart voteInfos={voteInfos} size='post' isMobile={true} />
+                <div className='flex flex-col gap-[10px]'>
+                  {voteInfos
+                    .filter((_, index) => index % 2 === 0)
+                    .map((champion, index) => (
+                      <div key={index} className='flex items-center justify-end gap-[10px]'>
+                        <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                        <div
+                          className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
+                        ></div>
+                      </div>
+                    ))}
+                </div>{' '}
+              </div>
             )}
           </div>
-
           <div className='flex flex-col mt-[20px] justify-self-end'>
             {isFinished
               ? null

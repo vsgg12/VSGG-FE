@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import React from 'react';
 import usePostIdStore from '../../store/usePostIdStore';
-import { mobileVoteColors } from '../../../../../data/championData';
+import { mobileVoteColors, voteColors } from '../../../../../data/championData';
 
 interface Props {
   index: number;
   champion: IGetInGameInfoType;
+  isResult?: boolean;
 }
 
-function VoteChampionItem({ index, champion }: Props) {
+function VoteChampionItem({ index, champion, isResult }: Props) {
   const { setSelectedChampIdx, selectedChampIdx } = usePostIdStore();
 
   const getPositionSrc = (position: string, type: string) => {
@@ -17,8 +18,8 @@ function VoteChampionItem({ index, champion }: Props) {
         return mobileVoteColors.find((pos) => pos.name === position)?.svg ?? '';
       case 'icon_selected':
         return mobileVoteColors.find((pos) => pos.name === position)?.svgw ?? '';
-      case 'background':
-        return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
+      // case 'background':
+      //   return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
       case 'border':
         return mobileVoteColors.find((pos) => pos.name === position)?.border ?? '';
       default:
@@ -28,8 +29,9 @@ function VoteChampionItem({ index, champion }: Props) {
 
   const colorData =
     selectedChampIdx === index
-      ? `${getPositionSrc(champion.position!, 'background')}`
+      ? `${voteColors[index].background}`
       : ` ${getPositionSrc(champion.position!, 'border')} bg-white border-[2px]`;
+  // ? `${getPositionSrc(champion.position!, 'background')}`
 
   return (
     <div
@@ -39,11 +41,11 @@ function VoteChampionItem({ index, champion }: Props) {
       }}
     >
       <div
-        className={`${colorData} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
+        className={`${isResult ? voteColors[index].background : colorData} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
       >
         <Image
           src={
-            selectedChampIdx === index
+            selectedChampIdx === index || isResult
               ? getPositionSrc(champion.position!, 'icon_selected')
               : getPositionSrc(champion.position!, 'icon_default')
           }

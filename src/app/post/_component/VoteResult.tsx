@@ -44,7 +44,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
           <div className='flex flex-col ml-10 justify-around gap-[20px]'>
             {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished)
               ? voteInfos.map((champion, index) => (
-                  <div key={index} className="relative group">
+                  <div key={index} className='relative group'>
                     <div
                       className={`bg-[#ECECEC] flex justify-center rounded-full w-[48px] h-[48px] `}
                     >
@@ -78,10 +78,10 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                           {champion.position}
                         </p>
                         <div className='w-[50%]'>
-                          <p className='text=[#333333] text-[14px] font-semibold'>
+                          <p className='text-[#333333] text-[14px] font-semibold'>
                             {champion.championName}
                           </p>
-                          <p className='text=[#333333] text-[12px]'>{champion.tier}</p>
+                          <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
                         </div>
                       </div>
                       <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
