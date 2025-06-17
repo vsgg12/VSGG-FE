@@ -43,7 +43,7 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
       {
         label: '# of Votes',
         data: averageValues,
-        backgroundColor: ['#000000', '#9D2A2C', '#B5B5B5', '#656565', '#8A1F21'],
+        backgroundColor: ['#000000', '#9D2A2C', '#B5B5B5', '#656565', '#70191B'],
         borderWidth: 0,
       },
     ],
