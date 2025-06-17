@@ -40,7 +40,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
     <div>
       {voteInfos && (
         <div className='w-full'>
-          <div className='flex flex-col ml-10 justify-around'>
+          <div className='flex flex-col ml-10 justify-around mb-[30px]'>
             {(isOwner && isNoOneVoted) || (!isOwner && isNoOneVoted && isFinished) ? (
               <div></div>
             ) : (
@@ -95,7 +95,6 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
             )}
           </div>
           <div className='flex flex-col items-center justify-center'>
-            <p className='mb-[20px] text-[20px]'>이 게임의 과실은 몇 대 몇 ~?</p>
             {(isOwner && isNoOneVoted) ||
             (!isOwner && isNoOneVoted && isFinished) ||
             (isOwner && isNoOneVoted && isFinished) ? (

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import usePostIdStore from '../../store/usePostIdStore';
-import { mobileVoteColors } from '../../../../../data/championData';
+import { mobileVoteColors, voteColors } from '../../../../../data/championData';
 
 interface Props {
   index: number;
@@ -17,8 +17,8 @@ function VoteChampionItem({ index, champion }: Props) {
         return mobileVoteColors.find((pos) => pos.name === position)?.svg ?? '';
       case 'icon_selected':
         return mobileVoteColors.find((pos) => pos.name === position)?.svgw ?? '';
-      case 'background':
-        return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
+      // case 'background':
+      //   return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
       case 'border':
         return mobileVoteColors.find((pos) => pos.name === position)?.border ?? '';
       default:
@@ -28,8 +28,9 @@ function VoteChampionItem({ index, champion }: Props) {
 
   const colorData =
     selectedChampIdx === index
-      ? `${getPositionSrc(champion.position!, 'background')}`
+      ? `${voteColors[index].background}`
       : ` ${getPositionSrc(champion.position!, 'border')} bg-white border-[2px]`;
+  // ? `${getPositionSrc(champion.position!, 'background')}`
 
   return (
     <div
