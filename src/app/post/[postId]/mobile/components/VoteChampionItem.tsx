@@ -6,9 +6,10 @@ import { mobileVoteColors, voteColors } from '../../../../../data/championData';
 interface Props {
   index: number;
   champion: IGetInGameInfoType;
+  isResult?: boolean;
 }
 
-function VoteChampionItem({ index, champion }: Props) {
+function VoteChampionItem({ index, champion, isResult }: Props) {
   const { setSelectedChampIdx, selectedChampIdx } = usePostIdStore();
 
   const getPositionSrc = (position: string, type: string) => {
@@ -40,11 +41,11 @@ function VoteChampionItem({ index, champion }: Props) {
       }}
     >
       <div
-        className={`${colorData} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
+        className={`${isResult ? voteColors[index].background : colorData} w-[70px] h-[70px] rounded-full flex items-center justify-center cursor-pointer`}
       >
         <Image
           src={
-            selectedChampIdx === index
+            selectedChampIdx === index || isResult
               ? getPositionSrc(champion.position!, 'icon_selected')
               : getPositionSrc(champion.position!, 'icon_default')
           }

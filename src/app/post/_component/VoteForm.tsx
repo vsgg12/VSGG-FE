@@ -70,8 +70,10 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
                   {champion.position}
                 </p>
                 <div className='w-[50%]'>
-                  <p className='text=[#333333] text-[14px] font-semibold'>{champion.championName}</p>
-                  <p className='text=[#333333] text-[12px]'>{champion.tier}</p>
+                  <p className='text-[#333333] text-[14px] font-semibold'>
+                    {champion.championName}
+                  </p>
+                  <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
                 </div>
               </div>
             </div>

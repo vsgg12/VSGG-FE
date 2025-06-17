@@ -8,11 +8,13 @@ Chart.register(ArcElement, Tooltip, Legend);
 interface DoughnutChartPropsHome {
   size: 'home' | 'post';
   voteInfos: IGetInGameInfoType[];
+  isMobile?: boolean;
 }
 
 const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   voteInfos,
   size,
+  isMobile,
 }: DoughnutChartPropsHome) => {
   const [championNames, setChampionNames] = useState<string[]>([]);
   const [averageValues, setAverageValues] = useState<(number | null)[]>([]);
@@ -56,7 +58,7 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
         display: false, // 범례를 숨깁니다.
       },
       tooltip: {
-        enabled: false,
+        enabled: isMobile ? true : false,
         external: (context: { chart: Chart; tooltip: TooltipModel<'doughnut'> }) => {
           const tooltipModel = context.tooltip;
 
@@ -86,7 +88,7 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
       >
         <Doughnut data={data} options={options} />
       </div>
-      {selectedLabel && (
+      {selectedLabel && !isMobile && (
         <VoteResultCard name={selectedLabel} value={selectedValue} position={selectedPosition} />
       )}
     </div>
