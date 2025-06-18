@@ -95,29 +95,31 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
             ) : (
               <div className='flex items-center gap-[50px]'>
                 <div className='flex flex-col gap-[10px]'>
-                  {voteInfos
-                    .filter((_, index) => index % 2 === 1)
-                    .map((champion, index) => (
-                      <div key={index} className='flex items-center gap-[10px]'>
-                        <div
-                          className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
-                        ></div>
-                        <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
-                      </div>
-                    ))}
+                  {voteInfos.map(
+                    (champion, index) =>
+                      index % 2 === 0 && (
+                        <div key={index} className='flex items-center gap-[10px]'>
+                          <div
+                            className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
+                          ></div>
+                          <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                        </div>
+                      ),
+                  )}
                 </div>
                 <DoughnutChart voteInfos={voteInfos} size='post' isMobile={true} />
                 <div className='flex flex-col gap-[10px]'>
-                  {voteInfos
-                    .filter((_, index) => index % 2 === 0)
-                    .map((champion, index) => (
-                      <div key={index} className='flex items-center justify-end gap-[10px]'>
-                        <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
-                        <div
-                          className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
-                        ></div>
-                      </div>
-                    ))}
+                  {voteInfos.map(
+                    (champion, index) =>
+                      index % 2 === 1 && (
+                        <div key={index} className='flex items-center justify-end gap-[10px]'>
+                          <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                          <div
+                            className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
+                          ></div>
+                        </div>
+                      ),
+                  )}
                 </div>{' '}
               </div>
             )}
