@@ -58,7 +58,7 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
         display: false, // 범례를 숨깁니다.
       },
       tooltip: {
-        enabled: isMobile ? true : false,
+        enabled: false,
         external: (context: { chart: Chart; tooltip: TooltipModel<'doughnut'> }) => {
           const tooltipModel = context.tooltip;
 
