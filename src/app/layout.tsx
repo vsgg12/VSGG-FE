@@ -4,6 +4,7 @@ import './globals.css';
 import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
+import Sidebar from '@/components/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -93,7 +94,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={inter.className}>
         <RQProvider>
-          <Suspense>{children}</Suspense>
+          <div style={{ display: 'flex', minHeight: '100vh' }}>
+            <Sidebar />
+            <main style={{ flex: 1 }}>
+              <Suspense>{children}</Suspense>
+            </main>
+          </div>
         </RQProvider>
       </body>
     </html>
