@@ -5,12 +5,14 @@ interface INewPopularToggleButton {
   setActiveButton: Dispatch<SetStateAction<string>>;
 }
 
+const style = 'toggle-button flex-1 h-[33px] w-[69px] rounded-[10px] transition-all duration-300 ';
+
 function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularToggleButton) {
   return (
-    <div className='flex h-[34px] w-[184.5px] border-2 border-[#8A1F21] rounded-[150px] relative bg-[#FFFFFF]'>
+    <div className='flex h-[36px] w-[142px] border-2 border-[#8A1F21] rounded-[12px] relative bg-[#8A1F21]'>
       <button
-        className={`toggle-button flex-1 h-full w-[94px] rounded-[150px] transition-all duration-300 ${
-          activeButton === 'createdatetime' ? 'bg-[#8A1F21] text-white' : 'bg-white text-[#8A1F21]'
+        className={`${style} ${
+          activeButton === 'createdatetime' ? 'bg-white text-[#8A1F21]' : 'bg-[#8A1F21] text-white'
         }`}
         onClick={() => setActiveButton('createdatetime')}
         style={{
@@ -21,14 +23,14 @@ function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularTo
         최신순
       </button>
       <button
-        className={`toggle-button flex-1 h-full rounded-[150px] w-[94px] transition-all duration-300 ${
-          activeButton === 'view' ? 'bg-[#8A1F21] text-white' : 'bg-white text-[#8A1F21]'
+        className={`${style} ${
+          activeButton === 'view' ? 'bg-white text-[#8A1F21]' : 'bg-[#8A1F21] text-white'
         }`}
         onClick={() => setActiveButton('view')}
         style={{
           zIndex: activeButton === 'view' ? 2 : 1,
           position: 'absolute',
-          left: '87.55px',
+          left: '70px',
         }}
       >
         인기순
