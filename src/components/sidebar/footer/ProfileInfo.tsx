@@ -30,7 +30,7 @@ function ProfileInfo() {
     >
       <div className='w-[48px] h-[48px] rounded-full flex items-center'>
         <img
-          src={userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage}
+          src={isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage}
           width={48}
           height={48}
           className='rounded-full block'

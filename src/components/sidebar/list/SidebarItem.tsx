@@ -12,9 +12,10 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 interface Props {
   item: sidebarListType;
   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsAlarmModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function SidebarItem({ item, setIsLoginModalOpen }: Props) {
+function SidebarItem({ item, setIsLoginModalOpen, setIsAlarmModalOpen }: Props) {
   const {
     setRouteState,
     setIsNotificationOpen,
@@ -26,7 +27,6 @@ function SidebarItem({ item, setIsLoginModalOpen }: Props) {
   const route = useRouter();
   const { isLogin } = useAuthStore();
   const [disabled, setDisabled] = useState<boolean>(true);
-
 
   useEffect(() => {
     const result = (() => {
@@ -48,24 +48,22 @@ function SidebarItem({ item, setIsLoginModalOpen }: Props) {
     setDisabled(result);
   }, [isNotificationOpen, isSearchOpen, item, routeName]);
 
-
-const getIcon = (item: sidebarListType): JSX.Element => {
-
-  switch (item) {
-    case '홈':
-      return <HomeIcon disabled={disabled} />;
-    case '검색':
-      return <SearchIcon disabled={disabled} />;
-    case '글 작성':
-      return <PostWriteIcon disabled={disabled} />;
-    case '마이페이지':
-      return <ProfileIcon disabled={disabled} />;
-    case '알림':
-      return <NotificationIcon disabled={disabled} />;
-    default:
-      return <></>;
-  }
-};
+  const getIcon = (item: sidebarListType): JSX.Element => {
+    switch (item) {
+      case '홈':
+        return <HomeIcon disabled={disabled} />;
+      case '검색':
+        return <SearchIcon disabled={disabled} />;
+      case '글 작성':
+        return <PostWriteIcon disabled={disabled} />;
+      case '마이페이지':
+        return <ProfileIcon disabled={disabled} />;
+      case '알림':
+        return <NotificationIcon disabled={disabled} />;
+      default:
+        return <></>;
+    }
+  };
   const handleHomeClick = () => {
     setRouteState('HOME');
     route.replace('/home');
@@ -84,18 +82,19 @@ const getIcon = (item: sidebarListType): JSX.Element => {
   };
 
   const handleProfileClick = () => {
-     if (!isLogin) {
-       return setIsLoginModalOpen(true);
-     }
+    if (!isLogin) {
+      return setIsLoginModalOpen(true);
+    }
     setRouteState('PROFILE');
     route.replace('/myPage');
   };
 
   const handleNotificationClick = () => {
-     if (!isLogin) {
-       return setIsLoginModalOpen(true);
-     }
+    if (!isLogin) {
+      return setIsLoginModalOpen(true);
+    }
     isNotificationOpen ? setIsNotificationOpen(false) : setIsNotificationOpen(true);
+    setIsAlarmModalOpen((prev) => !prev);
   };
 
   const handleClick = () => {
@@ -122,9 +121,12 @@ const getIcon = (item: sidebarListType): JSX.Element => {
 
   return (
     <div
-      className={`flex gap-[40px] items-center pl-[40px] w-full h-[50px] cursor-pointer
-        ${!disabled ? 'border-l-[4px] border-l-[#8A1F21]' : ''}
-      `}
+      className={`
+      flex gap-[40px] items-center pl-[40px] w-[80%] h-[50px] cursor-pointer
+      transition-transform duration-200 ease-in-out
+      
+      ${!disabled ? 'border-l-[4px] border-l-[#8A1F21]' : 'hover:translate-x-[15px]'}
+    `}
       onClick={handleClick}
     >
       {getIcon(item)}
