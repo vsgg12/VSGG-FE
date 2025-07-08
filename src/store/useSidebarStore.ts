@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type RouteType = 'HOME' | 'SEARCH' | 'WRITE' | 'PROFILE' | 'NOTIFICATION';
+type RouteType = 'HOME' | 'WRITE' | 'PROFILE';
 
 type SideBarStatusType = {
   route: RouteType;

@@ -4,7 +4,7 @@ import './globals.css';
 import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {

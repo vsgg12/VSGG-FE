@@ -22,6 +22,11 @@ button {
   @apply overflow-x-hidden overflow-y-scroll;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 ::-webkit-scrollbar {
   @apply w-[0.3rem];
 }
