@@ -6,9 +6,9 @@ type IPostResult = {
   data: { postId: number; likeCount: number };
 };
 
-export default async function postPostLike(postId: number, authorization: string) {
+export default async function postPostLike(authorization: string, postId: number) {
   const data = await api.post<IPostWriteType, IPostResult>({
-    endpoint: `/api/post/${postId}/like`,
+    endpoint: `/post/${postId}/like`,
     authorization,
   });
 

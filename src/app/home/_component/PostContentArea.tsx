@@ -5,6 +5,9 @@ import Image from 'next/image';
 import Icon_heart from '../../../../public/svg/postItem/heart.svg';
 import Icon_vote from '../../../../public/svg/postItem/vote.svg';
 import Icon_view from '../../../../public/svg/postItem/view.svg';
+import postPostLike from '@/api/like/postPostLike';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   post: IGetPostDTOType;
@@ -14,20 +17,54 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video';
 
 function PostContentArea({ post }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const { accessToken } = useAuthStore();
   const contentsArr = useConvertHTML(post.content);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
+  const [updatedLikeCount, setUpdatedLikeCount] = useState<number>(0);
+  const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
+
+  const { mutate: likePost } = useMutation({
+    mutationFn: async () => {
+      const response = await postPostLike(accessToken, post.id);
+      return response.data.likeCount;
+    },
+    onSuccess: async (likeCount) => {
+      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
+      setIsLikeInProgress(false);
+      setUpdatedLikeCount(likeCount);
+    },
+    onError: (error) => console.error(error.message),
+  });
+
+  const handleLikePost = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    if (isLikeInProgress) {
+      return;
+    }
+    alert('like');
+
+    setIsLikeInProgress(true);
+    likePost();
+  };
 
   const buttons = [
     {
       name: 'like',
       icon: Icon_heart,
-      data: post.likeCount,
-      onclick: (e: React.MouseEvent<HTMLImageElement>) => e.stopPropagation,
+      data: updatedLikeCount
+        ? updatedLikeCount < 1000
+          ? updatedLikeCount
+          : '999+'
+        : post.likeCount < 1000
+          ? post.likeCount
+          : '999+',
+      onclick: handleLikePost,
     },
     {
       name: 'vote',
       icon: Icon_vote,
-      data: post.voteCount,
+      data: post.voteCount < 1000 ? post.voteCount : '999+',
       onclick: () => {
         return;
       },
@@ -35,7 +72,7 @@ function PostContentArea({ post }: Props) {
     {
       name: 'view',
       icon: Icon_view,
-      data: post.viewCount,
+      data: post.viewCount < 1000 ? post.viewCount : '999+',
       onclick: () => {
         return;
       },
@@ -49,7 +86,7 @@ function PostContentArea({ post }: Props) {
 
   return (
     <div
-      className='bg-[#FFFFFF] w-[586px] h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[10px] shadow'
+      className='bg-[#FFFFFF] w-[586px] h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
@@ -102,11 +139,11 @@ function PostContentArea({ post }: Props) {
         {buttons.map((button, idx) => (
           <React.Fragment key={idx}>
             <div
-              className='flex w-[182px] cursor-pointer items-center justify-center'
+              className='flex w-[182px] cursor-pointer items-center justify-center gap-[6px]'
               onClick={button.onclick}
             >
               <Image src={button.icon} alt={button.name} width={24} height={24} />
-              {button.data && <p className='text-[14px] text-[#555555]'>999+</p>}
+              {button.data && <p className='text-[14px] text-[#555555]'>{button.data}</p>}
             </div>
             {idx !== 2 && <div className='h-[20px] w-[1px] bg-[#555555]'></div>}
           </React.Fragment>
