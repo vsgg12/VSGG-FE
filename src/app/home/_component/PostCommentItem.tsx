@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ICommentProps {
   comment: IGetCommentItemType;
   targetComment?: {
@@ -7,7 +9,7 @@ interface ICommentProps {
   handleReply: () => void;
 }
 
-export default function Comment({ comment, targetComment, handleReply }: ICommentProps) {
+export default function PostCommentItem({ comment, targetComment, handleReply }: ICommentProps) {
   const pastTime: string = comment.createdDateTime;
 
   const ONE_MINUTE = 60000;
@@ -30,11 +32,19 @@ export default function Comment({ comment, targetComment, handleReply }: ICommen
     return `${Math.floor(diffMs / ONE_YEAR)}년 전`;
   }
 
+  const truncateNickname = (nickname: string) => {
+    const formattedNickname = nickname.slice(0, 8);
+    if (nickname.length <= 8) {
+      return formattedNickname;
+    }
+    return formattedNickname + '...';
+  };
+
   return (
     <div>
       <div className='flex flex-row relative font-medium items-center mb-[5px]'>
-        <p className='mr-[5px] text-[14px] text-[#333333] whitespace-nowrap font-semibold'>
-          {comment.member.nickname}
+        <p className='mr-[5px] text-[14px] text-[#333333] font-semibold'>
+          {truncateNickname(comment.member.nickname)}
         </p>
         <p className='text-[14px] text-[#909090] min-w-fit'>{comment.member.tier}</p>
         <p className='text-[12px] text-[#C8C8C8] ml-2 min-w-fit'>

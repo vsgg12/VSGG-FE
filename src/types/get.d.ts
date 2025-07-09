@@ -11,6 +11,9 @@ type IGetPostDTOType = {
   content: string;
   thumbnailURL: string;
   viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  voteCount: number;
   status: string | 'PROGRESS' | 'FINISHED';
   video: IGetVideoType;
   memberDTO: IGetMemberDTOType;
@@ -159,4 +162,4 @@ type IVotedPostItem = {
 // 로그인 url
 type ILoginUrlType = {
   loginUrl: string;
-}
+};

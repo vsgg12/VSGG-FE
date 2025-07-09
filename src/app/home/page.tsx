@@ -1,6 +1,5 @@
 'use client';
 
-import HomePostItems from './_component/HomePostItems';
 import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
 import Header from '@/components/Header';
@@ -21,6 +20,8 @@ import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import getAlarms from '@/api/getAlarms';
+import PostItem from './_component/PostItem';
+import PostCommentArea from './_component/PostCommentArea';
 
 export default function Home() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
+  const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
 
   const {
     data: postData,
@@ -156,30 +158,44 @@ export default function Home() {
           <main className='px-[50px]'>
             <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
             <section className='flex flex-col justify-center relative w-full items-center'>
-              <div className='w-full mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
+              <div className='w-[639px] mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
                 <NewPopularToggleButton
                   activeButton={activeButton}
                   setActiveButton={setActiveButton}
                 />
                 <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
               </div>
-              {isLoading ? (
-                <Loading />
-              ) : visiblePosts.length === 0 ? (
-                <div className='flex min-w-[800px] w-full flex-col flex-grow items-center justify-center'>
-                  현재 작성된 게시물이 없습니다.
-                </div>
-              ) : (
-                visiblePosts.map((post, idx) => (
-                  <div key={idx} className='min-w-[800px] w-full'>
-                    {isListed ? (
-                      <ListedPostItem post={post} />
-                    ) : (
-                      <HomePostItems post={post} voteInfos={post.inGameInfoList} />
-                    )}
+              <div className='flex flex-col gap-[40px]'>
+                {isLoading ? (
+                  <Loading />
+                ) : visiblePosts.length === 0 ? (
+                  <div className='flex min-w-[800px] w-full flex-col flex-grow items-center justify-center'>
+                    현재 작성된 게시물이 없습니다.
                   </div>
-                ))
-              )}
+                ) : (
+                  visiblePosts.map((post, idx) => (
+                    <div key={idx} className='min-w-[800px] w-full flex justify-center '>
+                      {isListed ? (
+                        <ListedPostItem post={post} />
+                      ) : (
+                        <div className='relative'>
+                          <PostItem
+                            post={post}
+                            voteInfos={post.inGameInfoList}
+                            showCommentPostId={showCommentPostId}
+                            setShowCommentPostId={setShowCommentPostId}
+                          />
+                          {showCommentPostId == post.id && (
+                            <div className='absolute bottom-0 left-full translate-x-[10px]'>
+                              <PostCommentArea postId={post.id} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
               <div ref={loaderRef} style={{ minHeight: '30px' }} />
             </section>
           </main>
