@@ -27,6 +27,7 @@ function PostContentArea({ post }: Props) {
     {
       name: 'vote',
       icon: Icon_vote,
+      data: post.voteCount,
       onclick: () => {
         return;
       },

@@ -13,8 +13,6 @@ interface Props {
 }
 
 function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: Props) {
-  const handleLikePost = () => {};
-
   const handleOpenComment = () => {
     if (showCommentPostId == post.id) {
       setShowCommentPostId(-1);
@@ -45,17 +43,15 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
         </div>
       </div>
       <div className='flex flex-col gap-[5px] justify-end'>
-        <div
-          className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex items-center justify-center cursor-pointer shadow'
-          onClick={handleLikePost}
-        >
+        <div className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex items-center justify-center cursor-pointer shadow'>
           <Image src={Icon_share} width={24} height={24} alt='shareIcon' />
         </div>
         <div
-          className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex items-center cursor-pointer shadow'
+          className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex flex-col justify-center items-center cursor-pointer text-[12px] shadow'
           onClick={handleOpenComment}
         >
           <Image src={Icon_comment} width={20} height={20} alt='commentIcon' />
+          <p>{post.commentCount < 1000 ? post.commentCount : '999+'}</p>
         </div>
       </div>
     </div>
