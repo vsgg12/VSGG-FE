@@ -2,8 +2,6 @@
 
 import Image from 'next/image';
 import writeSVG from '../../../public/svg/writingWhite.svg';
-import Header from '@/components/Header';
-import Search from './_component/Search';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
@@ -18,8 +16,6 @@ import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getAlarms from '@/api/getAlarms';
 import PostItem from './_component/PostItem';
 import PostCommentArea from './_component/PostCommentArea';
 
@@ -51,18 +47,6 @@ export default function Home() {
     },
   });
 
-  const { data: userProfileData } = useQuery({
-    queryKey: ['MY_PROFILE_INFO'],
-    queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
-    enabled: isLogin,
-  });
-
   useEffect(() => {
     if (keyword === '') {
       refetch();
@@ -84,25 +68,12 @@ export default function Home() {
     router.push('/post/write');
   };
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && keyword.trim() !== '' && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      refetch();
-    }
-  };
-
   useEffect(() => {
     if (postData && postData.postDTO && postData.postDTO.length > 0) {
       const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
       setExistData(filteredData);
     }
   }, [postData]);
-
-  const handleSearch = () => {
-    if (keyword.trim() !== '') {
-      refetch();
-    }
-  };
 
   const getPostData = useCallback(() => existData, [existData]);
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
@@ -154,10 +125,8 @@ export default function Home() {
         <HomeMobile />
       ) : (
         <div className='w-screen'>
-          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <main className='px-[50px]'>
-            <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
-            <section className='flex flex-col justify-center relative w-full items-center'>
+            <section className='flex flex-col justify-center relative w-full items-center mt-[40px]'>
               <div className='w-[639px] mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
                 <NewPopularToggleButton
                   activeButton={activeButton}
