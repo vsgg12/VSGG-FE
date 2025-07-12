@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,14 +14,9 @@ import NotificationIcon from '@/components/sidebar/list/iconComponent/Notificati
 interface UseSidebarItemProps {
   item: sidebarListType;
   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
-  setIsAlarmModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const useSidebarItem = ({
-  item,
-  setIsLoginModalOpen,
-  setIsAlarmModalOpen,
-}: UseSidebarItemProps) => {
+export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProps) => {
   const {
     setRouteState,
     setIsNotificationOpen,
@@ -56,21 +51,25 @@ export const useSidebarItem = ({
   }, [routeName, isSearchOpen, isNotificationOpen, item]);
 
   const getIcon = (): JSX.Element => {
-
     switch (item) {
       case '홈':
         return <HomeIcon disabled={disabled} />;
       case '검색':
-        return <SearchIcon disabled={disabled}  />;
+        return <SearchIcon disabled={disabled} />;
       case '글 작성':
-        return <PostWriteIcon disabled={disabled}  />;
+        return <PostWriteIcon disabled={disabled} />;
       case '마이페이지':
-        return <ProfileIcon disabled={disabled}  />;
+        return <ProfileIcon disabled={disabled} />;
       case '알림':
-        return <NotificationIcon disabled={disabled}  />;
+        return <NotificationIcon disabled={disabled} />;
       default:
         return <></>;
     }
+  };
+
+  const closeModal = () => {
+    if (isNotificationOpen) setIsNotificationOpen(false);
+    if (isSearchOpen) setIsSearchOpen(false);
   };
 
   const handleClick = () => {
@@ -78,27 +77,30 @@ export const useSidebarItem = ({
       case '홈':
         setRouteState('HOME');
         route.replace('/home');
+        closeModal();
         break;
       case '검색':
+        if (routeName !== 'HOME') return;
         setIsSearchOpen(!isSearchOpen);
         break;
       case '글 작성':
         if (!isLogin) return setIsLoginModalOpen(true);
         setRouteState('WRITE');
         route.replace('/post/write');
+        closeModal();
         break;
       case '마이페이지':
         if (!isLogin) return setIsLoginModalOpen(true);
         setRouteState('PROFILE');
         route.replace('/myPage');
+        closeModal();
         break;
       case '알림':
         if (!isLogin) return setIsLoginModalOpen(true);
         setIsNotificationOpen(!isNotificationOpen);
-        setIsAlarmModalOpen((prev) => !prev);
         break;
     }
   };
 
-  return { getIcon, handleClick, disabled, setDisabled };
+  return { getIcon, handleClick, disabled };
 };

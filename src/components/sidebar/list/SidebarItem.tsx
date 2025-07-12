@@ -1,41 +1,17 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { sidebarListType } from './SidebarList';
-import { useSidebarStore } from '@/store/useSidebarStore';
 import { useSidebarItem } from '@/hooks/sidebar/useSidebarItem';
 
 interface Props {
   item: sidebarListType;
   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
-  setIsAlarmModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function SidebarItem({ item, setIsLoginModalOpen, setIsAlarmModalOpen }: Props) {
-  const { route: routeName, isNotificationOpen, isSearchOpen } = useSidebarStore();
-  const { getIcon, handleClick, disabled, setDisabled } = useSidebarItem({
+function SidebarItem({ item, setIsLoginModalOpen }: Props) {
+  const { getIcon, handleClick, disabled } = useSidebarItem({
     item,
     setIsLoginModalOpen,
-    setIsAlarmModalOpen,
   });
-
-  useEffect(() => {
-    const result = (() => {
-      switch (item) {
-        case '홈':
-          return routeName !== 'HOME';
-        case '검색':
-          return !isSearchOpen;
-        case '글 작성':
-          return routeName !== 'WRITE';
-        case '마이페이지':
-          return routeName !== 'PROFILE';
-        case '알림':
-          return !isNotificationOpen;
-        default:
-          return true;
-      }
-    })();
-    setDisabled(result);
-  }, [isNotificationOpen, isSearchOpen, item, routeName, setDisabled]);
 
   return (
     <div

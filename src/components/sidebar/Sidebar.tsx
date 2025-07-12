@@ -15,12 +15,13 @@ import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/getAlarms';
 import AlarmModal from './modal/alarm/AlarmModal';
 import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModal';
+import { useSidebarStore } from '@/store/useSidebarStore';
 
 function Sidebar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [isAlarmModalOpen, setIsAlarmModalOpen] = useState<boolean>(false);
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState<boolean>(false);
   const { isLogin, accessToken } = useAuthStore();
+  const { isNotificationOpen} = useSidebarStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -43,7 +44,6 @@ function Sidebar() {
         <div className='flex flex-col gap-[10px]'>
           <SidebarList
             setIsLoginModalOpen={setIsLoginModalOpen}
-            setIsAlarmModalOpen={setIsAlarmModalOpen}
           />
         </div>
         <div className='flex w-full justify-center'>
@@ -67,7 +67,7 @@ function Sidebar() {
           <AlertLoginModal />
         </ModalLayout>
       )}
-      {isAlarmModalOpen && (
+      {isNotificationOpen && (
         <div className='absolute translate-x-[270px] translate-y-[200px]'>
           <AlarmModal alarms={alarmData?.alarmList} />
         </div>

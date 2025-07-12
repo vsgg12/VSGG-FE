@@ -1,5 +1,6 @@
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 import { truncateText } from '@/utils/truncateText';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -7,6 +8,8 @@ import React, { useState } from 'react';
 
 function ProfileInfo() {
   const { isLogin, accessToken, user } = useAuthStore();
+  const { getIcon } = useProfileTierIcon();
+
   const defaultImage = 'https://ssl.pstatic.net/static/pwe/address/img_profile.png';
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const route = useRouter();
@@ -21,6 +24,7 @@ function ProfileInfo() {
     enabled: isLogin,
   });
 
+
   return (
     <div
       className={`flex w-[204px] h-[48px] gap-[10px] items-center ${!isLogin && 'cursor-pointer'}`}
@@ -30,7 +34,9 @@ function ProfileInfo() {
     >
       <div className='w-[48px] h-[48px] rounded-full flex items-center'>
         <img
-          src={isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage}
+          src={
+            isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage
+          }
           width={48}
           height={48}
           className='rounded-full block'
@@ -38,9 +44,13 @@ function ProfileInfo() {
       </div>
       {isLogin && userProfileData && user ? (
         <div className='flex flex-col gap-[3px]'>
-          <div className='text-[16px] text-[#333333]'>
-            {truncateText(userProfileData.memberProfileDTO.nickName, 8)}
+          <div className='flex gap-[3px]'>
+            {getIcon(userProfileData.memberProfileDTO.tier)}
+            <div className='text-[16px] text-[#333333]'>
+              {truncateText(userProfileData.memberProfileDTO.nickName, 8)}
+            </div>
           </div>
+
           <div className='text-[12px] text-[#888888]'>{truncateText(user.email, 22)}</div>
         </div>
       ) : (

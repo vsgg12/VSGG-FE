@@ -6,15 +6,14 @@ const sidebarList: sidebarListType[] = ['홈', '검색', '글 작성', '마이�
 
 interface Props{
   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
-  setIsAlarmModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function SidebarList({ setIsLoginModalOpen, setIsAlarmModalOpen }: Props) {
+function SidebarList({ setIsLoginModalOpen }: Props) {
   
   return (
     <div className='flex flex-col gap-[20px] px-[10px] w-full'>
       {sidebarList.map((item) => (
-        <SidebarItem item={item} setIsLoginModalOpen={setIsLoginModalOpen} setIsAlarmModalOpen={setIsAlarmModalOpen} />
+        <SidebarItem item={item} setIsLoginModalOpen={setIsLoginModalOpen}  />
       ))}
     </div>
   );
