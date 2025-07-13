@@ -27,40 +27,39 @@ export default function HomeVoted({
   }, [votes]);
 
   return (
-    <>
-      <div className='flex h-full rounded-[1.875em] items-center'>
-        <div className={`flex items-center justify-center p-[1rem] text-[0.625em] ${isNoOneVoted ? "gap-[90px]" : "gap-[50px]"}`}>
-          <div className='flex flex-col'>
-            {voteInfos.map((champion, index) => {
-              // voteColors 배열의 길이를 넘지 않는지 확인
-              const voteColor = voteColors[index % voteColors.length];
-
-              if (!isNoOneVoted) {
-                return (
-                  <div key={index} className='mb-1 flex flex-row items-center'>
-                    <div className={`${voteColor.background} p-voting-champ-dot`}></div>
-                    <div className='whitespace-nowrap'>{champion.championName}</div>
-                  </div>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </div>
-          {isNoOneVoted ? (
-            <div className='flex relative w-[340px] justify-center mr-[80px]'>
-              <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
-                {isFinished
-                  ? '투표한 사람이 없는 게시글입니다.'
-                  : '아직 투표한 사람이 없는 게시글입니다.'}
-              </p>
-              <Image src={Doughnut} width={146} height={146} alt='doughnut' />
-            </div>
-          ) : (
-            <DoughnutChart voteInfos={voteInfos} size='home' />
-          )}
+    <div className='flex h-[156px] w-[586px] rounded-[20px] bg-[#FFFFFF] items-center justify-center'>
+      <div className={`flex  ${isNoOneVoted ? 'gap-[90px]' : 'gap-[50px]'}`}>
+        <div className='flex flex-col gap-[5px] justify-center'>
+          {voteInfos.map((champion, index) => {
+            // voteColors 배열의 길이를 넘지 않는지 확인
+            const voteColor = voteColors[index % voteColors.length];
+            if (!isNoOneVoted) {
+              return (
+                <div key={index} className='flex items-center gap-[10px]'>
+                  <div className={`${voteColor.background} p-voting-champ-dot`}></div>
+                  <p className='whitespace-nowrap text-[12px] text-[#333333]'>
+                    {champion.championName}
+                  </p>
+                </div>
+              );
+            } else {
+              return null;
+            }
+          })}
         </div>
+        {isNoOneVoted ? (
+          <div className='flex relative w-[340px] justify-center mr-[80px]'>
+            <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
+              {isFinished
+                ? '투표한 사람이 없는 게시글입니다.'
+                : '아직 투표한 사람이 없는 게시글입니다.'}
+            </p>
+            <Image src={Doughnut} width={146} height={146} alt='doughnut' />
+          </div>
+        ) : (
+          <DoughnutChart voteInfos={voteInfos} size='home' isHoverEnabled={false} />
+        )}
       </div>
-    </>
+    </div>
   );
 }

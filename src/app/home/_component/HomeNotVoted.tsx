@@ -3,7 +3,7 @@ import DoughnutChart from '@/components/DoughnutChart';
 
 export default function HomeNotVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
   return (
-    <>
+    <div className='bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30 flex h-[156px] w-[586px] rounded-[20px] items-center justify-center'>
       <div className='flex h-full rounded-[1.875em] items-center'>
         <div className='flex items-center justify-center p-[1rem] text-[0.625em] gap-[90px] blur-sm'>
           <PostVotingChampList voteInfos={voteInfos} />
@@ -27,6 +27,6 @@ export default function HomeNotVoted({ voteInfos }: { voteInfos: IGetInGameInfoT
           지금 바로 판결하기
         </button>
       </div>
-    </>
+    </div>
   );
 }
