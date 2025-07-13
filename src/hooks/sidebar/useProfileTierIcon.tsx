@@ -3,6 +3,8 @@ import React, { useCallback } from 'react';
 const useProfileTierIcon = () => {
   const getIcon = useCallback((tier: string): JSX.Element => {
     switch (tier) {
+      case '언랭':
+        return <img src='/svg/sidebar/tier/unrankIcon.svg' width={16} height={16} />;
       case '아이언':
         return <img src='/svg/sidebar/tier/ironIcon.svg' width={16} height={16} />;
       case '브론즈':
