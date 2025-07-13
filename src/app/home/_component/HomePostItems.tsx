@@ -137,9 +137,7 @@ export default function HomePostItems({
                   })}
                 </div>
                 <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30'>
-                  {post.isVote ||
-                  user?.email === post.memberDTO.email ||
-                  post.status === 'FINISHED' ? (
+                  {post.isVote || user?.email === post.memberDTO.email ? (
                     <HomeVoted voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
                   ) : (
                     <HomeNotVoted voteInfos={voteInfos} />

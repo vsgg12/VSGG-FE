@@ -44,7 +44,7 @@ function PostCommentArea({ postId }: Props) {
   };
 
   return (
-    <div className='w-[325px] h-[448px] rounded-[20px] bg-[#FFFFFF] scroll p-[20px] shadow'>
+    <div className='w-[325px] min-h-[448px] h-full rounded-[20px] bg-[#FFFFFF] scroll p-[20px] shadow'>
       {commentData?.comments.length !== 0 ? (
         commentData?.comments.map((comment: IGetCommentItemType, index) => (
           <div key={index} className='relative text-[13px]'>

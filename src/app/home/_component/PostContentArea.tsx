@@ -8,21 +8,25 @@ import Icon_view from '../../../../public/svg/postItem/view.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import HomeVoted from './HomeVoted';
+import HomeNotVoted from './HomeNotVoted';
 
 interface Props {
   post: IGetPostDTOType;
+  voteInfos: IGetInGameInfoType[];
 }
 
 const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video';
 
-function PostContentArea({ post }: Props) {
+function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { accessToken } = useAuthStore();
+  const { accessToken, user } = useAuthStore();
   const contentsArr = useConvertHTML(post.content);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number>(0);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
+  const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
@@ -48,6 +52,11 @@ function PostContentArea({ post }: Props) {
     likePost();
   };
 
+  const handleVoteClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    setIsVoteClicked(!isVoteClicked);
+  };
+
   const buttons = [
     {
       name: 'like',
@@ -65,9 +74,7 @@ function PostContentArea({ post }: Props) {
       name: 'vote',
       icon: Icon_vote,
       data: post.voteCount < 1000 ? post.voteCount : '999+',
-      onclick: () => {
-        return;
-      },
+      onclick: handleVoteClick,
     },
     {
       name: 'view',
@@ -86,7 +93,7 @@ function PostContentArea({ post }: Props) {
 
   return (
     <div
-      className='bg-[#FFFFFF] w-[586px] h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow'
+      className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}
@@ -149,6 +156,15 @@ function PostContentArea({ post }: Props) {
           </React.Fragment>
         ))}
       </div>
+      {isVoteClicked && (
+        <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] '>
+          {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
+            <HomeVoted voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
+          ) : (
+            <HomeNotVoted voteInfos={voteInfos} />
+          )}
+        </div>
+      )}
     </div>
   );
 }

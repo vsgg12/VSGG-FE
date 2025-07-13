@@ -4,6 +4,7 @@ import Icon_share from '../../../../public/svg/postItem/arrow-share.svg';
 import Icon_comment from '../../../../public/svg/postItem/chatbox.svg';
 import Image from 'next/image';
 import PostContentArea from './PostContentArea';
+import { toast } from 'react-hot-toast';
 
 interface Props {
   post: IGetPostDTOType;
@@ -13,6 +14,15 @@ interface Props {
 }
 
 function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: Props) {
+  const handleSharePost = async () => {
+    try {
+      await navigator.clipboard.writeText(`vsgg.co.kr/post/${post.id}`);
+      toast.success('링크가 복사되었습니다.');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleOpenComment = () => {
     if (showCommentPostId == post.id) {
       setShowCommentPostId(-1);
@@ -39,12 +49,18 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
           <PostDeadLine deadLine={post.daysUntilEnd} />
         </div>
         <div className='self-end '>
-          <PostContentArea post={post} />
+          <PostContentArea post={post} voteInfos={voteInfos} />
         </div>
       </div>
       <div className='flex flex-col gap-[5px] justify-end'>
         <div className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex items-center justify-center cursor-pointer shadow'>
-          <Image src={Icon_share} width={24} height={24} alt='shareIcon' />
+          <Image
+            src={Icon_share}
+            width={24}
+            height={24}
+            alt='shareIcon'
+            onClick={handleSharePost}
+          />
         </div>
         <div
           className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex flex-col justify-center items-center cursor-pointer text-[12px] shadow'

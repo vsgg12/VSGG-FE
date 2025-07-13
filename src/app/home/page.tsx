@@ -155,7 +155,7 @@ export default function Home() {
                             setShowCommentPostId={setShowCommentPostId}
                           />
                           {showCommentPostId == post.id && (
-                            <div className='absolute bottom-0 left-full translate-x-[10px]'>
+                            <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
                               <PostCommentArea postId={post.id} />
                             </div>
                           )}
