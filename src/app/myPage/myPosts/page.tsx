@@ -10,11 +10,15 @@ import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
 import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+    const { isNotificationOpen } = useSidebarStore();
+    useBodyScrollLock(isNotificationOpen);
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS', page],

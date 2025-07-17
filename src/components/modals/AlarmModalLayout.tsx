@@ -28,26 +28,10 @@ export const AlarmModalLayout = ({ isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 1000,
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className='fixed inset-0 w-screen h-screen z-[1000]'>
       <div
         ref={modalRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '260px',
-          height: '100vh',
-          backgroundColor: '#fff',
-          width: '362px',
-          boxShadow: '4px 0 12px rgba(0, 0, 0, 0.1)',
-        }}
+        className='absolute top-0 left-[260px] h-screen w-[362px] bg-white'
       >
         {children}
       </div>

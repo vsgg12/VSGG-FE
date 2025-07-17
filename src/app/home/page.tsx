@@ -18,6 +18,8 @@ import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function Home() {
   const router = useRouter();
@@ -31,6 +33,8 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
+  const { isNotificationOpen } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen);
 
   const {
     data: postData,

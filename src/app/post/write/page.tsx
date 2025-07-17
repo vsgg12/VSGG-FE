@@ -4,9 +4,13 @@ import Link from 'next/link';
 import PostFe from './_component/PostFe';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function PostWrite() {
   const { isLogin } = useAuthStore.getState();
+  const { isNotificationOpen } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen);
   const router = useRouter();
   if (!isLogin) {
     router.replace('/');

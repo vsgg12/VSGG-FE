@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Logo from '@/components/Logo';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 /* 수정 가능 항목
     1.제목
@@ -17,6 +19,8 @@ import { useRouter } from 'next/navigation';
 */
 function EditPost() {
   const { isLogin } = useAuthStore();
+  const { isNotificationOpen } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen);
   const router = useRouter();
   if (!isLogin) {
     router.replace('/');

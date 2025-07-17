@@ -33,7 +33,7 @@ export const useAdditionalOptionItem = (item: AdditionalOptionItemType) => {
 
   const handleGoLogin = useCallback(() => {
     router.replace('/login');
-  }, []);
+  }, [router]);
 
   const handleLogoutBtnClick = useCallback(() => {
     // 로그아웃 처리 로직

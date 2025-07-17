@@ -14,6 +14,8 @@ import NavigationArea from '../_component/NavigationArea';
 import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -24,6 +26,8 @@ export default function PostRead() {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+    const { isNotificationOpen } = useSidebarStore();
+    useBodyScrollLock(isNotificationOpen);
 
   const {
     data: post,

@@ -20,6 +20,8 @@ import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import IsNotExistList from './_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import MyPage_Mobile from './mobile/MyPageMobile';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function MyPage() {
   const router = useRouter();
@@ -27,6 +29,8 @@ export default function MyPage() {
   const user = useAuthStore((state) => state.user);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+    const { isNotificationOpen } = useSidebarStore();
+    useBodyScrollLock(isNotificationOpen);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
