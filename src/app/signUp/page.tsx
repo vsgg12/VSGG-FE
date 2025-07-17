@@ -31,7 +31,7 @@ export default function SignUp() {
     if (user?.nickname !== '') {
       router.replace('/');
     }
-  }, []);
+  }, [router, user]);
 
   const handleCheckAll = (checked: boolean) => {
     setCheckboxes({

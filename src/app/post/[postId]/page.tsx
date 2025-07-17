@@ -43,7 +43,7 @@ export default function PostRead() {
       alert(error.message);
       router.replace('/notFound');
     }
-  }, [error]);
+  }, [error, router]);
 
   useEffect(() => {
     if (post && user) {
@@ -51,7 +51,7 @@ export default function PostRead() {
         setIsOwner(true);
       }
     }
-  }, [post]);
+  }, [post, router, user]);
 
   return (
     <>

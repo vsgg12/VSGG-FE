@@ -106,7 +106,7 @@ export default function Home() {
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
-  }, [getPostData, getPostIndex]);
+  }, [existData, getPostData, getPostIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
