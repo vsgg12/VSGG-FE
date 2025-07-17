@@ -16,12 +16,13 @@ import getAlarms from '@/api/getAlarms';
 import AlarmModal from './modal/alarm/AlarmModal';
 import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModal';
 import { useSidebarStore } from '@/store/useSidebarStore';
+import {AlarmModalLayout} from '../modals/AlarmModalLayout';
 
 function Sidebar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState<boolean>(false);
   const { isLogin, accessToken } = useAuthStore();
-  const { isNotificationOpen} = useSidebarStore();
+  const { isNotificationOpen, setIsNotificationOpen } = useSidebarStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -42,9 +43,7 @@ function Sidebar() {
       </div>
       <div className='flex flex-col gap-[50px]'>
         <div className='flex flex-col gap-[10px]'>
-          <SidebarList
-            setIsLoginModalOpen={setIsLoginModalOpen}
-          />
+          <SidebarList setIsLoginModalOpen={setIsLoginModalOpen} />
         </div>
         <div className='flex w-full justify-center'>
           <div className='w-[206px]'>
@@ -68,9 +67,9 @@ function Sidebar() {
         </ModalLayout>
       )}
       {isNotificationOpen && (
-        <div className='absolute translate-x-[270px] translate-y-[200px]'>
+        <AlarmModalLayout isOpen={isNotificationOpen} onClose={setIsNotificationOpen}>
           <AlarmModal alarms={alarmData?.alarmList} />
-        </div>
+        </AlarmModalLayout>
       )}
       {isAdditionalModalOpen && (
         <div className='absolute translate-x-[270px] bottom-0 -translate-y-[40px]'>

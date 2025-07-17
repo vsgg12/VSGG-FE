@@ -3,7 +3,7 @@ import AdditionalOptionList from './AdditionalOptionList';
 
 function AdditionalOptionModal() {
   return (
-    <div className='w-[192px] h-[265px] rounded-[10px] bg-white z-[100]'>
+    <div className='w-[192px] h-[265px] rounded-[10px] bg-white z-[1000]'>
       <AdditionalOptionList />
     </div>
   );

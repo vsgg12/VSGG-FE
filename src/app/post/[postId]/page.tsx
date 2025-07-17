@@ -1,5 +1,4 @@
 'use client';
-import Header from '@/components/Header';
 import { useQuery } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
@@ -15,8 +14,6 @@ import NavigationArea from '../_component/NavigationArea';
 import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
-import getAlarms from '@/api/getAlarms';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -35,18 +32,6 @@ export default function PostRead() {
   } = useQuery<IGetPostItemType>({
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
-  });
-
-  const { data: userProfileData } = useQuery({
-    queryKey: ['MY_PROFILE_INFO'],
-    queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin && !isMobile,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
-    enabled: isLogin && !isMobile,
   });
 
   useEffect(() => {
@@ -70,7 +55,6 @@ export default function PostRead() {
         <PostDetailMobile />
       ) : (
         <div className='min-w-[1400px] flex-col items-center'>
-          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
             <Logo />
           </div>

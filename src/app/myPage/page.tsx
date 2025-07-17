@@ -3,7 +3,6 @@
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
-import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
@@ -21,7 +20,6 @@ import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import IsNotExistList from './_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import MyPage_Mobile from './mobile/MyPageMobile';
-import getAlarms from '@/api/getAlarms';
 
 export default function MyPage() {
   const router = useRouter();
@@ -33,12 +31,6 @@ export default function MyPage() {
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin && !isMobile,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
     enabled: isLogin && !isMobile,
   });
 
@@ -60,9 +52,6 @@ export default function MyPage() {
         <MyPage_Mobile />
       ) : (
         <div className='min-w-[1480px]'>
-          <div className='flex min-w-[1350px]'>
-            <Header userProfileData={userProfileData} alarmData={alarmData} />
-          </div>
           <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

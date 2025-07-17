@@ -1,33 +1,19 @@
 'use client';
 import Logo from '@/components/Logo';
-import Header from '@/components/Header';
 import Link from 'next/link';
 import PostFe from './_component/PostFe';
-import { useQuery } from '@tanstack/react-query';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getAlarms from '@/api/getAlarms';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 export default function PostWrite() {
-
-  const { accessToken, isLogin } = useAuthStore.getState();
-
-   const { data: userProfileData } = useQuery({
-     queryKey: ['MY_PROFILE_INFO'],
-     queryFn: () => getMyProfileDTO(accessToken),
-     enabled: isLogin
-   });
-
-   const { data: alarmData } = useQuery({
-     queryKey: ['alarms'],
-     queryFn: () => getAlarms(accessToken),
-     enabled: isLogin
-   });
-
+  const { isLogin } = useAuthStore.getState();
+  const router = useRouter();
+  if (!isLogin) {
+    router.replace('/');
+  }
 
   return (
     <div className='min-w-[1400px]'>
-      <Header userProfileData={userProfileData} alarmData={alarmData}/>
       <div>
         <div className='flex items-center justify-center w-full'>
           <Logo />

@@ -82,6 +82,7 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
       case '검색':
         if (routeName !== 'HOME') return;
         setIsSearchOpen(!isSearchOpen);
+        setIsNotificationOpen(false);
         break;
       case '글 작성':
         if (!isLogin) return setIsLoginModalOpen(true);
@@ -98,6 +99,7 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
       case '알림':
         if (!isLogin) return setIsLoginModalOpen(true);
         setIsNotificationOpen(!isNotificationOpen);
+        setIsSearchOpen(false);
         break;
     }
   };

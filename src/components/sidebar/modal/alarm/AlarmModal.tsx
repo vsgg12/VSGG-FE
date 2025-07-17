@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
-import AlarmList from './AlarmList';
+import SideAlarmList from './SideAlarmList';
+import AlarmOptionType from './AlarmOptionType';
 
 interface IAlarmModalProps {
   alarms?: IAlarmsType[] | undefined;
 }
 
-const alarmTypes = [
+export type AlarmKoreanType = '전체' | '판결' | '댓글';
+type AlarmEnglishType = 'ALL' | 'POST' | 'COMMENT';
+
+export type AlarmType = {
+  type: AlarmKoreanType;
+  value: AlarmEnglishType;
+};
+
+export const alarmTypes: AlarmType[] = [
   { type: '전체', value: 'ALL' },
   { type: '판결', value: 'POST' },
   { type: '댓글', value: 'COMMENT' },
 ];
 
 export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
-  const [alarmType, setAlarmType] = useState<string>('전체');
+  const [alarmType, setAlarmType] = useState<AlarmKoreanType>('전체');
 
   const filteredAlarms =
     alarms && alarmType !== '전체'
@@ -23,28 +32,32 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
 
   return (
     <>
-      <div className='w-[354px] h-[443px] border border-[#8A1F21] rounded-[18px] p-[15px] bg-[#FFFFFF] z-[100]'>
-        <div className='flex flex-col flex-grow '>
-          <p className='text-[#8A1F21] text-[14px] font-semibold mb-[10px]'>알림</p>
-          <div className='mb-[10px]'>
-            {alarmTypes.map((alarm, idx) => (
-              <button
-                key={idx}
-                className={`w-[58px] h-[23px] rounded-[20px] text-[14px] mr-2 ${alarm.type === alarmType ? 'bg-[#333333] text-white' : 'bg-[#F8F8F8] text-[#909090]'}`}
-                onClick={() => setAlarmType(alarm.type)}
-              >
-                {alarm.type}
-              </button>
+      <div
+        className='w-[362px] min-w-[362px] h-screen py-[40px] bg-[#FFFFFF] z-[100]'
+        style={{
+          boxShadow: '4px 0 12px rgba(0, 0, 0, 0.1)',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className='h-full flex flex-col gap-[30px]'>
+          <p className='text-[#888888] text-[20px] font-bold pl-[16px]'>알림</p>
+          <div className='w-full h-[32px] border-b-1 border-[#ECECEC] flex '>
+            {alarmTypes.map((alarm: AlarmType) => (
+              <AlarmOptionType
+                alarm={alarm}
+                alarmType={alarmType}
+                setAlarmType={setAlarmType}
+                key={`alarm-option-${alarm.type}`}
+              />
             ))}
           </div>
           <div className='h-[348px]'>
-            <AlarmList alarms={filteredAlarms} />
+            <SideAlarmList alarms={filteredAlarms} />
           </div>
         </div>
         <div className='relative'>
-          <hr className='border-[#8A1F21]' />
           <span
-            className='text-[#828282] font-medium text-[10px] bg-white px-2 whitespace-nowrap'
+            className='text-[#888888] font-medium text-[12px] px-2 whitespace-nowrap'
             style={{
               position: 'absolute',
               bottom: '-8px',

@@ -24,7 +24,6 @@ function ProfileInfo() {
     enabled: isLogin,
   });
 
-
   return (
     <div
       className={`flex w-[204px] h-[48px] gap-[10px] items-center ${!isLogin && 'cursor-pointer'}`}
@@ -32,14 +31,14 @@ function ProfileInfo() {
       onMouseLeave={() => setIsHovered(false)}
       onClick={isLogin ? undefined : handleGoLogin}
     >
-      <div className='w-[48px] h-[48px] rounded-full flex items-center'>
+      <div className='w-[48px] h-[48px] rounded-full flex items-center justify-center'>
         <img
           src={
             isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage
           }
           width={48}
           height={48}
-          className='rounded-full block'
+          className='rounded-full block w-full h-full object-cover'
         />
       </div>
       {isLogin && userProfileData && user ? (
