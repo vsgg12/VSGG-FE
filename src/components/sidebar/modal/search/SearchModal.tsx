@@ -5,6 +5,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import SearchInputContainer from './SearchInputContainer';
+import SearchList from './SearchList';
 
 
 function SearchModal() {
@@ -13,7 +14,6 @@ function SearchModal() {
 
   const {
     data: postData,
-    isLoading,
     refetch,
   } = useQuery<IGetPostListType>({
     queryKey: ['POST_LIST'],
@@ -60,6 +60,9 @@ function SearchModal() {
           onChangeKeyword={onChangeKeyword}
           keyword={keyword}
         />
+      </div>
+      <div className="w-full h-full px-[16px]">
+        <SearchList postList={postData?.postDTO} />
       </div>
     </div>
   );
