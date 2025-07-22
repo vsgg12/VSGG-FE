@@ -16,13 +16,14 @@ import getAlarms from '@/api/getAlarms';
 import AlarmModal from './modal/alarm/AlarmModal';
 import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModal';
 import { useSidebarStore } from '@/store/useSidebarStore';
-import {AlarmModalLayout} from '../modals/AlarmModalLayout';
+import { SidebarModalLayout } from '../modals/SidebarModalLayout';
+import SearchModal from './modal/search/SearchModal';
 
 function Sidebar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState<boolean>(false);
   const { isLogin, accessToken } = useAuthStore();
-  const { isNotificationOpen, setIsNotificationOpen } = useSidebarStore();
+  const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } = useSidebarStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -67,14 +68,19 @@ function Sidebar() {
         </ModalLayout>
       )}
       {isNotificationOpen && (
-        <AlarmModalLayout isOpen={isNotificationOpen} onClose={setIsNotificationOpen}>
+        <SidebarModalLayout isOpen={isNotificationOpen} onClose={setIsNotificationOpen}>
           <AlarmModal alarms={alarmData?.alarmList} />
-        </AlarmModalLayout>
+        </SidebarModalLayout>
       )}
       {isAdditionalModalOpen && (
         <div className='absolute translate-x-[270px] bottom-0 -translate-y-[40px]'>
           <AdditionalOptionModal />
         </div>
+      )}
+      {isSearchOpen && (
+        <SidebarModalLayout isOpen={isSearchOpen} onClose={setIsSearchOpen}>
+          <SearchModal />
+        </SidebarModalLayout>
       )}
     </div>
   );

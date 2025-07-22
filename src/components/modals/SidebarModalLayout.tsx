@@ -6,7 +6,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-export const AlarmModalLayout = ({ isOpen, onClose, children }: ModalProps) => {
+export const SidebarModalLayout = ({ isOpen, onClose, children }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,10 +29,7 @@ export const AlarmModalLayout = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div className='fixed inset-0 w-screen h-screen z-[1000]'>
-      <div
-        ref={modalRef}
-        className='absolute top-0 left-[260px] h-screen w-[362px] bg-white'
-      >
+      <div ref={modalRef} className='absolute top-0 left-[260px] h-screen w-[362px] bg-white'>
         {children}
       </div>
     </div>
