@@ -33,8 +33,8 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
-  const { isNotificationOpen } = useSidebarStore();
-  useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
     data: postData,
@@ -49,6 +49,10 @@ export default function Home() {
       throw new Error('Invalid activeButton value');
     },
   });
+
+   useEffect(() => {
+     setRouteState('HOME');
+   }, [setRouteState]);
 
   useEffect(() => {
     if (keyword === '') {

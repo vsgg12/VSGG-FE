@@ -1,7 +1,7 @@
 'use client';
 
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Logo from '@/components/Logo';
 import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
@@ -17,8 +17,8 @@ export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-    const { isNotificationOpen } = useSidebarStore();
-    useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS', page],
@@ -29,6 +29,10 @@ export default function MyPosts() {
   const handlePageChange = (page: number) => {
     setPage(page);
   };
+
+    useEffect(() => {
+      setRouteState('PROFILE');
+    }, [setRouteState]);
 
   return (
     <>

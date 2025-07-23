@@ -1,13 +1,18 @@
-import React from 'react'
+import React from 'react';
+import SearchItem from './SearchItem';
 
-interface Props{
+interface Props {
   postList: IGetPostDTOType[];
 }
 
-function SearchList({postList}: Props) {
+function SearchList({ postList }: Props) {
   return (
-    <div>SearchList</div>
-  )
+    <>
+      {postList.map((postItem) => (
+        <SearchItem postItem={postItem} key={postItem.id} />
+      ))}
+    </>
+  );
 }
 
-export default SearchList
+export default SearchList;

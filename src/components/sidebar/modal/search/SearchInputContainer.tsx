@@ -8,6 +8,7 @@ interface Props {
   handleSearchKeyDown: (e: KeyboardEvent<HTMLInputElement>) => void;
   handleSearch: () => void;
   keyword: string;
+  visible: boolean;
 }
 
 function SearchInputContainer({
@@ -15,6 +16,7 @@ function SearchInputContainer({
   handleSearchKeyDown,
   handleSearch,
   keyword,
+  visible,
 }: Props) {
   return (
     <div className='w-[362px] min-w-[362px] h-[83px] px-[10px] flex flex-col gap-[26px]'>
@@ -30,9 +32,11 @@ function SearchInputContainer({
           <GoSearch className='absolute right-5 top-[12px] text-[#8A1F21]' />
         </button>
       </div>
-      <div className='w-full text-[16px] font-medium text-[#333333] pl-[10px]'>
-        <span className='font-semibold text-[#8A1F21]'>{keyword}</span>에 대한 검색 결과입니다.
-      </div>
+      {visible && (
+        <div className='w-full text-[16px] font-medium text-[#333333] pl-[10px]'>
+          <span className='font-semibold text-[#8A1F21]'>{keyword}</span>에 대한 검색 결과입니다.
+        </div>
+      )}
     </div>
   );
 }

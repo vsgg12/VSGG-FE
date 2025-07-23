@@ -33,7 +33,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
   return (
     <>
       <div
-        className='w-[362px] min-w-[362px] h-screen p-[40px] bg-[#FFFFFF] z-[100]'
+        className='w-[362px] min-w-[362px] h-screen pt-[40px] pb-[60px] bg-[#FFFFFF] z-[100]'
         style={{
           boxShadow: '4px 0 12px rgba(0, 0, 0, 0.1)',
         }}
@@ -51,7 +51,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
               />
             ))}
           </div>
-          <div className='h-full'>
+          <div className='flex-1 min-h-0 overflow-y-auto scrollbar-hidden'>
             <SideAlarmList alarms={filteredAlarms} />
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
             className='text-[#888888] font-medium text-[12px] px-2 whitespace-nowrap'
             style={{
               position: 'absolute',
-              bottom: '-14px',
+              bottom: '-35px',
               left: '50%',
               transform: 'translateX(-50%)',
             }}

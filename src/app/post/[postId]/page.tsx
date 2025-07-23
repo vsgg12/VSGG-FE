@@ -26,8 +26,8 @@ export default function PostRead() {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-    const { isNotificationOpen } = useSidebarStore();
-    useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
     data: post,
@@ -37,6 +37,10 @@ export default function PostRead() {
     queryKey: ['POST_ITEM', id],
     queryFn: async () => getPostItem(id, isLogin ? accessToken : ''),
   });
+
+  useEffect(() => {
+    setRouteState('HOME');
+  }, [setRouteState]);
 
   useEffect(() => {
     if (error?.message === '존재하지 않는 게시글 입니다.') {

@@ -1,6 +1,7 @@
 import { nextui } from '@nextui-org/theme';
 import type { Config } from 'tailwindcss';
 import { PluginAPI } from 'tailwindcss/types/config';
+import lineClamp from '@tailwindcss/line-clamp';
 
 import plugin from 'tailwindcss/plugin';
 
@@ -17,6 +18,7 @@ const config: Config = {
   },
   plugins: [
     nextui(),
+    lineClamp,
     plugin(function ({ addUtilities }: PluginAPI) {
       addUtilities({
         '.text-stroke': {

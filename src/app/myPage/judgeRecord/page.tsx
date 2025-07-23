@@ -1,7 +1,7 @@
 'use client';
 
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Logo from '@/components/Logo';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import { useQuery } from '@tanstack/react-query';
@@ -17,8 +17,10 @@ import { useSidebarStore } from '@/store/useSidebarStore';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
@@ -31,12 +33,14 @@ export default function JudgeRecord() {
     queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
     enabled: isLogin && !isMobile,
   });
-  const {isNotificationOpen} = useSidebarStore()
-   useBodyScrollLock(isNotificationOpen);
 
   const handlePageChange = (page: number) => {
     setPage(page);
   };
+
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
 
   return (
     <>

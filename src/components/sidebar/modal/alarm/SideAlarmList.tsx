@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import 'moment/locale/ko';
 import SideAlarmItem from './SideAlarmItem';
+import { useSidebarStore } from '@/store/useSidebarStore';
 
 interface IAlarmListProps {
   alarms: IAlarmsType[] | undefined;
@@ -15,6 +16,7 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
   const { accessToken } = useAuthStore();
   const queryClient = useQueryClient();
   const [postId, setPostId] = useState<number>();
+  const { setRouteState } = useSidebarStore();
 
   const { mutate: postAlarm } = useMutation({
     mutationFn: ({
@@ -35,6 +37,7 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
   });
 
   const handleAlarmItemClick = (alarmId: number, alarmType: string, id: number) => {
+    setRouteState('HOME');
     setPostId(id);
     postAlarm({ accessToken, alarmId, alarmType });
   };
@@ -56,17 +59,13 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
         </div>
       ) : (
         <>
-          <div className='pb-2 overflow-y-auto h-full flex-grow scrollbar-hidden'>
-            <div>
-              {alarms.map((alarm) => (
-                <SideAlarmItem
-                  alarm={alarm}
-                  key={`alarm-item-${alarm.alarmId}`}
-                  handleAlarmItemClick={handleAlarmItemClick}
-                />
-              ))}
-            </div>
-          </div>
+          {alarms.map((alarm) => (
+            <SideAlarmItem
+              alarm={alarm}
+              key={`alarm-item-${alarm.alarmId}`}
+              handleAlarmItemClick={handleAlarmItemClick}
+            />
+          ))}
         </>
       )}
     </div>

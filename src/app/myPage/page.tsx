@@ -4,7 +4,7 @@ import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
@@ -29,8 +29,8 @@ export default function MyPage() {
   const user = useAuthStore((state) => state.user);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-    const { isNotificationOpen } = useSidebarStore();
-    useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
@@ -49,6 +49,10 @@ export default function MyPage() {
     queryFn: () => getMyJudgeList({ token: accessToken, size: '5', page: '1' }),
     enabled: isLogin && !isMobile,
   });
+
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
 
   return (
     <>

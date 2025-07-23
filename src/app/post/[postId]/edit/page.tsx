@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import EditForm from './_components/EditForm';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
@@ -19,8 +19,13 @@ import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 */
 function EditPost() {
   const { isLogin } = useAuthStore();
-  const { isNotificationOpen } = useSidebarStore();
-  useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
+
+  useEffect(() => {
+    setRouteState('HOME');
+  }, [setRouteState]);
+
   const router = useRouter();
   if (!isLogin) {
     router.replace('/');

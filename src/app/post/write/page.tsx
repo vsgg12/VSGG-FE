@@ -6,15 +6,21 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import { useEffect } from 'react';
 
 export default function PostWrite() {
   const { isLogin } = useAuthStore.getState();
-  const { isNotificationOpen } = useSidebarStore();
-  useBodyScrollLock(isNotificationOpen);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
+
   const router = useRouter();
   if (!isLogin) {
     router.replace('/');
   }
+
+  useEffect(() => {
+    setRouteState('WRITE');
+  }, [setRouteState]);
 
   return (
     <div className='min-w-[1400px]'>

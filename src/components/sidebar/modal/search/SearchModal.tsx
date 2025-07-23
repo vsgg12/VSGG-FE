@@ -7,15 +7,11 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import SearchInputContainer from './SearchInputContainer';
 import SearchList from './SearchList';
 
-
 function SearchModal() {
   const { isLogin, accessToken } = useAuthStore();
   const [keyword, setKeyword] = useState<string>('');
 
-  const {
-    data: postData,
-    refetch,
-  } = useQuery<IGetPostListType>({
+  const { data: postData, refetch } = useQuery<IGetPostListType>({
     queryKey: ['POST_LIST'],
     queryFn: () => getPostList('createdatetime', keyword, isLogin ? accessToken : ''),
   });
@@ -59,10 +55,19 @@ function SearchModal() {
           handleSearch={handleSearch}
           onChangeKeyword={onChangeKeyword}
           keyword={keyword}
+          visible={Number(postData?.postDTO.length) > 0}
         />
-      </div>
-      <div className="w-full h-full px-[16px]">
-        <SearchList postList={postData?.postDTO} />
+        <div className='flex-1 min-h-0 px-[16px] overflow-y-auto scrollbar-hidden'>
+          {postData && postData.postDTO.length > 0 ? (
+            <div className='overflow-y-auto h-full scrollbar-hidden'>
+              <SearchList postList={postData.postDTO} />
+            </div>
+          ) : (
+            <div className='text-[12px] text-[#888888] w-full justify-center flex'>
+              검색 결과가 없습니다
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

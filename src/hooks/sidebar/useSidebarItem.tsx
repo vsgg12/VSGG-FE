@@ -76,24 +76,23 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
     switch (item) {
       case '홈':
         setRouteState('HOME');
-        route.replace('/home');
+        route.push('/home');
         closeModal();
         break;
       case '검색':
-        if (routeName !== 'HOME') return;
         setIsSearchOpen(!isSearchOpen);
         setIsNotificationOpen(false);
         break;
       case '글 작성':
         if (!isLogin) return setIsLoginModalOpen(true);
         setRouteState('WRITE');
-        route.replace('/post/write');
+        route.push('/post/write');
         closeModal();
         break;
       case '마이페이지':
         if (!isLogin) return setIsLoginModalOpen(true);
         setRouteState('PROFILE');
-        route.replace('/myPage');
+        route.push('/myPage');
         closeModal();
         break;
       case '알림':
