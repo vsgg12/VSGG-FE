@@ -3,7 +3,7 @@ import api from '@/_lib/fetcher';
 type IPostResult = {
   resultCode: number;
   resultMsg: string;
-  data: { postId: number; likeCount: number };
+  postLikeDTO: { postId: number; likeCount: number };
 };
 
 export default async function postPostLike(authorization: string, postId: number) {

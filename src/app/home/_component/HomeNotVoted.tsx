@@ -1,17 +1,19 @@
 import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
 import DoughnutChart from '@/components/DoughnutChart';
 
-export default function HomeNotVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
+interface Props {
+  voteInfos: IGetInGameInfoType[];
+}
+
+export default function HomeNotVoted({ voteInfos }: Props) {
   return (
-    <div className='bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30 flex h-[156px] w-[586px] rounded-[20px] items-center justify-center'>
-      <div className='flex h-full rounded-[1.875em] items-center'>
-        <div className='flex items-center justify-center p-[1rem] text-[0.625em] gap-[90px] blur-sm'>
-          <PostVotingChampList voteInfos={voteInfos} />
-          <DoughnutChart voteInfos={voteInfos} size='home' />
-        </div>
+    <div className='bg-gradient-to-b from-[#ADADAD]/30 to-[#DCDCDC]/30 flex h-[156px] w-[526px] rounded-[20px] items-center justify-center'>
+      <div className='flex items-center justify-center gap-[80px]'>
+        <PostVotingChampList voteInfos={voteInfos} />
+        <DoughnutChart voteInfos={voteInfos} size='home' />
       </div>
       <div
-        className='flex h-[70%] w-[16rem] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
+        className='flex h-[137px] w-[268px] flex-col items-center justify-center rounded-[5px] bg-[#ffffff] p-2 shadow-md'
         style={{
           position: 'absolute',
           left: '50%',

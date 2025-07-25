@@ -86,7 +86,7 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   return (
     <div className='flex relative'>
       <div
-        className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} items-center justify-center`}
+        className={`flex ${size === 'home' ? 'h-[146px] w-[146px]' : 'h-[200px] w-[200px]'} items-center justify-center`}
       >
         <Doughnut data={data} options={options} />
       </div>

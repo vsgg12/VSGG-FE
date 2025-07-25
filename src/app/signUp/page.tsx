@@ -105,7 +105,7 @@ export default function SignUp() {
         email: user?.email,
         profileImage: user?.profile_image,
         nickname,
-        oAuthProvider : user?.socialLoginType,
+        oAuthProvider: user?.socialLoginType,
         agrees: {
           agreeAge: checkboxes.agreeAge,
           agreeTerms: checkboxes.agreeTerms,
@@ -125,7 +125,7 @@ export default function SignUp() {
           email: user ? user.email : '',
           nickname,
           profile_image: user ? user.profile_image : '',
-          socialLoginType: user ? user.socialLoginType : ''
+          socialLoginType: user ? user.socialLoginType : '',
         },
       });
       localStorage.setItem('nickname', nickname);
@@ -220,7 +220,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21]'
+                  className='size-6 accent-[#8A1F21] cursor-pointer'
                   name='agreeAge'
                   checked={checkboxes.agreeAge}
                   onChange={handleCheckboxChange}
@@ -234,7 +234,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21]'
+                  className='size-6 accent-[#8A1F21] cursor-pointer'
                   name='agreeTerms'
                   checked={checkboxes.agreeTerms}
                   onChange={handleCheckboxChange}
@@ -247,7 +247,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21]'
+                  className='size-6 accent-[#8A1F21] cursor-pointer'
                   name='agreePrivacy'
                   checked={checkboxes.agreePrivacy}
                   onChange={handleCheckboxChange}
@@ -261,7 +261,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21]'
+                  className='size-6 accent-[#8A1F21] cursor-pointer'
                   name='agreePromotion'
                   checked={checkboxes.agreePromotion}
                   onChange={handleCheckboxChange}
@@ -276,7 +276,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21]'
+                  className='size-6 accent-[#8A1F21] cursor-pointer'
                   checked={Object.values(checkboxes).every(Boolean)}
                   onChange={(e) => handleCheckAll(e.target.checked)}
                 />
@@ -285,7 +285,7 @@ export default function SignUp() {
             </div>
             <button
               type='submit'
-              className={`mb-10 rounded-full ${isAllValid ? 'bg-[#8A1F21]' : 'bg-[#B5B5B5]'}  p-2 text-white w-[450px]`}
+              className={`mb-10 rounded-full ${isAllValid ? 'bg-[#8A1F21] cursor-pointer' : 'bg-[#B5B5B5] cursor-none'}  p-2 text-white w-[450px]`}
               onClick={handleSignUpBtnClick}
             >
               가입하기

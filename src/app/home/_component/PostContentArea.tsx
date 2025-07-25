@@ -1,13 +1,14 @@
 import useConvertHTML from '@/hooks/useConvertHTML';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Icon_heart from '../../../../public/svg/postItem/heart.svg';
 import Icon_vote from '../../../../public/svg/postItem/vote.svg';
 import Icon_view from '../../../../public/svg/postItem/view.svg';
+import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 
@@ -20,25 +21,36 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video';
 
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const { accessToken, user } = useAuthStore();
   const contentsArr = useConvertHTML(post.content);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
-  const [updatedLikeCount, setUpdatedLikeCount] = useState<number>(0);
+  const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
+  const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (post.voteCount === 0) {
+      setIsNoOneVoted(true);
+    }
+  }, [post]);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
       const response = await postPostLike(accessToken, post.id);
-      return response.data.likeCount;
+      return response.postLikeDTO.likeCount;
+    },
+    onMutate: async () => {
+      setIsLikeInProgress(true);
     },
     onSuccess: async (likeCount) => {
-      await queryClient.invalidateQueries({ queryKey: ['COMMENTS'] });
       setIsLikeInProgress(false);
       setUpdatedLikeCount(likeCount);
     },
-    onError: (error) => console.error(error.message),
+    onError: (error) => {
+      console.error(error.message);
+      setIsLikeInProgress(false);
+    },
   });
 
   const handleLikePost = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -61,13 +73,8 @@ function PostContentArea({ post, voteInfos }: Props) {
     {
       name: 'like',
       icon: Icon_heart,
-      data: updatedLikeCount
-        ? updatedLikeCount < 1000
-          ? updatedLikeCount
-          : '999+'
-        : post.likeCount < 1000
-          ? post.likeCount
-          : '999+',
+      data:
+        (updatedLikeCount ?? post.likeCount) < 1000 ? updatedLikeCount ?? post.likeCount : '999+',
       onclick: handleLikePost,
     },
     {
@@ -95,7 +102,7 @@ function PostContentArea({ post, voteInfos }: Props) {
     <div
       className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow'
       onClick={() => {
-        router.push(`/post/${post.id}/`);
+        router.push(`/post/${post.id}`);
       }}
     >
       <div className='flex flex-col h-[60px]'>
@@ -150,18 +157,33 @@ function PostContentArea({ post, voteInfos }: Props) {
               onClick={button.onclick}
             >
               <Image src={button.icon} alt={button.name} width={24} height={24} />
-              {button.data && <p className='text-[14px] text-[#555555]'>{button.data}</p>}
+              {button.data && (
+                <p className='text-[14px] text-[#555555] hover:text-[#8A1F21]'>{button.data}</p>
+              )}
             </div>
             {idx !== 2 && <div className='h-[20px] w-[1px] bg-[#555555]'></div>}
           </React.Fragment>
         ))}
       </div>
       {isVoteClicked && (
-        <div className='relative flex h-[167px] items-center justify-center rounded-[1.875rem] '>
-          {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
-            <HomeVoted voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
+        <div className='relative flex h-[167px] items-center justify-center rounded-[20px] '>
+          {(post.status === 'FINISHED' && isNoOneVoted) || post.memberDTO.email === user?.email ? (
+            <div className='flex w-full relative justify-center'>
+              <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
+                {post.status === 'FINISHED'
+                  ? '투표한 사람이 없는 게시글입니다.'
+                  : '아직 투표한 사람이 없는 게시글입니다.'}
+              </p>
+              <Image src={Doughnut} width={146} height={146} alt='doughnut' />
+            </div>
+          ) : post.isVote || post.status === 'FINISHED' ? (
+            <HomeVoted voteInfos={voteInfos} />
           ) : (
-            <HomeNotVoted voteInfos={voteInfos} />
+            <HomeNotVoted
+              voteInfos={voteInfos}
+              isNoOneVoted={isNoOneVoted}
+              isFinished={post.status === 'FINISHED'}
+            />
           )}
         </div>
       )}

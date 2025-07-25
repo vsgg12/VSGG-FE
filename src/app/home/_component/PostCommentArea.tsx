@@ -6,12 +6,14 @@ import MoreModal from '@/components/modals/MoreModal';
 import Icon_more from '../../../../public/svg/Icon_more.svg';
 import { useQuery } from '@tanstack/react-query';
 import PostCommentItem from './PostCommentItem';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   postId: number;
 }
 
 function PostCommentArea({ postId }: Props) {
+  const router = useRouter();
   const { isLogin, user } = useAuthStore();
   const [showReply, setShowReply] = useState<null | number>(null);
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
@@ -35,6 +37,10 @@ function PostCommentArea({ postId }: Props) {
     }
   };
 
+  const handleReply = () => {
+    router.push(`post/${postId}`);
+  };
+
   const handleOpenCommentMoreModal = (commentId: number) => {
     setIsCommentMoreModalOpen(isCommentMoreModalOpen === commentId ? null : commentId);
   };
@@ -44,7 +50,7 @@ function PostCommentArea({ postId }: Props) {
   };
 
   return (
-    <div className='w-[325px] min-h-[448px] h-full rounded-[20px] bg-[#FFFFFF] scroll p-[20px] shadow'>
+    <div className='w-[325px] min-h-[448px] h-full rounded-[20px] bg-[#FFFFFF] scroll p-[20px] shadow flex flex-col gap-[20px]'>
       {commentData?.comments.length !== 0 ? (
         commentData?.comments.map((comment: IGetCommentItemType, index) => (
           <div key={index} className='relative text-[13px]'>
@@ -54,12 +60,7 @@ function PostCommentArea({ postId }: Props) {
                 commentRef.current[comment.id] = el;
               }}
             >
-              <PostCommentItem
-                comment={comment}
-                handleReply={() => {
-                  return;
-                }}
-              />
+              <PostCommentItem comment={comment} handleReply={handleReply} />
               {isCommentMoreModalOpen === comment.id && (
                 <div className='absolute translate-x-[205px]'>
                   <MoreModal

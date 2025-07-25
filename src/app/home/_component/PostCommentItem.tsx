@@ -51,7 +51,7 @@ export default function PostCommentItem({ comment, targetComment, handleReply }:
           | {timeDifferenceFromNow(pastTime)}
         </p>
       </div>
-      <p className='text-[14px] mb-[7px]'>
+      <p className='text-[14px] mb-[2px]'>
         {targetComment && <span className='text-[#8A1F21]'>@{comment.parentMemberNickname} </span>}
         <span className='whitespace-pre-wrap'>{comment.content}</span>
       </p>

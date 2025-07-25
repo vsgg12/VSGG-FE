@@ -1,16 +1,28 @@
-export default function PostVotingChampList({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
+import { voteColors } from '@/data/championData';
+
+interface Props {
+  voteInfos: IGetInGameInfoType[];
+}
+
+export default function PostVotingChampList({ voteInfos }: Props) {
   return (
     <>
       {voteInfos && voteInfos.length === 0 ? (
         <></>
       ) : (
-        <div className='flex flex-col'>
-          {voteInfos.map((champion, index) => (
-            <div key={index} className='mb-1 flex flex-row items-center'>
-              <div className={`p-voting-champ-dot`}></div>
-              <div className='whitespace-nowrap'>{champion.championName}</div>
-            </div>
-          ))}
+        <div className='flex flex-col gap-[14px]'>
+          {voteInfos.map((champion, index) => {
+            // voteColors 배열의 길이를 넘지 않는지 확인
+            const voteColor = voteColors[index % voteColors.length];
+            return (
+              <div key={index} className='flex items-center gap-[10px]'>
+                <div className={`${voteColor.background} p-voting-champ-dot`}></div>
+                <p className='whitespace-nowrap text-[12px] text-[#333333]'>
+                  {champion.championName}
+                </p>
+              </div>
+            );
+          })}
         </div>
       )}
     </>
