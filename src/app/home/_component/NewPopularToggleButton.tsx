@@ -1,7 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Icon_time from '../../../../public/svg/main/time.svg';
 import Icon_time_disabled from '../../../../public/svg/main/time_disabled.svg';
+import Icon_time_hover from '../../../../public/svg/main/time_hover.svg';
 import Icon_flame from '../../../../public/svg/main/flame.svg';
+import Icon_flame_hover from '../../../../public/svg/main/flame_hover.svg';
 import Icon_flame_disabled from '../../../../public/svg/main/flame_disabled.svg';
 import Image from 'next/image';
 
@@ -10,30 +12,106 @@ interface INewPopularToggleButton {
   setActiveButton: Dispatch<SetStateAction<string>>;
 }
 
-const buttonClass = 'flex justify-center items-center gap-[6px] cursor-pointer';
+const buttonClass = 'flex justify-center items-center gap-[6px] relative cursor-pointer';
 
 function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularToggleButton) {
+  const [isHovered, setIsHovered] = useState<string>('');
+
   return (
     <div className='flex text-[16px] gap-[16px]'>
-      <div className={buttonClass} onClick={() => setActiveButton('createdatetime')}>
-        <Image
-          src={activeButton == 'createdatetime' ? Icon_time : Icon_time_disabled}
-          width={24}
-          height={24}
-          alt='time'
-        />
-        <p className={activeButton == 'createdatetime' ? 'text-[#8A1F21]' : 'text-[#C8C8C8]'}>
+      <div
+        className={buttonClass}
+        onClick={() => setActiveButton('createdatetime')}
+        onMouseEnter={() => setIsHovered('time')}
+        onMouseLeave={() => setIsHovered('')}
+      >
+        <div className='relative w-[24px] h-[24px]'>
+          <Image
+            src={Icon_time}
+            alt='time'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton === 'createdatetime' ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <Image
+            src={Icon_time_hover}
+            alt='time_hover'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton !== 'createdatetime' && isHovered === 'time'
+                ? 'opacity-100'
+                : 'opacity-0'
+            }`}
+          />
+          <Image
+            src={Icon_time_disabled}
+            alt='time_disabled'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton !== 'createdatetime' && isHovered !== 'time'
+                ? 'opacity-100'
+                : 'opacity-0'
+            }`}
+          />
+        </div>
+        <p
+          className={`transition-colors duration-300 ease-in-out ${
+            activeButton === 'createdatetime'
+              ? 'text-[#8A1F21]'
+              : isHovered === 'time'
+                ? 'text-[#999999]'
+                : 'text-[#C8C8C8]'
+          }`}
+        >
           최신
         </p>
       </div>
-      <div className={buttonClass} onClick={() => setActiveButton('view')}>
-        <Image
-          src={activeButton == 'view' ? Icon_flame : Icon_flame_disabled}
-          width={24}
-          height={24}
-          alt='flame'
-        />
-        <p className={activeButton == 'view' ? 'text-[#8A1F21]' : 'text-[#C8C8C8]'}>인기</p>
+      <div
+        className={buttonClass}
+        onClick={() => setActiveButton('view')}
+        onMouseEnter={() => setIsHovered('view')}
+        onMouseLeave={() => setIsHovered('')}
+      >
+        <div className='relative w-[24px] h-[24px]'>
+          {' '}
+          <Image
+            src={Icon_flame}
+            alt='view'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton === 'view' ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <Image
+            src={Icon_flame_hover}
+            alt='flame_hover'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton !== 'view' && isHovered === 'view' ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <Image
+            src={Icon_flame_disabled}
+            alt='flame_disabled'
+            fill
+            className={`transition-opacity duration-300 ease-in-out ${
+              activeButton !== 'view' && isHovered !== 'view' ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </div>
+
+        <p
+          className={`transition-colors duration-300 ease-in-out ${
+            activeButton === 'view'
+              ? 'text-[#8A1F21]'
+              : isHovered === 'view'
+                ? 'text-[#999999]'
+                : 'text-[#C8C8C8]'
+          }`}
+        >
+          인기
+        </p>
       </div>
     </div>
   );
