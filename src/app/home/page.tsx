@@ -131,7 +131,7 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className='flex w-screen items-center justify-center'>
+        <div className='flex w-screen items-center justify-center pl-[260px]'>
           <section className='flex flex-col relative w-[698px] mt-[40px]'>
             <WritePost handleWriteClick={handleWriteClick} />
             <div className='w-[644px] mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
