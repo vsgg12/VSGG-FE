@@ -40,10 +40,10 @@ function PostContentArea({ post, voteInfos }: Props) {
       const response = await postPostLike(accessToken, post.id);
       return response.postLikeDTO.likeCount;
     },
-    onMutate: async () => {
+    onMutate: () => {
       setIsLikeInProgress(true);
     },
-    onSuccess: async (likeCount) => {
+    onSuccess: (likeCount) => {
       setIsLikeInProgress(false);
       setUpdatedLikeCount(likeCount);
     },
@@ -53,15 +53,12 @@ function PostContentArea({ post, voteInfos }: Props) {
     },
   });
 
-  const handleLikePost = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleLikePost = async (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
     if (isLikeInProgress) {
       return;
     }
-    alert('like');
-
-    setIsLikeInProgress(true);
-    likePost();
+    await likePost();
   };
 
   const handleVoteClick = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -179,11 +176,7 @@ function PostContentArea({ post, voteInfos }: Props) {
           ) : post.isVote || post.status === 'FINISHED' ? (
             <HomeVoted voteInfos={voteInfos} />
           ) : (
-            <HomeNotVoted
-              voteInfos={voteInfos}
-              isNoOneVoted={isNoOneVoted}
-              isFinished={post.status === 'FINISHED'}
-            />
+            <HomeNotVoted voteInfos={voteInfos} />
           )}
         </div>
       )}

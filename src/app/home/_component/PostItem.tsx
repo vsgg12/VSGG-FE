@@ -2,6 +2,7 @@ import PostDeadLine from '@/components/PostDeadLine';
 import React, { Dispatch, SetStateAction } from 'react';
 import Icon_share from '../../../../public/svg/postItem/arrow-share.svg';
 import Icon_comment from '../../../../public/svg/postItem/chatbox.svg';
+import Default_Profile from '../../../../public/svg/defaultProfile.svg';
 import Image from 'next/image';
 import PostContentArea from './PostContentArea';
 import { toast } from 'react-hot-toast';
@@ -58,14 +59,14 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
           <div className='flex items-center'>
             <img
               src={
-                post.memberDTO.profileImage === null
-                  ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
-                  : post.memberDTO.profileImage
+                post.memberDTO.profileImage === null ? Default_Profile : post.memberDTO.profileImage
               }
               className='mr-[0.625rem] h-[48px] w-[48px] rounded-full text-[#D9D9D9]'
             />
-            <p>{post.memberDTO.nickname}</p>
-            <p className='text-[#C8C8C8] ml-[7px]'>{timeDifferenceFromNow(post.createdAt)}</p>
+            <div className='flex gap-[5px]'>
+              <p>{post.memberDTO.nickname}</p>
+              <p className='text-[#C8C8C8] ml-[px]'>{timeDifferenceFromNow(post.createdAt)}</p>
+            </div>
           </div>
           <PostDeadLine deadLine={post.daysUntilEnd} />
         </div>

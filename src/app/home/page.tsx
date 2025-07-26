@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import writeSVG from '../../../public/svg/writingWhite.svg';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
@@ -18,6 +16,7 @@ import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
 import PostItem from './_component/PostItem';
 import PostCommentArea from './_component/PostCommentArea';
+import WritePost from './_component/WritePost';
 
 export default function Home() {
   const router = useRouter();
@@ -124,68 +123,54 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className='w-screen'>
-          <main className='px-[50px]'>
-            <section className='flex flex-col justify-center relative w-full items-center mt-[40px]'>
-              <div className='w-[639px] mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
-                <NewPopularToggleButton
-                  activeButton={activeButton}
-                  setActiveButton={setActiveButton}
-                />
-                <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
-              </div>
-              <div className='flex flex-col gap-[40px]'>
-                {isLoading ? (
-                  <Loading />
-                ) : visiblePosts.length === 0 ? (
-                  <div className='flex min-w-[800px] w-full flex-col flex-grow items-center justify-center'>
-                    현재 작성된 게시물이 없습니다.
+        <div className='flex w-screen items-center justify-center'>
+          <section className='flex flex-col relative w-[698px] mt-[40px]'>
+            <WritePost handleWriteClick={handleWriteClick} />
+            <div className='w-[644px] mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
+              <NewPopularToggleButton
+                activeButton={activeButton}
+                setActiveButton={setActiveButton}
+              />
+              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
+            </div>
+            <div className='flex flex-col gap-[40px]'>
+              {isLoading ? (
+                <Loading />
+              ) : visiblePosts.length === 0 ? (
+                <div className='flex w-full flex-col flex-grow items-center justify-center'>
+                  현재 작성된 게시물이 없습니다.
+                </div>
+              ) : (
+                visiblePosts.map((post, idx) => (
+                  <div key={idx} className='flex justify-center'>
+                    {isListed ? (
+                      <ListedPostItem post={post} />
+                    ) : (
+                      <div className='relative'>
+                        <PostItem
+                          post={post}
+                          voteInfos={post.inGameInfoList}
+                          showCommentPostId={showCommentPostId}
+                          setShowCommentPostId={setShowCommentPostId}
+                        />
+                        {showCommentPostId == post.id && (
+                          <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
+                            <PostCommentArea postId={post.id} />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  visiblePosts.map((post, idx) => (
-                    <div key={idx} className='min-w-[800px] w-full flex justify-center '>
-                      {isListed ? (
-                        <ListedPostItem post={post} />
-                      ) : (
-                        <div className='relative'>
-                          <PostItem
-                            post={post}
-                            voteInfos={post.inGameInfoList}
-                            showCommentPostId={showCommentPostId}
-                            setShowCommentPostId={setShowCommentPostId}
-                          />
-                          {showCommentPostId == post.id && (
-                            <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
-                              <PostCommentArea postId={post.id} />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-              <div ref={loaderRef} style={{ minHeight: '30px' }} />
-            </section>
-          </main>
+                ))
+              )}
+            </div>
+            <div ref={loaderRef} style={{ minHeight: '30px' }} />
+          </section>
           {isLoginModalOpen && (
             <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
               <AlertLoginModal />
             </ModalLayout>
           )}
-          <button
-            onClick={handleWriteClick}
-            className='fixed bottom-[70px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
-          >
-            <Image
-              className='h-[32px] w-[32px]'
-              width={48}
-              height={48}
-              src={writeSVG}
-              alt='writeIcon'
-            />
-            <div className='text-[0.875rem]'>글쓰기</div>
-          </button>
         </div>
       )}
     </>
