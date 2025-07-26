@@ -3,7 +3,9 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Icon_heart from '../../../../public/svg/postItem/heart.svg';
+import Icon_heart_hover from '../../../../public/svg/postItem/heart_hover.svg';
 import Icon_vote from '../../../../public/svg/postItem/vote.svg';
+import Icon_vote_hover from '../../../../public/svg/postItem/vote_hover.svg';
 import Icon_view from '../../../../public/svg/postItem/view.svg';
 import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 import postPostLike from '@/api/like/postPostLike';
@@ -28,6 +30,7 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<string>('');
 
   useEffect(() => {
     if (post.voteCount === 0) {
@@ -69,14 +72,14 @@ function PostContentArea({ post, voteInfos }: Props) {
   const buttons = [
     {
       name: 'like',
-      icon: Icon_heart,
+      icon: isHovered == 'like' ? Icon_heart_hover : Icon_heart,
       data:
         (updatedLikeCount ?? post.likeCount) < 1000 ? updatedLikeCount ?? post.likeCount : '999+',
       onclick: handleLikePost,
     },
     {
       name: 'vote',
-      icon: Icon_vote,
+      icon: isHovered == 'vote' ? Icon_vote_hover : Icon_vote,
       data: post.voteCount < 1000 ? post.voteCount : '999+',
       onclick: handleVoteClick,
     },
@@ -152,10 +155,16 @@ function PostContentArea({ post, voteInfos }: Props) {
             <div
               className='flex w-[182px] cursor-pointer items-center justify-center gap-[6px]'
               onClick={button.onclick}
+              onMouseEnter={() => setIsHovered(button.name)}
+              onMouseLeave={() => setIsHovered('')}
             >
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
-                <p className='text-[14px] text-[#555555] hover:text-[#8A1F21]'>{button.data}</p>
+                <p
+                  className={`text-[14px] ${isHovered !== '' ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                >
+                  {button.data}
+                </p>
               )}
             </div>
             {idx !== 2 && <div className='h-[20px] w-[1px] bg-[#555555]'></div>}
