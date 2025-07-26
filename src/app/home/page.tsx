@@ -17,6 +17,8 @@ import HomeMobile from './mobile/HomeMobile';
 import PostItem from './_component/PostItem';
 import PostCommentArea from './_component/PostCommentArea';
 import WritePost from './_component/WritePost';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 export default function Home() {
   const router = useRouter();
@@ -31,6 +33,8 @@ export default function Home() {
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
     data: postData,
@@ -45,6 +49,10 @@ export default function Home() {
       throw new Error('Invalid activeButton value');
     },
   });
+
+  useEffect(() => {
+    setRouteState('HOME');
+  }, [setRouteState]);
 
   useEffect(() => {
     if (keyword === '') {
@@ -89,7 +97,7 @@ export default function Home() {
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
-  }, [getPostData, getPostIndex]);
+  }, [existData, getPostData, getPostIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

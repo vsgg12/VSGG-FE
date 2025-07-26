@@ -1,14 +1,13 @@
 'use client';
 
-import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect } from 'react';
 import EditForm from './_components/EditForm';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
-import Header from '@/components/Header';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getAlarms from '@/api/getAlarms';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useRouter } from 'next/navigation';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 
 /* 수정 가능 항목
     1.제목
@@ -19,23 +18,21 @@ import getAlarms from '@/api/getAlarms';
     6. 챔피언 티어 수정 가능
 */
 function EditPost() {
-  const { isLogin, accessToken } = useAuthStore.getState();
+  const { isLogin } = useAuthStore();
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
-  const { data: userProfileData } = useQuery({
-    queryKey: ['MY_PROFILE_INFO'],
-    queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin,
-  });
+  useEffect(() => {
+    setRouteState('HOME');
+  }, [setRouteState]);
 
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
-    enabled: isLogin,
-  });
+  const router = useRouter();
+  if (!isLogin) {
+    router.replace('/');
+  }
 
   return (
     <div className='min-w-[1400px]'>
-      <Header userProfileData={userProfileData} alarmData={alarmData} />
       <div>
         <div className='flex items-center justify-center w-full'>
           <Logo />

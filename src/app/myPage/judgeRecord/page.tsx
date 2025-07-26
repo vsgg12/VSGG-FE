@@ -1,10 +1,9 @@
 'use client';
 
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Logo from '@/components/Logo';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
-import Header from '@/components/Header';
 import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -13,22 +12,19 @@ import MyJudgeList from '../_component/MyJudgeList';
 import IsNotExistList from '../_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
-import getAlarms from '@/api/getAlarms';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import { useSidebarStore } from '@/store/useSidebarStore';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
-  const { accessToken, isLogin } = useAuthStore.getState();
+  const { accessToken, isLogin } = useAuthStore();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin && !isMobile,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
     enabled: isLogin && !isMobile,
   });
 
@@ -42,22 +38,25 @@ export default function JudgeRecord() {
     setPage(page);
   };
 
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
+
   return (
     <>
       {isMobile ? (
         <JudgeRecord_Mobile />
       ) : (
         <div className='min-w-[1480px]'>
-          <Header userProfileData={userProfileData} alarmData={alarmData} />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>
           {userProfileData && (
             <div className='flex justify-center gap-10'>
               <div className='flex flex-col'>
-                <div className='w-[300px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px]'>
+                <div className='w-[300px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px] relative'>
                   <p className='self-start text-[14px] font-[400] flex-grow ml-5 mt-2'>판결 승률</p>
-                  <div className='absolute top-[360px] w-[180px]'>
+                  <div className='absolute w-[180px]'>
                     <HalfDoughnutChart
                       win={userProfileData.memberProfileDTO.predicateResult}
                       lose={
@@ -66,7 +65,7 @@ export default function JudgeRecord() {
                       }
                     />
                   </div>
-                  <div className='absolute text-[14px] font-[400] text-[#C3C3C3] translate-y-[170px]'>
+                  <div className='absolute text-[14px] font-[400] text-[#C3C3C3] translate-y-[160px]'>
                     {userProfileData.memberProfileDTO.joinedResult}전{' '}
                     {userProfileData.memberProfileDTO.predicateResult}승{' '}
                     {userProfileData.memberProfileDTO.joinedResult -

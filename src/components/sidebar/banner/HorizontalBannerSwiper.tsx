@@ -30,7 +30,7 @@ function HorizontalBannerSwiper() {
           disableOnInteraction: false,
         }}
         loop={true}
-        className='w-[304px] h-[134.89px] flex'
+        className='w-[206px] h-[81.24px] flex'
       >
         <SwiperSlide>
           <img
