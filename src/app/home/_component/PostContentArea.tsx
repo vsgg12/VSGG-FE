@@ -100,7 +100,7 @@ function PostContentArea({ post, voteInfos }: Props) {
 
   return (
     <div
-      className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow'
+      className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow hover:shadow-xl transition-shadow duration-300'
       onClick={() => {
         router.push(`/post/${post.id}`);
       }}
