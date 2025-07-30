@@ -7,7 +7,7 @@ export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoType
       <div className='flex gap-[50px]'>
         <div className='flex items-center justify-center gap-[90px]'>
           <PostVotingChampList voteInfos={voteInfos} />
-          <DoughnutChart voteInfos={voteInfos} size='home' />
+          <DoughnutChart voteInfos={voteInfos} size='home' isHoverEnabled={false} />
         </div>
       </div>
     </div>
