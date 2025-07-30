@@ -136,7 +136,9 @@ export default function Home() {
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
           >
             <WritePost handleWriteClick={handleWriteClick} isListed={isListed} />
-            <div className='min-w-[644px] w-full mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
+            <div
+              className={`${isListed ? 'w-full' : 'w-[640px]'} mb-[40px] mt-[40px] flex flex-row items-center justify-between`}
+            >
               <NewPopularToggleButton
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
