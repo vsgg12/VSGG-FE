@@ -9,7 +9,6 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
-import ListedPostItem from './_component/ListedPostItem';
 import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
@@ -19,6 +18,7 @@ import PostCommentArea from './_component/PostCommentArea';
 import WritePost from './_component/WritePost';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import ListPostItem from './_component/ListPostItem';
 
 export default function Home() {
   const router = useRouter();
@@ -132,16 +132,20 @@ export default function Home() {
         <HomeMobile />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px]'>
-          <section className='flex flex-col relative w-[698px] mt-[40px]'>
+          <section
+            className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
+          >
             <WritePost handleWriteClick={handleWriteClick} />
-            <div className='w-[644px] mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
+            <div className='min-w-[644px] w-full mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
               <NewPopularToggleButton
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
               />
               <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
             </div>
-            <div className='flex flex-col gap-[40px]'>
+            <div
+              className={` ${isListed ? 'grid grid-cols-3 gap-[30px]' : 'flex flex-col gap-[40px]'}`}
+            >
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
@@ -149,27 +153,25 @@ export default function Home() {
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (
-                visiblePosts.map((post, idx) => (
-                  <div key={idx} className='flex justify-center'>
-                    {isListed ? (
-                      <ListedPostItem post={post} />
-                    ) : (
-                      <div className='relative'>
-                        <PostItem
-                          post={post}
-                          voteInfos={post.inGameInfoList}
-                          showCommentPostId={showCommentPostId}
-                          setShowCommentPostId={setShowCommentPostId}
-                        />
-                        {showCommentPostId == post.id && (
-                          <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
-                            <PostCommentArea postId={post.id} />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))
+                visiblePosts.map((post, idx) =>
+                  isListed ? (
+                    <ListPostItem post={post} key={idx} />
+                  ) : (
+                    <div className='relative'>
+                      <PostItem
+                        post={post}
+                        voteInfos={post.inGameInfoList}
+                        showCommentPostId={showCommentPostId}
+                        setShowCommentPostId={setShowCommentPostId}
+                      />
+                      {showCommentPostId == post.id && (
+                        <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
+                          <PostCommentArea postId={post.id} />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )
               )}
             </div>
             <div ref={loaderRef} style={{ minHeight: '30px' }} />

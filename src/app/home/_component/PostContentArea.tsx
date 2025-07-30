@@ -13,6 +13,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
 import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
+import patchCancelLike from '@/api/like/patchCancelLike';
 
 interface Props {
   post: IGetPostDTOType;
@@ -31,12 +32,25 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<string>('');
+  const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
 
   useEffect(() => {
     if (post.voteCount === 0) {
       setIsNoOneVoted(true);
     }
+
+    if (post.liked) {
+      setHeartIcon(Icon_heart_hover);
+    }
   }, [post]);
+
+  useEffect(() => {
+    if (isHovered == 'like') {
+      setHeartIcon(Icon_heart_hover);
+    } else {
+      setHeartIcon(Icon_heart);
+    }
+  }, [isHovered]);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
@@ -56,12 +70,35 @@ function PostContentArea({ post, voteInfos }: Props) {
     },
   });
 
+  const { mutate: unlikePost } = useMutation({
+    mutationFn: async () => {
+      const response = await patchCancelLike(accessToken, post.id);
+      return response.data.likeCount;
+    },
+    onMutate: () => {
+      setIsLikeInProgress(true);
+    },
+    onSuccess: (likeCount) => {
+      setIsLikeInProgress(false);
+      setUpdatedLikeCount(likeCount);
+    },
+    onError: (error) => {
+      console.error(error.message);
+      setIsLikeInProgress(false);
+    },
+  });
+
   const handleLikePost = async (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
     if (isLikeInProgress) {
       return;
     }
-    await likePost();
+
+    if (post.liked) {
+      await unlikePost();
+    } else {
+      await likePost();
+    }
   };
 
   const handleVoteClick = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -72,7 +109,7 @@ function PostContentArea({ post, voteInfos }: Props) {
   const buttons = [
     {
       name: 'like',
-      icon: isHovered == 'like' ? Icon_heart_hover : Icon_heart,
+      icon: heartIcon,
       data:
         (updatedLikeCount ?? post.likeCount) < 1000 ? updatedLikeCount ?? post.likeCount : '999+',
       onclick: handleLikePost,
@@ -161,7 +198,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${isHovered !== '' ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && post.liked == true) || isHovered !== '' ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
                 >
                   {button.data}
                 </p>

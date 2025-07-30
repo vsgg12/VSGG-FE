@@ -24,6 +24,7 @@ type IGetPostDTOType = {
   isVote: boolean;
   isDeleted: 'TRUE' | 'FALSE';
   daysUntilEnd: number;
+  liked: boolean;
 };
 
 type IGetVideoType = {

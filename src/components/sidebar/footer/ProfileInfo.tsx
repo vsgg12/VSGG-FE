@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 
 function ProfileInfo() {
   const { isLogin, accessToken, user } = useAuthStore();
-  const { getIcon } = useProfileTierIcon();
+  const { getIcon } = useProfileTierIcon({ size: 16 });
 
   const defaultImage = 'https://ssl.pstatic.net/static/pwe/address/img_profile.png';
   const [isHovered, setIsHovered] = useState<boolean>(false);

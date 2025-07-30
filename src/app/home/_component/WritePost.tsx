@@ -7,9 +7,9 @@ interface Props {
 }
 function WritePost({ handleWriteClick }: Props) {
   return (
-    <div className='w-[644px] h-[158px] flex gap-[10px] items-start'>
+    <div className='w-full h-[158px] flex gap-[10px] items-start'>
       <Image src={Default_Profile} width={48} height={48} alt='profile' />
-      <div className='w-[586px] h-[158px] bg-[#FFFFFF] flex flex-col p-[20px] rounded-[20px] gap-[15px]'>
+      <div className='min-w-[586px] w-full h-[158px] bg-[#FFFFFF] flex flex-col p-[20px] rounded-[20px] gap-[15px] shadow'>
         <div className='flex flex-col gap-[15px]'>
           <p className='text-[16px] text-[#555555]'>우리 팀 플레이의 과실이 궁금하다면?</p>
           <p className='text-[14px] text-[#C8C8C8] whitespace-pre-line'>

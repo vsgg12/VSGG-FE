@@ -6,6 +6,8 @@ import Default_Profile from '../../../../public/svg/defaultProfile.svg';
 import Image from 'next/image';
 import PostContentArea from './PostContentArea';
 import { toast } from 'react-hot-toast';
+import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
+import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 
 interface Props {
   post: IGetPostDTOType;
@@ -15,25 +17,8 @@ interface Props {
 }
 
 function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: Props) {
-  const ONE_MINUTE = 60000;
-  const ONE_HOUR = 3600000;
-  const ONE_DAY = 86400000;
-  const ONE_MONTH = 2592000000;
-  const ONE_YEAR = 31557600000;
-
-  function timeDifferenceFromNow(pastTime: string) {
-    const currentTime = new Date();
-    const pastDate = new Date(pastTime);
-
-    const diffMs: number = currentTime.getTime() - pastDate.getTime(); // 밀리초 단위 시간 차이 (number 타입)
-
-    if (diffMs < ONE_MINUTE) return '방금 전';
-    if (diffMs < ONE_HOUR) return `${Math.floor(diffMs / ONE_MINUTE)}분 전`;
-    if (diffMs < ONE_DAY) return `${Math.floor(diffMs / ONE_HOUR)}시간 전`;
-    if (diffMs < ONE_MONTH) return `${Math.floor(diffMs / ONE_DAY)}일 전`;
-    if (diffMs < ONE_YEAR) return `${Math.floor(diffMs / ONE_MONTH)}개월 전`;
-    return `${Math.floor(diffMs / ONE_YEAR)}년 전`;
-  }
+  const timeAgo = useTimeDifferenceFromNow(post.createdAt);
+  const { getIcon } = useProfileTierIcon({ size: 16 });
 
   const handleSharePost = async () => {
     try {
@@ -59,13 +44,16 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
           <div className='flex items-center'>
             <img
               src={
-                post.memberDTO.profileImage === null ? Default_Profile : post.memberDTO.profileImage
+                post.memberDTO.profileImage == null || post.memberDTO.profileImage == ''
+                  ? Default_Profile
+                  : post.memberDTO.profileImage
               }
               className='mr-[0.625rem] h-[48px] w-[48px] rounded-full text-[#D9D9D9]'
             />
             <div className='flex gap-[5px]'>
+              {getIcon(post.memberDTO.tier)}
               <p>{post.memberDTO.nickname}</p>
-              <p className='text-[#C8C8C8] ml-[px]'>{timeDifferenceFromNow(post.createdAt)}</p>
+              <p className='text-[#C8C8C8] ml-[px]'>{timeAgo}</p>
             </div>
           </div>
           <PostDeadLine deadLine={post.daysUntilEnd} />
