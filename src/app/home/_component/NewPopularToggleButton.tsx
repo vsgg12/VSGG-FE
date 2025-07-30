@@ -56,7 +56,7 @@ function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularTo
           />
         </div>
         <p
-          className={`transition-colors duration-300 ease-in-out ${
+          className={`transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'createdatetime'
               ? 'text-[#8A1F21]'
               : isHovered === 'time'
@@ -74,7 +74,6 @@ function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularTo
         onMouseLeave={() => setIsHovered('')}
       >
         <div className='relative w-[24px] h-[24px]'>
-          {' '}
           <Image
             src={Icon_flame}
             alt='view'
@@ -102,7 +101,7 @@ function NewPopularToggleButton({ activeButton, setActiveButton }: INewPopularTo
         </div>
 
         <p
-          className={`transition-colors duration-300 ease-in-out ${
+          className={`transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'view'
               ? 'text-[#8A1F21]'
               : isHovered === 'view'

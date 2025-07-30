@@ -143,7 +143,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       }}
     >
       <div className='flex flex-col h-[60px]'>
-        <p className='text-[20px]'>{post.title}</p>
+        <p className='text-[20px] font-bold'>{post.title}</p>
         <p className='text-[16px] w-full whitespace-nowrap overflow-hidden truncate'>
           {contentsArr.pTags[0]}
         </p>
