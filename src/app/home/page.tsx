@@ -135,7 +135,7 @@ export default function Home() {
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
           >
-            <WritePost handleWriteClick={handleWriteClick} />
+            <WritePost handleWriteClick={handleWriteClick} isListed={isListed} />
             <div className='min-w-[644px] w-full mb-[40px] mt-[40px] flex flex-row items-center justify-between'>
               <NewPopularToggleButton
                 activeButton={activeButton}
@@ -144,7 +144,7 @@ export default function Home() {
               <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
             </div>
             <div
-              className={` ${isListed ? 'grid grid-cols-3 gap-[30px]' : 'flex flex-col gap-[40px]'}`}
+              className={`${isListed ? 'grid grid-cols-3 gap-[30px]' : 'flex flex-col gap-[40px]'}`}
             >
               {isLoading ? (
                 <Loading />

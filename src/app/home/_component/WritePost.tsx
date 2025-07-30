@@ -4,10 +4,11 @@ import Image from 'next/image';
 
 interface Props {
   handleWriteClick: () => void;
+  isListed: boolean;
 }
-function WritePost({ handleWriteClick }: Props) {
+function WritePost({ handleWriteClick, isListed }: Props) {
   return (
-    <div className='w-full h-[158px] flex gap-[10px] items-start'>
+    <div className={`${isListed ? 'w-full' : 'w-[586px]'} h-[158px] flex gap-[10px] items-start`}>
       <Image src={Default_Profile} width={48} height={48} alt='profile' />
       <div className='min-w-[586px] w-full h-[158px] bg-[#FFFFFF] flex flex-col p-[20px] rounded-[20px] gap-[15px] shadow'>
         <div className='flex flex-col gap-[15px]'>
