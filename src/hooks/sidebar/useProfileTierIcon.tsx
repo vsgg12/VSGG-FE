@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 interface Props {
-  size: 16 | 12;
+  size: number;
 }
 
 const useProfileTierIcon = ({ size = 16 }: Props) => {
