@@ -20,7 +20,7 @@ interface Props {
   voteInfos: IGetInGameInfoType[];
 }
 
-const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video';
+const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
 
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
