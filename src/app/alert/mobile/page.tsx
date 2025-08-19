@@ -5,9 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../../login/store/useAuthStore';
 import MobileHeader from '@/components/mobile/Headers/MobileHeader';
-import AlarmList from '../../home/_component/AlarmList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import AlarmList from './components/AlarmList';
 
 const alarmTypes = [
   { type: '전체', value: 'ALL' },
@@ -21,7 +21,7 @@ function Alert() {
   const { data: alarmsData, isLoading } = useQuery({
     queryKey: ['alarms'],
     queryFn: () => getAlarms(accessToken),
-    enabled: !!accessToken
+    enabled: !!accessToken,
   });
   const router = useRouter();
 
@@ -29,7 +29,7 @@ function Alert() {
     if (!accessToken) {
       router.replace('/login');
     }
-  }, [accessToken]);
+  }, [accessToken, router]);
 
   const filteredAlarms =
     alarmsData?.alarmList && alarmType !== '전체'

@@ -1,10 +1,5 @@
 'use client';
 
-import HomePostItems from './_component/HomePostItems';
-import Image from 'next/image';
-import writeSVG from '../../../public/svg/writingWhite.svg';
-import Header from '@/components/Header';
-import Search from './_component/Search';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getPostList from '@/api/getPostList';
@@ -14,13 +9,16 @@ import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
-import ListedPostItem from './_component/ListedPostItem';
 import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getAlarms from '@/api/getAlarms';
+import PostItem from './_component/PostItem';
+import PostCommentArea from './_component/PostCommentArea';
+import WritePost from './_component/WritePost';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import ListPostItem from './_component/ListPostItem';
 
 export default function Home() {
   const router = useRouter();
@@ -34,6 +32,9 @@ export default function Home() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
+  const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
     data: postData,
@@ -49,17 +50,9 @@ export default function Home() {
     },
   });
 
-  const { data: userProfileData } = useQuery({
-    queryKey: ['MY_PROFILE_INFO'],
-    queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
-    enabled: isLogin,
-  });
+  useEffect(() => {
+    setRouteState('HOME');
+  }, [setRouteState]);
 
   useEffect(() => {
     if (keyword === '') {
@@ -82,25 +75,12 @@ export default function Home() {
     router.push('/post/write');
   };
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && keyword.trim() !== '' && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      refetch();
-    }
-  };
-
   useEffect(() => {
     if (postData && postData.postDTO && postData.postDTO.length > 0) {
       const filteredData = postData.postDTO.filter((post) => post.isDeleted === 'FALSE');
       setExistData(filteredData);
     }
   }, [postData]);
-
-  const handleSearch = () => {
-    if (keyword.trim() !== '') {
-      refetch();
-    }
-  };
 
   const getPostData = useCallback(() => existData, [existData]);
   const getPostIndex = useCallback(() => postIndex, [postIndex]);
@@ -117,7 +97,7 @@ export default function Home() {
       setVisiblePosts((prev) => [...prev, ...newPosts]);
       setPostIndex((prev) => prev + 5);
     }
-  }, [getPostData, getPostIndex]);
+  }, [existData, getPostData, getPostIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -151,56 +131,58 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className='w-screen'>
-          <Header userProfileData={userProfileData} alarmData={alarmData} />
-          <main className='px-[50px]'>
-            <Search handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
-            <section className='flex flex-col justify-center relative w-full items-center'>
-              <div className='w-full mb-[40px] flex flex-row items-center justify-between min-w-[800px]'>
-                <NewPopularToggleButton
-                  activeButton={activeButton}
-                  setActiveButton={setActiveButton}
-                />
-                <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
-              </div>
+        <div className='flex w-screen items-center justify-center pl-[260px]'>
+          <section
+            className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
+          >
+            <WritePost handleWriteClick={handleWriteClick} isListed={isListed} />
+            <div
+              className={`${isListed ? 'w-full' : 'w-[640px]'} mb-[40px] mt-[40px] flex flex-row items-center justify-between`}
+            >
+              <NewPopularToggleButton
+                activeButton={activeButton}
+                setActiveButton={setActiveButton}
+              />
+              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
+            </div>
+            <div
+              className={`${isListed ? 'grid grid-cols-3 gap-[30px]' : 'flex flex-col gap-[40px]'}`}
+            >
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className='flex min-w-[800px] w-full flex-col flex-grow items-center justify-center'>
+                <div className='flex w-full flex-col flex-grow items-center justify-center'>
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (
-                visiblePosts.map((post, idx) => (
-                  <div key={idx} className='min-w-[800px] w-full'>
-                    {isListed ? (
-                      <ListedPostItem post={post} />
-                    ) : (
-                      <HomePostItems post={post} voteInfos={post.inGameInfoList} />
-                    )}
-                  </div>
-                ))
+                visiblePosts.map((post, idx) =>
+                  isListed ? (
+                    <ListPostItem post={post} key={idx} />
+                  ) : (
+                    <div className='relative'>
+                      <PostItem
+                        post={post}
+                        voteInfos={post.inGameInfoList}
+                        showCommentPostId={showCommentPostId}
+                        setShowCommentPostId={setShowCommentPostId}
+                      />
+                      {showCommentPostId == post.id && (
+                        <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
+                          <PostCommentArea postId={post.id} />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )
               )}
-              <div ref={loaderRef} style={{ minHeight: '30px' }} />
-            </section>
-          </main>
+            </div>
+            <div ref={loaderRef} style={{ minHeight: '30px' }} />
+          </section>
           {isLoginModalOpen && (
             <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
               <AlertLoginModal />
             </ModalLayout>
           )}
-          <button
-            onClick={handleWriteClick}
-            className='fixed bottom-[70px] right-2 z-10 flex h-[7.125rem] w-[7.313rem] flex-col items-center justify-center rounded-full bg-[#8A1F21] text-white shadow-2xl'
-          >
-            <Image
-              className='h-[32px] w-[32px]'
-              width={48}
-              height={48}
-              src={writeSVG}
-              alt='writeIcon'
-            />
-            <div className='text-[0.875rem]'>글쓰기</div>
-          </button>
         </div>
       )}
     </>

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction } from 'react';
-import videoPostListsIcon from '../../../../public/svg/videoPostListsIcon.svg';
-import Icon_ListedIcon from '../../../../public/svg/Icon_ListedPost.svg';
+import videoPostListsIcon from '../../../../public/svg/main/videoPostListsIcon.svg';
+import Icon_ListedIcon from '../../../../public/svg/main/Icon_ListedPost.svg';
 
 interface IAlignModeToggleButton {
   isListed: boolean;

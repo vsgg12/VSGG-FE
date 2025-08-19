@@ -1,9 +1,8 @@
-'use client'
+'use client';
 import { GoSearch } from 'react-icons/go';
 import Logo from '../../../components/Logo';
 import useSearchStore from '../store/useSearchStore';
 import { useState } from 'react';
-import HorizontalBannerSwiper from './HorizontalBannerSwiper';
 
 export default function Search({
   handleSearch,
@@ -37,9 +36,6 @@ export default function Search({
             <GoSearch className='absolute right-5 top-2.5 text-[#8A1F21]' />
           </button>
         </div>
-      </div>
-      <div className='absolute right-0 top-1/2 -translate-y-1/2'>
-        <HorizontalBannerSwiper />
       </div>
     </div>
   );

@@ -4,6 +4,8 @@ import './globals.css';
 import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
+import { Toaster } from 'react-hot-toast';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -93,7 +95,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={inter.className}>
         <RQProvider>
-          <Suspense>{children}</Suspense>
+          <Suspense>
+            <Toaster
+              position='bottom-right'
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  width: '300px',
+                  height: '56px',
+                  fontSize: '16px',
+                  paddingLeft: '20px',
+                  paddingRight: '80px',
+                },
+                success: {
+                  style: {
+                    background: '#222222',
+                    color: 'white',
+                  },
+                },
+              }}
+            />
+            <div style={{ display: 'flex', minHeight: '100vh' }}>
+              <Sidebar />
+              <main style={{ flex: 1 }}>
+                <Suspense>{children}</Suspense>
+              </main>
+            </div>{' '}
+          </Suspense>
         </RQProvider>
       </body>
     </html>

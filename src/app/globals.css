@@ -22,6 +22,11 @@ button {
   @apply overflow-x-hidden overflow-y-scroll;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 ::-webkit-scrollbar {
   @apply w-[0.3rem];
 }
@@ -101,7 +106,7 @@ button {
 }
 
 .p-voting-champ-dot {
-  @apply mx-[1.125em] h-[1em] w-[1em] rounded-full;
+  @apply h-[12px] w-[12px] rounded-full;
 }
 .p-voting-number-element {
   @apply mr-[0.625em] text-[1.375em] font-semibold;
