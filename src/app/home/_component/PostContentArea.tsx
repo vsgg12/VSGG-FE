@@ -32,25 +32,38 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
   const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<string>('');
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
 
   useEffect(() => {
+    setIsLiked(post.liked);
+
     if (post.voteCount === 0) {
       setIsNoOneVoted(true);
     }
 
-    if (post.liked) {
+    if (post.liked == true) {
       setHeartIcon(Icon_heart_hover);
     }
   }, [post]);
 
   useEffect(() => {
-    if (isHovered == 'like') {
+    if (!isLiked) {
+      if (isHovered == 'like') {
+        setHeartIcon(Icon_heart_hover);
+      } else {
+        setHeartIcon(Icon_heart);
+      }
+    }
+  }, [isHovered, isLiked]);
+
+  useEffect(() => {
+    if (isLiked) {
       setHeartIcon(Icon_heart_hover);
     } else {
       setHeartIcon(Icon_heart);
     }
-  }, [isHovered]);
+  }, [isLiked]);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
@@ -61,6 +74,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       setIsLikeInProgress(true);
     },
     onSuccess: (likeCount) => {
+      setIsLiked(true);
       setIsLikeInProgress(false);
       setUpdatedLikeCount(likeCount);
     },
@@ -73,12 +87,13 @@ function PostContentArea({ post, voteInfos }: Props) {
   const { mutate: unlikePost } = useMutation({
     mutationFn: async () => {
       const response = await patchCancelLike(accessToken, post.id);
-      return response.data.likeCount;
+      return response.postLikeDTO.likeCount;
     },
     onMutate: () => {
       setIsLikeInProgress(true);
     },
     onSuccess: (likeCount) => {
+      setIsLiked(false);
       setIsLikeInProgress(false);
       setUpdatedLikeCount(likeCount);
     },
@@ -94,7 +109,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       return;
     }
 
-    if (post.liked) {
+    if (isLiked) {
       await unlikePost();
     } else {
       await likePost();
