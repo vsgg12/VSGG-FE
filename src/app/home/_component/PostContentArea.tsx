@@ -14,6 +14,8 @@ import { useMutation } from '@tanstack/react-query';
 import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
+import ModalLayout from '@/components/modals/ModalLayout';
+import AlertLoginModal from '@/components/modals/AlertLoginModal';
 
 interface Props {
   post: IGetPostDTOType;
@@ -24,8 +26,9 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
 
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
-  const { accessToken, user } = useAuthStore();
+  const { accessToken, user, isLogin } = useAuthStore();
   const contentsArr = useConvertHTML(post.content);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
@@ -105,6 +108,10 @@ function PostContentArea({ post, voteInfos }: Props) {
 
   const handleLikePost = async (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
+    if (!isLogin) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     if (isLikeInProgress) {
       return;
     }
@@ -213,7 +220,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${(button.name === 'like' && post.liked == true) || isHovered !== '' ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && post.liked == true) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
                 >
                   {button.data}
                 </p>
@@ -240,6 +247,11 @@ function PostContentArea({ post, voteInfos }: Props) {
             <HomeNotVoted voteInfos={voteInfos} />
           )}
         </div>
+      )}
+      {isLoginModalOpen && (
+        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
+          <AlertLoginModal />
+        </ModalLayout>
       )}
     </div>
   );
