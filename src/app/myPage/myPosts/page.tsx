@@ -1,9 +1,8 @@
 'use client';
 
 import Pagination from 'react-js-pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Logo from '@/components/Logo';
-import Header from '@/components/Header';
 import { useQuery } from '@tanstack/react-query';
 import getMyPostLists from '@/api/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -11,25 +10,16 @@ import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
 import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getAlarms from '@/api/getAlarms';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
-
-  const { data: userProfileData } = useQuery({
-    queryKey: ['MY_PROFILE_INFO'],
-    queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin && !isMobile,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
-    enabled: isLogin && !isMobile,
-  });
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: myPostLists } = useQuery({
     queryKey: ['MY_POST_LISTS', page],
@@ -41,13 +31,17 @@ export default function MyPosts() {
     setPage(page);
   };
 
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
+
   return (
     <>
       {isMobile ? (
         <MyPost_Mobile />
       ) : (
-        <div className='min-w-[1350px]'>
-          <Header userProfileData={userProfileData} alarmData={alarmData} />
+        <div className='min-w-[850px] pl-[200px]'>
+          <Sidebar />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

@@ -62,7 +62,7 @@ export default function PostItemMobile({
           <img
             className='h-[32px] w-[32px] rounded-full'
             src={
-              post.memberDTO.profileImage === null
+              !post.memberDTO.profileImage
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }

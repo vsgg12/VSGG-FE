@@ -3,9 +3,8 @@
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';
 import BarChart from '@/components/BarChart';
 import Logo from '@/components/Logo';
-import Header from '@/components/Header';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import ChangeProfileModal from '@/components/modals/ChangeProfileModal';
 import { useAuthStore } from '../login/store/useAuthStore';
@@ -21,7 +20,9 @@ import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import IsNotExistList from './_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import MyPage_Mobile from './mobile/MyPageMobile';
-import getAlarms from '@/api/getAlarms';
+import { useSidebarStore } from '@/store/useSidebarStore';
+import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function MyPage() {
   const router = useRouter();
@@ -29,16 +30,12 @@ export default function MyPage() {
   const user = useAuthStore((state) => state.user);
   const { accessToken, isLogin } = useAuthStore.getState();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
     queryFn: () => getMyProfileDTO(accessToken),
-    enabled: isLogin && !isMobile,
-  });
-
-  const { data: alarmData } = useQuery({
-    queryKey: ['alarms'],
-    queryFn: () => getAlarms(accessToken),
     enabled: isLogin && !isMobile,
   });
 
@@ -54,15 +51,17 @@ export default function MyPage() {
     enabled: isLogin && !isMobile,
   });
 
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
+
   return (
     <>
       {isMobile ? (
         <MyPage_Mobile />
       ) : (
         <div className='min-w-[1480px]'>
-          <div className='flex min-w-[1350px]'>
-            <Header userProfileData={userProfileData} alarmData={alarmData} />
-          </div>
+          <Sidebar />
           <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

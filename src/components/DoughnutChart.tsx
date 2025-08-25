@@ -9,12 +9,14 @@ interface DoughnutChartPropsHome {
   size: 'home' | 'post';
   voteInfos: IGetInGameInfoType[];
   isMobile?: boolean;
+  isHoverEnabled?: boolean;
 }
 
 const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   voteInfos,
   size,
   isMobile,
+  isHoverEnabled = true,
 }: DoughnutChartPropsHome) => {
   const [championNames, setChampionNames] = useState<string[]>([]);
   const [averageValues, setAverageValues] = useState<(number | null)[]>([]);
@@ -84,11 +86,11 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
   return (
     <div className='flex relative'>
       <div
-        className={`flex ${size === 'home' ? 'h-[110px] w-[110px]' : 'h-[200px] w-[200px]'} items-center justify-center`}
+        className={`flex ${size === 'home' ? 'h-[146px] w-[146px]' : 'h-[200px] w-[200px]'} items-center justify-center`}
       >
         <Doughnut data={data} options={options} />
       </div>
-      {selectedLabel && !isMobile && (
+      {selectedLabel && !isMobile && isHoverEnabled && (
         <VoteResultCard name={selectedLabel} value={selectedValue} position={selectedPosition} />
       )}
     </div>
