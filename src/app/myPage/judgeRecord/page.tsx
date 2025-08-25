@@ -14,6 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useSidebarStore } from '@/store/useSidebarStore';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function JudgeRecord() {
   const [page, setPage] = useState<number>(1);
@@ -48,6 +49,7 @@ export default function JudgeRecord() {
         <JudgeRecord_Mobile />
       ) : (
         <div className='min-w-[1480px]'>
+          <Sidebar />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

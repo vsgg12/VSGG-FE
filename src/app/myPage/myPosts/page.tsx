@@ -12,6 +12,7 @@ import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function MyPosts() {
   const [page, setPage] = useState<number>(1);
@@ -30,16 +31,17 @@ export default function MyPosts() {
     setPage(page);
   };
 
-    useEffect(() => {
-      setRouteState('PROFILE');
-    }, [setRouteState]);
+  useEffect(() => {
+    setRouteState('PROFILE');
+  }, [setRouteState]);
 
   return (
     <>
       {isMobile ? (
         <MyPost_Mobile />
       ) : (
-        <div className='min-w-[1350px]'>
+        <div className='min-w-[850px] pl-[200px]'>
+          <Sidebar />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>

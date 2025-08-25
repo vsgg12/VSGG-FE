@@ -19,6 +19,7 @@ import WritePost from './_component/WritePost';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function Home() {
   const router = useRouter();
@@ -132,6 +133,7 @@ export default function Home() {
         <HomeMobile />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px]'>
+          <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
           >
