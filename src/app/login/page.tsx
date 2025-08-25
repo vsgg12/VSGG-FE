@@ -13,6 +13,7 @@ import kakaoIcon from '../../../public/svg/login/kakaoIcon.svg';
 import getNaverURL from '@/api/login/getNaverURL';
 import getGoogleURL from '@/api/login/getGoogleUrl';
 import getKakaoURL from '@/api/login/getKakaoUrl';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function Login() {
   const { isLogin } = useAuthStore();
@@ -64,6 +65,7 @@ export default function Login() {
             <LoadingFull />
           ) : (
             <>
+              <Sidebar />
               <div className="mb-10 mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21] md:text-8xl">
                 <div
                   className='cursor-pointer'

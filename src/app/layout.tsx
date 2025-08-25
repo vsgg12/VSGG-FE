@@ -5,7 +5,6 @@ import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
 import { Toaster } from 'react-hot-toast';
-import Sidebar from '@/components/sidebar/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -116,7 +115,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }}
             />
             <div style={{ display: 'flex', minHeight: '100vh' }}>
-              <Sidebar />
               <main style={{ flex: 1 }}>
                 <Suspense>{children}</Suspense>
               </main>
