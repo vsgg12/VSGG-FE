@@ -48,7 +48,7 @@ export default function JudgeRecord() {
       {isMobile ? (
         <JudgeRecord_Mobile />
       ) : (
-        <div className='min-w-[1480px]'>
+        <div className='min-w-[1480px] pl-[250px]'>
           <Sidebar />
           <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
