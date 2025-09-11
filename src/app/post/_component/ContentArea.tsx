@@ -67,7 +67,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
       {post && (
         <div className='p-content-rounded scroll relative mb-11 h-[1000px] w-[900px] bg-white px-[30px] pb-[44px]'>
           <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
-            <div className='flex justify-between relative mb-[10px] h-[35px]'>
+            <div className='flex justify-between relative mb-[10px] h-[35px] '>
               <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
               <div className='flex'>
                 {isMoreModalOpen && (
@@ -141,6 +141,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
             className='w-full mt-7 p-1 break-words'
             dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
           ></div>
+          <div className='absolute  z-10 bg-[#ffffff] h-[30px] w-full' />
         </div>
       )}
     </div>
