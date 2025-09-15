@@ -65,7 +65,7 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
   return (
     <div>
       {post && (
-        <div className='p-content-rounded scroll relative mb-11 h-[1000px] w-[900px] bg-red-300 px-[30px] pb-[44px]'>
+        <div className='p-content-rounded scroll relative mb-11 h-[1000px] w-[900px] bg-[#ffffff] px-[30px] pb-[44px]'>
           <div className='sticky top-[-1px] bg-[#ffffff] pb-[30px] pt-[44px] z-10'>
             <div className='flex justify-between relative mb-[10px] h-[35px] '>
               <PostDeadLine deadLine={post.postDTO.daysUntilEnd} />
@@ -120,8 +120,6 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
               </p>
             </div>
           </div>
-          <div className='sticky top-[100px] h-[30px] w-full bg-blue-700 pb-[30px] pt-[44px] z-20' />
-
           <video
             muted
             controls
