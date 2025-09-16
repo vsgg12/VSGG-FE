@@ -67,10 +67,8 @@ function ListPostItem({ post }: Props) {
 
       <div className='flex flex-col h-[117px] justify-between gap-[4px]'>
         <div>
-          <p className='text-[14px] font-bold'>{post.title}</p>
-          <p className='text-[12px] w-full whitespace-nowrap overflow-hidden truncate'>
-            {contentsArr.pTags[0]}
-          </p>
+          <p className='text-[14px] font-bold w-full truncate'>{post.title}</p>
+          <p className='text-[12px] w-full break-words text-ellipsis '>{contentsArr.pTags}</p>
         </div>
         <p className='text-[#C8C8C8] text-[12px]'>{timeAgo}</p>
       </div>
