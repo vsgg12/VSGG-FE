@@ -8,16 +8,13 @@ import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
 import AlertLoginModal from '@/components/modals/AlertLoginModal';
-import CommentArea from '../_component/CommentArea';
-import ContentArea from '../_component/ContentArea';
-import NavigationArea from '../_component/NavigationArea';
-import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import PostDetailPC from './desktop/PostDetailPC';
 
-export default function PostRead() {
+export default function PostDetailMain() {
   const { postId } = useParams();
   const id: string = postId as string;
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -62,29 +59,27 @@ export default function PostRead() {
       {isMobile ? (
         <PostDetailMobile />
       ) : (
-        <div className='min-w-[1400px] flex-col items-center'>
-          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
-            <Logo />
-          </div>
+        <div className='flex w-screen items-center justify-center'>
           {isLoading ? (
             <Loading />
           ) : (
             post && (
-              <div className='flex flex-col items-center justify-center px-[50px]'>
-                <div>
-                  <NavigationArea />
-                </div>
-                <div className='flex flex-row gap-[30px] justify-center'>
-                  <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
-                  <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
-                </div>
-                <VoteArea
-                  isOwner={isOwner}
-                  post={post}
-                  voteData={voteData}
-                  setIsLoginModalOpen={setIsLoginModalOpen}
-                />
-              </div>
+              <PostDetailPC post={post} setIsLoginModalOpen={setIsLoginModalOpen} />
+              // <div className='flex flex-col items-center justify-center px-[50px]'>
+              //   <div>
+              //     <NavigationArea />
+              //   </div>
+              //   <div className='flex flex-row gap-[30px] justify-center'>
+              //     <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
+              //     <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
+              //   </div>
+              //   <VoteArea
+              //     isOwner={isOwner}
+              //     post={post}
+              //     voteData={voteData}
+              //     setIsLoginModalOpen={setIsLoginModalOpen}
+              //   />
+              // </div>
             )
           )}
           {isLoginModalOpen && (
@@ -93,7 +88,7 @@ export default function PostRead() {
             </ModalLayout>
           )}
         </div>
-      )}{' '}
+      )}
     </>
   );
 }
