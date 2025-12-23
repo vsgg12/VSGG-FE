@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useWriteStore } from '@/store/write/useWriteStore';
 
 function Champion() {
   const [activeBox, setActiveBox] = useState<null | 'video' | 'title' | 'content'>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { videoId } = useWriteStore();
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
   const boxBase =
@@ -33,19 +35,29 @@ function Champion() {
           <div className={titleClass}>업로드한 동영상</div>
           <div
             onClick={() => setActiveBox('video')}
-            className={`w-[652px] h-[340px] rounded-[10px] ${getBoxClass('video')} flex flex-col gap-[20px] justify-center items-center`}
+            className={`w-[652px] h-[340px] rounded-[10px] ${getBoxClass('video')} pb-[30px] pt-[10px] flex flex-col gap-[20px] justify-center items-center`}
           >
             <div
-              className={'w-full text-[18px] text-black flex flex-col justify-between items-center'}
+              className={'w-full h-full text-[18px] text-black flex flex-col justify-between items-center'}
             >
-              <div className={'w-full flex justify-between'}>
+              <div className={'w-full flex justify-between items-center'}>
                 <div className={'flex gap-[5px]'}>
                   <div>링크 아이콘</div>
                   <div>비디오 url</div>
                 </div>
                 <div>내리기 아이콘</div>
               </div>
-              <div className={'w-[450px] h-[253px]'}>비디오 박스 ifram</div>
+              <div className={'w-[450px] h-[253px]'}>
+                <iframe
+                  width='438'
+                  height='243'
+                  src={`https://www.youtube.com/embed/${videoId}`}
+                  title='YouTube video preview'
+                  className='rounded-[10px]'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -62,7 +74,7 @@ function Champion() {
           <div className={titleClass}>본문</div>
           <div
             onClick={() => setActiveBox('content')}
-            className={`rounded-[20px] w-[652px] min-h-[200px] ${getBoxClass(content)}`}
+            className={`rounded-[20px] w-[652px] min-h-[200px] ${getBoxClass("content")}`}
           >
             본문 박스
           </div>

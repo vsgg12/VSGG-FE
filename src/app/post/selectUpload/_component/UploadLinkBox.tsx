@@ -10,11 +10,10 @@ export const UploadLinkBox = () => {
   const YOUTUBE_REGEX =
     /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
 
-  const { postRequestData, setData, setPostRequestData} = useWriteStore();
+  const { postRequestData, setData, setPostRequestData, videoId} = useWriteStore();
 
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [videoId, setVideoId] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const onClickSearchBtn = async () => {
@@ -27,7 +26,7 @@ export const UploadLinkBox = () => {
     const match = videoLink.match(YOUTUBE_REGEX);
     if (!match) {
       setIsError(true);
-      setVideoId('');
+      setData("videoId", '')
       setIsValid(false);
       return;
     }
@@ -35,7 +34,7 @@ export const UploadLinkBox = () => {
     setIsError(false);
 
     const extractedId = match[4];
-    setVideoId(extractedId);
+    setData("videoId", extractedId)
 
     // 유튜브 기본 썸네일 URL
     const thumbnailUrl = `https://img.youtube.com/vi/${extractedId}/hqdefault.jpg`;
@@ -78,7 +77,7 @@ export const UploadLinkBox = () => {
           <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
           <input
             className='w-full font-semibold text-[16px] px-[15px] outline-none'
-            value={postRequestData.videoLink}
+            value={postRequestData.videoLink ?? ""}
             placeholder={'https://youtu.be'}
             onChange={onChangeVideoLink}
           />

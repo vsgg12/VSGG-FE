@@ -29,6 +29,7 @@ interface IWriteField {
   uploadVideos: File | undefined;
   isSelectJudgeTypeScreenShow: boolean;
   content: string;
+  videoId: string; // 유투브 영상 썸네일 추출을 위한 비디오 ID
 }
 
 interface IWriteState extends IWriteField {
@@ -60,6 +61,8 @@ export const useWriteStore = create<IWriteState>()(
     isLoading: false,
     isSelectJudgeTypeScreenShow: false,
     content: "",
+    videoId: "",
+    uploadVideos: undefined,
 
     setData: createSetDataImmer<IWriteField>(set),
 
@@ -88,6 +91,8 @@ export const useWriteStore = create<IWriteState>()(
           voteEndDate: '',
           inGameInfoRequests: [],
         };
+        state.uploadVideos = undefined;
+        state.videoId = "";
       })
   })),
 );
