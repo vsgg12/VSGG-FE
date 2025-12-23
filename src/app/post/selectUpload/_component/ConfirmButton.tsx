@@ -1,9 +1,21 @@
-import React from 'react'
+import React from 'react';
 
-function ConfirmButton() {
-  return (
-    <div>ConfirmButton</div>
-  )
+interface Props {
+  onClick: () => void;
+  isDisabled: boolean;
 }
 
-export default ConfirmButton
+function ConfirmButton({ onClick, isDisabled }: Props) {
+  const btnBgColor = isDisabled ? 'bg-[#ececec]' : 'bg-[#8A1F21] hover:bg-[#571415] cursor-pointer';
+
+  return (
+    <button
+      className={`w-[134px] h-[53px] rounded-[10px] text-[20px] font-bold text-white ${btnBgColor}`}
+      onClick={onClick}
+    >
+      확인
+    </button>
+  );
+}
+
+export default ConfirmButton;

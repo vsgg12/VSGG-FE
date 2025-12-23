@@ -134,8 +134,8 @@ export default function PostForm() {
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
-  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
-  const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined); // 영상에서 추출한 썸네일 이미지
+  const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined); // 직접 올리는 썸네일 이미지
   const [content, setContent] = useState<string>('');
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);

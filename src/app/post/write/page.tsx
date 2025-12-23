@@ -9,18 +9,23 @@ import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useEffect } from 'react';
 
 export default function PostWrite() {
-  const { isLogin } = useAuthStore.getState();
+  const { isLogin } = useAuthStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const router = useRouter();
-  if (!isLogin) {
-    router.replace('/');
-  }
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.replace('/');
+    }
+  }, [isLogin, router]);
 
   useEffect(() => {
     setRouteState('WRITE');
   }, [setRouteState]);
+
+  if (!isLogin) return null;
 
   return (
     <div className='min-w-[1400px]'>
