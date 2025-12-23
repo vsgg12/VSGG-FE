@@ -10,7 +10,7 @@ export const UploadLinkBox = () => {
   const YOUTUBE_REGEX =
     /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
 
-  const { videoLink, setData } = useWriteStore();
+  const { postRequestData, setData, setPostRequestData} = useWriteStore();
 
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -18,6 +18,7 @@ export const UploadLinkBox = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const onClickSearchBtn = async () => {
+    const videoLink = postRequestData.videoLink;
     if (!videoLink) {
       setIsError(true);
       return;
@@ -65,7 +66,7 @@ export const UploadLinkBox = () => {
 
   const onChangeVideoLink = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimValue = e.target.value.trim();
-    setData('videoLink', trimValue);
+    setPostRequestData('videoLink', trimValue);
   };
 
   return (
@@ -77,7 +78,7 @@ export const UploadLinkBox = () => {
           <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
           <input
             className='w-full font-semibold text-[16px] px-[15px] outline-none'
-            value={videoLink}
+            value={postRequestData.videoLink}
             placeholder={'https://youtu.be'}
             onChange={onChangeVideoLink}
           />

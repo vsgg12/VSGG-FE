@@ -13,9 +13,6 @@ function SelectUpload() {
   const router = useRouter();
   const {
     selectedMethod,
-    uploadedVideo,
-    videoLink,
-    thumbnail,
     isLoading,
     isSelectJudgeTypeScreenShow,
     setData,
@@ -28,18 +25,6 @@ function SelectUpload() {
   const onClickJudgeClaim = () => {
     router.push('/post/write/claim');
   };
-
-  useEffect(() => {
-    if (uploadedVideo) {
-      console.log('uploadedVideo: ', uploadedVideo);
-    }
-    if (thumbnail) {
-      console.log('thumbnail: ', thumbnail);
-    }
-    if (videoLink) {
-      console.log('videoLink: ', videoLink);
-    }
-  }, [uploadedVideo, thumbnail, videoLink]);
 
   const onClickUploadFileBtn = () => {
     setData('selectedMethod', '파일 첨부');

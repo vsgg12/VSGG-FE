@@ -8,7 +8,7 @@ import SelectUploadButton from './SelectUploadButton';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
 function UploadFile() {
-  const { setData } = useWriteStore();
+  const { setData, setPostRequestData } = useWriteStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -55,7 +55,9 @@ function UploadFile() {
       return;
     }
 
-    setData('uploadedVideo', file);
+    setData('uploadVideos', file);
+    setPostRequestData('type', "FILE");
+    setPostRequestData('videoType', "FILE")
 
     // 썸네일 생성
     const url = URL.createObjectURL(file);
