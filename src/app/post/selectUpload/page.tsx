@@ -16,6 +16,7 @@ function SelectUpload() {
     isLoading,
     isSelectJudgeTypeScreenShow,
     setData,
+    clearAll
   } = useWriteStore();
 
   const onClickJudgeChampion = () => {
@@ -33,6 +34,37 @@ function SelectUpload() {
   const onClickUploadLinkBtn = () => {
     setData('selectedMethod', '유튜브 링크');
   };
+
+  useEffect(() => {
+    /** 뒤로가기 감지 */
+    const handlePopState = () => {
+      const ok = confirm('페이지를 떠나면 작성된 내용이 사라집니다');
+      if (!ok) {
+        // 뒤로가기 취소
+        history.pushState(null, '', location.href);
+      }
+      else {
+        clearAll();
+        router.back();
+      }
+    };
+
+    /** 새로고침 / 탭 닫기 감지 */
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+
+    // history stack 보호
+    history.pushState(null, '', location.href);
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [clearAll, router]);
 
   return (
     <div className='w-full h-screen flex justify-center bg-white'>

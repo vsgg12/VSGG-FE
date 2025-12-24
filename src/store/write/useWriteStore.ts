@@ -10,15 +10,15 @@ export type InGameInfoRequestType = {
 
 export type PostAddRequestType = {
   title: string;
-  type: "LINK" | "FILE" | null;
   videoType: "LINK" | "FILE" | null;
   inGameInfoRequests: {
     championName: string;
     position: string;
     tier: string;
   }[];
-  videoLink: string | null;
-  voteEndDate: string;
+  // 백엔드에 보낼때는 https://www.youtube.com/embed/${videoId}로 보내야함
+  videoLink: string;
+  voteEndDate: string; // YYYYMMDD
 }
 
 interface IWriteField {
@@ -29,7 +29,7 @@ interface IWriteField {
   uploadVideos: File | undefined;
   isSelectJudgeTypeScreenShow: boolean;
   content: string;
-  videoId: string; // 유투브 영상 썸네일 추출을 위한 비디오 ID
+  videoId: string; // 유투브 영상 iframe 렌더링을 위한 비디오 ID
 }
 
 interface IWriteState extends IWriteField {
@@ -51,11 +51,10 @@ export const useWriteStore = create<IWriteState>()(
     selectedMethod: null,
     postRequestData: {
       title: "",
-      type: null,
       videoType: null,
-      videoLink: null,
+      videoLink: "",
       voteEndDate: "",
-      inGameInfoRequests:[],
+      inGameInfoRequests: [],
     },
     thumbnail: undefined,
     isLoading: false,
