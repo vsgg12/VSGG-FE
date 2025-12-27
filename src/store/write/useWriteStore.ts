@@ -21,7 +21,7 @@ export type PostAddRequestType = {
   voteEndDate: string; // YYYYMMDD
 }
 
-interface IWriteField {
+export interface IWriteField {
   selectedMethod: '파일 첨부' | '유튜브 링크' | null;
   postRequestData: PostAddRequestType;
   thumbnail: Blob | undefined;
