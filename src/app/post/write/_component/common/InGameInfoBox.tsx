@@ -1,6 +1,6 @@
-import SearchChampionBox from '@/app/post/write/_component/common/SearchChampionBox';
-import SearchTierBox from '@/app/post/write/_component/common/SearchTierBox';
-import SearchPositionBox from '@/app/post/write/_component/common/SearchPositionBox';
+import SearchChampionBox from '@/app/post/write/_component/common/search/champion/SearchChampionBox';
+import SearchTierBox from '@/app/post/write/_component/common/search/tier/SearchTierBox';
+import SearchPositionBox from '@/app/post/write/_component/common/search/position/SearchPositionBox';
 
 interface Props {
   championName: string;

@@ -2,6 +2,16 @@ import { immer } from 'zustand/middleware/immer';
 import { createSetDataImmer, Setter } from '../zustandTypes';
 import { create } from 'zustand';
 
+export const VOTE_END_TIME_OPTIONS = [
+  { label: '1일', value: 1 },
+  { label: '2일', value: 2 },
+  { label: '4일', value: 4 },
+  { label: '7일', value: 7 },
+  { label: '14일', value: 14 },
+  { label: '20일', value: 20 },
+  { label: '30일', value: 30 },
+];
+
 export type InGameInfoRequestType = {
   championName: string;
   tier: string;
