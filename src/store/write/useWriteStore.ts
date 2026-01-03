@@ -12,6 +12,11 @@ export const VOTE_END_TIME_OPTIONS = [
   { label: '30일', value: 30 },
 ];
 
+export type ChampionType = {
+  name: string;
+  image: string;
+};
+
 export type InGameInfoRequestType = {
   championName: string;
   tier: string;
@@ -41,6 +46,8 @@ export interface IWriteField {
   isSelectJudgeTypeScreenShow: boolean;
   content: string;
   videoId: string; // 유투브 영상 iframe 렌더링을 위한 비디오 ID
+  allChampions: ChampionType[];
+  errMsg: string;
 }
 
 interface IWriteState extends IWriteField {
@@ -57,6 +64,7 @@ interface IWriteState extends IWriteField {
   addInGameInfoRequestItem: () => void;
   removeInGameInfoRequestItem: (index: number) => void;
   clearAll: () => void;
+  fetchAllChampions: () => Promise<void>;
 }
 
 export const useWriteStore = create<IWriteState>()(
@@ -88,6 +96,8 @@ export const useWriteStore = create<IWriteState>()(
     content: '',
     videoId: '',
     uploadVideos: undefined,
+    allChampions: [],
+    errMsg: '',
 
     setData: createSetDataImmer<IWriteField>(set),
 
@@ -137,9 +147,8 @@ export const useWriteStore = create<IWriteState>()(
         state.content = '';
         state.postRequestData = {
           title: '',
-          type: null,
           videoType: null,
-          videoLink: null,
+          videoLink: '',
           voteEndDate: '',
           inGameInfoRequests: [
             {
@@ -159,5 +168,31 @@ export const useWriteStore = create<IWriteState>()(
         state.uploadVideos = undefined;
         state.videoId = '';
       }),
+
+    fetchAllChampions: async () => {
+      try {
+        const response = await fetch(
+          'https://ddragon.leagueoflegends.com/cdn/15.24.1/data/ko_KR/champion.json',
+        );
+
+        const data = await response.json();
+
+        const champions: ChampionType[] = Object.keys(data.data)
+          .map((key) => {
+            const champion = data.data[key];
+            return {
+              name: champion.name,
+              image: `https://ddragon.leagueoflegends.com/cdn/15.24.1/img/champion/${champion.image.full}`,
+            };
+          })
+          .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+
+        set((state) => {
+          state.allChampions = champions;
+        });
+      } catch (error) {
+        console.error('Error loading the champions:', error);
+      }
+    },
   })),
 );

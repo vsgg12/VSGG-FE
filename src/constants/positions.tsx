@@ -9,6 +9,11 @@ import onedealSVG from '../../public/svg/onedeal.svg';
 import onedealWSVG from '../../public/svg/onedeal-w.svg';
 import supportSVG from '../../public/svg/supporter.svg';
 import supportWSVG from '../../public/svg/supporter-w.svg';
+import midBSVG from '../../public/svg/postWrite/position/mid-b.svg';
+import onedealBSVG from '../../public/svg/postWrite/position/onedeal-b.svg';
+import supportBSVG from '../../public/svg/postWrite/position/supporter-b.svg';
+import topBSVG from '../../public/svg/postWrite/position/top-b.svg';
+import jungleBSVG from '../../public/svg/postWrite/position/jungle-b.svg';
 import React from 'react';
 
 const positions = [
@@ -18,6 +23,7 @@ const positions = [
     content: '탑',
     svg: <Image alt='TOP' src={topSVG} width={18} height={18} />,
     svgW: <Image alt='TOP' src={topWSVG} width={18} height={18} />,
+    svgB: <Image alt='TOP' src={topBSVG} width={18} height={18} />,
   },
   {
     id: 'jungle',
@@ -25,6 +31,7 @@ const positions = [
     content: '정글',
     svg: <Image alt='jungle' src={jungleSVG} width={18} height={18} />,
     svgW: <Image alt='jungle' src={jungleWSVG} width={18} height={18} />,
+    svgB: <Image alt='jungle' src={jungleBSVG} width={18} height={18} />,
   },
   {
     id: 'mid',
@@ -32,6 +39,7 @@ const positions = [
     content: '미드',
     svg: <Image alt='mid' src={midSVG} width={18} height={18} />,
     svgW: <Image alt='mid' src={midWSVG} width={18} height={18} />,
+    svgB: <Image alt='mid' src={midBSVG} width={18} height={18} />,
   },
   {
     id: 'onedeal',
@@ -39,6 +47,7 @@ const positions = [
     content: '원딜',
     svg: <Image alt='onedeal' src={onedealSVG} width={18} height={18} />,
     svgW: <Image alt='onedeal' src={onedealWSVG} width={18} height={18} />,
+    svgB: <Image alt='onedeal' src={onedealBSVG} width={18} height={18} />,
   },
   {
     id: 'support',
@@ -46,6 +55,7 @@ const positions = [
     content: '서폿',
     svg: <Image alt='support' src={supportSVG} width={18} height={18} />,
     svgW: <Image alt='support' src={supportWSVG} width={18} height={18} />,
+    svgB: <Image alt='support' src={supportBSVG} width={18} height={18} />,
   },
 ];
 

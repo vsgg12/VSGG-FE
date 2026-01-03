@@ -10,6 +10,7 @@ import InGameInfoRequestBox from '@/app/post/write/champion/_component/InGameInf
 import SelectVoteEndTimeBox from '@/app/post/write/_component/common/SelectVoteEndTimeBox';
 import WriteFooterContainer from '@/app/post/write/_component/common/footer/WriteFooterContainer';
 import { getFormattedDateAfterDays } from '@/utils/formatDate';
+import { useWriteValidation } from '@/hooks/write/useWriteValidation';
 
 function Champion() {
   const router = useRouter();
@@ -18,23 +19,54 @@ function Champion() {
   const [isDeleteHover, setIsDeleteHover] = useState<number | null>(null);
   const [selectedEndTime, setSelectedEndTime] = useState<number>(1);
   const [endTimeBoxClicked, setEndTimeBoxClicked] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(false);
   const tempNum = 1;
 
-  const { videoId, uploadVideos, clearAll, setPostRequestData } = useWriteStore();
+  const {
+    videoId,
+    uploadVideos,
+    clearAll,
+    setPostRequestData,
+    fetchAllChampions,
+    errMsg,
+    postRequestData,
+    content,
+  } = useWriteStore();
+
+  const { validate } = useWriteValidation();
+
+  const { title, inGameInfoRequests } = postRequestData;
+
+  useEffect(() => {
+    const isValid = validate();
+    setIsValid(isValid);
+  }, [title, content, inGameInfoRequests, validate]);
+
+  useEffect(() => {
+    fetchAllChampions();
+  }, []);
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
 
   const onClickTempSaveBtn = () => {
     // 임시저장 api 호출
+    if (!isValid) {
+      alert(errMsg);
+      toast.error('임시 저장에 실패하였습니다.');
+      return;
+    }
     toast.success('임시 저장이 완료되었습니다.');
-    // toast.error('임시 저장에 실패하였습니다.');
   };
 
   const onClickRegisterBtn = () => {
     // 등록 api 호출
     // 등록 완료 후 게시글 상세 페이지로 이동
+    if (!isValid) {
+      alert(errMsg);
+      toast.error('게시글 등록에 실패하였습니다.');
+      return;
+    }
     toast.success('게시글 등록이 완료되었습니다.');
-    // toast.error('게시글 등록에 실패하였습니다.');
   };
 
   useEffect(() => {
