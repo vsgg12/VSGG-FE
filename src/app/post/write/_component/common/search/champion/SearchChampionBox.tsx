@@ -1,8 +1,8 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import graySearchIcon from '../../../../../../../../public/svg/postWrite/graySearchIcon.svg';
-import { getInitialConsonants } from '@/utils/truncateText';
 import { useWriteStore } from '@/store/write/useWriteStore';
+import { useSearchDropdown } from '@/hooks/write/useSearchDropDown';
 
 interface Props {
   championName: string;
@@ -11,27 +11,21 @@ interface Props {
 
 const SearchChampionBox = ({ championName, setChampionName }: Props) => {
   const { allChampions } = useWriteStore();
+  const {
+    open,
+    setOpen,
+    query,
+    setQuery,
+    boxRef,
+    filteredList: filteredChampions,
+  } = useSearchDropdown({
+    list: allChampions,
+    getText: (c) => c.name,
+  });
 
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const boxRef = useRef<HTMLDivElement>(null);
   const championRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const selectedChampion = allChampions.find((c) => c.name === championName);
-
-  const filteredChampions = useMemo(() => {
-    if (!query) return allChampions;
-
-    const lowerQuery = query.toLowerCase();
-    const queryInitial = getInitialConsonants(lowerQuery);
-
-    return allChampions.filter((champion) => {
-      const name = champion.name.toLowerCase();
-      const nameInitial = getInitialConsonants(name);
-
-      return name.includes(lowerQuery) || nameInitial.includes(queryInitial);
-    });
-  }, [query, allChampions]);
 
   const onClickChampion = (champion: string) => {
     setChampionName(champion);
@@ -39,25 +33,12 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
     setQuery('');
   };
 
-  /** 외부 클릭 닫기 */
+  // 선택된 항목이 보이도록 스크롤 재조정
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setQuery('');
-      }
-    };
+    if (!open || !championName) {
+      return;
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-
-    if (!championName) return;
-
-    // 선택된 항목이 보이도록 스크롤 재조정
     requestAnimationFrame(() => {
       const target = championRefs.current[championName];
       if (target) {

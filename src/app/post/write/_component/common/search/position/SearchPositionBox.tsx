@@ -1,8 +1,8 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo } from 'react';
 import Image from 'next/image';
 import graySearchIcon from '../../../../../../../../public/svg/postWrite/graySearchIcon.svg';
 import positions from '@/constants/positions';
-import { getInitialConsonants } from '@/utils/truncateText';
+import { useSearchDropdown } from '@/hooks/write/useSearchDropDown';
 
 interface Props {
   position: string;
@@ -10,46 +10,25 @@ interface Props {
 }
 
 const SearchPositionBox = ({ position, setPosition }: Props) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [query, setQuery] = useState<string>('');
-  const boxRef = useRef<HTMLDivElement>(null);
+  const {
+    open,
+    setOpen,
+    query,
+    setQuery,
+    boxRef,
+    filteredList: filteredPositions,
+  } = useSearchDropdown({
+    list: positions,
+    getText: (p) => p.content,
+  });
 
   const selectedPosition = positions.find((p) => p.content === position);
-
-  const filteredPositions = useMemo(() => {
-    if (!query) return positions;
-
-    const lowerQuery = query.toLowerCase();
-    const queryInitial = getInitialConsonants(lowerQuery);
-
-    return positions.filter((p) => {
-      const content = p.content.toLowerCase();
-      const contentInitial = getInitialConsonants(content);
-
-      return (
-        content.includes(lowerQuery) || // 일반 문자열 포함
-        contentInitial.includes(queryInitial) // 초성 포함
-      );
-    });
-  }, [query]);
 
   const onClickPosition = (position: string) => {
     setPosition(position);
     setOpen(false);
     setQuery('');
   };
-
-  /** 외부 클릭 닫기 */
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setQuery('');
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <div ref={boxRef} className='relative w-[141px]'>

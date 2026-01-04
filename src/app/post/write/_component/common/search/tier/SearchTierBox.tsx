@@ -1,8 +1,8 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo } from 'react';
 import Image from 'next/image';
 import graySearchIcon from '../../../../../../../../public/svg/postWrite/graySearchIcon.svg';
-import { getInitialConsonants } from '@/utils/truncateText';
 import tiers from '@/constants/tier';
+import { useSearchDropdown } from '@/hooks/write/useSearchDropDown';
 
 interface Props {
   tier: string;
@@ -10,43 +10,25 @@ interface Props {
 }
 
 const SearchTierBox = ({ tier, setTier }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const boxRef = useRef<HTMLDivElement>(null);
+  const {
+    open,
+    setOpen,
+    query,
+    setQuery,
+    boxRef,
+    filteredList: filteredTiers,
+  } = useSearchDropdown({
+    list: tiers,
+    getText: (t) => t.content,
+  });
 
   const selectedTier = tiers.find((t) => t.content === tier);
-
-  const filteredTiers = useMemo(() => {
-    if (!query) return tiers;
-
-    const lowerQuery = query.toLowerCase();
-    const queryInitial = getInitialConsonants(lowerQuery);
-
-    return tiers.filter((t) => {
-      const content = t.content.toLowerCase();
-      const contentInitial = getInitialConsonants(content);
-
-      return content.includes(lowerQuery) || contentInitial.includes(queryInitial);
-    });
-  }, [query]);
 
   const onClickTier = (tier: string) => {
     setTier(tier);
     setOpen(false);
     setQuery('');
   };
-
-  /** 외부 클릭 닫기 */
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setQuery('');
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <div ref={boxRef} className='relative w-[189px]'>
