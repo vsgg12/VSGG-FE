@@ -1,3 +1,5 @@
+'use client';
+
 import SearchChampionBox from '@/app/post/write/_component/common/search/champion/SearchChampionBox';
 import SearchTierBox from '@/app/post/write/_component/common/search/tier/SearchTierBox';
 import SearchPositionBox from '@/app/post/write/_component/common/search/position/SearchPositionBox';

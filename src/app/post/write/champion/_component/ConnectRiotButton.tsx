@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import connectIdIcon from '../../../../../../public/svg/postWrite/connectIdIcon.svg';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import ViewUploadedVideo from '../../champion/_component/ViewUploadedVideo';
 import InputTitleBox from '@/app/post/write/champion/_component/InputTitleBox';
 import InputContentBox from '@/app/post/write/champion/_component/InputContentBox';

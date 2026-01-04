@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import redDropDownIcon from '../../../../../../public/svg/postWrite/redDropDownIcon.svg';
 import dropDownIcon from '../../../../../../public/svg/postWrite/dropDownIcon.svg';

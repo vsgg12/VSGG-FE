@@ -1,3 +1,5 @@
+'use client';
+
 interface Props {
   title: '저장' | '등록';
   onClickTempSaveBtn?: () => void;

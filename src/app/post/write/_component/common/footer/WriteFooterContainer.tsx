@@ -1,3 +1,5 @@
+'use client';
+
 import WriteFooterButton from '@/app/post/write/_component/common/footer/WriteFooterButton';
 
 interface Props {

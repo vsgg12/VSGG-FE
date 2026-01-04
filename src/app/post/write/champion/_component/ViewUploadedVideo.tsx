@@ -1,3 +1,5 @@
+'use client';
+
 import { Dispatch, memo, SetStateAction, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import linkIcon from '../../../../../../public/svg/postWrite/linkIcon.svg';

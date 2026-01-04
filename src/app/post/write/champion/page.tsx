@@ -20,7 +20,8 @@ function Champion() {
   const [selectedEndTime, setSelectedEndTime] = useState<number>(1);
   const [endTimeBoxClicked, setEndTimeBoxClicked] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const tempNum = 1;
+  const [tempNum, setTempNum] = useState<number>(0);
+  const [tempModalOpen, setTempModalOpen] = useState<boolean>(false);
 
   const {
     videoId,
@@ -44,7 +45,7 @@ function Champion() {
 
   useEffect(() => {
     fetchAllChampions();
-  }, []);
+  }, [fetchAllChampions]);
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
 
@@ -55,7 +56,9 @@ function Champion() {
       toast.error('임시 저장에 실패하였습니다.');
       return;
     }
+    setTempNum((prev) => prev + 1);
     toast.success('임시 저장이 완료되었습니다.');
+    setTempModalOpen(true);
   };
 
   const onClickRegisterBtn = () => {
@@ -66,6 +69,7 @@ function Champion() {
       toast.error('게시글 등록에 실패하였습니다.');
       return;
     }
+    setTempNum((prev) => prev - 1);
     toast.success('게시글 등록이 완료되었습니다.');
   };
 

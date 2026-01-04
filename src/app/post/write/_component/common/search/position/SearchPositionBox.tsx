@@ -1,3 +1,5 @@
+'use client';
+
 import { memo } from 'react';
 import Image from 'next/image';
 import graySearchIcon from '../../../../../../../../public/svg/postWrite/graySearchIcon.svg';

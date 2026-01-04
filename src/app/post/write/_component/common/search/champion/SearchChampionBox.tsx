@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import graySearchIcon from '../../../../../../../../public/svg/postWrite/graySearchIcon.svg';

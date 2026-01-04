@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, memo, useRef } from 'react';
 import { Setter } from '@/store/zustandTypes';
 import { IWriteField } from '@/store/write/useWriteStore';

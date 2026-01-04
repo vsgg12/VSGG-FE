@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import redDeleteIcon from '../../../../../../public/svg/postWrite/redDeleteIcon.svg';
 import grayDeleteIcon from '../../../../../../public/svg/postWrite/grayDeleteIcon.svg';
