@@ -10,8 +10,8 @@ interface Props {
 }
 
 const SearchPositionBox = ({ position, setPosition }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
   const boxRef = useRef<HTMLDivElement>(null);
 
   const selectedPosition = positions.find((p) => p.content === position);
@@ -32,6 +32,12 @@ const SearchPositionBox = ({ position, setPosition }: Props) => {
       );
     });
   }, [query]);
+
+  const onClickPosition = (position: string) => {
+    setPosition(position);
+    setOpen(false);
+    setQuery('');
+  };
 
   /** 외부 클릭 닫기 */
   useEffect(() => {
@@ -60,6 +66,7 @@ const SearchPositionBox = ({ position, setPosition }: Props) => {
         >
           {selectedPosition ? (
             <>
+              <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
               {selectedPosition.svgB}
               <span className='text-[16px] text-[#333]'>{selectedPosition.content}</span>
             </>
@@ -101,11 +108,7 @@ const SearchPositionBox = ({ position, setPosition }: Props) => {
               return (
                 <div
                   key={item.id}
-                  onClick={() => {
-                    setPosition(item.content);
-                    setOpen(false);
-                    setQuery('');
-                  }}
+                  onClick={() => onClickPosition(item.content)}
                   className={`
                     flex items-center gap-[12px]
                     h-[38px] px-[10px]

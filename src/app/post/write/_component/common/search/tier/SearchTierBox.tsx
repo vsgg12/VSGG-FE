@@ -30,6 +30,12 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
     });
   }, [query]);
 
+  const onClickTier = (tier: string) => {
+    setTier(tier);
+    setOpen(false);
+    setQuery('');
+  };
+
   /** 외부 클릭 닫기 */
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -57,6 +63,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
         >
           {selectedTier ? (
             <>
+              <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
               {selectedTier.svg}
               <span className='text-[16px] text-[#333]'>{selectedTier.content}</span>
             </>
@@ -98,11 +105,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
               return (
                 <div
                   key={item.id}
-                  onClick={() => {
-                    setTier(item.content);
-                    setOpen(false);
-                    setQuery('');
-                  }}
+                  onClick={() => onClickTier(item.content)}
                   className={`
                     flex items-center gap-[12px]
                     h-[38px] px-[10px]

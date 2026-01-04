@@ -15,6 +15,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const boxRef = useRef<HTMLDivElement>(null);
+  const championRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const selectedChampion = allChampions.find((c) => c.name === championName);
 
@@ -32,6 +33,12 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
     });
   }, [query, allChampions]);
 
+  const onClickChampion = (champion: string) => {
+    setChampionName(champion);
+    setOpen(false);
+    setQuery('');
+  };
+
   /** 외부 클릭 닫기 */
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -44,6 +51,23 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    if (!championName) return;
+
+    // 선택된 항목이 보이도록 스크롤 재조정
+    requestAnimationFrame(() => {
+      const target = championRefs.current[championName];
+      if (target) {
+        target.scrollIntoView({
+          block: 'center',
+          behavior: 'instant',
+        });
+      }
+    });
+  }, [open, championName]);
 
   return (
     <div ref={boxRef} className='relative w-[219px]'>
@@ -60,6 +84,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
         >
           {selectedChampion ? (
             <>
+              <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
               <img
                 src={selectedChampion.image}
                 alt={selectedChampion.name}
@@ -107,11 +132,10 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
               return (
                 <div
                   key={champion.name}
-                  onClick={() => {
-                    setChampionName(champion.name);
-                    setOpen(false);
-                    setQuery('');
+                  ref={(el) => {
+                    championRefs.current[champion.name] = el;
                   }}
+                  onClick={() => onClickChampion(champion.name)}
                   className={`
                     flex items-center gap-[12px]
                     min-h-[38px] px-[10px]
