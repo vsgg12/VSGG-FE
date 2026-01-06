@@ -78,7 +78,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
                     <p className='text-[10px] text-[#828282]'>
                       {formatDate(alarm.createdDateTime)}
                     </p>
-                    {alarm.isRead === false && (
+                    {!alarm.isRead && (
                       <span
                         className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
                         style={{

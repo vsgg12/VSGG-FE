@@ -45,7 +45,11 @@ function SearchItem({ postItem }: Props) {
         </div>
 
         <div className='w-[117px] h-[66px] rounded-[5px]'>
-          <img src={postItem.thumbnailURL} className='w-full h-full rounded-[5px]' />
+          <img
+            src={postItem.thumbnailURL}
+            className='w-full h-full rounded-[5px]'
+            alt={'썸네일 이미지'}
+          />
         </div>
       </div>
 
