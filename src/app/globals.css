@@ -176,7 +176,7 @@ body {
 }
 
 .mobile-layout {
-    @apply min-w-[375px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
+    @apply min-w-[370px] max-w-[768px] w-screen relative my-0 mx-auto box-border bg-[#F3F3F3];
 }
 
 .mobile-scroll {

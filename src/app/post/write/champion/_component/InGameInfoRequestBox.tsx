@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import redDeleteIcon from '../../../../../../public/svg/postWrite/redDeleteIcon.svg';
 import grayDeleteIcon from '../../../../../../public/svg/postWrite/grayDeleteIcon.svg';
-import InGameInfoBox from '@/app/post/write/_component/common/InGameInfoBox';
+import InGameInfoBox from '@/app/post/write/_component/common/content/InGameInfoBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import { Dispatch, SetStateAction } from 'react';
 

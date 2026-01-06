@@ -23,3 +23,23 @@ export const getFormattedDateAfterDays = (days: number): string => {
 
   return `${year}${month}${day}`;
 };
+
+/**
+ * 백엔드에서 오는 ISO 문자열을 'YYYY.MM.DD HH:MM' 형식으로 포매팅
+ * 2025-09-30T10:49:41.877407 -> 2025.09.30 10:49
+ */
+// utils/formatDate.ts
+export const formatDateTime = (isoString: string): string => {
+  if (!isoString) return '';
+
+  const date = new Date(isoString);
+
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+
+  return `${yyyy}.${mm}.${dd} ${hh}:${min}`;
+};

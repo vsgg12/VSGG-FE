@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import { useRouter } from 'next/navigation';
-import LeftContainer from '@/app/post/write/_component/common/LeftContainer';
+import LeftContainer from '@/app/post/write/_component/common/content/LeftContainer';
 import ConnectRiotButton from '@/app/post/write/champion/_component/ConnectRiotButton';
 import { toast } from 'react-hot-toast';
 import InGameInfoRequestBox from '@/app/post/write/champion/_component/InGameInfoRequestBox';
-import SelectVoteEndTimeBox from '@/app/post/write/_component/common/SelectVoteEndTimeBox';
+import SelectVoteEndTimeBox from '@/app/post/write/_component/common/content/SelectVoteEndTimeBox';
 import WriteFooterContainer from '@/app/post/write/_component/common/footer/WriteFooterContainer';
 import { getFormattedDateAfterDays } from '@/utils/formatDate';
 import { useWriteValidation } from '@/hooks/write/useWriteValidation';
+import { useTempStore } from '@/store/temp/useTempStore';
+import TempModal from '@/app/post/write/_component/common/modal/temp/TempModal';
+import ConfirmTempModal from '@/app/post/write/_component/common/modal/temp/confirm/ConfirmTempModal';
 
 function Champion() {
   const router = useRouter();
@@ -20,8 +23,6 @@ function Champion() {
   const [selectedEndTime, setSelectedEndTime] = useState<number>(1);
   const [endTimeBoxClicked, setEndTimeBoxClicked] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const [tempNum, setTempNum] = useState<number>(0);
-  const [tempModalOpen, setTempModalOpen] = useState<boolean>(false);
 
   const {
     videoId,
@@ -35,6 +36,13 @@ function Champion() {
   } = useWriteStore();
 
   const { validate } = useWriteValidation();
+  const {
+    setData: setTempData,
+    tempModalOpen,
+    deleteTempItemModalOpen,
+    loadTempDetailModalOpen,
+    fetchAllTempList,
+  } = useTempStore();
 
   const { title, inGameInfoRequests } = postRequestData;
 
@@ -45,7 +53,8 @@ function Champion() {
 
   useEffect(() => {
     fetchAllChampions();
-  }, [fetchAllChampions]);
+    fetchAllTempList();
+  }, []);
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
 
@@ -56,9 +65,10 @@ function Champion() {
       toast.error('임시 저장에 실패하였습니다.');
       return;
     }
-    setTempNum((prev) => prev + 1);
     toast.success('임시 저장이 완료되었습니다.');
-    setTempModalOpen(true);
+    // 다시 임시저장 목록 불러오기
+    fetchAllTempList();
+    setTempData('tempModalOpen', true);
   };
 
   const onClickRegisterBtn = () => {
@@ -69,7 +79,6 @@ function Champion() {
       toast.error('게시글 등록에 실패하였습니다.');
       return;
     }
-    setTempNum((prev) => prev - 1);
     toast.success('게시글 등록이 완료되었습니다.');
   };
 
@@ -82,6 +91,8 @@ function Champion() {
         history.pushState(null, '', location.href);
       } else {
         clearAll();
+        setTempData('tempModalOpen', false);
+        setTempData('selectedTempId', null);
         router.replace('/post/selectUpload');
       }
     };
@@ -102,7 +113,7 @@ function Champion() {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [clearAll, router]);
+  }, [clearAll, router, setTempData]);
 
   useEffect(() => {
     const isRefresh = sessionStorage.getItem('WRITE_REFRESH');
@@ -110,9 +121,11 @@ function Champion() {
     if (isRefresh) {
       sessionStorage.removeItem('WRITE_REFRESH');
       clearAll();
+      setTempData('tempModalOpen', false);
+      setTempData('selectedTempId', null);
       router.replace('/post/selectUpload');
     }
-  }, [clearAll, router]);
+  }, [clearAll, router, setTempData]);
 
   useEffect(() => {
     if (!uploadVideos && !videoId) {
@@ -126,7 +139,7 @@ function Champion() {
   }, [selectedEndTime, setPostRequestData]);
 
   return (
-    <div className={'w-screen h-screen flex justify-center items-center gap-[50px]'}>
+    <div className={'relative w-screen h-screen flex justify-center items-center gap-[50px]'}>
       <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
 
       <div className={'w-[568px] flex flex-col gap-[20px]'}>
@@ -142,12 +155,14 @@ function Champion() {
             setSelectedEndTime={setSelectedEndTime}
           />
           <WriteFooterContainer
-            tempNum={tempNum}
             onClickTempSaveBtn={onClickTempSaveBtn}
             onClickRegisterBtn={onClickRegisterBtn}
           />
         </div>
       </div>
+      {tempModalOpen && <TempModal />}
+      {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+      {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
     </div>
   );
 }

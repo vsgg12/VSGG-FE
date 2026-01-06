@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { truncateText } from '@/utils/truncateText';
 
 interface IAlarmListProps {
   alarms: IAlarmsType[] | undefined;
@@ -36,13 +37,6 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const handleAlarmItemClick = (alarmId: number, alarmType: string, id: number) => {
     setPostId(id);
     postAlarm({ accessToken, alarmId, alarmType });
-  };
-
-  const truncateText = (comment: string) => {
-    if (comment.length > 44) {
-      return comment.slice(0, 43) + '...';
-    }
-    return comment;
   };
 
   const extractNickname = (alarmContents: string) => {
@@ -78,10 +72,12 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
 
                     <p className='text-[12px] text-[#555555] pr-[50px]'>
                       {alarm.alarmType === 'POST'
-                        ? `${truncateText(alarm.alarmContents)}`
-                        : `${truncateText(alarm.commentContent)}`}
+                        ? `${truncateText(alarm.alarmContents, 44)}`
+                        : `${truncateText(alarm.commentContent, 44)}`}
                     </p>
-                    <p className='text-[10px] text-[#828282]'>{formatDate(alarm.createdDateTime)}</p>
+                    <p className='text-[10px] text-[#828282]'>
+                      {formatDate(alarm.createdDateTime)}
+                    </p>
                     {alarm.isRead === false && (
                       <span
                         className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
