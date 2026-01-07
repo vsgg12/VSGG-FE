@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import { useFormContext } from 'react-hook-form';
 import LoginModal from '@/components/modals/login/LoginModal';
@@ -60,11 +60,11 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
     }
   };
 
-  const handleFocusTextarea = () => {
+  const handleFocusTextarea = useCallback(() => {
     if (targetNickname && textareaRef.current) {
       textareaRef.current.focus();
     }
-  };
+  }, [targetNickname]);
 
   useEffect(() => {
     handleFocusTextarea();
