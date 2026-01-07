@@ -16,17 +16,6 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const { setValue, getValues } = useFormContext();
 
-  useEffect(() => {
-    handleFocusTextarea();
-
-    if (targetNickname) {
-      const currentValue = getValues('commentContent');
-      if (!currentValue?.startsWith(`@${targetNickname}`)) {
-        setValue('commentContent', `@${targetNickname} `);
-      }
-    }
-  }, [targetNickname, setValue, getValues]);
-
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
 
@@ -76,6 +65,17 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
       textareaRef.current.focus();
     }
   };
+
+  useEffect(() => {
+    handleFocusTextarea();
+
+    if (targetNickname) {
+      const currentValue = getValues('commentContent');
+      if (!currentValue?.startsWith(`@${targetNickname}`)) {
+        setValue('commentContent', `@${targetNickname} `);
+      }
+    }
+  }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
     <div className='h-fit w-full rounded-[20px] border-2 border-[#8A1F21] flex'>
