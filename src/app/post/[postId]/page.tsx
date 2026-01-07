@@ -7,7 +7,6 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import CommentArea from '../_component/CommentArea';
 import ContentArea from '../_component/ContentArea';
 import NavigationArea from '../_component/NavigationArea';
@@ -16,6 +15,7 @@ import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -89,7 +89,7 @@ export default function PostRead() {
           )}
           {isLoginModalOpen && (
             <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <AlertLoginModal />
+              <LoginModal />
             </ModalLayout>
           )}
         </div>

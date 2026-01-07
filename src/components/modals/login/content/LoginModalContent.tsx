@@ -1,7 +1,14 @@
+'use client';
+
 const LoginModalContent = () => {
   return (
-    <div>
-      <div></div>
+    <div className={'w-[392px] h-[248px]'}>
+      <img
+        src={'/images/login/loginContentImg.png'}
+        alt={'loginContentImg'}
+        width={263}
+        height={47}
+      />
     </div>
   );
 };

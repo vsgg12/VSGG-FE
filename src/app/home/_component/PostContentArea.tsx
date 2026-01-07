@@ -15,7 +15,7 @@ import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 interface Props {
   post: IGetPostDTOType;
@@ -250,7 +250,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       )}
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
+          <LoginModal />
         </ModalLayout>
       )}
     </div>

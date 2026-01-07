@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 import kakaoIcon from '../../../../../public/svg/login/kakaoIcon.svg';
 import React from 'react';
@@ -36,21 +38,17 @@ const LoginTypeButton = ({ type, onClick }: Props) => {
 
   const buttonClass = () => {
     if (type === 'google') return 'bg-white text-[#333333]';
-    if (type === 'naver') return 'bg-[#FF6600] text-[#3C1E1E]';
-    if (type === 'kakao') return 'bg-[#03C75A] text-white';
+    if (type === 'kakao') return 'bg-[#FEE500] text-[#3C1E1E]';
+    if (type === 'naver') return 'bg-[#03C75A] text-white';
   };
 
   return (
     <div
       onClick={onClick}
-      className='cursor-pointer w-full h-[40px] border-[0.25px] border-[#C8C8C8] shadow-sm'
+      className={`cursor-pointer w-full h-[40px] border-[0.25px] border-[#C8C8C8] shadow-sm rounded-[5px] flex items-center justify-center gap-2 text-[16px] ${buttonClass()}`}
     >
-      <div
-        className={`h-full w-full flex items-center justify-center gap-2 rounded-[5px] text-[16px] ${buttonClass()}`}
-      >
         {getButtonIcon()}
         <div className='whitespace-nowrap'>{getButtonTitle()}</div>
-      </div>
     </div>
   );
 };

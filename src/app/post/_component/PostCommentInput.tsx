@@ -1,8 +1,8 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import { useFormContext } from 'react-hook-form';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 interface IPostCommentInputProps {
   targetNickname: string;
@@ -106,7 +106,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
       </button>
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
+          <LoginModal />
         </ModalLayout>
       )}
     </div>

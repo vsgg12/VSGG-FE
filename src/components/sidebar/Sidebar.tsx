@@ -6,7 +6,6 @@ import Logo from '../Logo';
 import HorizontalBannerSwiper from './banner/HorizontalBannerSwiper';
 import SidebarList from './list/SidebarList';
 import ModalLayout from '../modals/ModalLayout';
-import AlertLoginModal from '../modals/AlertLoginModal';
 import ProfileInfo from './footer/ProfileInfo';
 import DarkMode from './footer/DarkMode';
 import AdditionalOption from './footer/AdditionalOption';
@@ -18,6 +17,7 @@ import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModa
 import { useSidebarStore } from '@/store/useSidebarStore';
 import { SidebarModalLayout } from '../modals/SidebarModalLayout';
 import SearchModal from './modal/search/SearchModal';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 function Sidebar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
@@ -64,7 +64,7 @@ function Sidebar() {
       </div>
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
+          <LoginModal />
         </ModalLayout>
       )}
       {isNotificationOpen && (
