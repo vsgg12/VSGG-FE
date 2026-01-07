@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
 import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
@@ -20,6 +19,7 @@ import { useSidebarStore } from '@/store/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
 import Sidebar from '@/components/sidebar/Sidebar';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 export default function Home() {
   const router = useRouter();
@@ -182,7 +182,7 @@ export default function Home() {
           </section>
           {isLoginModalOpen && (
             <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <AlertLoginModal />
+              <LoginModal />
             </ModalLayout>
           )}
         </div>

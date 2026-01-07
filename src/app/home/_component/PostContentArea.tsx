@@ -15,7 +15,7 @@ import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import LoginModal from '@/components/modals/login/LoginModal';
 
 interface Props {
   post: IGetPostDTOType;
@@ -45,7 +45,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       setIsNoOneVoted(true);
     }
 
-    if (post.liked == true) {
+    if (post.liked) {
       setHeartIcon(Icon_heart_hover);
     }
   }, [post]);
@@ -184,7 +184,12 @@ function PostContentArea({ post, voteInfos }: Props) {
             <source src={post.video.url} type='video/webm' />
           </video>
         ) : post.thumbnailURL ? (
-          <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
+          <img
+            className={videoStyle}
+            src={post.thumbnailURL}
+            onClick={handleImageClick}
+            alt={'thumbnail'}
+          />
         ) : post.video.type === 'FILE' ? (
           <video
             muted
@@ -220,7 +225,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${(button.name === 'like' && post.liked == true) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && post.liked) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
                 >
                   {button.data}
                 </p>
@@ -250,7 +255,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       )}
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
+          <LoginModal />
         </ModalLayout>
       )}
     </div>
