@@ -13,7 +13,7 @@ import NavigationArea from '../_component/NavigationArea';
 import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import LoginModal from '@/components/modals/login/LoginModal';
 
@@ -62,19 +62,19 @@ export default function PostRead() {
       {isMobile ? (
         <PostDetailMobile />
       ) : (
-        <div className='min-w-[1400px] flex-col items-center'>
-          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
+        <div className="min-w-[1400px] flex-col items-center">
+          <div className="mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]">
             <Logo />
           </div>
           {isLoading ? (
             <Loading />
           ) : (
             post && (
-              <div className='flex flex-col items-center justify-center px-[50px]'>
+              <div className="flex flex-col items-center justify-center px-[50px]">
                 <div>
                   <NavigationArea />
                 </div>
-                <div className='flex flex-row gap-[30px] justify-center'>
+                <div className="flex flex-row gap-[30px] justify-center">
                   <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
                   <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
                 </div>

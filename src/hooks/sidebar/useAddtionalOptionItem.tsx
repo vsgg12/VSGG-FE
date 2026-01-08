@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { AdditionalOptionItemType } from '@/components/sidebar/modal/additionalOption/AdditionalOptionList';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import LinkUtils from '@/utils/link/linkUtils';

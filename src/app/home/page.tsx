@@ -15,7 +15,7 @@ import HomeMobile from './mobile/HomeMobile';
 import PostItem from './_component/PostItem';
 import PostCommentArea from './_component/PostCommentArea';
 import WritePost from './_component/WritePost';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
 import Sidebar from '@/components/sidebar/Sidebar';
@@ -132,7 +132,7 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className='flex w-screen items-center justify-center pl-[260px]'>
+        <div className="flex w-screen items-center justify-center pl-[260px]">
           <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
@@ -153,7 +153,7 @@ export default function Home() {
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className='flex w-full flex-col flex-grow items-center justify-center'>
+                <div className="flex w-full flex-col flex-grow items-center justify-center">
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (
@@ -161,7 +161,7 @@ export default function Home() {
                   isListed ? (
                     <ListPostItem post={post} key={idx} />
                   ) : (
-                    <div className='relative'>
+                    <div className="relative">
                       <PostItem
                         post={post}
                         voteInfos={post.inGameInfoList}
@@ -169,7 +169,7 @@ export default function Home() {
                         setShowCommentPostId={setShowCommentPostId}
                       />
                       {showCommentPostId == post.id && (
-                        <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
+                        <div className="h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]">
                           <PostCommentArea postId={post.id} />
                         </div>
                       )}

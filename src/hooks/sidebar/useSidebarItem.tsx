@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { sidebarListType } from '@/components/sidebar/list/SidebarList';
 import HomeIcon from '@/components/sidebar/list/iconComponent/HomeIcon';
