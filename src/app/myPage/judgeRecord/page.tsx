@@ -13,7 +13,7 @@ import IsNotExistList from '../_component/IsNotExistList';
 import { useMediaQuery } from 'react-responsive';
 import JudgeRecord_Mobile from '../mobile/judgeRecord/JudgeRecordMobile';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function JudgeRecord() {
@@ -48,17 +48,18 @@ export default function JudgeRecord() {
       {isMobile ? (
         <JudgeRecord_Mobile />
       ) : (
-        <div className='min-w-[1480px] pl-[250px]'>
+        <div className="min-w-[1480px] pl-[250px]">
           <Sidebar />
-          <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
+          <div className="mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]">
             <Logo />
           </div>
           {userProfileData && (
-            <div className='flex justify-center gap-10'>
-              <div className='flex flex-col'>
-                <div className='w-[300px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px] relative'>
-                  <p className='self-start text-[14px] font-[400] flex-grow ml-5 mt-2'>판결 승률</p>
-                  <div className='absolute w-[180px]'>
+            <div className="flex justify-center gap-10">
+              <div className="flex flex-col">
+                <div
+                  className="w-[300px] h-[240px] flex flex-col items-center rounded-[30px] bg-white p-[15px] relative">
+                  <p className="self-start text-[14px] font-[400] flex-grow ml-5 mt-2">판결 승률</p>
+                  <div className="absolute w-[180px]">
                     <HalfDoughnutChart
                       win={userProfileData.memberProfileDTO.predicateResult}
                       lose={
@@ -67,7 +68,7 @@ export default function JudgeRecord() {
                       }
                     />
                   </div>
-                  <div className='absolute text-[14px] font-[400] text-[#C3C3C3] translate-y-[160px]'>
+                  <div className="absolute text-[14px] font-[400] text-[#C3C3C3] translate-y-[160px]">
                     {userProfileData.memberProfileDTO.joinedResult}전{' '}
                     {userProfileData.memberProfileDTO.predicateResult}승{' '}
                     {userProfileData.memberProfileDTO.joinedResult -
@@ -77,30 +78,31 @@ export default function JudgeRecord() {
                 </div>
               </div>
 
-              <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] min-w-[960px]'>
-                <div className='flex items-center gap-5 mb-[8px] font-medium'>
-                  <div className='text-[20px]'>판결 전적</div>
-                  <div className='text-[12px] text-[#C3C3C3]'>
+              <div
+                className="flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] min-w-[960px]">
+                <div className="flex items-center gap-5 mb-[8px] font-medium">
+                  <div className="text-[20px]">판결 전적</div>
+                  <div className="text-[12px] text-[#C3C3C3]">
                     최대 1달 전까지의 전적을 확인할 수 있어요
                   </div>
                 </div>
-                <div className='flex justify-between items-center text-[12px] text-[#C3C3C3] font-medium'>
+                <div className="flex justify-between items-center text-[12px] text-[#C3C3C3] font-medium">
                   <div>제목</div>
-                  <div className='w-[300px] flex justify-between'>
+                  <div className="w-[300px] flex justify-between">
                     <div>게시자</div>
-                    <div className='mr-[20px]'>작성일</div>
+                    <div className="mr-[20px]">작성일</div>
                   </div>
                 </div>
-                <div className='h-full flex-grow'>
+                <div className="h-full flex-grow">
                   {myJudgeLists && myJudgeLists.postList.length !== 0 ? (
                     <MyJudgeList myJudgeList={myJudgeLists.postList} />
                   ) : (
-                    <div className='flex justify-center items-center w-full h-full'>
-                      <IsNotExistList type='myJudge' />
+                    <div className="flex justify-center items-center w-full h-full">
+                      <IsNotExistList type="myJudge" />
                     </div>
                   )}
                 </div>
-                <div className='flex justify-center pb-4'>
+                <div className="flex justify-center pb-4">
                   {myJudgeLists && myJudgeLists.postList.length !== 0 ? (
                     <Pagination
                       activePage={page}
@@ -110,7 +112,7 @@ export default function JudgeRecord() {
                       prevPageText={'<'}
                       nextPageText={'>'}
                       onChange={handlePageChange}
-                      activeLinkClass='active-page'
+                      activeLinkClass="active-page"
                     />
                   ) : null}
                 </div>

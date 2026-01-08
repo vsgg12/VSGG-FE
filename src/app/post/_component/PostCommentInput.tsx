@@ -1,8 +1,7 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
-import ModalLayout from '@/components/modals/ModalLayout';
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import LoginModal from '@/components/modals/login/LoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface IPostCommentInputProps {
   targetNickname: string;
@@ -13,7 +12,7 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const {setIsLoginModalOpen} = useLoginStore();
   const { setValue, getValues } = useFormContext();
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -104,11 +103,6 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
       <button className='text-[12px] text-[#8A1F21]' type='submit'>
         <p className='mr-[5px]'>등록</p>
       </button>
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <LoginModal />
-        </ModalLayout>
-      )}
     </div>
   );
 }

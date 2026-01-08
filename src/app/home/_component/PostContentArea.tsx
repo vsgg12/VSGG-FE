@@ -14,8 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
-import ModalLayout from '@/components/modals/ModalLayout';
-import LoginModal from '@/components/modals/login/LoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface Props {
   post: IGetPostDTOType;
@@ -27,8 +26,8 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
   const { accessToken, user, isLogin } = useAuthStore();
+  const {setIsLoginModalOpen} = useLoginStore();
   const contentsArr = useConvertHTML(post.content);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
@@ -252,11 +251,6 @@ function PostContentArea({ post, voteInfos }: Props) {
             <HomeNotVoted voteInfos={voteInfos} />
           )}
         </div>
-      )}
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <LoginModal />
-        </ModalLayout>
       )}
     </div>
   );

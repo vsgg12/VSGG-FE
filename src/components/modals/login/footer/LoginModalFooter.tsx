@@ -12,16 +12,16 @@ interface Props {
 const LoginModalFooter = ({ onClickNaverLogin, onClickKakaoLogin, onClickGoogleLogin }: Props) => {
   const loginButtonType: { type: 'naver' | 'google' | 'kakao'; onClick: () => void }[] = [
     {
-      type: 'naver',
-      onClick: onClickNaverLogin,
-    },
-    {
       type: 'google',
       onClick: onClickGoogleLogin,
     },
     {
       type: 'kakao',
       onClick: onClickKakaoLogin,
+    },
+    {
+      type: 'naver',
+      onClick: onClickNaverLogin,
     },
   ];
 
