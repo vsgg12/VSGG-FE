@@ -4,8 +4,6 @@ import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
 import { Toaster } from 'react-hot-toast';
-import ModalLayout from '@/components/modals/ModalLayout';
-import LoginModal from '@/components/modals/login/LoginModal';
 import GlobalModalLayer from '@/components/common/GlobalModalLayer';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -63,10 +61,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property='og:image:width' content='800' />
         <meta property='og:image:height' content='420' />
 
-        <link
-          href='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css'
-          rel='stylesheet'
-        />
         <link rel='canonical' href='https://vsgg.co.kr' />
 
         <link rel='icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
@@ -76,11 +70,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='167x167' />
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='120x120' />
         <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='76x76' />
-        <link rel='mask-icon' href='images/Favicon.ico' color='#8A1F21' />
-        <link rel='shortcut icon' href='images/Favicon.ico' type='image/x-icon' />
+        <link rel='mask-icon' href='/images/Favicon.ico' color='#8A1F21' />
+        <link rel='shortcut icon' href='/images/Favicon.ico' type='image/x-icon' />
 
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
-        <Script src='https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js'></Script>
         {/* Google tag (gtag.js) */}
         <Script async src='https://www.googletagmanager.com/gtag/js?id=G-MYFHS8HYQ5'></Script>
         <Script

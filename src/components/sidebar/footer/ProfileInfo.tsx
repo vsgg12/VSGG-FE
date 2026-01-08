@@ -36,6 +36,7 @@ function ProfileInfo() {
           isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage
         }
         className="rounded-full block w-[48px] h-[48px] object-cover"
+        alt={"프로필 이미지"}
       />
       {isLogin && userProfileData && user ? (
         <div className="flex flex-col gap-[3px]">
