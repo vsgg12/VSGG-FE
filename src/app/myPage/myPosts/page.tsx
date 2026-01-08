@@ -10,7 +10,7 @@ import MyPostList from '../_component/MyPostList';
 import IsNotExistList from '../_component/IsNotExistList';
 import MyPost_Mobile from '../mobile/myPosts/MyPostsMobile';
 import { useMediaQuery } from 'react-responsive';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import Sidebar from '@/components/sidebar/Sidebar';
 
@@ -40,35 +40,36 @@ export default function MyPosts() {
       {isMobile ? (
         <MyPost_Mobile />
       ) : (
-        <div className='min-w-[850px] pl-[200px]'>
+        <div className="min-w-[850px] pl-[200px]">
           <Sidebar />
-          <div className='mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
+          <div className="mb-[130px] mt-[30px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]">
             <Logo />
           </div>
-          <div className='flex justify-center w-full'>
-            <div className='flex w-full flex-col mx-28'>
+          <div className="flex justify-center w-full">
+            <div className="flex w-full flex-col mx-28">
               {myPostLists && (
-                <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] font-medium'>
-                  <div className='flex items-center gap-5 mb-[8px] text-[20px]'>
+                <div
+                  className="flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] font-medium">
+                  <div className="flex items-center gap-5 mb-[8px] text-[20px]">
                     <p>내가 쓴 글</p>
                   </div>
-                  <div className='flex justify-between items-center text-[12px] text-[#C3C3C3]'>
+                  <div className="flex justify-between items-center text-[12px] text-[#C3C3C3]">
                     <div>제목</div>
-                    <div className='w-[300px] flex justify-between'>
+                    <div className="w-[300px] flex justify-between">
                       <div>댓글수</div>
-                      <div className='mr-[20px]'>작성일</div>
+                      <div className="mr-[20px]">작성일</div>
                     </div>
                   </div>
-                  <div className='h-full flex-grow'>
+                  <div className="h-full flex-grow">
                     {myPostLists && myPostLists.postList.length !== 0 ? (
                       <MyPostList myPostList={myPostLists.postList} />
                     ) : (
-                      <div className='flex justify-center items-center w-full h-full'>
-                        <IsNotExistList type='myPost' />
+                      <div className="flex justify-center items-center w-full h-full">
+                        <IsNotExistList type="myPost" />
                       </div>
                     )}
                   </div>
-                  <div className='flex justify-center pb-4'>
+                  <div className="flex justify-center pb-4">
                     {myPostLists && myPostLists.postList.length !== 0 ? (
                       <Pagination
                         activePage={page}
@@ -78,7 +79,7 @@ export default function MyPosts() {
                         prevPageText={'<'}
                         nextPageText={'>'}
                         onChange={handlePageChange}
-                        activeLinkClass='active-page'
+                        activeLinkClass="active-page"
                       />
                     ) : null}
                   </div>

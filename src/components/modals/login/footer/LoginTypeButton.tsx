@@ -1,54 +1,70 @@
-'use client'
+'use client';
 
-import Image from 'next/image';
-import kakaoIcon from '../../../../../public/svg/login/kakaoIcon.svg';
 import React from 'react';
-import googleIcon from '../../../../../public/svg/login/googleIcon.svg';
-import naverIcon from '../../../../../public/svg/login/naverIcon.svg';
+import Image from 'next/image';
+import { clsx } from 'clsx';
+
+type LoginProviderType = 'google' | 'kakao' | 'naver';
+
+type LoginButtonType = {
+  src: string;
+  label: string;
+  styleClass: string;
+  width: number;
+  height: number;
+  alt: string;
+}
 
 interface Props {
-  type: 'google' | 'kakao' | 'naver';
+  type: LoginProviderType;
   onClick: () => void;
 }
 
+// 타입별 설정 정보 (상수로 분리)
+const LOGIN_BUTTON_CONFIG: Record<
+  LoginProviderType,
+  LoginButtonType
+> = {
+  google: {
+    src: "/svg/login/googleIcon.svg",
+    label: '구글 로그인',
+    styleClass: 'bg-white text-[#333333] hover:bg-white/80 hover:text-[#333333]/80',
+    width: 18,
+    height: 18.37,
+    alt: '구글아이콘',
+  },
+  naver: {
+    src: '/svg/login/naverIcon.svg',
+    label: '네이버 로그인',
+    styleClass: 'bg-[#03C75A] text-white hover:bg-[#03C75A]/80 hover:text-white/80',
+    width: 15,
+    height: 15,
+    alt: '네이버아이콘',
+  },
+  kakao: {
+    src: "/svg/login/kakaoIcon.svg",
+    label: '카카오 로그인',
+    styleClass: 'bg-[#FEE500] text-[#3C1E1E] hover:bg-[#FEE500]/80 hover:text-[#3C1E1E]/80',
+    width: 17,
+    height: 16,
+    alt: '카카오아이콘',
+  },
+};
+
 const LoginTypeButton = ({ type, onClick }: Props) => {
-  const getButtonIcon = () => {
-    switch (type) {
-      case 'google':
-        return <Image src={googleIcon} width={18} height={18.37} alt={'구글아이콘'} />;
-      case 'naver':
-        return <Image src={naverIcon} width={15} height={15} alt={'네이버아이콘'} />;
-      case 'kakao':
-        return <Image src={kakaoIcon} width={17} height={16} alt='카카오아이콘' />;
-      default:
-        break;
-    }
-  };
-
-  const getButtonTitle = () => {
-    switch (type) {
-      case 'google':
-        return '구글 로그인';
-      case 'naver':
-        return '네이버 로그인';
-      case 'kakao':
-        return '카카오 로그인';
-    }
-  };
-
-  const buttonClass = () => {
-    if (type === 'google') return 'bg-white text-[#333333]';
-    if (type === 'kakao') return 'bg-[#FEE500] text-[#3C1E1E]';
-    if (type === 'naver') return 'bg-[#03C75A] text-white';
-  };
+  const { src, label, styleClass, width, height, alt } = LOGIN_BUTTON_CONFIG[type];
 
   return (
     <div
       onClick={onClick}
-      className={`cursor-pointer w-full h-[40px] border-[0.25px] border-[#C8C8C8] shadow-sm rounded-[5px] flex items-center justify-center gap-2 text-[16px] ${buttonClass()}`}
+      className={clsx(
+        'cursor-pointer w-full h-[40px] border-[0.25px] border-[#C8C8C8] shadow-sm rounded-[5px]',
+        'flex items-center justify-center gap-2 text-[16px]',
+        styleClass,
+      )}
     >
-        {getButtonIcon()}
-        <div className='whitespace-nowrap'>{getButtonTitle()}</div>
+      <Image src={src} width={width} height={height} alt={alt} priority />
+      <span className="whitespace-nowrap">{label}</span>
     </div>
   );
 };

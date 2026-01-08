@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import DOMPurify from 'dompurify';
 import { useRouter } from 'next/navigation';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { truncateText } from '@/utils/truncateText';
 
 interface Props {
@@ -30,16 +30,16 @@ function SearchItem({ postItem }: Props) {
 
   return (
     <div
-      className='w-full h-[150px] flex justify-center flex-col gap-[10px] cursor-pointer'
+      className="w-full h-[150px] flex justify-center flex-col gap-[10px] cursor-pointer"
       onClick={handleClick}
     >
-      <div className='flex w-full justify-between '>
-        <div className='flex flex-col gap-[10px] w-[192px]'>
-          <div className='flex text-[14px] text-[#AAAAAA] justify-between'>
+      <div className="flex w-full justify-between ">
+        <div className="flex flex-col gap-[10px] w-[192px]">
+          <div className="flex text-[14px] text-[#AAAAAA] justify-between">
             <div>{truncateText(postItem.memberDTO.nickname, 8)}</div>
-            <div className='font-medium'>{formatDate(postItem.createdAt)}</div>
+            <div className="font-medium">{formatDate(postItem.createdAt)}</div>
           </div>
-          <div className='text-[16px] font-medium text-[#333333] line-clamp-2'>
+          <div className="text-[16px] font-medium text-[#333333] line-clamp-2">
             {postItem.title}
           </div>
         </div>
@@ -53,7 +53,7 @@ function SearchItem({ postItem }: Props) {
         </div>
       </div>
 
-      <div className='w-full text-[14px] text-[#777777] truncate whitespace-nowrap overflow-hidden'>
+      <div className="w-full text-[14px] text-[#777777] truncate whitespace-nowrap overflow-hidden">
         {extractText(postItem.content)}
       </div>
     </div>

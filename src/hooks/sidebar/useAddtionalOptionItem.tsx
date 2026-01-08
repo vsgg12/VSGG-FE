@@ -2,9 +2,9 @@
 
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { AdditionalOptionItemType } from '@/components/sidebar/modal/additionalOption/AdditionalOptionList';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import LinkUtils from '@/utils/link/linkUtils';
 import patchNoteIcon from '../../../public/svg/sidebar/patchNoteIcon.svg';
 import serviceTermIcon from '../../../public/svg/sidebar/serviceTermIcon.svg';
@@ -12,12 +12,13 @@ import personalInfoIcon from '../../../public/svg/sidebar/personalInfoIcon.svg';
 import guideIcon from '../../../public/svg/sidebar/guideIcon.svg';
 import logoutIcon from '../../../public/svg/sidebar/logoutIcon.svg';
 import Image from 'next/image';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 export const useAdditionalOptionItem = (item: AdditionalOptionItemType) => {
   const router = useRouter();
   const { setIsAdditionalOptionOpen, setIsNotificationOpen } = useSidebarStore();
+  const {setIsLoginModalOpen} = useLoginStore();
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const handleLoginClick = useCallback(() => {
     setIsLoginModalOpen(true);
@@ -79,7 +80,5 @@ export const useAdditionalOptionItem = (item: AdditionalOptionItemType) => {
   return {
     getIcon,
     handleClick,
-    isLoginModalOpen,
-    setIsLoginModalOpen,
   };
 };

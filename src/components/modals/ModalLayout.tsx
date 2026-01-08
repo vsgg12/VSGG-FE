@@ -1,12 +1,15 @@
+'use client'
+
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalLayoutProps {
   children: React.ReactNode;
-  setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
+  setIsModalOpen?: React.Dispatch<SetStateAction<boolean>>;
+  setIsLoginModalOpen?: (isLoginModalOpen: boolean) => void;
 }
 
-function ModalLayout({ children, setIsModalOpen }: ModalLayoutProps) {
+function ModalLayout({ children, setIsModalOpen, setIsLoginModalOpen }: ModalLayoutProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function ModalLayout({ children, setIsModalOpen }: ModalLayoutProps) {
       onWheel={(e) => e.stopPropagation()}
       onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (event.target === event.currentTarget) {
-          setIsModalOpen(false);
+          setIsLoginModalOpen ? setIsLoginModalOpen(false) : setIsModalOpen?.(false);
         }
       }}
     >
