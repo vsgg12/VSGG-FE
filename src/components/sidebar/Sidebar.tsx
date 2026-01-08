@@ -5,7 +5,6 @@ import { useMediaQuery } from 'react-responsive';
 import Logo from '../Logo';
 import HorizontalBannerSwiper from './banner/HorizontalBannerSwiper';
 import SidebarList from './list/SidebarList';
-import ModalLayout from '../modals/ModalLayout';
 import ProfileInfo from './footer/ProfileInfo';
 import DarkMode from './footer/DarkMode';
 import AdditionalOption from './footer/AdditionalOption';
@@ -17,13 +16,13 @@ import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModa
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { SidebarModalLayout } from '../modals/SidebarModalLayout';
 import SearchModal from './modal/search/SearchModal';
-import LoginModal from '@/components/modals/login/LoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 function Sidebar() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState<boolean>(false);
   const { isLogin, accessToken } = useAuthStore();
   const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } = useSidebarStore();
+  const {setIsLoginModalOpen} = useLoginStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -62,11 +61,6 @@ function Sidebar() {
           />
         </div>
       </div>
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <LoginModal />
-        </ModalLayout>
-      )}
       {isNotificationOpen && (
         <SidebarModalLayout isOpen={isNotificationOpen} onClose={setIsNotificationOpen}>
           <AlarmModal alarms={alarmData?.alarmList} />

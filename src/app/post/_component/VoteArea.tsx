@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import VoteForm from './VoteForm';
 import VoteResult from './VoteResult';
 import PostVote from '@/api/postVote';
@@ -11,7 +11,7 @@ interface IVoteArea {
   voteData: IGetInGameInfoType[];
   isOwner: boolean;
   post: IGetPostItemType;
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
 }
 
 function VoteArea({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteArea) {

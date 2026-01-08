@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const CHAT_IMAGES = [
   { id: 1, src: '/images/login/loginContentImg1.png', alt: '로그인 대화 1' },
@@ -10,7 +11,7 @@ const CHAT_IMAGES = [
 ];
 
 const LoginModalContent = () => {
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(1);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,10 +36,11 @@ const LoginModalContent = () => {
             index < visibleCount ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <img
+          <Image
             src={item.src}
             alt={item.alt}
-            className="h-full w-auto object-contain"
+            fill
+            className="object-contain object-left"
           />
         </div>
       ))}

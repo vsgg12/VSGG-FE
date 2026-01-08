@@ -4,6 +4,7 @@ import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 import { truncateText } from '@/utils/truncateText';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 function ProfileInfo() {
   const { isLogin, accessToken, user } = useAuthStore();
@@ -11,7 +12,7 @@ function ProfileInfo() {
 
   const defaultImage = 'https://ssl.pstatic.net/static/pwe/address/img_profile.png';
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const {setIsLoginModalOpen} = useLoginStore();
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],

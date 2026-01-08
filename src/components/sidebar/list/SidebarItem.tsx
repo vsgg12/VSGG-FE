@@ -4,7 +4,7 @@ import { useSidebarItem } from '@/hooks/sidebar/useSidebarItem';
 
 interface Props {
   item: sidebarListType;
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
 }
 
 function SidebarItem({ item, setIsLoginModalOpen }: Props) {

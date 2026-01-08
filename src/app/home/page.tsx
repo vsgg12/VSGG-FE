@@ -7,7 +7,6 @@ import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
 import useSearchStore from './store/useSearchStore';
-import ModalLayout from '@/components/modals/ModalLayout';
 import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
@@ -19,7 +18,7 @@ import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
 import Sidebar from '@/components/sidebar/Sidebar';
-import LoginModal from '@/components/modals/login/LoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 export default function Home() {
   const router = useRouter();
@@ -30,7 +29,7 @@ export default function Home() {
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const {setIsLoginModalOpen} = useLoginStore();
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
@@ -180,11 +179,6 @@ export default function Home() {
             </div>
             <div ref={loaderRef} style={{ minHeight: '30px' }} />
           </section>
-          {isLoginModalOpen && (
-            <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <LoginModal />
-            </ModalLayout>
-          )}
         </div>
       )}
     </>

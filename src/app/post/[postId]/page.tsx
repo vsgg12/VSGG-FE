@@ -1,4 +1,5 @@
 'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
@@ -6,7 +7,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
-import ModalLayout from '@/components/modals/ModalLayout';
 import CommentArea from '../_component/CommentArea';
 import ContentArea from '../_component/ContentArea';
 import NavigationArea from '../_component/NavigationArea';
@@ -15,7 +15,7 @@ import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import LoginModal from '@/components/modals/login/LoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -25,7 +25,7 @@ export default function PostRead() {
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const {setIsLoginModalOpen} = useLoginStore()
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
@@ -86,11 +86,6 @@ export default function PostRead() {
                 />
               </div>
             )
-          )}
-          {isLoginModalOpen && (
-            <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <LoginModal />
-            </ModalLayout>
           )}
         </div>
       )}{' '}

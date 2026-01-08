@@ -1,10 +1,12 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
-// import 'react-quill/dist/quill.snow.css';
 import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
 import { Toaster } from 'react-hot-toast';
+import ModalLayout from '@/components/modals/ModalLayout';
+import LoginModal from '@/components/modals/login/LoginModal';
+import GlobalModalLayer from '@/components/common/GlobalModalLayer';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -36,6 +38,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html lang='ko' className='root-bg'>
       <head>
@@ -95,6 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <RQProvider>
           <Suspense>
+            <GlobalModalLayer />
             <Toaster
               position='bottom-right'
               toastOptions={{

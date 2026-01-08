@@ -3,9 +3,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { clsx } from 'clsx';
-import kakaoIcon from '../../../../../public/svg/login/kakaoIcon.svg';
-import googleIcon from '../../../../../public/svg/login/googleIcon.svg';
-import naverIcon from '../../../../../public/svg/login/naverIcon.svg';
 
 type LoginProviderType = 'google' | 'kakao' | 'naver';
 
@@ -29,7 +26,7 @@ const LOGIN_BUTTON_CONFIG: Record<
   LoginButtonType
 > = {
   google: {
-    src: googleIcon,
+    src: "/svg/login/googleIcon.svg",
     label: '구글 로그인',
     styleClass: 'bg-white text-[#333333] hover:bg-white/80 hover:text-[#333333]/80',
     width: 18,
@@ -37,7 +34,7 @@ const LOGIN_BUTTON_CONFIG: Record<
     alt: '구글아이콘',
   },
   naver: {
-    src: naverIcon,
+    src: '/svg/login/naverIcon.svg',
     label: '네이버 로그인',
     styleClass: 'bg-[#03C75A] text-white hover:bg-[#03C75A]/80 hover:text-white/80',
     width: 15,
@@ -45,7 +42,7 @@ const LOGIN_BUTTON_CONFIG: Record<
     alt: '네이버아이콘',
   },
   kakao: {
-    src: kakaoIcon,
+    src: "/svg/login/kakaoIcon.svg",
     label: '카카오 로그인',
     styleClass: 'bg-[#FEE500] text-[#3C1E1E] hover:bg-[#FEE500]/80 hover:text-[#3C1E1E]/80',
     width: 17,
