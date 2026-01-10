@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import SidebarItem from './SidebarItem';
 
 export type sidebarListType = '홈' | '검색' | '글 작성' | '마이페이지' | '알림';
 const sidebarList: sidebarListType[] = ['홈', '검색', '글 작성', '마이페이지', '알림'];
 
 interface Props{
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
 }
 
 function SidebarList({ setIsLoginModalOpen }: Props) {

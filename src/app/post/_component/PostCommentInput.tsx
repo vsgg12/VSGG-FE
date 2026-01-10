@@ -1,8 +1,7 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
-import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface IPostCommentInputProps {
   targetNickname: string;
@@ -13,19 +12,8 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
   const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const {setIsLoginModalOpen} = useLoginStore();
   const { setValue, getValues } = useFormContext();
-
-  useEffect(() => {
-    handleFocusTextarea();
-
-    if (targetNickname) {
-      const currentValue = getValues('commentContent');
-      if (!currentValue?.startsWith(`@${targetNickname}`)) {
-        setValue('commentContent', `@${targetNickname} `);
-      }
-    }
-  }, [targetNickname, setValue, getValues]);
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
@@ -71,11 +59,22 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
     }
   };
 
-  const handleFocusTextarea = () => {
+  const handleFocusTextarea = useCallback(() => {
     if (targetNickname && textareaRef.current) {
       textareaRef.current.focus();
     }
-  };
+  }, [targetNickname]);
+
+  useEffect(() => {
+    handleFocusTextarea();
+
+    if (targetNickname) {
+      const currentValue = getValues('commentContent');
+      if (!currentValue?.startsWith(`@${targetNickname}`)) {
+        setValue('commentContent', `@${targetNickname} `);
+      }
+    }
+  }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
     <div className='h-fit w-full rounded-[20px] border-2 border-[#8A1F21] flex'>
@@ -104,11 +103,6 @@ export default function PostCommentInput({ targetNickname }: IPostCommentInputPr
       <button className='text-[12px] text-[#8A1F21]' type='submit'>
         <p className='mr-[5px]'>등록</p>
       </button>
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
-        </ModalLayout>
-      )}
     </div>
   );
 }

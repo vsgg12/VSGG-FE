@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
@@ -13,7 +13,7 @@ import Image from 'next/image';
 import Comment from './Comment';
 
 interface ICommentArea {
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
 }
 
 function CommentArea({ setIsLoginModalOpen }: ICommentArea) {
