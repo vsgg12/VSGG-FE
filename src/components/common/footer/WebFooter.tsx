@@ -5,7 +5,7 @@ import LinkUtils from '@/utils/link/linkUtils';
 
 const WebFooter = () => {
   return (
-    <div className={"w-screen h-[221px] pt-[50px] pb-[60px] px-[200px] flex justify-between items-center bg-[#F3F3F3] border-t-[2px]"}>
+    <div className={"w-screen h-[221px] pt-[50px] pb-[60px] px-[200px] flex justify-between items-center bg-[#F3F3F3]"}>
       {/*왼쪽 영역*/}
       <div className={"flex flex-col gap-[20px] h-[111px]"}>
         <Image src={'/svg/logo/vsgg.svg'} alt={"vsgg 로고 이미지"} width={131.99} height={30}/>
