@@ -5,7 +5,7 @@ import { useLoginStore } from '@/store/login/useLoginStore';
 import ModalLayout from '@/components/modals/ModalLayout';
 import LoginModal from '@/components/modals/login/LoginModal';
 
-const GlobalModalLayer = () => {
+const GlobalLoginModalLayer = () => {
   const { isLoginModalOpen, setIsLoginModalOpen } = useLoginStore();
 
   if (!isLoginModalOpen) return null;
@@ -17,4 +17,4 @@ const GlobalModalLayer = () => {
   );
 };
 
-export default GlobalModalLayer;
+export default GlobalLoginModalLayer;
