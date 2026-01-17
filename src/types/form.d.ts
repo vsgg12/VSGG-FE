@@ -69,11 +69,16 @@ export interface ChampionDataProps {
   };
 }
 
+export interface ChampionInfo {
+  name: string;
+  imageFileName: string;
+}
+
 type ChampionType = {
   name: string;
   image: {
     full: string;
     sprite: string;
     group: string;
-  }
-}
+  };
+};
