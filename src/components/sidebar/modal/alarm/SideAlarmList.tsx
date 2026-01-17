@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import 'moment/locale/ko';
 import SideAlarmItem from './SideAlarmItem';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IAlarmListProps {
   alarms: IAlarmsType[] | undefined;
@@ -20,10 +20,10 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
 
   const { mutate: postAlarm } = useMutation({
     mutationFn: ({
-      alarmId,
-      alarmType,
-      accessToken,
-    }: {
+                   alarmId,
+                   alarmType,
+                   accessToken,
+                 }: {
       alarmId: number;
       alarmType: string;
       accessToken: string;
@@ -43,11 +43,11 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
   };
 
   return (
-    <div className='w-full h-full'>
+    <div className="w-full h-full">
       {!alarms || alarms.length === 0 ? (
-        <div className='flex flex-col w-full h-[303px] py-[40px] gap-[30px] items-center'>
-          <div className='text-[12px] text-[#888888]'>새로운 알림이 없습니다.</div>
-          <div className='flex flex-row'>
+        <div className="flex flex-col w-full h-[303px] py-[40px] gap-[30px] items-center">
+          <div className="text-[12px] text-[#888888]">새로운 알림이 없습니다.</div>
+          <div className="flex flex-row">
             <img src={'/svg/sidebar/alarm/emptyAlarmLine.svg'} width={6} height={179} />
             <img
               src={'/svg/sidebar/alarm/emptyAlarmIcon.svg'}

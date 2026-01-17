@@ -14,8 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import HomeVoted from './HomeVoted';
 import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
-import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface Props {
   post: IGetPostDTOType;
@@ -27,8 +26,8 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
   const { accessToken, user, isLogin } = useAuthStore();
+  const {setIsLoginModalOpen} = useLoginStore();
   const contentsArr = useConvertHTML(post.content);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
@@ -45,7 +44,7 @@ function PostContentArea({ post, voteInfos }: Props) {
       setIsNoOneVoted(true);
     }
 
-    if (post.liked == true) {
+    if (post.liked) {
       setHeartIcon(Icon_heart_hover);
     }
   }, [post]);
@@ -184,7 +183,12 @@ function PostContentArea({ post, voteInfos }: Props) {
             <source src={post.video.url} type='video/webm' />
           </video>
         ) : post.thumbnailURL ? (
-          <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
+          <img
+            className={videoStyle}
+            src={post.thumbnailURL}
+            onClick={handleImageClick}
+            alt={'thumbnail'}
+          />
         ) : post.video.type === 'FILE' ? (
           <video
             muted
@@ -220,7 +224,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${(button.name === 'like' && post.liked == true) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && post.liked) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
                 >
                   {button.data}
                 </p>
@@ -247,11 +251,6 @@ function PostContentArea({ post, voteInfos }: Props) {
             <HomeNotVoted voteInfos={voteInfos} />
           )}
         </div>
-      )}
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          <AlertLoginModal />
-        </ModalLayout>
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import getPostItem from '@/api/getPostItem';
 import { useEffect, useState } from 'react';
@@ -6,13 +7,15 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
-import ModalLayout from '@/components/modals/ModalLayout';
-import AlertLoginModal from '@/components/modals/AlertLoginModal';
+import CommentArea from '../_component/CommentArea';
+import ContentArea from '../_component/ContentArea';
+import NavigationArea from '../_component/NavigationArea';
+import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
-import { useSidebarStore } from '@/store/useSidebarStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import PostDetailPC from './desktop/PostDetailPC';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 export default function PostDetailMain() {
   const { postId } = useParams();
@@ -22,7 +25,7 @@ export default function PostDetailMain() {
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
@@ -59,33 +62,30 @@ export default function PostDetailMain() {
       {isMobile ? (
         <PostDetailMobile />
       ) : (
-        <div className='flex w-screen items-center justify-center'>
+        <div className='min-w-[1400px] flex-col items-center'>
+          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
+            <Logo />
+          </div>
           {isLoading ? (
             <Loading />
           ) : (
             post && (
-              <PostDetailPC post={post} setIsLoginModalOpen={setIsLoginModalOpen} />
-              // <div className='flex flex-col items-center justify-center px-[50px]'>
-              //   <div>
-              //     <NavigationArea />
-              //   </div>
-              //   <div className='flex flex-row gap-[30px] justify-center'>
-              //     <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
-              //     <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
-              //   </div>
-              //   <VoteArea
-              //     isOwner={isOwner}
-              //     post={post}
-              //     voteData={voteData}
-              //     setIsLoginModalOpen={setIsLoginModalOpen}
-              //   />
-              // </div>
+              <div className='flex flex-col items-center justify-center px-[50px]'>
+                <div>
+                  <NavigationArea />
+                </div>
+                <div className='flex flex-row gap-[30px] justify-center'>
+                  <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
+                  <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
+                </div>
+                <VoteArea
+                  isOwner={isOwner}
+                  post={post}
+                  voteData={voteData}
+                  setIsLoginModalOpen={setIsLoginModalOpen}
+                />
+              </div>
             )
-          )}
-          {isLoginModalOpen && (
-            <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-              <AlertLoginModal />
-            </ModalLayout>
           )}
         </div>
       )}
