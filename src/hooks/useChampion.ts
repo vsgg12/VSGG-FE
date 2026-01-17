@@ -26,11 +26,10 @@ export function useChampion() {
       });
   }, []);
 
-  // 특정 챔피언 이름을 인자로 받아 이미지 URL을 반환하는 함수
   const getImageUrlByName = useCallback(
     (name: string) => {
       const target = champions.find((c) => c.name === name);
-      if (!target) return ''; // 찾지 못했을 때 빈 문자열이나 기본 이미지 반환
+      if (!target) return '';
       return `${BASE_URL}/img/champion/${target.imageFileName}`;
     },
     [champions],
