@@ -41,7 +41,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
           className='
             h-[50px] px-[14px] py-[9px]
             flex items-center gap-[8px]
-            bg-white border-[1px] border-[#8A1F21]
+            bg-white border-[0.5px] border-[#C8C8C8] hover:shadow-md
             rounded-[10px] cursor-pointer
           '
         >

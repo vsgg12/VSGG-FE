@@ -21,17 +21,17 @@ export type InGameInfoRequestType = {
   championName: string;
   tier: string;
   position: string;
+  claim?: string;
+};
+
+export type InGameInfoItem = InGameInfoRequestType & {
+  inGameInfoId: number;
 };
 
 export type PostAddRequestType = {
   title: string;
   videoType: 'LINK' | 'FILE' | null;
-  inGameInfoRequests: {
-    inGameInfoId: number; // 백엔드로 보낼때는 이거 안보내야함
-    championName: string;
-    position: string;
-    tier: string;
-  }[];
+  inGameInfoRequests: InGameInfoItem[];
   // 백엔드에 보낼때는 https://www.youtube.com/embed/${videoId}로 보내야함
   videoLink: string;
   voteEndDate: string; // YYYYMMDD
@@ -81,12 +81,14 @@ export const useWriteStore = create<IWriteState>()(
           championName: '',
           position: '',
           tier: '',
+          claim: '',
         },
         {
           inGameInfoId: 1,
           championName: '',
           position: '',
           tier: '',
+          claim: '',
         },
       ],
     },
@@ -103,7 +105,8 @@ export const useWriteStore = create<IWriteState>()(
 
     setInGameInfoRequestData: (index, key, value) =>
       set((state) => {
-        state.postRequestData.inGameInfoRequests[index][key] = value;
+        const item = state.postRequestData.inGameInfoRequests[index];
+        (item as InGameInfoRequestType)[key] = value;
       }),
 
     setPostRequestData: (key, value) =>

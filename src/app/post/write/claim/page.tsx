@@ -1,12 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { getFormattedDateAfterDays } from '@/utils/formatDate';
 import { useRouter } from 'next/navigation';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import { useTempStore } from '@/store/temp/useTempStore';
 import LeftContainer from '@/app/post/write/_component/common/content/LeftContainer';
+import InGameRequestBox from '@/app/post/write/claim/_component/InGameRequestBox';
+import SelectVoteEndTimeBox from '@/app/post/write/_component/common/content/SelectVoteEndTimeBox';
+import WriteFooterContainer from '@/app/post/write/_component/common/footer/WriteFooterContainer';
+import TempModal from '@/app/post/write/_component/common/modal/temp/TempModal';
+import ConfirmTempModal from '@/app/post/write/_component/common/modal/temp/confirm/ConfirmTempModal';
 
 function Claim() {
   const router = useRouter();
@@ -127,7 +132,29 @@ function Claim() {
     <div className={'relative w-screen h-screen flex justify-center items-center gap-[50px]'}>
       <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
 
-      <div className={'w-[568px] flex flex-col gap-[20px]'}></div>
+      <div className={'w-[568px] flex flex-col'}>
+        <div className={'flex flex-col gap-[80px] min-h-[800px] justify-between'}>
+          <div className={'flex flex-col gap-[74px]'}>
+            <InGameRequestBox />
+
+            <SelectVoteEndTimeBox
+              titleClass={titleClass}
+              endTimeBoxClicked={endTimeBoxClicked}
+              selectedEndTime={selectedEndTime}
+              setEndTimeBoxClicked={setEndTimeBoxClicked}
+              setSelectedEndTime={setSelectedEndTime}
+            />
+          </div>
+
+          <WriteFooterContainer
+            onClickTempSaveBtn={onClickTempSaveBtn}
+            onClickRegisterBtn={onClickRegisterBtn}
+          />
+        </div>
+      </div>
+      {tempModalOpen && <TempModal />}
+      {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+      {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
     </div>
   );
 }

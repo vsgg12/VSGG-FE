@@ -14,7 +14,7 @@ const WriteFooterButton = ({ title, onClickTempSaveBtn, onClickRegisterBtn }: Pr
 
   const buttonClass =
     title === '저장'
-      ? 'bg-[#ECECEC] text-[#333333] justify-between'
+      ? 'bg-[#ECECEC] text-[#333333] justify-between pl-[20px]'
       : 'bg-[#8A1F21] text-white justify-center';
 
   const onClickBtnClick = () => {
@@ -32,7 +32,7 @@ const WriteFooterButton = ({ title, onClickTempSaveBtn, onClickRegisterBtn }: Pr
 
   return (
     <div
-      className={`${buttonClass} w-[134px] h-full pl-[20px] py-[20px] rounded-[10px]  text-[20px]  flex  items-center cursor-pointer`}
+      className={`${buttonClass} w-[134px] h-full py-[20px] rounded-[10px]  text-[20px]  flex  items-center cursor-pointer`}
       onClick={onClickBtnClick}
     >
       <div>{title}</div>

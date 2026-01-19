@@ -59,7 +59,7 @@ const ConfirmTempModal = ({ type }: Props) => {
     <ModalOverlay onClose={onCloseModal}>
       <div
         className={
-          'w-[443px] h-[229px] pb-[34px] pt-[30px] px-[50px] rounded-[10px] bg-white shadow-md z-[60] gap-[24px] flex flex-col'
+          'w-[443px] h-[229px] pb-[34px] pt-[30px] px-[50px] rounded-[10px] bg-white shadow-md z-[60] flex flex-col justify-between'
         }
       >
         <ConfirmModalContent type={type} />
