@@ -7,15 +7,14 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
-import CommentArea from '../_component/CommentArea';
-import ContentArea from '../_component/ContentArea';
-import NavigationArea from '../_component/NavigationArea';
-import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import VoteArea from "@/app/post/_component/vote/VoteArea";
+import ContentArea from "@/app/post/_component/content/ContentArea";
+import CommentArea from "@/app/post/_component/comment/CommentArea";
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -71,9 +70,9 @@ export default function PostRead() {
           ) : (
             post && (
               <div className="flex flex-col items-center justify-center px-[50px]">
-                <div>
-                  <NavigationArea />
-                </div>
+                {/*<div>*/}
+                {/*  <NavigationArea />*/}
+                {/*</div>*/}
                 <div className="flex flex-row gap-[30px] justify-center">
                   <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
                   <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
