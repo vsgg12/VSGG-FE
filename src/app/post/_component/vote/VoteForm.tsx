@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { voteColors, positionInfo } from '../../../data/championData';
+import { voteColors, positionInfo } from '../../../../data/championData';
 import VotingGraph from './VotingGraph';
-import usePostIdStore from '../[postId]/store/usePostIdStore';
+import usePostIdStore from '../../[postId]/store/usePostIdStore';
 
 interface IVoteFormProps {
   voteInfo: IGetInGameInfoType[];

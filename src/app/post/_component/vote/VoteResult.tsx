@@ -4,7 +4,7 @@ import Image from 'next/image';
 import DoughnutChart from '@/components/DoughnutChart';
 // import usePostIdStore from '../[postId]/store/usePostIdStore';
 import { voteColors, positionInfo } from '@/data/championData';
-import Doughnut from '../../../../public/svg/Doughnut_Big.svg';
+import Doughnut from '../../../../../public/svg/Doughnut_Big.svg';
 import { useEffect, useState } from 'react';
 
 interface IVoteResultProps {

@@ -3,12 +3,12 @@ import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PostComment from '@/api/postComment';
 import getComments from '@/api/getComments';
-import useCommentStore from '../[postId]/store/useCommentStore';
+import useCommentStore from '../../[postId]/store/useCommentStore';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MoreModal from '@/components/modals/MoreModal';
-import Icon_more from '../../../../public/svg/Icon_more.svg';
+import Icon_more from '../../../../../public/svg/Icon_more.svg';
 import Image from 'next/image';
 import Comment from './Comment';
 

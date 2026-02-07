@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { voteColors } from '../../../data/championData';
-import usePostIdStore from '../[postId]/store/usePostIdStore';
+import { voteColors } from '../../../../data/championData';
+import usePostIdStore from '../../[postId]/store/usePostIdStore';
 
 export default function VotingGraph() {
   const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));

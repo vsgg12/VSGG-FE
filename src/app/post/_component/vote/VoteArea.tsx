@@ -3,7 +3,7 @@ import VoteForm from './VoteForm';
 import VoteResult from './VoteResult';
 import PostVote from '@/api/postVote';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import usePostIdStore from '../[postId]/store/usePostIdStore';
+import usePostIdStore from '../../[postId]/store/usePostIdStore';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 
