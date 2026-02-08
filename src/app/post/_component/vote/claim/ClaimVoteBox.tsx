@@ -4,8 +4,18 @@ import { clsx } from 'clsx';
 import ClaimVoteItem from '@/app/post/_component/vote/claim/ClaimVoteItem';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
 
+export type VoteDataType = {
+  inGameInfoId: number;
+  position: string;
+  championName: string;
+  claim?: string;
+  tier: string;
+  voteNum: number;
+  averageRatio: number;
+};
+
 // 더미 데이터 (테스트용)
-const DUMMY_VOTE_DATA = [
+const DUMMY_VOTE_DATA: VoteDataType[] = [
   {
     inGameInfoId: 1,
     position: '미드',

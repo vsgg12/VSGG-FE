@@ -4,12 +4,13 @@ import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import tiers from '@/constants/tier';
 import positions from '@/constants/positions';
+import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
 
 interface Props {
   voteCount: number;
   daysUntilEnd: number;
   voteData: IGetInGameInfoType[];
-  DUMMY_VOTE_DATA?: any[];
+  DUMMY_VOTE_DATA?: VoteDataType[];
 }
 
 export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA }: Props) => {

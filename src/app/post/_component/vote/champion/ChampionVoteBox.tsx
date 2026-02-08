@@ -4,8 +4,9 @@ import { clsx } from 'clsx';
 import ChampionVoteItem from '@/app/post/_component/vote/champion/ChampionVoteItem';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
+import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
 
-const DUMMY_VOTE_DATA = [
+const DUMMY_VOTE_DATA: VoteDataType[] = [
   {
     inGameInfoId: 1,
     position: '미드',
