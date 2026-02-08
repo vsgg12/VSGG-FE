@@ -17,6 +17,7 @@ import ContentArea from '@/app/post/_component/content/ContentArea';
 import CommentArea from '@/app/post/_component/comment/CommentArea';
 import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
+import ClaimVoteBox from '@/app/post/_component/vote/claim/ClaimVoteBox';
 
 export default function PostRead() {
   const { postId } = useParams();
@@ -91,7 +92,13 @@ export default function PostRead() {
                   setIsLoginModalOpen={setIsLoginModalOpen}
                 />
 
-                <ChampionVoteBox voteData={voteData} voteCount={30} daysUntilEnd={-1} />
+                <div className={'flex gap-[50px] mb-[20px]'}>
+                  {/*챔피언 판결 결과 컴포넌트 */}
+                  <ChampionVoteBox voteData={voteData} voteCount={30} daysUntilEnd={-1} />
+
+                  {/*주장 판결 결과 컴포넌트*/}
+                  <ClaimVoteBox voteData={voteData} voteCount={30} daysUntilEnd={-1} />
+                </div>
               </div>
             )
           )}

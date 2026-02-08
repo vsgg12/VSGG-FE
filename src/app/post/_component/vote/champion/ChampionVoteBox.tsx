@@ -3,9 +3,7 @@
 import { clsx } from 'clsx';
 import ChampionVoteItem from '@/app/post/_component/vote/champion/ChampionVoteItem';
 import { useMemo, useState } from 'react';
-import { useWriteStore } from '@/store/write/useWriteStore';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useLoginStore } from '@/store/login/useLoginStore';
+import { useVoteResult } from '@/hooks/vote/useVoteResult';
 
 const DUMMY_VOTE_DATA = [
   {
@@ -35,20 +33,15 @@ interface Props {
 const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
   const [isHover, setIsHover] = useState<number>(0);
 
-  const { isLogin } = useAuthStore();
-  const { allChampions } = useWriteStore();
-  const { setIsLoginModalOpen } = useLoginStore();
-
-  const isVoteEnd: boolean = daysUntilEnd < 0;
-  const isNoVote: boolean = voteCount === 0;
-
-  // 블러 처리 조건
-  const shouldBlur = (!isLogin || (isLogin && isNoVote)) && !isVoteEnd;
-
-  // 1. 데이터 정렬
-  const sortedVoteData = useMemo(() => {
-    return [...DUMMY_VOTE_DATA].sort((a, b) => b.averageRatio - a.averageRatio);
-  }, [voteData]);
+  const {
+    shouldBlur,
+    isLogin,
+    isVoteEnd,
+    isNoVote,
+    setIsLoginModalOpen,
+    getChampionImage,
+    sortedVoteData,
+  } = useVoteResult({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA });
 
   // 2. 아이템 갯수에 따른 동적 Gap 클래스 계산 (아이템 갯수에 따라 간격 조절)
   const listGapClass = useMemo(() => {
@@ -62,13 +55,6 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
   // 현재 호버된 아이템
   const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
 
-  // 배경 이미지 URL
-  const currentBgImage = useMemo(() => {
-    if (!currentHoverItem) return '';
-    const champion = allChampions.find((c) => c.name === currentHoverItem.championName);
-    return champion?.fullImage || '';
-  }, [allChampions, currentHoverItem]);
-
   return (
     <div className='relative w-[659px] h-[359px] rounded-[16px] overflow-hidden bg-gray-900'>
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
@@ -78,7 +64,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
           shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
         )}
         style={{
-          backgroundImage: `url(${currentBgImage})`,
+          backgroundImage: `url(${getChampionImage(currentHoverItem.championName)})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

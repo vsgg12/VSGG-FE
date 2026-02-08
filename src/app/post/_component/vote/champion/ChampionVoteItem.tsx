@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import positions from '@/constants/positions';
 import { clsx } from 'clsx';
 import hexagon from '../../../../../../public/svg/vote/hexagon.svg';
+import hexagonDisable from '../../../../../../public/svg/vote/hexagonDisable.svg';
 import Image from 'next/image';
 
 interface Props {
@@ -26,9 +27,7 @@ const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover 
   }, [position, isHover]);
 
   return (
-    // [수정 1] w-fit -> w-full 로 변경하고 justify-between 추가
     <div className={'w-full h-fit flex justify-between font-semibold items-center cursor-default'}>
-      {/* [수정 2] 왼쪽 요소(아이콘 + 텍스트)를 하나의 div로 묶음 */}
       <div className='flex items-center gap-[10px]'>
         {/* 포지션 */}
         <div
@@ -60,8 +59,17 @@ const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover 
 
       {/* 육각형 */}
       <div className={clsx('w-[50px] h-[50px] relative justify-center items-center flex shrink-0')}>
-        <Image src={hexagon} alt={'육각형 이미지'} className={'absolute'} />
-        <span className='relative z-10 text-white text-[18px] flex items-center justify-center line-clamp-0'>
+        <Image
+          src={isHover ? hexagon : hexagonDisable}
+          alt={'육각형 이미지'}
+          className={'absolute'}
+        />
+        <span
+          className={clsx(
+            'relative z-10 text-[18px] flex items-center justify-center line-clamp-0',
+            isHover ? 'text-white' : 'text-white/60',
+          )}
+        >
           {averageRatio}
         </span>
       </div>
