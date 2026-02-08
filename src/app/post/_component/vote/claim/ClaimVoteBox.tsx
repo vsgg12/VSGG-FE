@@ -54,6 +54,17 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
     getCalculatedRatio,
   } = useVoteResult({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA });
 
+  console.log(
+    shouldBlur,
+    isLogin,
+    isVoteEnd,
+    isNoVote,
+    sortedVoteData,
+    getCalculatedRatio(100),
+    setIsLoginModalOpen,
+    getChampionImage(sortedVoteData[0].championName),
+  );
+
   return (
     <div className={clsx('w-[659px] h-fit flex flex-col gap-[20px]')}>
       <div className={'w-full h-fit flex flex-col gap-[15px]'}>
@@ -63,7 +74,7 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
             position={item.position}
             championName={item.championName}
             tier={item.tier}
-            claim={item.claim}
+            claim={item.claim!}
             ratio={getCalculatedRatio(item.voteNum)}
             voteNum={item.voteNum}
           />

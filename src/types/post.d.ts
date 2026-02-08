@@ -11,7 +11,14 @@ type IPostWriteType = {
   postAddRequest: IPostAddRequestType;
 };
 
-
+type IPostAddRequestType = {
+  title: string;
+  videoType: 'FILE' | 'LINK';
+  hashtag: string[];
+  inGameInfoRequests: IIngameInfoRequestType[];
+  voteEndDate: string;
+  videoLink?: string;
+};
 
 type IInGameInfoType = {
   inGameInfoId: number;

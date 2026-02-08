@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ClaimInfoBox from '@/app/post/write/claim/_component/ClaimInfoBox';
 

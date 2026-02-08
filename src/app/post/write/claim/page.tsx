@@ -22,6 +22,8 @@ function Claim() {
   const [endTimeBoxClicked, setEndTimeBoxClicked] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
 
+  console.log(isDeleteHover, setIsDeleteHover, setIsValid);
+
   const {
     videoId,
     uploadVideos,
@@ -69,6 +71,7 @@ function Claim() {
       toast.error('게시글 등록에 실패하였습니다.');
       return;
     }
+    console.log(postRequestData, content);
     toast.success('게시글 등록이 완료되었습니다.');
   };
 

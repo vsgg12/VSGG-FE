@@ -56,8 +56,7 @@ function UploadFile() {
     }
 
     setData('uploadVideos', file);
-    setPostRequestData('type', "FILE");
-    setPostRequestData('videoType', "FILE")
+    setPostRequestData('videoType', 'FILE');
 
     // 썸네일 생성
     const url = URL.createObjectURL(file);
