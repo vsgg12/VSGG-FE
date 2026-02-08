@@ -29,8 +29,8 @@ function Champion() {
     uploadVideos,
     clearAll,
     setPostRequestData,
-    fetchAllChampions,
     errMsg,
+    fetchAllChampions,
     postRequestData,
     content,
   } = useWriteStore();

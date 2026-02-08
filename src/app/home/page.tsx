@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import getPostList from '@/api/getPostList';
+import getPostList from '@/api/post/getPostList';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../login/store/useAuthStore';
@@ -19,21 +19,25 @@ import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
 import Sidebar from '@/components/sidebar/Sidebar';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import { useWriteStore } from '@/store/write/useWriteStore';
 
 export default function Home() {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin, accessToken } = useAuthStore.getState();
-  const { keyword } = useSearchStore();
   const [visiblePosts, setVisiblePosts] = useState<IGetPostDTOType[]>([]);
   const [postIndex, setPostIndex] = useState(5);
   const loaderRef = useRef(null);
-  const {setIsLoginModalOpen} = useLoginStore();
   const [isListed, setIsListed] = useState<boolean>(false);
   const [existData, setExistData] = useState<IGetPostDTOType[]>([]);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
+
+  const { isLogin, accessToken } = useAuthStore.getState();
+  const { keyword } = useSearchStore();
+  const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
+  const { fetchAllChampions } = useWriteStore();
+
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
@@ -49,6 +53,10 @@ export default function Home() {
       throw new Error('Invalid activeButton value');
     },
   });
+
+  useEffect(() => {
+    fetchAllChampions();
+  }, []);
 
   useEffect(() => {
     setRouteState('HOME');
@@ -131,7 +139,7 @@ export default function Home() {
       {isMobile ? (
         <HomeMobile />
       ) : (
-        <div className="flex w-screen items-center justify-center pl-[260px]">
+        <div className='flex w-screen items-center justify-center pl-[260px]'>
           <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
@@ -152,7 +160,7 @@ export default function Home() {
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className="flex w-full flex-col flex-grow items-center justify-center">
+                <div className='flex w-full flex-col flex-grow items-center justify-center'>
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (
@@ -160,7 +168,7 @@ export default function Home() {
                   isListed ? (
                     <ListPostItem post={post} key={idx} />
                   ) : (
-                    <div className="relative">
+                    <div className='relative'>
                       <PostItem
                         post={post}
                         voteInfos={post.inGameInfoList}
@@ -168,7 +176,7 @@ export default function Home() {
                         setShowCommentPostId={setShowCommentPostId}
                       />
                       {showCommentPostId == post.id && (
-                        <div className="h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]">
+                        <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
                           <PostCommentArea postId={post.id} />
                         </div>
                       )}

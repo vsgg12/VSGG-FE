@@ -1,10 +1,143 @@
-const ChampionVoteBox = () => {
+'use client';
+
+import { clsx } from 'clsx';
+import ChampionVoteItem from '@/app/post/_component/vote/champion/ChampionVoteItem';
+import { useMemo, useState } from 'react';
+import { useWriteStore } from '@/store/write/useWriteStore';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useLoginStore } from '@/store/login/useLoginStore';
+
+const DUMMY_VOTE_DATA = [
+  {
+    inGameInfoId: 1,
+    position: '미드',
+    championName: '트위스티드 페이트',
+    tier: '골드',
+    voteNum: 12, // 백엔드에 추가해달라 해야함
+    averageRatio: 2,
+  },
+  {
+    inGameInfoId: 2,
+    position: '원딜',
+    championName: '베인',
+    tier: '실버',
+    voteNum: 18, // 백엔드에 추가해달라 해야함
+    averageRatio: 3,
+  },
+];
+
+interface Props {
+  voteData: IGetInGameInfoType[];
+  voteCount: number;
+  daysUntilEnd: number;
+}
+
+const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
+  const [isHover, setIsHover] = useState<number>(0);
+
+  const { isLogin } = useAuthStore();
+  const { allChampions } = useWriteStore();
+  const { setIsLoginModalOpen } = useLoginStore();
+
+  const isVoteEnd: boolean = daysUntilEnd < 0;
+  const isNoVote: boolean = voteCount === 0;
+
+  // 블러 처리 조건
+  const shouldBlur = (!isLogin || (isLogin && isNoVote)) && !isVoteEnd;
+
+  // 1. 데이터 정렬
+  const sortedVoteData = useMemo(() => {
+    return [...DUMMY_VOTE_DATA].sort((a, b) => b.averageRatio - a.averageRatio);
+  }, [voteData]);
+
+  // 2. 아이템 갯수에 따른 동적 Gap 클래스 계산 (아이템 갯수에 따라 간격 조절)
+  const listGapClass = useMemo(() => {
+    const count = sortedVoteData.length;
+    if (count >= 5) return 'gap-[12px]';
+    if (count === 4) return 'gap-[24px]';
+    if (count === 3) return 'gap-[36px]';
+    return 'gap-[48px]';
+  }, [sortedVoteData.length]);
+
+  // 현재 호버된 아이템
+  const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
+
+  // 배경 이미지 URL
+  const currentBgImage = useMemo(() => {
+    if (!currentHoverItem) return '';
+    const champion = allChampions.find((c) => c.name === currentHoverItem.championName);
+    return champion?.fullImage || '';
+  }, [allChampions, currentHoverItem]);
 
   return (
-    <div>
-      <div></div>
+    <div className='relative w-[659px] h-[359px] rounded-[16px] overflow-hidden bg-gray-900'>
+      {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
+      <div
+        className={clsx(
+          'w-full h-full px-[50px] py-[10px] transition-all duration-300',
+          shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
+        )}
+        style={{
+          backgroundImage: `url(${currentBgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* 실제 리스트 및 텍스트 */}
+        <div className='relative z-10 w-full h-full flex justify-between items-center'>
+          <div
+            className={clsx('w-[230px] h-full flex flex-col justify-center', listGapClass)}
+            onMouseLeave={() => setIsHover(0)}
+          >
+            {sortedVoteData.map((item, idx) => (
+              <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
+                <ChampionVoteItem
+                  position={item.position}
+                  championName={item.championName}
+                  tier={item.tier}
+                  averageRatio={item.averageRatio.toFixed(1)}
+                  isHover={isHover === idx}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className='flex flex-col text-white items-end self-end pb-[10px]'>
+            <div className='text-[40px] font-bold'>{currentHoverItem.averageRatio.toFixed(1)}</div>
+            <div className='text-[20px] font-semibold'>{currentHoverItem.voteNum}표</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 안내 문구 및 버튼 */}
+      {shouldBlur && (
+        <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
+          {/* 비로그인 상태 */}
+          {!isLogin && !isVoteEnd && (
+            <>
+              <div className='flex flex-col items-center gap-1 drop-shadow-lg text-[20px] font-bold'>
+                <p>판결이 궁금하시다구요?</p>
+                <p>판결에 참여하고, 결과를 확인하세요</p>
+              </div>
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className='bg-[#8A1F21] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold text-[18px] transition-colors shadow-xl cursor-pointer'
+              >
+                지금 바로 판결하기
+              </button>
+            </>
+          )}
+
+          {/* 로그인 상태지만 투표 없음 */}
+          {isLogin && isNoVote && !isVoteEnd && (
+            <div className='text-[20px] font-bold drop-shadow-lg'>
+              아직 투표한 사람이 없는 게시글입니다.
+            </div>
+          )}
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default ChampionVoteBox;

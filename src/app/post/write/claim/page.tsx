@@ -27,8 +27,8 @@ function Claim() {
     uploadVideos,
     clearAll,
     setPostRequestData,
-    fetchAllChampions,
     errMsg,
+    fetchAllChampions,
     postRequestData,
     content,
   } = useWriteStore();

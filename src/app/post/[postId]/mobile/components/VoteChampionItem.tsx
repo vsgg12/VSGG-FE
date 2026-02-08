@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import usePostIdStore from '../../store/usePostIdStore';
-import { mobileVoteColors, voteColors } from '../../../../../data/championData';
+import { mobileVoteColors, voteColors } from '@/data/championData';
 
 interface Props {
   index: number;

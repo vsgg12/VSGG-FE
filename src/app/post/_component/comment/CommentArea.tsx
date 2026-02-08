@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PostCommentInput from './PostCommentInput';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import PostComment from '@/api/postComment';
-import getComments from '@/api/getComments';
+import PostComment from '@/api/comment/postComment';
+import getComments from '@/api/comment/getComments';
 import useCommentStore from '../../[postId]/store/useCommentStore';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
@@ -13,7 +13,7 @@ import Image from 'next/image';
 import Comment from './Comment';
 
 interface ICommentArea {
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
 function CommentArea({ setIsLoginModalOpen }: ICommentArea) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import VoteForm from './VoteForm';
 import VoteResult from './VoteResult';
-import PostVote from '@/api/postVote';
+import PostVote from '@/api/vote/postVote';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import usePostIdStore from '../../[postId]/store/usePostIdStore';
 import { useParams } from 'next/navigation';
@@ -11,7 +11,7 @@ interface IVoteArea {
   voteData: IGetInGameInfoType[];
   isOwner: boolean;
   post: IGetPostItemType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
 function VoteArea({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteArea) {

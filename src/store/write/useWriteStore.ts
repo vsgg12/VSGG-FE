@@ -13,8 +13,10 @@ export const VOTE_END_TIME_OPTIONS = [
 ];
 
 export type ChampionType = {
-  name: string;
-  image: string;
+  id: string; // 챔피언 영어 이름
+  name: string; // 챔피언 한국 이름
+  image: string; // 얼굴만 나온 이미지
+  fullImage: string; // 전체 이미지
 };
 
 export type InGameInfoRequestType = {
@@ -184,8 +186,10 @@ export const useWriteStore = create<IWriteState>()(
           .map((key) => {
             const champion = data.data[key];
             return {
+              id: champion.id,
               name: champion.name,
               image: `https://ddragon.leagueoflegends.com/cdn/15.24.1/img/champion/${champion.image.full}`,
+              fullImage: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg`,
             };
           })
           .sort((a, b) => a.name.localeCompare(b.name, 'ko'));

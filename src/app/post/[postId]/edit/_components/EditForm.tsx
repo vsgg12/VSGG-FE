@@ -13,7 +13,7 @@ import {
 } from 'react-icons/io5';
 import { ICreatePostFormProps } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
+import { saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/write/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
 import PostUploadDesc from '@/app/post/write/_component/PostUploadDesc';
 import {
@@ -24,8 +24,8 @@ import {
   tiers,
 } from '@/app/post/write/_component/PostFe';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import getPostItem from '@/api/getPostItem';
-import patchEditPost from '@/api/patchEditPost';
+import getPostItem from '@/api/post/getPostItem';
+import patchEditPost from '@/api/edit/patchEditPost';
 
 export default function EditForm() {
   const { isLogin, accessToken } = useAuthStore();
@@ -125,7 +125,7 @@ export default function EditForm() {
       type: null,
       hashtag: null,
       videoLink: null,
-      inGameTierUpdateRequest: null
+      inGameTierUpdateRequest: null,
     };
     let isChanged = false;
     if (data.title === '') {
@@ -163,7 +163,7 @@ export default function EditForm() {
       postUpdateRequest.inGameTierUpdateRequest = inGameInfoRequests!;
       isChanged = true;
     } else {
-      postUpdateRequest.inGameTierUpdateRequest = null
+      postUpdateRequest.inGameTierUpdateRequest = null;
     }
 
     if (JSON.stringify(hashtags) !== JSON.stringify(post?.postDTO.hashtagList)) {

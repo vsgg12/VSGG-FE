@@ -1,6 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import getPostItem from '@/api/getPostItem';
+import getPostItem from '@/api/post/getPostItem';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';

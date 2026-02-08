@@ -1,6 +1,6 @@
 'use client';
 
-import getAlarms from '@/api/getAlarms';
+import getAlarms from '@/api/alarm/getAlarms';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../../login/store/useAuthStore';

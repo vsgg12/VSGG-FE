@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import deleteIcon from '../../../public/svg/deleteIcon.svg';
 import { useMutation } from '@tanstack/react-query';
-import PostSignUp from '@/api/PostSignUp';
+import PostSignUp from '@/api/signup/PostSignUp';
 import { useAuthStore } from '../login/store/useAuthStore';
-import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
+import getNicknameCheck, { IGetNickNameCheckType } from '@/api/profile/getNicknameCheck';
 import { useMediaQuery } from 'react-responsive';
 import SignUp_Mobile from './mobile/SignUpMobile';
 

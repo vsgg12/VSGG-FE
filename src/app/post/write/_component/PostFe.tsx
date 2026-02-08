@@ -29,7 +29,11 @@ import {
 import dynamic from 'next/dynamic';
 import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
+import {
+  createPost,
+  saveImageAndRequestUrlToS3,
+  sendDeleteRequestToS3,
+} from '@/api/write/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
 import Calendar from './Calendar';
 
@@ -206,13 +210,12 @@ export default function PostForm() {
 
     hashtags.length === 0 &&
       setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
-    const postRequestData:IPostAddRequestType = {
+    const postRequestData: IPostAddRequestType = {
       title: data.title,
       videoType: uploadedVideo ? 'FILE' : 'LINK',
       hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
       voteEndDate: moment(selectedDate).format('YYYYMMDD'),
-      
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -227,7 +230,7 @@ export default function PostForm() {
     if (uploadedVideo && !videoLink) {
       postFormData.append('uploadVideos', uploadedVideo);
     } else if (!uploadedVideo && videoLink) {
-      postRequestData.videoLink = videoLink
+      postRequestData.videoLink = videoLink;
     }
 
     if (!uploadedThumbnail) {
@@ -327,7 +330,7 @@ export default function PostForm() {
       }
 
       setUploadedVideo(file); // 확인 완료
-      setVideoLink("");
+      setVideoLink('');
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);

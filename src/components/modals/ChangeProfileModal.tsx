@@ -1,5 +1,9 @@
-import { DeleteMyProfileImage, PatchMyNickname, PatchMyProfileImage } from '@/api/changeProfile';
-import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
+import {
+  DeleteMyProfileImage,
+  PatchMyNickname,
+  PatchMyProfileImage,
+} from '@/api/profile/changeProfile';
+import getNicknameCheck, { IGetNickNameCheckType } from '@/api/profile/getNicknameCheck';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { SetStateAction, useEffect, useRef, useState } from 'react';

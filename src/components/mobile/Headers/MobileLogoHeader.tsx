@@ -5,9 +5,9 @@ import BackArrowIcon from '../../../../public/svg/mobile/backArrowIcon.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
+import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import getAlarms from '@/api/getAlarms';
+import getAlarms from '@/api/alarm/getAlarms';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import LogoMobile from '../LogoMobile';
 

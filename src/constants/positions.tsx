@@ -22,7 +22,7 @@ const positions = [
     value: 'TOP',
     content: '탑',
     svg: <Image alt='TOP' src={topSVG} width={18} height={18} />,
-    svgW: <Image alt='TOP' src={topWSVG} width={18} height={18} />,
+    svgW: <Image alt='TOP' src={topWSVG} />,
     svgB: <Image alt='TOP' src={topBSVG} width={18} height={18} />,
   },
   {

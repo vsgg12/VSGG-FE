@@ -1,10 +1,14 @@
 'use client';
 
-import { DeleteMyProfileImage, PatchMyNickname, PatchMyProfileImage } from '@/api/changeProfile';
-import getMyProfileDTO from '@/api/getMyProfileDTO';
-import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
+import {
+  DeleteMyProfileImage,
+  PatchMyNickname,
+  PatchMyProfileImage,
+} from '@/api/profile/changeProfile';
+import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
+import getNicknameCheck, { IGetNickNameCheckType } from '@/api/profile/getNicknameCheck';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import CameraIcon from "../../../../public/svg/mobile/cameraIcon.svg"
+import CameraIcon from '../../../../public/svg/mobile/cameraIcon.svg';
 import ModifyProfileHeader from '@/components/mobile/Headers/ModifyProfileHeader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

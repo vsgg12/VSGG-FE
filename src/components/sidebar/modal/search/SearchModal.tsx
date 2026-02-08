@@ -1,6 +1,6 @@
 'use client';
 
-import getPostList from '@/api/getPostList';
+import getPostList from '@/api/post/getPostList';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useQuery } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useState } from 'react';
