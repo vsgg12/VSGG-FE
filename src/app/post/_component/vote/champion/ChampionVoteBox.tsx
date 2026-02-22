@@ -29,9 +29,11 @@ interface Props {
   voteData: IGetInGameInfoType[];
   voteCount: number;
   daysUntilEnd: number;
+  isOwner: boolean;
+  isVote: boolean;
 }
 
-const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
+const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Props) => {
   const [isHover, setIsHover] = useState<number>(0);
 
   const {
@@ -42,7 +44,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
     setIsLoginModalOpen,
     getChampionImage,
     sortedVoteData,
-  } = useVoteResult({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA });
+  } = useVoteResult({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA, isOwner, isVote });
 
   // 2. 아이템 갯수에 따른 동적 Gap 클래스 계산 (아이템 갯수에 따라 간격 조절)
   const listGapClass = useMemo(() => {
@@ -100,7 +102,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd }: Props) => {
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
           {/* 비로그인 상태 */}
-          {!isLogin && !isVoteEnd && (
+          {!isLogin && (
             <>
               <div className='flex flex-col items-center gap-1 drop-shadow-lg text-[20px] font-bold'>
                 <p>판결이 궁금하시다구요?</p>

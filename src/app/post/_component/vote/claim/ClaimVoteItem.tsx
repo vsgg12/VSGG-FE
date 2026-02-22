@@ -12,9 +12,20 @@ interface Props {
   claim: string;
   ratio: string;
   voteNum: number;
+  shouldBlur: boolean;
+  onVoteItemClick: () => void; // 투표 item 클릭 시 투표 api 호출
 }
 
-const ClaimVoteItem = ({ position, championName, tier, claim, ratio, voteNum }: Props) => {
+const ClaimVoteItem = ({
+  position,
+  championName,
+  tier,
+  claim,
+  ratio,
+  voteNum,
+  shouldBlur,
+  onVoteItemClick,
+}: Props) => {
   const { allChampions } = useWriteStore();
 
   const getTierIcon = useCallback(() => {
@@ -34,18 +45,21 @@ const ClaimVoteItem = ({ position, championName, tier, claim, ratio, voteNum }: 
 
   return (
     <div
-      className='relative w-[659px] h-[80px] rounded-[10px] overflow-hidden select-none'
+      className='relative w-[659px] h-[80px] rounded-[10px] overflow-hidden cursor-pointer'
       style={{
         backgroundImage: `url(${currentBgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center 20%',
       }}
+      onClick={onVoteItemClick}
     >
       {/* 투표율 바 */}
-      <div
-        className='absolute top-0 left-0 h-full bg-[#8A1F21]/40 z-20 transition-all duration-500 ease-out'
-        style={{ width: `${ratio}%` }}
-      />
+      {!shouldBlur && (
+        <div
+          className='absolute top-0 left-0 h-full bg-[#8A1F21]/40 z-20 transition-all duration-500 ease-out'
+          style={{ width: `${ratio}%` }}
+        />
+      )}
 
       {/* 텍스트 컨텐츠 */}
       <div className='relative z-30 w-full h-full flex justify-between items-center px-[20px] py-[10px] text-white'>
@@ -68,10 +82,12 @@ const ClaimVoteItem = ({ position, championName, tier, claim, ratio, voteNum }: 
         </div>
 
         {/* 오른쪽: 득표율 및 투표 수 */}
-        <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
-          <span className='text-[24px] leading-none'>{ratio}%</span>
-          <span className='text-[12px]'>{voteNum}표</span>
-        </div>
+        {!shouldBlur && (
+          <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
+            <span className='text-[24px] leading-none'>{ratio}%</span>
+            <span className='text-[12px]'>{voteNum}표</span>
+          </div>
+        )}
       </div>
     </div>
   );

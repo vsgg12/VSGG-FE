@@ -94,10 +94,22 @@ export default function PostRead() {
 
                 <div className={'flex gap-[50px] mb-[20px]'}>
                   {/*챔피언 판결 결과 컴포넌트 */}
-                  <ChampionVoteBox voteData={voteData} voteCount={30} daysUntilEnd={-1} />
+                  <ChampionVoteBox
+                    voteData={voteData}
+                    voteCount={30}
+                    daysUntilEnd={-1}
+                    isOwner={isOwner}
+                    isVote={post.postDTO.isVote}
+                  />
 
                   {/*주장 판결 결과 컴포넌트*/}
-                  <ClaimVoteBox voteData={voteData} voteCount={30} daysUntilEnd={-1} />
+                  <ClaimVoteBox
+                    voteData={voteData}
+                    voteCount={30}
+                    daysUntilEnd={-1}
+                    isOwner={isOwner}
+                    isVote={post.postDTO.isVote}
+                  />
                 </div>
               </div>
             )

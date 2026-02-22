@@ -11,17 +11,39 @@ interface Props {
   daysUntilEnd: number;
   voteData: IGetInGameInfoType[];
   DUMMY_VOTE_DATA?: VoteDataType[];
+  isOwner: boolean;
+  isVote: boolean;
 }
 
-export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA }: Props) => {
+export const useVoteResult = ({
+  voteCount,
+  daysUntilEnd,
+  voteData,
+  DUMMY_VOTE_DATA,
+  isOwner, // 내가 게시글 작성자인지
+  isVote, // 내가 투표를 했는지
+}: Props) => {
   const { isLogin } = useAuthStore();
   const { setIsLoginModalOpen } = useLoginStore();
   const { allChampions } = useWriteStore();
 
   const isVoteEnd = daysUntilEnd < 0;
-  const isNoVote = voteCount === 0;
-  // 비로그인 상태이거나, 로그인했지만 투표가 없는 경우 블러 처리 (단, 투표 종료시에는 결과 공개)
-  const shouldBlur = (!isLogin || (isLogin && isNoVote)) && !isVoteEnd;
+  const isNoVote = voteCount === 0; // 아무도 투표를 안했을경우
+
+  const checkShouldBlur = () => {
+    // 1. 투표 마감 전/후 상관없이 비로그인 상태면 무조건 블러
+    if (!isLogin) return true;
+
+    // 2. 투표 마감 전일 때: 내 게시글이 아니고, 내가 투표도 안 했으면 블러
+    if (!isVoteEnd) {
+      return !isOwner && !isVote;
+    }
+
+    // 3. 투표 마감 후일 때: (위에서 비로그인을 걸렀으므로) 무조건 보임
+    return false;
+  };
+
+  const shouldBlur = checkShouldBlur();
 
   // 득표율 계산 (소수점 1자리 문자열 반환)
   const getRatio = useCallback(
