@@ -11,7 +11,7 @@ type IResultType = {
   commentId: number;
 };
 
-export default async function PostComment(postId: string, body: IPostComment, token: string) {
+export default async function postComment(postId: string, body: IPostComment, token: string) {
   const data = await api.post<IPostComment, IResultType>({
     endpoint: `/post/${postId}/comment`,
     body,

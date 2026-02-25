@@ -7,6 +7,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
+// import CommentArea from '../_component/CommentArea';
+// import ContentArea from '../_component/ContentArea';
+// import NavigationArea from '../_component/NavigationArea';
+// import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
@@ -18,8 +22,9 @@ import CommentArea from '@/app/post/_component/comment/CommentArea';
 import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ClaimVoteBox from '@/app/post/_component/vote/claim/ClaimVoteBox';
+import PostDetailPC from './desktop/PostDetailPC';
 
-export default function PostRead() {
+export default function PostDetailMain() {
   const { postId } = useParams();
   const id: string = postId as string;
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -27,7 +32,7 @@ export default function PostRead() {
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  const { setIsLoginModalOpen } = useLoginStore();
+  // const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   const { fetchAllChampions } = useWriteStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
@@ -81,7 +86,7 @@ export default function PostRead() {
                 {/*<div>*/}
                 {/*  <NavigationArea />*/}
                 {/*</div>*/}
-                <div className='flex flex-row gap-[30px] justify-center'>
+                {/* <div className='flex flex-row gap-[30px] justify-center'>
                   <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
                   <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
                 </div>
@@ -90,7 +95,7 @@ export default function PostRead() {
                   post={post}
                   voteData={voteData}
                   setIsLoginModalOpen={setIsLoginModalOpen}
-                />
+                /> */}
 
                 <div className={'flex gap-[50px] mb-[20px]'}>
                   {/*챔피언 판결 결과 컴포넌트 */}
@@ -115,7 +120,7 @@ export default function PostRead() {
             )
           )}
         </div>
-      )}{' '}
+      )}
     </>
   );
 }
