@@ -10,7 +10,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 interface Props {
   post: IGetPostDTOType;
-  setIsLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
 function ContentArea({ post, setIsLoginModalOpen }: Props) {

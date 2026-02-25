@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import CommentInput from './CommentInput';
 import CommentBox from './CommentBox';
@@ -12,10 +12,9 @@ import Image from 'next/image';
 
 interface Props {
   id: number;
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function CommentArea({ id, setIsLoginModalOpen }: Props) {
+function CommentArea({ id }: Props) {
   const queryClient = useQueryClient();
   const { accessToken } = useAuthStore();
   const commentMethods = useForm<{ commentContent: string }>();
@@ -117,7 +116,7 @@ function CommentArea({ id, setIsLoginModalOpen }: Props) {
           <CommentInput targetNickname={targetComment.nickname} />
         </form>
       </FormProvider>
-      <CommentBox commentData={commentData!} setIsLoginModalOpen={setIsLoginModalOpen} />
+      <CommentBox commentData={commentData!} />
     </div>
   );
 }

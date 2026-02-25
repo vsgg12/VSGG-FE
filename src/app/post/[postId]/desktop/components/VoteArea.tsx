@@ -1,14 +1,14 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { useChampion } from '@/hooks/useChampion';
 
-interface IVoteArea {
-  voteData: IGetInGameInfoType[];
-  isOwner: boolean;
-  post: IGetPostItemType;
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
-}
+// interface IVoteArea {
+//   voteData: IGetInGameInfoType[];
+//   isOwner: boolean;
+//   post: IGetPostItemType;
+//   setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
+// }
 
-function VoteArea({ voteData, isOwner, post, setIsLoginModalOpen }: IVoteArea) {
+function VoteArea() {
   const { champions, loading, getImageUrlByName } = useChampion();
 
   if (loading) return <div>로딩 중...</div>;

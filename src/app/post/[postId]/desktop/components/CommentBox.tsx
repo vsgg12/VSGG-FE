@@ -2,18 +2,20 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Comment from '@/app/post/_component/Comment';
 import MoreModal from '@/components/modals/MoreModal';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon_more from '../../../../../../public/svg/Icon_more.svg';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface Props {
   commentData: IGetCommentListType;
-  setIsLoginModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-function CommentBox({ commentData, setIsLoginModalOpen }: Props) {
+function CommentBox({ commentData }: Props) {
   const { isLogin, user } = useAuthStore();
   const [showReply, setShowReply] = useState<null | number>(null);
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
+  const { setIsLoginModalOpen } = useLoginStore();
+
   const replyRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({

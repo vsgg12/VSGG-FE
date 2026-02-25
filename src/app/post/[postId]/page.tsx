@@ -7,15 +7,16 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
-import CommentArea from '../_component/CommentArea';
-import ContentArea from '../_component/ContentArea';
-import NavigationArea from '../_component/NavigationArea';
-import VoteArea from '../_component/VoteArea';
+// import CommentArea from '../_component/CommentArea';
+// import ContentArea from '../_component/ContentArea';
+// import NavigationArea from '../_component/NavigationArea';
+// import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import PostDetailPC from './desktop/PostDetailPC';
 
 export default function PostDetailMain() {
   const { postId } = useParams();
@@ -24,8 +25,8 @@ export default function PostDetailMain() {
   const { accessToken, isLogin, user } = useAuthStore();
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  const { setIsLoginModalOpen } = useLoginStore();
+  // const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
+  // const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
@@ -71,7 +72,7 @@ export default function PostDetailMain() {
           ) : (
             post && (
               <div className='flex flex-col items-center justify-center px-[50px]'>
-                <div>
+                {/* <div>
                   <NavigationArea />
                 </div>
                 <div className='flex flex-row gap-[30px] justify-center'>
@@ -83,7 +84,8 @@ export default function PostDetailMain() {
                   post={post}
                   voteData={voteData}
                   setIsLoginModalOpen={setIsLoginModalOpen}
-                />
+                /> */}
+                <PostDetailPC post={post} />
               </div>
             )
           )}
