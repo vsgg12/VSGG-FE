@@ -115,6 +115,7 @@ export default function PostDetailMain() {
                     isOwner={isOwner}
                     isVote={post.postDTO.isVote}
                   />
+                  <PostDetailPC post={post} />
                 </div>
               </div>
             )

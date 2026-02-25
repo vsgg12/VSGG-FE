@@ -1,10 +1,10 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import Comment from '@/app/post/_component/Comment';
 import MoreModal from '@/components/modals/MoreModal';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon_more from '../../../../../../public/svg/Icon_more.svg';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import Comment from '@/app/post/_component/comment/Comment';
 
 interface Props {
   commentData: IGetCommentListType;

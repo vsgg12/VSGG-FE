@@ -5,10 +5,10 @@ import CommentBox from './CommentBox';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useCommentStore from '../../store/useCommentStore';
-import getComments from '@/api/getComments';
-import PostComment from '@/api/postComment';
 import Icon_comment from '../../../../../../public/svg/postItem/chatbox.svg';
 import Image from 'next/image';
+import getComments from '@/api/comment/getComments';
+import postComment from '@/api/comment/postComment';
 
 interface Props {
   id: number;
@@ -35,7 +35,7 @@ function CommentArea({ id }: Props) {
 
   const { mutate: writeComment } = useMutation({
     mutationFn: async (data: string) => {
-      const response = await PostComment(
+      const response = await postComment(
         String(id),
         { parentId: targetComment.id, content: data },
         accessToken,
