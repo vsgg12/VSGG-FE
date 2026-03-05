@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { voteColors } from '../../../../data/championData';
-import usePostIdStore from '../../[postId]/store/usePostIdStore';
+import { mobileVoteColors } from '../../../../../../data/championData';
+import usePostIdStore from '../../../store/usePostIdStore';
 
 export default function VotingGraph() {
   const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));
@@ -50,7 +50,7 @@ export default function VotingGraph() {
       {votingGraph.map((voting, index) => {
         const colorClass =
           voting !== -1
-            ? `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`
+            ? `${mobileVoteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`
             : 'bg-[#D9D9D9]';
         const roundedClass =
           index === 0

@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import CommentInput from './CommentInput';
-import CommentBox from './CommentBox';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import useCommentStore from '../../store/useCommentStore';
-import Icon_comment from '../../../../../../public/svg/postItem/chatbox.svg';
+import useCommentStore from '../../../store/useCommentStore';
+import Icon_comment from '../../../../../../../public/svg/postItem/chatbox.svg';
 import Image from 'next/image';
 import getComments from '@/api/comment/getComments';
 import postComment from '@/api/comment/postComment';
+import CommentInput from './CommentInput';
+import CommentBox from './CommentBox';
 
 interface Props {
   id: number;

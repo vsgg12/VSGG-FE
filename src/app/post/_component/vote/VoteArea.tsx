@@ -1,5 +1,5 @@
 import React from 'react';
-import VoteForm from './VoteForm';
+import VoteForm from '../../[postId]/desktop/components/vote/VoteForm';
 import VoteResult from './VoteResult';
 import PostVote from '@/api/vote/postVote';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

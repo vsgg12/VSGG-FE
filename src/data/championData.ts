@@ -75,6 +75,7 @@ export const mobileVoteColors = [
   {
     name: '탑',
     background: 'bg-[#000000]',
+    text: 'text-[#000000]',
     border: 'border-[#000000]',
     svgw: '/svg/top-w.svg',
     svg: '/svg/mobile/champion/top_mobile.svg',
@@ -82,6 +83,7 @@ export const mobileVoteColors = [
   {
     name: '정글',
     background: 'bg-[#9E2426]',
+    text: 'text-[#9E2426]',
     border: 'border-[#9E2426]',
     svgw: '/svg/jungle-w.svg',
     svg: '/svg/mobile/champion/jungle_mobile.svg',
@@ -89,6 +91,7 @@ export const mobileVoteColors = [
   {
     name: '미드',
     background: 'bg-[#AAAAAA]',
+    text: 'text-[#AAAAAA]',
     border: 'border-[#AAAAAA]',
     svgw: '/svg/mid-w.svg',
     svg: '/svg/mobile/champion/mid_mobile.svg',
@@ -96,6 +99,7 @@ export const mobileVoteColors = [
   {
     name: '원딜',
     background: 'bg-[#70191B]',
+    text: 'text-[#70191B]',
     border: 'border-[#70191B]',
     svgw: '/svg/onedeal-w.svg',
     svg: '/svg/mobile/champion/onedeal_mobile.svg',
@@ -103,6 +107,7 @@ export const mobileVoteColors = [
   {
     name: '서폿',
     background: 'bg-[#555555]',
+    text: 'text-[#9B111E]',
     border: 'border-[#555555]',
     svgw: '/svg/supporter-w.svg',
     svg: '/svg/mobile/champion/support_mobile.svg',

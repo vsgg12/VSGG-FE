@@ -40,5 +40,5 @@ export function useChampion() {
     [champions],
   );
 
-  return { champions, loading, getImageUrlByName };
+  return { loading, getImageUrlByName };
 }

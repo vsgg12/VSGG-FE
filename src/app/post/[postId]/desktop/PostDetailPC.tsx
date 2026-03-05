@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PostInfoBox from './components/PostInfoBox';
 import ContentArea from './components/ContentArea';
-import CommentArea from './components/CommentArea';
+import CommentArea from './components/Comment/CommentArea';
 import { useLoginStore } from '@/store/login/useLoginStore';
-import VoteArea from './components/VoteArea';
+import VoteArea from './components/vote/VoteArea';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
 }
 
 export default function PostDetailPC({ post, voteData }: Props) {
-  const { setIsLoginModalOpen } = useLoginStore();
   const { user } = useAuthStore();
   const [isOwner, setIsOwner] = useState<boolean>(false);
 
@@ -27,7 +26,7 @@ export default function PostDetailPC({ post, voteData }: Props) {
       <PostInfoBox post={post} />
       <div className='flex gap-[30px]'>
         <div className='flex flex-col gap-[30px]'>
-          <ContentArea post={post.postDTO} setIsLoginModalOpen={setIsLoginModalOpen} />
+          <ContentArea post={post.postDTO} />
           <VoteArea post={post} voteData={voteData} isOwner={isOwner} />
         </div>
         <div>

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { useChampion } from '@/hooks/useChampion';
-import IconVote from '../../../../../public/svg/postItem/vote.svg';
+import IconVote from '../../../../../../../public/svg/postItem/vote.svg';
 
 interface IProps {
   selectedChampion: string;
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export default function ChampionImgBox({ selectedChampion, voteCount }: IProps) {
-  const { champions, loading, getImageUrlByName } = useChampion();
+  const { getImageUrlByName } = useChampion();
 
   return (
     <div className='flex flex-col gap-[13px]'>

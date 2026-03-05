@@ -3,7 +3,13 @@ import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox
 import { useChampion } from '@/hooks/useChampion';
 import { useCallback } from 'react';
 import positions from '@/constants/positions';
-import VoteForm from '@/app/post/_component/vote/VoteForm';
+import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import usePostIdStore from '../../../store/usePostIdStore';
+import { useParams } from 'next/navigation';
+import PostVote from '@/api/vote/postVote';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];
@@ -12,14 +18,31 @@ interface IVoteArea {
 }
 
 function VoteArea({ voteData, isOwner, post }: IVoteArea) {
-  const { champions, loading, getImageUrlByName } = useChampion();
+  const { loading, getImageUrlByName } = useChampion();
+  const { setIsLoginModalOpen } = useLoginStore();
   const [selectedChampion, setSelectedChampion] = useState<string>('');
-  const imageUrl = getImageUrlByName(name);
+  const queryClient = useQueryClient();
+  const { postVoteResult } = usePostIdStore();
+  const { postId } = useParams();
+  const id: string = postId as string;
+  const { accessToken, isLogin } = useAuthStore();
 
-  const getPositionIcon = useCallback(() => {
-    const positionItem = positions.find((item) => item.content === selectedChampion);
-    return selectedChampion ? positionItem?.svgW : positionItem?.svg;
-  }, [selectedChampion]);
+  const { mutate: postVote } = useMutation({
+    mutationFn: () => PostVote(id, { voteList: postVoteResult }, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
+      await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
+    },
+    onError: (err) => alert(err.message),
+  });
+
+  const handleVoteSubmit = () => {
+    if (!isLogin) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    postVote();
+  };
 
   if (loading) return <div>로딩 중...</div>;
 
@@ -53,9 +76,7 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
       <VoteForm
         voteInfo={voteData}
         voteCount={post.postDTO.voteCount}
-        handleVoteSubmit={() => {
-          return;
-        }}
+        handleVoteSubmit={handleVoteSubmit}
       />
     </div>
   );

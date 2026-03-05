@@ -7,14 +7,15 @@ import patchCancelLike from '@/api/like/patchCancelLike';
 import { useMutation } from '@tanstack/react-query';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface Props {
   post: IGetPostDTOType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
-function ContentArea({ post, setIsLoginModalOpen }: Props) {
+function ContentArea({ post }: Props) {
   const { accessToken, isLogin } = useAuthStore();
+  const { setIsLoginModalOpen } = useLoginStore();
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState<string>('');
