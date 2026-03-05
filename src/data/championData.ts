@@ -13,13 +13,13 @@ export const voteColors: IVoteColorsType[] = [
     border: 'border-[#000000]',
   },
   {
-    background: 'bg-[#9D2A2C]',
+    background: 'bg-[#9E2426]',
     text: 'text-[#8A1F21]',
-    hover: 'hover:[#9D2A2C]',
+    hover: 'hover:[#9E2426]',
     border: 'border-[#8A1F21]',
   },
   {
-    background: 'bg-[#CACACA]',
+    background: 'bg-[#AAAAAA]',
     text: 'text-[#7B7B7B]',
     hover: 'hover:[#CACACA]',
     border: 'border-[#CACACA]',

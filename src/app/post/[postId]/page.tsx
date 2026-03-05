@@ -62,6 +62,9 @@ export default function PostDetailMain() {
       if (post.postDTO.memberDTO.nickname === user.nickname) {
         setIsOwner(true);
       }
+      if (post) {
+        setVoteData(post.postDTO.inGameInfoList);
+      }
     }
   }, [post, router, user]);
 
@@ -98,24 +101,15 @@ export default function PostDetailMain() {
                 /> */}
 
                 <div className={'flex gap-[50px] mb-[20px]'}>
-                  {/*챔피언 판결 결과 컴포넌트 */}
-                  <ChampionVoteBox
-                    voteData={voteData}
-                    voteCount={30}
-                    daysUntilEnd={-1}
-                    isOwner={isOwner}
-                    isVote={post.postDTO.isVote}
-                  />
-
                   {/*주장 판결 결과 컴포넌트*/}
-                  <ClaimVoteBox
+                  {/* <ClaimVoteBox
                     voteData={voteData}
                     voteCount={30}
                     daysUntilEnd={-1}
                     isOwner={isOwner}
                     isVote={post.postDTO.isVote}
-                  />
-                  <PostDetailPC post={post} />
+                  /> */}
+                  <PostDetailPC post={post} voteData={voteData} />
                 </div>
               </div>
             )

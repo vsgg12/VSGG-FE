@@ -13,6 +13,7 @@ export function useChampion() {
       .then((res) => res.json())
       .then((data: ChampionDataProps) => {
         const loadedChampions: ChampionInfo[] = Object.keys(data.data).map((key) => ({
+          id: key,
           name: data.data[key].name,
           imageFileName: data.data[key].image.full,
         }));
@@ -29,8 +30,12 @@ export function useChampion() {
   const getImageUrlByName = useCallback(
     (name: string) => {
       const target = champions.find((c) => c.name === name);
+
+      console.log('찾는 name:', name);
+      console.log('찾은 target id:', target?.id);
+
       if (!target) return '';
-      return `${BASE_URL}/img/champion/${target.imageFileName}`;
+      return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${target.id}_0.jpg`;
     },
     [champions],
   );

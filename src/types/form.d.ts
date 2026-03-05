@@ -70,11 +70,13 @@ export interface ChampionDataProps {
 }
 
 export interface ChampionInfo {
+  id: string;
   name: string;
   imageFileName: string;
 }
 
 type ChampionType = {
+  id: string;
   name: string;
   image: {
     full: string;

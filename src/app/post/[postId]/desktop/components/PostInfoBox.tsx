@@ -44,7 +44,7 @@ function PostInfoBox({ post }: Props) {
           <div className='flex flex-col'>
             <div className='flex gap-[3px] text-[#333333] text-[18px]'>
               {getIcon(post.postDTO.memberDTO.tier)}
-              <p>{post.postDTO.memberDTO.nickname}</p>
+              <p className='font-bold'>{post.postDTO.memberDTO.nickname}</p>
             </div>
             <div className='flex text-[#C8C8C8] items-center gap-[3px]'>
               <p>{timeAgo} ・ </p>

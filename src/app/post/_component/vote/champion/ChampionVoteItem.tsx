@@ -27,7 +27,7 @@ const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover 
   }, [position, isHover]);
 
   return (
-    <div className={'w-full h-fit flex justify-between font-semibold items-center cursor-default'}>
+    <div className={'w-full h-fit flex justify-between font-semibold items-center cursor-pointer'}>
       <div className='flex items-center gap-[10px]'>
         {/* 포지션 */}
         <div

@@ -73,7 +73,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
         }}
       >
         {/* 실제 리스트 및 텍스트 */}
-        <div className='relative z-10 w-full h-full flex justify-between items-center'>
+        <div className='relative z-10 w-full h-full flex justify-between items-center '>
           <div
             className={clsx('w-[230px] h-full flex flex-col justify-center', listGapClass)}
             onMouseLeave={() => setIsHover(0)}

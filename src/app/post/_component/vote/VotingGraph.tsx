@@ -49,10 +49,15 @@ export default function VotingGraph() {
     <>
       {votingGraph.map((voting, index) => {
         const colorClass =
-          voting !== -1 &&
-          `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`;
+          voting !== -1
+            ? `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`
+            : 'bg-[#D9D9D9]';
         const roundedClass =
-          index === 0 ? 'rounded-l-[30px]' : index === 9 ? 'rounded-r-[30px]' : '';
+          index === 0
+            ? 'rounded-l-[30px] rounded-r-[5px]'
+            : index === 9
+              ? 'rounded-r-[30px] rounded-l-[5px]'
+              : 'rounded-[5px]';
 
         return (
           <div

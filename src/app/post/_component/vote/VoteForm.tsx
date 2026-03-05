@@ -1,17 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { voteColors, positionInfo } from '../../../../data/championData';
+import { voteColors, positionInfo, mobileVoteColors } from '@/data/championData';
 import VotingGraph from './VotingGraph';
 import usePostIdStore from '../../[postId]/store/usePostIdStore';
+import { useChampion } from '@/hooks/useChampion';
+import Icon_Hamburger from '../../../../../public/svg/postItem/hamburger.svg';
+import ChampionImgBox from './ChampionImgBox';
 
 interface IVoteFormProps {
   voteInfo: IGetInGameInfoType[];
+  voteCount: number;
   handleVoteSubmit: () => void;
 }
 
-export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps) {
+export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVoteFormProps) {
   const {
     voteResult,
     setVoteResult,
@@ -20,6 +24,13 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
     isNotAbleSubmit,
     setIsNotAbleSubmit,
   } = usePostIdStore();
+
+  const { champions, loading, getImageUrlByName } = useChampion();
+  const [selectedChampion, setSelectedChampion] = useState<string>(voteInfo[0].championName);
+
+  useEffect(() => {
+    getImageUrlByName(selectedChampion);
+  }, [selectedChampion]);
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -37,77 +48,70 @@ export default function VoteForm({ voteInfo, handleVoteSubmit }: IVoteFormProps)
     }
   }, [voteResult, setIsNotAbleSubmit]);
 
-  const getPositionSrc = (position: string) => {
-    return positionInfo.find((pos) => pos.name === position)?.svgw ?? '';
+  const getPositionSrc = (position: string, idx: number) => {
+    if (selectedChampIdx === idx) {
+      return mobileVoteColors.find((pos) => pos.name === position)?.svgw ?? '';
+    } else {
+      return mobileVoteColors.find((pos) => pos.name === position)?.svg ?? '';
+    }
   };
 
   return (
-    <div>
-      <div className='relative flex w-full flex-row justify-around'>
-        <div className='flex flex-col justify-around gap-[20px]'>
-          {voteInfo.map((champion, index) => (
+    <div className='relative flex flex-col w-[719px] p-[30px] items-center rounded-[20px] bg-[#ffffff] gap-[20px]'>
+      <ChampionImgBox selectedChampion={selectedChampion} voteCount={voteCount} />
+      <div className='flex gap-[8px] absolute top-[200px] left-[50px]'>
+        {voteInfo.map((champion, index) => (
+          <div
+            key={index}
+            className='relative group'
+            onClick={() => {
+              setSelectedChampIdx(index);
+              setSelectedChampion(champion.championName);
+            }}
+          >
             <div
-              key={index}
-              className='relative group'
-              onClick={() => {
-                setSelectedChampIdx(index);
-              }}
+              className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
             >
-              <div
-                className={`${voteColors[index].background} absolute flex justify-center rounded-full w-[48px] h-[48px] cursor-pointer`}
-              >
-                <Image
-                  src={getPositionSrc(champion.position!)}
-                  alt='position'
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <div
-                className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border} group-hover:visible `}
-              >
-                <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
-                  {champion.position}
-                </p>
-                <div className='w-[50%]'>
-                  <p className='text-[#333333] text-[14px] font-semibold'>
-                    {champion.championName}
-                  </p>
-                  <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
-                </div>
-              </div>
+              <Image
+                src={getPositionSrc(champion.position, index)}
+                alt='position'
+                width={26}
+                height={26}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className='flex flex-col items-center w-[618px] h-[136px]'>
+        <div className='p-content-s-mb flex'>
+          <VotingGraph />
+          <Image
+            src={Icon_Hamburger}
+            width={26}
+            height={26}
+            alt='hamburger'
+            className='cursor-pointer'
+          />
+        </div>
+        <div className='p-content-s-mb flex'>
+          {voteResult.map((vote, index) => (
+            <div key={index} className={` flex`}>
+              <p className={`${voteColors[index].text} p-voting-number-element`}>{vote}</p>
+              {index !== voteInfo.length - 1 && <div className='p-voting-number-element'> : </div>}
             </div>
           ))}
         </div>
-        <div className='flex flex-col items-center '>
-          <div className='text-[20px] mb-[5rem]'>이 게임의 과실은 몇 대 몇~?</div>
-
-          <div className='flex flex-col items-center'>
-            <div className='p-content-s-mb flex flex-row'>
-              {voteResult.map((vote, index) => (
-                <div key={index} className={` flex`}>
-                  <p className={`${voteColors[index].text} p-voting-number-element`}>{vote}</p>
-                  {index !== voteInfo.length - 1 && (
-                    <div className='p-voting-number-element'> : </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className='p-content-s-mb flex flex-row'>
-              <VotingGraph />
-            </div>
-            <div className='text-[12px] text-[#7B7B7B] mb-[2rem]'>
-              {voteInfo[selectedChampIdx]?.championName}의 과실을 선택해주세요
-            </div>
-          </div>
-        </div>
-        <div className='flex flex-col justify-end'>
+        <p className='text-[12px] text-[#909090] font-bold'>
+          <span className='text-[#666666]'>{voteInfo[selectedChampIdx]?.championName}</span>의
+          과실을 선택해주세요
+        </p>
+        <div className='flex self-end '>
           <button
-            className='h-9 w-28 rounded-full bg-[#8A1F21] text-lg text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
+            className='h-[23px] w-[82px] rounded-full bg-[#8A1F21] text-[14px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
             onClick={handleVoteSubmit}
             disabled={isNotAbleSubmit}
           >
-            제출하기
+            판결하기
           </button>
         </div>
       </div>
