@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import usePostIdStore from '../../store/usePostIdStore';
-import { mobileVoteColors, voteColors } from '@/data/championData';
+import { voteColors } from '@/data/championData';
 
 interface Props {
   index: number;
@@ -15,13 +15,13 @@ function VoteChampionItem({ index, champion, isResult }: Props) {
   const getPositionSrc = (position: string, type: string) => {
     switch (type) {
       case 'icon_default':
-        return mobileVoteColors.find((pos) => pos.name === position)?.svg ?? '';
+        return voteColors.find((pos) => pos.name === position)?.svg ?? '';
       case 'icon_selected':
-        return mobileVoteColors.find((pos) => pos.name === position)?.svgw ?? '';
+        return voteColors.find((pos) => pos.name === position)?.svgw ?? '';
       // case 'background':
-      //   return mobileVoteColors.find((pos) => pos.name === position)?.background ?? '';
+      //   return voteColors.find((pos) => pos.name === position)?.background ?? '';
       case 'border':
-        return mobileVoteColors.find((pos) => pos.name === position)?.border ?? '';
+        return voteColors.find((pos) => pos.name === position)?.border ?? '';
       default:
         return '';
     }

@@ -1,7 +1,7 @@
 import VotingGraph from '@/app/post/[postId]/desktop/components/vote/VotingGraph';
 import Image from 'next/image';
 import React from 'react';
-import { mobileVoteColors } from '@/data/championData';
+import { voteColors } from '@/data/championData';
 import Icon_Hamburger from '../../../../../../../public/svg/postItem/hamburger.svg';
 import usePostIdStore from '../../../store/usePostIdStore';
 
@@ -28,7 +28,7 @@ export default function GraphBox({ voteInfo, handleVoteSubmit }: IProps) {
       <div className='p-content-s-mb flex'>
         {voteResult.map((vote, index) => (
           <div key={index} className={` flex`}>
-            <p className={`${mobileVoteColors[index].text} p-voting-number-element`}>{vote}</p>
+            <p className={`${voteColors[index].text} p-voting-number-element`}>{vote}</p>
             {index !== voteInfo.length - 1 && <div className='p-voting-number-element'> : </div>}
           </div>
         ))}

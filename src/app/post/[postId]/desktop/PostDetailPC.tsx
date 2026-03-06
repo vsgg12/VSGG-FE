@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PostInfoBox from './components/PostInfoBox';
 import ContentArea from './components/ContentArea';
 import CommentArea from './components/Comment/CommentArea';
-import { useLoginStore } from '@/store/login/useLoginStore';
 import VoteArea from './components/vote/VoteArea';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 

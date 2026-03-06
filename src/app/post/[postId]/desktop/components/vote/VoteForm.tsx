@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { mobileVoteColors } from '@/data/championData';
+import { voteColors } from '@/data/championData';
 import usePostIdStore from '../../../store/usePostIdStore';
 import ChampionImgBox from './ChampionImgBox';
 import GraphBox from './GraphBox';
@@ -36,7 +36,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   }, [voteResult, setIsNotAbleSubmit]);
 
   const getPositionSrc = (position: string, idx: number) => {
-    const target = mobileVoteColors.find((pos) => pos.name === position);
+    const target = voteColors.find((pos) => pos.name === position);
     return selectedChampIdx === idx ? target?.svgw ?? '' : target?.svg ?? '';
   };
 
@@ -54,7 +54,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
             }}
           >
             <div
-              className={`${selectedChampion === champion.championName ? mobileVoteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+              className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
             >
               <Image
                 src={getPositionSrc(champion.position, index)}
