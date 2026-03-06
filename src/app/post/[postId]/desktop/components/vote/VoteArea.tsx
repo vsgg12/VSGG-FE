@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
-import positions from '@/constants/positions';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -17,9 +16,8 @@ interface IVoteArea {
 }
 
 function VoteArea({ voteData, isOwner, post }: IVoteArea) {
-  const { loading, getImageUrlByName } = useChampion();
+  const { loading } = useChampion();
   const { setIsLoginModalOpen } = useLoginStore();
-  const [selectedChampion, setSelectedChampion] = useState<string>('');
   const queryClient = useQueryClient();
   const { postVoteResult } = usePostIdStore();
   const { postId } = useParams();
@@ -46,37 +44,23 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
   if (loading) return <div>로딩 중...</div>;
 
   return (
-    <div className='w-[719px] bg-white rounded-[20px] flex items-center justify-center'>
-      {/*챔피언 판결 결과 컴포넌트 */}
-      {/* <ChampionVoteBox
-        voteData={voteData}
-        voteCount={30}
-        daysUntilEnd={-1}
-        isOwner={isOwner}
-        isVote={post.postDTO.isVote}
-      /> */}
-      <div></div>
-      {/* <div
-        className={
-          'w-[25px] h-[25px] rounded-[12.5px] bg-white/15 flex justify-center items-center shrink-0'
-        }
-      ></div>
-      <div>
-        {voteData.map((data, index) => (
-          <div
-            className='w-[46px] h-[49px] rounded-[10px]'
-            onClick={() => setSelectedChampion(data.position)}
-          >
-            {getPositionIcon()}
-          </div>
-        ))}
-      </div> */}
-
-      <VoteForm
-        voteInfo={voteData}
-        voteCount={post.postDTO.voteCount}
-        handleVoteSubmit={handleVoteSubmit}
-      />
+    <div className='w-[720px] bg-white rounded-[20px] flex items-center justify-center p-[30px]'>
+      {post.postDTO.status === 'PROGRESS' && isLogin && (
+        <VoteForm
+          voteInfo={voteData}
+          voteCount={post.postDTO.voteCount}
+          handleVoteSubmit={handleVoteSubmit}
+        />
+      )}
+      {(post.postDTO.status === 'FINISHED' || !isLogin) && (
+        <ChampionVoteBox
+          voteData={voteData}
+          voteCount={30}
+          daysUntilEnd={-1}
+          isOwner={isOwner}
+          isVote={post.postDTO.isVote}
+        />
+      )}
     </div>
   );
 }

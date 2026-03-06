@@ -41,35 +41,38 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   };
 
   return (
-    <div className='relative flex flex-col w-[719px] p-[30px] items-center rounded-[20px] bg-[#ffffff] gap-[20px]'>
+    <div className='relative flex flex-col w-[719px]items-center rounded-[20px] bg-[#ffffff] gap-[20px]'>
       <ChampionImgBox
         selectedChampion={selectedChampion}
         voteCount={voteCount}
         isHamburgerClicked={isHamburgerClicked}
+        voteInfo={voteInfo}
       />
-      <div className='flex gap-[8px] absolute top-[200px] left-[50px]'>
-        {voteInfo.map((champion, index) => (
-          <div
-            key={index}
-            className='relative group'
-            onClick={() => {
-              setSelectedChampIdx(index);
-              setSelectedChampion(champion.championName);
-            }}
-          >
+      {!isHamburgerClicked && (
+        <div className='flex gap-[8px] absolute top-[170px] left-[20px]'>
+          {voteInfo.map((champion, index) => (
             <div
-              className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+              key={index}
+              className='relative group'
+              onClick={() => {
+                setSelectedChampIdx(index);
+                setSelectedChampion(champion.championName);
+              }}
             >
-              <Image
-                src={getPositionSrc(champion.position, index)}
-                alt='position'
-                width={26}
-                height={26}
-              />
+              <div
+                className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+              >
+                <Image
+                  src={getPositionSrc(champion.position, index)}
+                  alt='position'
+                  width={26}
+                  height={26}
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <BottomBox
         voteInfo={voteInfo}
         handleVoteSubmit={handleVoteSubmit}

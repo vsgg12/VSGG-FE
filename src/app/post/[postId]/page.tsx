@@ -11,6 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
+import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ClaimVoteBox from '@/app/post/_component/vote/claim/ClaimVoteBox';
 import PostDetailPC from './desktop/PostDetailPC';
@@ -49,12 +50,13 @@ export default function PostDetailMain() {
   }, [error, router]);
 
   useEffect(() => {
-    if (post) {
-      setVoteData(post.postDTO.inGameInfoList);
-    }
     if (post && user) {
       if (post.postDTO.memberDTO.nickname === user.nickname) {
         setIsOwner(true);
+      }
+      if (post) {
+        setVoteData(post.postDTO.inGameInfoList);
+        console.log(post.postDTO.inGameInfoList);
       }
     }
   }, [post, router, user]);
@@ -77,20 +79,6 @@ export default function PostDetailMain() {
           ) : (
             post && (
               <div className='flex flex-col items-center justify-center px-[50px]'>
-                {/*<div>*/}
-                {/*  <NavigationArea />*/}
-                {/*</div>*/}
-                {/* <div className='flex flex-row gap-[30px] justify-center'>
-                  <ContentArea post={post} isOwner={isOwner} setVoteData={setVoteData} />
-                  <CommentArea setIsLoginModalOpen={setIsLoginModalOpen} />
-                </div>
-                <VoteArea
-                  isOwner={isOwner}
-                  post={post}
-                  voteData={voteData}
-                  setIsLoginModalOpen={setIsLoginModalOpen}
-                /> */}
-
                 <div className={'flex gap-[50px] mb-[20px]'}>
                   {/*주장 판결 결과 컴포넌트*/}
                   {/* <ClaimVoteBox
@@ -100,7 +88,7 @@ export default function PostDetailMain() {
                     isOwner={isOwner}
                     isVote={post.postDTO.isVote}
                   /> */}
-                  <PostDetailPC post={post} voteData={voteData} />
+                  <PostDetailPC post={post} voteData={voteData} isOwner={isOwner} />
                 </div>
               </div>
             )

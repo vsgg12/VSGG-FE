@@ -7,9 +7,15 @@ interface IProps {
   selectedChampion: string;
   voteCount: number;
   isHamburgerClicked: boolean;
+  voteInfo: IGetInGameInfoType[];
 }
 
-export default function ChampionImgBox({ selectedChampion, voteCount }: IProps) {
+export default function ChampionImgBox({
+  selectedChampion,
+  voteCount,
+  isHamburgerClicked,
+  voteInfo,
+}: IProps) {
   const { getImageUrlByName } = useChampion();
 
   return (
@@ -18,14 +24,32 @@ export default function ChampionImgBox({ selectedChampion, voteCount }: IProps) 
         <Image src={IconVote} width={24} height={24} alt='vote' />
         <p>판결 {voteCount <= 999 ? voteCount : '+999'}</p>
       </div>
-      <div className='relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
-        <Image
-          src={getImageUrlByName(selectedChampion)}
-          alt='champion'
-          fill
-          className='object-cover'
-        ></Image>
-      </div>
+      {isHamburgerClicked ? (
+        <div className='flex relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
+          {voteInfo.map((champion) => (
+            <div
+              style={{ width: `${659 / voteInfo.length}px`, height: '201px' }}
+              className='relative'
+            >
+              <Image
+                src={getImageUrlByName(champion.championName)}
+                alt='champion'
+                fill
+                className='object-cover'
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className='relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
+          <Image
+            src={getImageUrlByName(selectedChampion)}
+            alt='champion'
+            fill
+            className='object-cover object-top'
+          ></Image>
+        </div>
+      )}
     </div>
   );
 }
