@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
-import { useCallback } from 'react';
 import positions from '@/constants/positions';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

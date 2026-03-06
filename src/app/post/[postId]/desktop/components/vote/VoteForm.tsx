@@ -17,7 +17,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx, setIsNotAbleSubmit } =
     usePostIdStore();
 
-  const [selectedChampion, setSelectedChampion] = useState<string>(voteInfo[0].championName);
+  const [selectedChampion, setSelectedChampion] = useState<string>('');
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
