@@ -31,9 +31,6 @@ export function useChampion() {
     (name: string) => {
       const target = champions.find((c) => c.name === name);
 
-      console.log('찾는 name:', name);
-      console.log('찾은 target id:', target?.id);
-
       if (!target) return '';
       return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${target.id}_0.jpg`;
     },

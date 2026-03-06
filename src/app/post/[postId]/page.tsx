@@ -7,19 +7,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
-// import CommentArea from '../_component/CommentArea';
-// import ContentArea from '../_component/ContentArea';
-// import NavigationArea from '../_component/NavigationArea';
-// import VoteArea from '../_component/VoteArea';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import { useLoginStore } from '@/store/login/useLoginStore';
-import VoteArea from '@/app/post/_component/vote/VoteArea';
-import ContentArea from '@/app/post/_component/content/ContentArea';
-import CommentArea from '@/app/post/_component/comment/CommentArea';
-import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ClaimVoteBox from '@/app/post/_component/vote/claim/ClaimVoteBox';
 import PostDetailPC from './desktop/PostDetailPC';
@@ -58,12 +49,12 @@ export default function PostDetailMain() {
   }, [error, router]);
 
   useEffect(() => {
+    if (post) {
+      setVoteData(post.postDTO.inGameInfoList);
+    }
     if (post && user) {
       if (post.postDTO.memberDTO.nickname === user.nickname) {
         setIsOwner(true);
-      }
-      if (post) {
-        setVoteData(post.postDTO.inGameInfoList);
       }
     }
   }, [post, router, user]);

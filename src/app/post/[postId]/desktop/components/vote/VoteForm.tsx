@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { voteColors } from '@/data/championData';
 import usePostIdStore from '../../../store/usePostIdStore';
 import ChampionImgBox from './ChampionImgBox';
-import GraphBox from './GraphBox';
+import BottomBox from './BottomBox';
 
 interface IVoteFormProps {
   voteInfo: IGetInGameInfoType[];
@@ -16,8 +16,8 @@ interface IVoteFormProps {
 export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVoteFormProps) {
   const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx, setIsNotAbleSubmit } =
     usePostIdStore();
-
-  const [selectedChampion, setSelectedChampion] = useState<string>('');
+  const [isHamburgerClicked, setIsHamburgerClicked] = useState<boolean>(false);
+  const [selectedChampion, setSelectedChampion] = useState<string>(voteInfo[0].championName);
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -42,7 +42,11 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
 
   return (
     <div className='relative flex flex-col w-[719px] p-[30px] items-center rounded-[20px] bg-[#ffffff] gap-[20px]'>
-      <ChampionImgBox selectedChampion={selectedChampion} voteCount={voteCount} />
+      <ChampionImgBox
+        selectedChampion={selectedChampion}
+        voteCount={voteCount}
+        isHamburgerClicked={isHamburgerClicked}
+      />
       <div className='flex gap-[8px] absolute top-[200px] left-[50px]'>
         {voteInfo.map((champion, index) => (
           <div
@@ -66,7 +70,12 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
           </div>
         ))}
       </div>
-      <GraphBox voteInfo={voteInfo} handleVoteSubmit={handleVoteSubmit} />
+      <BottomBox
+        voteInfo={voteInfo}
+        handleVoteSubmit={handleVoteSubmit}
+        isHamburgerClicked={isHamburgerClicked}
+        setIsHamburgerClicked={setIsHamburgerClicked}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import IconVote from '../../../../../../../public/svg/postItem/vote.svg';
 interface IProps {
   selectedChampion: string;
   voteCount: number;
+  isHamburgerClicked: boolean;
 }
 
 export default function ChampionImgBox({ selectedChampion, voteCount }: IProps) {
