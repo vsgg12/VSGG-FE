@@ -12,7 +12,7 @@ function SidebarList({ setIsLoginModalOpen }: Props) {
   return (
     <div className='flex flex-col gap-[20px] px-[10px] w-full'>
       {sidebarList.map((item) => (
-        <SidebarItem item={item} setIsLoginModalOpen={setIsLoginModalOpen} />
+        <SidebarItem key={item} item={item} setIsLoginModalOpen={setIsLoginModalOpen} />
       ))}
     </div>
   );

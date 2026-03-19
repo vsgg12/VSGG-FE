@@ -12,7 +12,7 @@ function SidebarListMini({ setIsLoginModalOpen }: Props) {
   return (
     <div className='flex flex-col gap-[20px] px-[10px] w-full mt-[150px]'>
       {sidebarList.map((item) => (
-        <SidebarItemMini item={item} setIsLoginModalOpen={setIsLoginModalOpen} />
+        <SidebarItemMini key={item} item={item} setIsLoginModalOpen={setIsLoginModalOpen} />
       ))}
     </div>
   );
