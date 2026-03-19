@@ -48,15 +48,16 @@ function ContentArea({ isOwner, setVoteData, post }: IContentArea) {
       setSanitizedHtml(sanitize);
       setVoteData(post.postDTO.inGameInfoList);
 
-      const newPostVoteResult = post.postDTO.inGameInfoList.map(
-        (ingameInfo: IGetInGameInfoType, idx: number) => ({
-          inGameInfoId: ingameInfo.inGameInfoId,
-          ratio: voteResult[idx] || 0,
-        }),
-      );
-      setPostVoteResult(newPostVoteResult);
+      // const newPostVoteResult = post.postDTO.inGameInfoList.map(
+      //   (ingameInfo: IGetInGameInfoType, idx: number) => ({
+      //     inGameInfoId: ingameInfo.inGameInfoId,
+      //     ratio: voteResult[idx] ?? 0,
+      //   }),
+      // );
+      // console.log('newPostVoteResult', newPostVoteResult);
+      // setPostVoteResult(newPostVoteResult);
     }
-  }, [post, voteResult, setPostVoteResult]);
+  }, [post, voteResult, setPostVoteResult, setVoteData]);
 
   const handleMoreIconClick = () => {
     setIsMoreModalOpen(!isMoreModalOpen);

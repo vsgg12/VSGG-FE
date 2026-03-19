@@ -11,9 +11,7 @@ import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import ClaimVoteBox from '@/app/post/_component/vote/claim/ClaimVoteBox';
 import PostDetailPC from './desktop/PostDetailPC';
 
 export default function PostDetailMain() {
@@ -56,7 +54,6 @@ export default function PostDetailMain() {
       }
       if (post) {
         setVoteData(post.postDTO.inGameInfoList);
-        console.log(post.postDTO.inGameInfoList);
       }
     }
   }, [post, router, user]);

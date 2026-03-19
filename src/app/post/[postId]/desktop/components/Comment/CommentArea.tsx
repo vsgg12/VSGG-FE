@@ -67,19 +67,16 @@ function CommentArea({ id }: Props) {
   const handleReplyScroll = (id: number) => {
     if (replyRef.current[id]) {
       replyRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(replyRef.current);
     }
   };
 
   const handleCommentScroll = (id: number) => {
     if (commentRef.current[id]) {
       commentRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(commentRef.current);
     }
   };
 
   const onCommentSubmit = (data: { commentContent: string }) => {
-    console.log(data);
     if (isCommentInProgress) {
       return;
     }

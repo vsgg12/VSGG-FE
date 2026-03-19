@@ -45,7 +45,7 @@ export default function BottomBox({
         {isHamburgerClicked ? (
           <div className='flex flex-col items-center w-[618px] gap-[16px]'>
             {voteInfo.map((champion) => (
-              <div className='flex items-center w-full'>
+              <div className='flex items-center w-full' key={champion.championName}>
                 <Image
                   width={40}
                   height={40}

@@ -28,11 +28,15 @@ export function useChampion() {
   }, []);
 
   const getImageUrlByName = useCallback(
-    (name: string) => {
+    (name: string, type?: string) => {
       const target = champions.find((c) => c.name === name);
 
       if (!target) return '';
-      return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${target.id}_0.jpg`;
+      if (type === 'flash') {
+        return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${target.id}_0.jpg`;
+      } else {
+        return `https://ddragon.leagueoflegends.com/cdn/img/champion/centered/${target.id}_0.jpg`;
+      }
     },
     [champions],
   );

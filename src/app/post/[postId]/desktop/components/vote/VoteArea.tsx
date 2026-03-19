@@ -19,7 +19,7 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
   const { loading } = useChampion();
   const { setIsLoginModalOpen } = useLoginStore();
   const queryClient = useQueryClient();
-  const { postVoteResult } = usePostIdStore();
+  const { postVoteResult, voteResult, setPostVoteResult } = usePostIdStore();
   const { postId } = useParams();
   const id: string = postId as string;
   const { accessToken, isLogin } = useAuthStore();
@@ -38,6 +38,15 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
       setIsLoginModalOpen(true);
       return;
     }
+    const newPostVoteResult = post.postDTO.inGameInfoList.map(
+      (ingameInfo: IGetInGameInfoType, idx: number) => ({
+        inGameInfoId: ingameInfo.inGameInfoId,
+        ratio: voteResult[idx] ?? 0,
+      }),
+    );
+    console.log('newPostVoteResult', newPostVoteResult);
+    setPostVoteResult(newPostVoteResult);
+    console.log('postVoteResult', postVoteResult);
     postVote();
   };
 
@@ -52,7 +61,7 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
           handleVoteSubmit={handleVoteSubmit}
         />
       )}
-      {(post.postDTO.status === 'FINISHED' || !isLogin) && (
+      {(post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote) && (
         <ChampionVoteBox
           voteData={voteData}
           voteCount={30}

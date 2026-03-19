@@ -30,6 +30,7 @@ export default function ChampionImgBox({
             <div
               style={{ width: `${659 / voteInfo.length}px`, height: '201px' }}
               className='relative'
+              key={champion.championName}
             >
               <Image
                 src={getImageUrlByName(champion.championName)}
@@ -43,7 +44,7 @@ export default function ChampionImgBox({
       ) : (
         <div className='relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
           <Image
-            src={getImageUrlByName(selectedChampion)}
+            src={getImageUrlByName(selectedChampion, 'flash')}
             alt='champion'
             fill
             className='object-cover object-top'
