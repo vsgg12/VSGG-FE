@@ -4,9 +4,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: (isNotification: boolean) => void;
   children: React.ReactNode;
+  isMini?: boolean;
 }
 
-export const SidebarModalLayout = ({ isOpen, onClose, children }: ModalProps) => {
+export const SidebarModalLayout = ({ isOpen, onClose, children, isMini = false }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +30,10 @@ export const SidebarModalLayout = ({ isOpen, onClose, children }: ModalProps) =>
 
   return (
     <div className='fixed inset-0 w-screen h-screen z-[1000]'>
-      <div ref={modalRef} className='absolute top-0 left-[260px] h-screen w-[362px] bg-white'>
+      <div
+        ref={modalRef}
+        className={`absolute top-0 ${isMini ? 'left-[50px]' : 'left-[260px]'} h-screen w-[362px] bg-white`}
+      >
         {children}
       </div>
     </div>

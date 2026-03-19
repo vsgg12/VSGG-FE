@@ -37,7 +37,7 @@ export default function PostDetailMain() {
   });
 
   useEffect(() => {
-    setRouteState('HOME');
+    setRouteState('MINI');
   }, [setRouteState]);
 
   useEffect(() => {
