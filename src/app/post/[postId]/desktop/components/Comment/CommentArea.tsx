@@ -113,7 +113,11 @@ function CommentArea({ id }: Props) {
           <CommentInput targetNickname={targetComment.nickname} />
         </form>
       </FormProvider>
-      <CommentBox commentData={commentData!} />
+      <CommentBox
+        commentData={commentData!}
+        targetComment={targetComment}
+        setTargetComment={setTargetComment}
+      />
     </div>
   );
 }

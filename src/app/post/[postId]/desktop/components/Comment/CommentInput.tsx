@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/modals/ModalLayout';
 import { useFormContext } from 'react-hook-form';
 
@@ -18,7 +18,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   useEffect(() => {
     handleFocusTextarea();
 
-    if (targetNickname) {
+    if (targetNickname && textareaRef.current) {
       const currentValue = getValues('commentContent');
       if (!currentValue?.startsWith(`@${targetNickname}`)) {
         setValue('commentContent', `@${targetNickname} `);
@@ -70,11 +70,22 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
     }
   };
 
-  const handleFocusTextarea = () => {
+  const handleFocusTextarea = useCallback(() => {
     if (targetNickname && textareaRef.current) {
       textareaRef.current.focus();
     }
-  };
+  }, [targetNickname]);
+
+  useEffect(() => {
+    handleFocusTextarea();
+
+    if (targetNickname) {
+      const currentValue = getValues('commentContent');
+      if (!currentValue?.startsWith(`@${targetNickname}`)) {
+        setValue('commentContent', `@${targetNickname} `);
+      }
+    }
+  }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
     <div className='min-h-[40px] w-[452px] rounded-[30px] flex bg-[#FFFFFF] py-[10px] px-[20px]'>

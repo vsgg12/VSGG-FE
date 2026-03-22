@@ -8,9 +8,16 @@ import Comment from '@/app/post/[postId]/desktop/components/Comment/CommentItem'
 
 interface Props {
   commentData: IGetCommentListType;
+  targetComment: { id: number | null; nickname: string };
+  setTargetComment: React.Dispatch<
+    React.SetStateAction<{
+      id: number | null;
+      nickname: string;
+    }>
+  >;
 }
 
-function CommentBox({ commentData }: Props) {
+function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
   const { isLogin, user } = useAuthStore();
   const [showReply, setShowReply] = useState<null | number>(null);
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
@@ -18,10 +25,10 @@ function CommentBox({ commentData }: Props) {
 
   const replyRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
   const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
-  const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
-    id: null,
-    nickname: '',
-  });
+  // const [targetComment, setTargetComment] = useState<{ id: number | null; nickname: string }>({
+  //   id: null,
+  //   nickname: '',
+  // });
   const [newCommentId, setNewCommentId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -61,6 +68,7 @@ function CommentBox({ commentData }: Props) {
     if (!isLogin) {
       setIsLoginModalOpen(true);
     } else {
+      console.log('답글달기', targetId, targetNickname);
       setTargetComment({ id: targetId, nickname: targetNickname });
       setShowReply(parentId);
     }
