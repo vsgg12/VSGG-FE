@@ -54,7 +54,7 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
 
   return (
     <div className='w-[720px] bg-white rounded-[20px] flex items-center justify-center p-[30px]'>
-      {post.postDTO.status === 'PROGRESS' && isLogin && (
+      {post.postDTO.status === 'PROGRESS' && isLogin && !post.postDTO.isVote && (
         <VoteForm
           voteInfo={voteData}
           voteCount={post.postDTO.voteCount}

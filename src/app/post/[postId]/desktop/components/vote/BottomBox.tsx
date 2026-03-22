@@ -48,9 +48,9 @@ export default function BottomBox({
         {isHamburgerClicked ? (
           <div className='flex flex-col items-center w-[618px] gap-[16px]'>
             {voteInfo.map((champion) => (
-              <div className='flex items-center w-full' key={champion.championName}>
-                <div className='flex items-center gap-[10px]'>
-                  <div className='w-[40px] h-[40px]'>
+              <div className='flex items-center w-full pr-[50px]' key={champion.championName}>
+                <div className='flex items-center gap-[20px] grow'>
+                  <div className='w-[40px] h-[40px] '>
                     <Image
                       width={40}
                       height={40}
@@ -64,17 +64,19 @@ export default function BottomBox({
                     {/* <span className='text-[12px] font-semibold text-[#C8C8C8]'>#dddd</span> */}
                   </p>
                 </div>
-                <div className='flex items-center gap-[10px]'>
-                  <div className='flex items-center'>
+                <div className='flex items-center gap-[40px]'>
+                  <div className='flex items-center justify-start min-w-[90px] self-start'>
                     {getTierIcon(champion.tier)}
                     <p
-                      className='text-[14px] font-semibold '
+                      className='text-[14px] font-semibold'
                       style={{ color: getTierColor(champion.tier) }}
                     >
                       {champion.tier}
                     </p>
                   </div>
-                  <p className='text-[14px] text-[#777777] font-semibold '>{champion.position}</p>
+                  <p className='text-[14px] text-[#777777] font-semibold min-w-[25px] text-center'>
+                    {champion.position}
+                  </p>
                 </div>
               </div>
             ))}

@@ -101,7 +101,6 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
       {/* 안내 문구 및 버튼 */}
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
-          {/* 비로그인 상태 */}
           {!isLogin && (
             <>
               <div className='flex flex-col items-center gap-1 drop-shadow-lg text-[20px] font-bold'>
