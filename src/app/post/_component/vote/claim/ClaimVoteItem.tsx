@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from 'react';
 import positions from '@/constants/positions';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import tiers from '@/constants/tier';
+import tiersData from '@/constants/tier';
 
 interface Props {
   position: string;
@@ -27,6 +27,7 @@ const ClaimVoteItem = ({
   onVoteItemClick,
 }: Props) => {
   const { allChampions } = useWriteStore();
+  const { tiers } = tiersData;
 
   const getTierIcon = useCallback(() => {
     return tiers.find((item) => item.content === tier)?.svg;

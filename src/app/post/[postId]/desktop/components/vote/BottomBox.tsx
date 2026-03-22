@@ -3,9 +3,10 @@ import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import Icon_Hamburger from '../../../../../../../public/svg/postItem/hamburger.svg';
 import Icon_Hamburger_activated from '../../../../../../../public/svg/postItem/hamburger_activated.svg';
-import tiers from '@/constants/tier';
+import tiersData from '@/constants/tier';
 import usePostIdStore from '../../../store/usePostIdStore';
 import { voteColors } from '@/data/championData';
+import { useChampion } from '@/hooks/useChampion';
 
 interface IProps {
   voteInfo: IGetInGameInfoType[];
@@ -21,13 +22,15 @@ export default function BottomBox({
   setIsHamburgerClicked,
 }: IProps) {
   const { voteResult, isNotAbleSubmit, selectedChampIdx } = usePostIdStore();
+  const { getImageUrlByName } = useChampion();
+  const { tiersMini } = tiersData;
 
   const getTierIcon = useCallback((tier: string) => {
-    return tiers.find((item) => item.content === tier)?.svg;
+    return tiersMini.find((item) => item.content === tier)?.svg;
   }, []);
 
   const getTierColor = useCallback((tier: string) => {
-    return tiers.find((item) => item.content === tier)?.color;
+    return tiersMini.find((item) => item.content === tier)?.color;
   }, []);
   return (
     <div className='flex flex-col relative items-center w-[618px] min-h-[136px]'>
@@ -46,26 +49,33 @@ export default function BottomBox({
           <div className='flex flex-col items-center w-[618px] gap-[16px]'>
             {voteInfo.map((champion) => (
               <div className='flex items-center w-full' key={champion.championName}>
-                <Image
-                  width={40}
-                  height={40}
-                  src={''}
-                  alt='profile_img'
-                  className='rounded-full mr-[14px]'
-                />
-                <p className='font-bold text-[14px] text-[#333333]'>
-                  이름이름<span className='text-[12px] font-semibold text-[#C8C8C8]'>#dddd</span>
-                </p>
-                <div className='flex items-center'>
-                  {getTierIcon(champion.tier)}
-                  <p
-                    className='text-[14px] font-semibold '
-                    style={{ color: getTierColor(champion.tier) }}
-                  >
-                    {champion.tier}
+                <div className='flex items-center gap-[10px]'>
+                  <div className='w-[40px] h-[40px]'>
+                    <Image
+                      width={40}
+                      height={40}
+                      src={getImageUrlByName(champion.championName)}
+                      alt='profile_img'
+                      className='rounded-full mr-[14px]w-full h-full'
+                    />
+                  </div>
+                  <p className='font-bold text-[14px] text-[#333333]'>
+                    {champion.championName}
+                    {/* <span className='text-[12px] font-semibold text-[#C8C8C8]'>#dddd</span> */}
                   </p>
                 </div>
-                <p className='text-[14px] text-[#777777] font-semibold '>{champion.position}</p>
+                <div className='flex items-center gap-[10px]'>
+                  <div className='flex items-center'>
+                    {getTierIcon(champion.tier)}
+                    <p
+                      className='text-[14px] font-semibold '
+                      style={{ color: getTierColor(champion.tier) }}
+                    >
+                      {champion.tier}
+                    </p>
+                  </div>
+                  <p className='text-[14px] text-[#777777] font-semibold '>{champion.position}</p>
+                </div>
               </div>
             ))}
           </div>

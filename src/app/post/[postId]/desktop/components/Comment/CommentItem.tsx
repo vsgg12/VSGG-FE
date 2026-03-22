@@ -9,7 +9,7 @@ interface ICommentProps {
   handleReply: () => void;
 }
 
-export default function Comment({ comment, targetComment, handleReply }: ICommentProps) {
+export default function CommentItem({ comment, targetComment, handleReply }: ICommentProps) {
   const timeAgo = useTimeDifferenceFromNow(comment.createdDateTime);
 
   return (

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Icon_more from '../../../../../../../public/svg/Icon_more.svg';
 import { useLoginStore } from '@/store/login/useLoginStore';
-import Comment from '@/app/post/_component/comment/Comment';
+import Comment from '@/app/post/[postId]/desktop/components/Comment/CommentItem';
 
 interface Props {
   commentData: IGetCommentListType;

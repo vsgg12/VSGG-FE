@@ -1,6 +1,6 @@
 'use client';
 
-import tiers from '@/constants/tier';
+import tiersData from '@/constants/tier';
 import { useCallback } from 'react';
 import positions from '@/constants/positions';
 import { clsx } from 'clsx';
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover }: Props) => {
+  const { tiers } = tiersData;
   const getTierIcon = useCallback(() => {
     return tiers.find((item) => item.content === tier)?.svg;
   }, [tier]);

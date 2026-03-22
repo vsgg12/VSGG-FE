@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import tiers from '@/constants/tier';
+import tiersData from '@/constants/tier';
 import positions from '@/constants/positions';
 import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
 
@@ -26,6 +26,7 @@ export const useVoteResult = ({
   const { isLogin } = useAuthStore();
   const { setIsLoginModalOpen } = useLoginStore();
   const { allChampions } = useWriteStore();
+  const { tiers } = tiersData;
 
   const isVoteEnd = daysUntilEnd < 0;
   const isNoVote = voteCount === 0; // 아무도 투표를 안했을경우
