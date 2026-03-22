@@ -88,9 +88,9 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
-    <div className='min-h-[40px] w-[452px] rounded-[30px] flex bg-[#FFFFFF] py-[10px] px-[20px]'>
+    <div className='min-h-[20px] w-[452px] rounded-[30px] flex bg-[#FFFFFF] py-[10px] px-[20px]'>
       <textarea
-        className='w-full h-[40px] overflow-scroll text-[14px] box-border focus:outline-none resize-none scrollbar-hide'
+        className='w-full h-[20px] overflow-scroll text-[14px] box-border focus:outline-none resize-none scrollbar-hide'
         {...rest}
         ref={(e) => {
           ref(e);
