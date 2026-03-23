@@ -22,7 +22,7 @@ import { useMediaQuery } from 'react-responsive';
 import MyPage_Mobile from './mobile/MyPageMobile';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import Sidebar from '@/components/sidebar/Sidebar';
+import SidebarMini from '@/components/sidebar/SidebarMini';
 
 export default function MyPage() {
   const router = useRouter();
@@ -60,8 +60,8 @@ export default function MyPage() {
       {isMobile ? (
         <MyPage_Mobile />
       ) : (
-        <div className='min-w-[1000px] pl-[250px]'>
-          <Sidebar />
+        <div className='min-w-[1400px]'>
+          <SidebarMini />
           <div className='mb-[100px] mt-[150px] flex flex-col items-center justify-center gap-[32px] min-w-[1280px]'>
             <Logo />
           </div>
