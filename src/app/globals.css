@@ -107,10 +107,6 @@ body {
   @apply mb-[9.375rem];
 }
 
-.p-content-tag {
-  @apply p-content-s-mr rounded-full border-2 px-[0.875rem] py-[0.5rem] text-xs;
-}
-
 .p-voting-champ-dot {
   @apply h-[12px] w-[12px] rounded-full;
 }
