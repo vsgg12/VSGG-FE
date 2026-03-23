@@ -77,7 +77,7 @@ export default function MyPage() {
                   <div className='h-[135px] w-[135px] rounded-full relative'>
                     <img
                       src={
-                        userProfileData.memberProfileDTO.profileUrl === 'none'
+                        userProfileData.memberProfileDTO.profileUrl === ''
                           ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                           : userProfileData.memberProfileDTO.profileUrl
                       }

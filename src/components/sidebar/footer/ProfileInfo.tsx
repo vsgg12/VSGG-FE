@@ -33,7 +33,9 @@ function ProfileInfo() {
     >
       <img
         src={
-          isLogin && userProfileData ? userProfileData.memberProfileDTO.profileUrl : defaultImage
+          isLogin && userProfileData?.memberProfileDTO.profileUrl === ''
+            ? defaultImage
+            : userProfileData?.memberProfileDTO.profileUrl
         }
         className='rounded-full block w-[48px] h-[48px] object-cover'
         alt={'프로필 이미지'}
