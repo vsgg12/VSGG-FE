@@ -40,7 +40,6 @@ interface ICreatePostRequestProps {
   title: stirng;
   // content: string;
   type: string;
-  hashtag: string[];
   ingameInfoRequests: inGameInfoRequests[];
   videoUrl: string;
 }

@@ -19,7 +19,6 @@ type IGetPostDTOType = {
   memberDTO: IGetMemberDTOType;
   createdAt: string;
   updatedAt: string;
-  hashtagList: IHashTagListType[];
   inGameInfoList: IGetInGameInfoType[];
   isVote: boolean;
   isDeleted: 'TRUE' | 'FALSE';
@@ -45,11 +44,6 @@ type IGetMemberDTOType = {
   agreeTerms: boolean;
   agreePrivacy: boolean;
   agreePromotion: boolean;
-};
-
-type IHashTagListType = {
-  id: number;
-  name: string;
 };
 
 // 게시물 상세 조회 페이지
