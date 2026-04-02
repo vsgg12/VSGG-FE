@@ -3,27 +3,7 @@
 import { clsx } from 'clsx';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
-import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
 import ChampionVoteResultItem from '@/app/post/_component/vote/champion/ChampionVoteResultItem';
-
-const DUMMY_VOTE_DATA: VoteDataType[] = [
-  {
-    inGameInfoId: 1,
-    position: '미드',
-    championName: '트위스티드 페이트',
-    tier: '골드',
-    voteNum: 12, // 백엔드에 추가해달라 해야함
-    averageRatio: 2,
-  },
-  {
-    inGameInfoId: 2,
-    position: '원딜',
-    championName: '베인',
-    tier: '실버',
-    voteNum: 18, // 백엔드에 추가해달라 해야함
-    averageRatio: 3,
-  },
-];
 
 interface Props {
   voteData: IGetInGameInfoType[];
@@ -44,7 +24,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
     setIsLoginModalOpen,
     getChampionImage,
     sortedVoteData,
-  } = useVoteResult({ voteCount, daysUntilEnd, voteData, DUMMY_VOTE_DATA, isOwner, isVote });
+  } = useVoteResult({ voteCount, daysUntilEnd, voteData, isOwner, isVote });
 
   // 2. 아이템 갯수에 따른 동적 Gap 클래스 계산 (아이템 갯수에 따라 간격 조절)
   const listGapClass = useMemo(() => {
@@ -84,6 +64,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
                   position={item.position}
                   championName={item.championName}
                   tier={item.tier}
+                  voteCount={item.voteCount}
                   averageRatio={item.averageRatio.toFixed(1)}
                   isHover={isHover === idx}
                 />
@@ -93,7 +74,10 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
 
           <div className='flex flex-col text-white items-end self-end pb-[10px]'>
             <div className='text-[40px] font-bold'>{currentHoverItem.averageRatio.toFixed(1)}</div>
-            <div className='text-[20px] font-semibold'>{currentHoverItem.voteNum}표</div>
+            <div className='text-[20px] font-semibold'>
+              {currentHoverItem.voteCount}
+              {currentHoverItem.voteCount}표
+            </div>
           </div>
         </div>
       </div>

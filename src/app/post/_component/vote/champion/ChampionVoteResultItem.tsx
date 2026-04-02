@@ -12,7 +12,8 @@ interface Props {
   position: string;
   championName: string;
   tier: string;
-  averageRatio: string; // 비율
+  averageRatio: string;
+  voteCount: number;
   isHover: boolean;
 }
 

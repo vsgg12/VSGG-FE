@@ -4,25 +4,16 @@ import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import tiersData from '@/constants/tier';
 import positions from '@/constants/positions';
-import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
 
 interface Props {
   voteCount: number;
   daysUntilEnd: number;
   voteData: IGetInGameInfoType[];
-  DUMMY_VOTE_DATA?: VoteDataType[];
   isOwner: boolean;
   isVote: boolean;
 }
 
-export const useVoteResult = ({
-  voteCount,
-  daysUntilEnd,
-  voteData,
-  DUMMY_VOTE_DATA,
-  isOwner, // 내가 게시글 작성자인지
-  isVote, // 내가 투표를 했는지
-}: Props) => {
+export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, isOwner, isVote }: Props) => {
   const { isLogin } = useAuthStore();
   const { setIsLoginModalOpen } = useLoginStore();
   const { allChampions } = useWriteStore();
@@ -47,13 +38,10 @@ export const useVoteResult = ({
   const shouldBlur = checkShouldBlur();
 
   // 득표율 계산 (소수점 1자리 문자열 반환)
-  const getRatio = useCallback(
-    (voteNum: number) => {
-      if (voteCount === 0) return '0.0';
-      return ((voteNum / voteCount) * 100).toFixed(1);
-    },
-    [voteCount],
-  );
+  const getRatio = useCallback((voteCount: number) => {
+    if (voteCount === 0) return '0.0';
+    return ((voteCount / voteCount) * 100).toFixed(1);
+  }, []);
 
   // 챔피언 이름으로 풀 이미지 URL 찾기
   const getChampionImage = useCallback(
@@ -65,9 +53,12 @@ export const useVoteResult = ({
   );
 
   // 티어 아이콘 찾기
-  const getTierIcon = useCallback((tierName: string) => {
-    return tiers.find((item) => item.content === tierName)?.svg;
-  }, []);
+  const getTierIcon = useCallback(
+    (tierName: string) => {
+      return tiers.find((item) => item.content === tierName)?.svg;
+    },
+    [tiers],
+  );
 
   // 포지션 아이콘 찾기
   const getPositionIcon = useCallback((positionName: string, isHover: boolean = false) => {
@@ -75,15 +66,15 @@ export const useVoteResult = ({
     return isHover ? positionItem?.svgW : positionItem?.svg;
   }, []);
 
-  // 득표수(voteNum) 기준으로 내림차순 정렬
+  // 득표수(voteCount) 기준으로 내림차순 정렬
   const sortedVoteData = useMemo(() => {
-    return [...DUMMY_VOTE_DATA!].sort((a, b) => b.averageRatio - a.averageRatio);
+    return [...voteData!].sort((a, b) => b.averageRatio - a.averageRatio);
   }, [voteData]);
 
   // 비율 계산 헬퍼 함수(백분율)
-  const getCalculatedRatio = (voteNum: number) => {
+  const getCalculatedRatio = (voteCount: number) => {
     if (voteCount === 0) return '0.0';
-    return ((voteNum / voteCount) * 100).toFixed(1);
+    return ((voteCount / voteCount) * 100).toFixed(1);
   };
 
   return {

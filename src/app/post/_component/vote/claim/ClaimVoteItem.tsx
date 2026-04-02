@@ -11,7 +11,7 @@ interface Props {
   tier: string;
   claim: string;
   ratio: string;
-  voteNum: number;
+  voteCount: number;
   shouldBlur: boolean;
   onVoteItemClick: () => void; // 투표 item 클릭 시 투표 api 호출
 }
@@ -22,7 +22,7 @@ const ClaimVoteItem = ({
   tier,
   claim,
   ratio,
-  voteNum,
+  voteCount,
   shouldBlur,
   onVoteItemClick,
 }: Props) => {
@@ -86,7 +86,7 @@ const ClaimVoteItem = ({
         {!shouldBlur && (
           <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
             <span className='text-[24px] leading-none'>{ratio}%</span>
-            <span className='text-[12px]'>{voteNum}표</span>
+            <span className='text-[12px]'>{voteCount}표</span>
           </div>
         )}
       </div>
