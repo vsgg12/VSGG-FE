@@ -69,19 +69,22 @@ type IGetCommentItemType = {
   children?: IGetCommentItemType[];
 };
 
-type IGetVoteType = {
-  championName: string;
-  votedRatio: number;
-  position: string;
-  tier: string;
-};
+// type IGetVoteType = {
+//   championName: string;
+//   votedRatio: number;
+//   position: string;
+//   tier: string;
+// };
+//안 쓰는 듯 지울 예정 03.30.2026
 
 type IGetInGameInfoType = {
-  averageRatio?: number | null;
-  championName: string;
   inGameInfoId: number;
-  position: string;
   tier: string;
+  position: string;
+  championName: string;
+  averageRatio?: number | null;
+  voteCount: number;
+  claim: string;
 };
 
 // 알람 확인

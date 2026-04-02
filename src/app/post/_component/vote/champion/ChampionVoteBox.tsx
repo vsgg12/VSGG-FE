@@ -1,10 +1,10 @@
 'use client';
 
 import { clsx } from 'clsx';
-import ChampionVoteItem from '@/app/post/_component/vote/champion/ChampionVoteItem';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
 import { VoteDataType } from '@/app/post/_component/vote/claim/ClaimVoteBox';
+import ChampionVoteResultItem from '@/app/post/_component/vote/champion/ChampionVoteResultItem';
 
 const DUMMY_VOTE_DATA: VoteDataType[] = [
   {
@@ -80,7 +80,7 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
           >
             {sortedVoteData.map((item, idx) => (
               <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
-                <ChampionVoteItem
+                <ChampionVoteResultItem
                   position={item.position}
                   championName={item.championName}
                   tier={item.tier}

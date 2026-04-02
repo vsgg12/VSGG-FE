@@ -16,7 +16,7 @@ interface Props {
   isHover: boolean;
 }
 
-const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover }: Props) => {
+const ChampionVoteResultItem = ({ position, championName, tier, averageRatio, isHover }: Props) => {
   const { tiers } = tiersData;
   const getTierIcon = useCallback(() => {
     return tiers.find((item) => item.content === tier)?.svg;
@@ -78,4 +78,4 @@ const ChampionVoteItem = ({ position, championName, tier, averageRatio, isHover 
   );
 };
 
-export default ChampionVoteItem;
+export default ChampionVoteResultItem;
