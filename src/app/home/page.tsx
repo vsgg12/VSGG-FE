@@ -168,7 +168,7 @@ export default function Home() {
                   isListed ? (
                     <ListPostItem post={post} key={idx} />
                   ) : (
-                    <div className='relative'>
+                    <div className='relative' key={idx}>
                       <PostItem
                         post={post}
                         voteInfos={post.inGameInfoList}
