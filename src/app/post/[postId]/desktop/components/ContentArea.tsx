@@ -111,21 +111,37 @@ function ContentArea({ post }: Props) {
     }
   };
 
+  const getYoutubeId = (url: string) => {
+    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
+
   return (
     <div className='w-[720px] h-[886px] flex flex-col bg-[#FFFFFF] rounded-[20px] p-[30px] gap-[20px]'>
       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
         <p className='font-bold text-[24px]'>{post.title}</p>
       </div>
-      <video
-        muted
-        controls
-        playsInline
-        poster={post.thumbnailURL}
-        className='w-[660px] h-[371px] rounded-[10px] block visible'
-      >
-        <source src={post.video.url} type='video/mp4' />
-        <source src={post.video.url} type='video/webm' />
-      </video>
+      {post.video.type === 'FILE' ? (
+        <video
+          muted
+          controls
+          playsInline
+          poster={post.thumbnailURL}
+          className='w-[660px] h-[371px] rounded-[10px] block visible'
+        >
+          <source src={post.video.url} type='video/mp4' />
+          <source src={post.video.url} type='video/webm' />
+        </video>
+      ) : (
+        <iframe
+          src={`https://www.youtube.com/embed/${getYoutubeId(post.video.url)}`}
+          width='560'
+          height='315'
+          allowFullScreen
+          className='w-[660px] h-[371px] rounded-[10px] block visible'
+        />
+      )}
       <div
         className='h-[350px] break-words overflow-scroll'
         dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
