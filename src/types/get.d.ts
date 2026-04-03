@@ -28,7 +28,7 @@ type IGetPostDTOType = {
 
 type IGetVideoType = {
   url: string;
-  type: string;
+  type: string; //FILE or LINK
 };
 
 type IGetMemberDTOType = {
@@ -68,14 +68,6 @@ type IGetCommentItemType = {
   parentMemberNickname: string | null;
   children?: IGetCommentItemType[];
 };
-
-// type IGetVoteType = {
-//   championName: string;
-//   votedRatio: number;
-//   position: string;
-//   tier: string;
-// };
-//안 쓰는 듯 지울 예정 03.30.2026
 
 type IGetInGameInfoType = {
   inGameInfoId: number;
