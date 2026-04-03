@@ -6,43 +6,29 @@ import { useWriteStore } from '@/store/write/useWriteStore';
 import tiersData from '@/constants/tier';
 
 interface Props {
-  position: string;
-  championName: string;
-  tier: string;
-  claim: string;
-  ratio: string;
-  voteCount: number;
+  voteItem: IGetInGameInfoType;
   shouldBlur: boolean;
   onVoteItemClick: () => void; // 투표 item 클릭 시 투표 api 호출
 }
 
-const ClaimVoteItem = ({
-  position,
-  championName,
-  tier,
-  claim,
-  ratio,
-  voteCount,
-  shouldBlur,
-  onVoteItemClick,
-}: Props) => {
+const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
   const { allChampions } = useWriteStore();
   const { tiers } = tiersData;
 
   const getTierIcon = useCallback(() => {
-    return tiers.find((item) => item.content === tier)?.svg;
-  }, [tier]);
+    return tiers.find((item) => item.content === voteItem.tier)?.svg;
+  }, [tiers, voteItem.tier]);
 
   const getPositionIcon = useCallback(() => {
-    const positionItem = positions.find((item) => item.content === position);
+    const positionItem = positions.find((item) => item.content === voteItem.position);
     return positionItem?.svgW;
-  }, [position]);
+  }, [voteItem.position]);
 
   // 배경 이미지 URL 찾기
   const currentBgImage = useMemo(() => {
-    const champion = allChampions.find((c) => c.name === championName);
+    const champion = allChampions.find((c) => c.name === voteItem.championName);
     return champion?.fullImage || '';
-  }, [allChampions, championName]);
+  }, [allChampions, voteItem.championName]);
 
   return (
     <div
@@ -58,7 +44,7 @@ const ClaimVoteItem = ({
       {!shouldBlur && (
         <div
           className='absolute top-0 left-0 h-full bg-[#8A1F21]/40 z-20 transition-all duration-500 ease-out'
-          style={{ width: `${ratio}%` }}
+          style={{ width: `${voteItem.averageRatio}%` }}
         />
       )}
 
@@ -71,22 +57,24 @@ const ClaimVoteItem = ({
             <div className='w-[16px] h-[16px] flex items-center justify-center'>
               {getPositionIcon()}
             </div>
-            <span className={'font-semibold text-[16px] text-[#D9D9D9]'}>{championName}</span>
+            <span className={'font-semibold text-[16px] text-[#D9D9D9]'}>
+              {voteItem.championName}
+            </span>
             <span className={'w-[12px] h-[12px]'}>{getTierIcon()}</span>
-            <span className='text-[#51484A]'>{tier}</span>
+            <span className='text-[#51484A]'>{voteItem.tier}</span>
           </div>
 
           {/* 하단: 주장 */}
           <div className='text-[18px] font-bold leading-tight truncate pr-4 drop-shadow-md'>
-            {claim}
+            {voteItem.claim}
           </div>
         </div>
 
         {/* 오른쪽: 득표율 및 투표 수 */}
         {!shouldBlur && (
           <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
-            <span className='text-[24px] leading-none'>{ratio}%</span>
-            <span className='text-[12px]'>{voteCount}표</span>
+            <span className='text-[24px] leading-none'>{voteItem.averageRatio}%</span>
+            <span className='text-[12px]'>{voteItem.voteCount}표</span>
           </div>
         )}
       </div>

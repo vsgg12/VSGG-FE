@@ -60,24 +60,16 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
           >
             {sortedVoteData.map((item, idx) => (
               <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
-                <ChampionVoteResultItem
-                  position={item.position}
-                  championName={item.championName}
-                  tier={item.tier}
-                  voteCount={item.voteCount}
-                  averageRatio={item.averageRatio.toFixed(1)}
-                  isHover={isHover === idx}
-                />
+                <ChampionVoteResultItem voteItem={item} isHover={isHover === idx} />
               </div>
             ))}
           </div>
 
           <div className='flex flex-col text-white items-end self-end pb-[10px]'>
-            <div className='text-[40px] font-bold'>{currentHoverItem.averageRatio.toFixed(1)}</div>
-            <div className='text-[20px] font-semibold'>
-              {currentHoverItem.voteCount}
-              {currentHoverItem.voteCount}표
+            <div className='text-[40px] font-bold'>
+              {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
             </div>
+            <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
           </div>
         </div>
       </div>

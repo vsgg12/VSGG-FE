@@ -9,24 +9,20 @@ import hexagonDisable from '../../../../../../public/svg/vote/hexagonDisable.svg
 import Image from 'next/image';
 
 interface Props {
-  position: string;
-  championName: string;
-  tier: string;
-  averageRatio: string;
-  voteCount: number;
   isHover: boolean;
+  voteItem: IGetInGameInfoType;
 }
 
-const ChampionVoteResultItem = ({ position, championName, tier, averageRatio, isHover }: Props) => {
+const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
   const { tiers } = tiersData;
   const getTierIcon = useCallback(() => {
-    return tiers.find((item) => item.content === tier)?.svg;
-  }, [tier]);
+    return tiers.find((item) => item.content === voteItem.tier)?.svg;
+  }, [voteItem.tier, tiers]);
 
   const getPositionIcon = useCallback(() => {
-    const positionItem = positions.find((item) => item.content === position);
+    const positionItem = positions.find((item) => item.content === voteItem.position);
     return isHover ? positionItem?.svgW : positionItem?.svg;
-  }, [position, isHover]);
+  }, [voteItem.position, isHover]);
 
   return (
     <div className={'w-full h-fit flex justify-between font-semibold items-center cursor-pointer'}>
@@ -48,12 +44,12 @@ const ChampionVoteResultItem = ({ position, championName, tier, averageRatio, is
               isHover ? 'text-[#D9D9D9]' : 'text-[#555555]',
             )}
           >
-            {championName}
+            {voteItem.championName}
           </div>
           <div className={'flex gap-[5px] items-center'}>
             <div className={'w-[12px] h-[12px] flex justify-items-center'}>{getTierIcon()}</div>
             <div className={clsx('text-[10px]', isHover ? 'text-[#DDDDDD]' : 'text-[#51484A]')}>
-              {tier}
+              {voteItem.tier}
             </div>
           </div>
         </div>
@@ -72,7 +68,7 @@ const ChampionVoteResultItem = ({ position, championName, tier, averageRatio, is
             isHover ? 'text-white' : 'text-white/60',
           )}
         >
-          {averageRatio}
+          {(voteItem.averageRatio ?? 0).toFixed(1)}
         </span>
       </div>
     </div>

@@ -22,7 +22,6 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
     setIsLoginModalOpen,
     getChampionImage,
     sortedVoteData,
-    getCalculatedRatio,
   } = useVoteResult({ voteCount, daysUntilEnd, voteData, isOwner, isVote }); // DUMMY_VOTE_DATA는 지워야함 나중에 수정할때
 
   const onVoteItemClick = () => {
@@ -49,7 +48,6 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
     isVoteEnd,
     isNoVote,
     sortedVoteData,
-    getCalculatedRatio(100),
     getChampionImage(sortedVoteData[0].championName),
   );
 
@@ -59,12 +57,7 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
         {sortedVoteData.map((item) => (
           <ClaimVoteItem
             key={item.inGameInfoId}
-            position={item.position}
-            championName={item.championName}
-            tier={item.tier}
-            claim={item.claim!}
-            ratio={getCalculatedRatio(item.voteCount)}
-            voteCount={item.voteCount}
+            voteItem={item}
             shouldBlur={shouldBlur}
             onVoteItemClick={onVoteItemClick}
           />

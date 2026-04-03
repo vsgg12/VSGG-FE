@@ -37,11 +37,11 @@ export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, isOwner, isVo
 
   const shouldBlur = checkShouldBlur();
 
-  // 득표율 계산 (소수점 1자리 문자열 반환)
-  const getRatio = useCallback((voteCount: number) => {
-    if (voteCount === 0) return '0.0';
-    return ((voteCount / voteCount) * 100).toFixed(1);
-  }, []);
+  // // 득표율 계산 (소수점 1자리 문자열 반환)
+  // const getRatio = useCallback((voteCount: number) => {
+  //   if (voteCount === 0) return '0.0';
+  //   return ((voteCount / voteCount) * 100).toFixed(1);
+  // }, []);
 
   // 챔피언 이름으로 풀 이미지 URL 찾기
   const getChampionImage = useCallback(
@@ -68,14 +68,14 @@ export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, isOwner, isVo
 
   // 득표수(voteCount) 기준으로 내림차순 정렬
   const sortedVoteData = useMemo(() => {
-    return [...voteData!].sort((a, b) => b.averageRatio - a.averageRatio);
+    return [...voteData].sort((a, b) => (b.averageRatio ?? 0) - (a.averageRatio ?? 0));
   }, [voteData]);
 
-  // 비율 계산 헬퍼 함수(백분율)
-  const getCalculatedRatio = (voteCount: number) => {
-    if (voteCount === 0) return '0.0';
-    return ((voteCount / voteCount) * 100).toFixed(1);
-  };
+  // // 비율 계산 헬퍼 함수(백분율)
+  // const getCalculatedRatio = (voteCount: number) => {
+  //   if (voteCount === 0) return '0.0';
+  //   return ((voteCount / voteCount) * 100).toFixed(1);
+  // };
 
   return {
     isLogin,
@@ -83,11 +83,10 @@ export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, isOwner, isVo
     isVoteEnd,
     isNoVote,
     shouldBlur,
-    getRatio,
     getChampionImage,
     getTierIcon,
     getPositionIcon,
     sortedVoteData,
-    getCalculatedRatio,
+    // getCalculatedRatio,
   };
 };
