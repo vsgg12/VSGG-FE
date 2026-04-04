@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import PostComment from '@/api/postComment';
-import getComments from '@/api/getComments';
+import PostComment from '@/api/comment/postComment';
+import getComments from '@/api/comment/getComments';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -67,14 +67,12 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   const handleReplyScroll = (id: number) => {
     if (replyRef.current[id]) {
       replyRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(replyRef.current);
     }
   };
 
   const handleCommentScroll = (id: number) => {
     if (commentRef.current[id]) {
       commentRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      console.log(commentRef.current);
     }
   };
 

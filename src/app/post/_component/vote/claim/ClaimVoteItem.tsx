@@ -1,0 +1,85 @@
+'use client';
+
+import { useCallback, useMemo } from 'react';
+import positions from '@/constants/positions';
+import { useWriteStore } from '@/store/write/useWriteStore';
+import tiersData from '@/constants/tier';
+
+interface Props {
+  voteItem: IGetInGameInfoType;
+  shouldBlur: boolean;
+  onVoteItemClick: () => void; // 투표 item 클릭 시 투표 api 호출
+}
+
+const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
+  const { allChampions } = useWriteStore();
+  const { tiers } = tiersData;
+
+  const getTierIcon = useCallback(() => {
+    return tiers.find((item) => item.content === voteItem.tier)?.svg;
+  }, [tiers, voteItem.tier]);
+
+  const getPositionIcon = useCallback(() => {
+    const positionItem = positions.find((item) => item.content === voteItem.position);
+    return positionItem?.svgW;
+  }, [voteItem.position]);
+
+  // 배경 이미지 URL 찾기
+  const currentBgImage = useMemo(() => {
+    const champion = allChampions.find((c) => c.name === voteItem.championName);
+    return champion?.fullImage || '';
+  }, [allChampions, voteItem.championName]);
+
+  return (
+    <div
+      className='relative w-[659px] h-[80px] rounded-[10px] overflow-hidden cursor-pointer'
+      style={{
+        backgroundImage: `url(${currentBgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 20%',
+      }}
+      onClick={onVoteItemClick}
+    >
+      {/* 투표율 바 */}
+      {!shouldBlur && (
+        <div
+          className='absolute top-0 left-0 h-full bg-[#8A1F21]/40 z-20 transition-all duration-500 ease-out'
+          style={{ width: `${voteItem.averageRatio}%` }}
+        />
+      )}
+
+      {/* 텍스트 컨텐츠 */}
+      <div className='relative z-30 w-full h-full flex justify-between items-center px-[20px] py-[10px] text-white'>
+        {/* 왼쪽: 챔피언 정보 및 주장 */}
+        <div className='flex flex-col justify-center gap-2 w-[80%]'>
+          {/* 상단: 포지션 아이콘 + 챔피언명 + 티어 */}
+          <div className='flex items-center gap-2 text-[12px] opacity-80 font-medium'>
+            <div className='w-[16px] h-[16px] flex items-center justify-center'>
+              {getPositionIcon()}
+            </div>
+            <span className={'font-semibold text-[16px] text-[#D9D9D9]'}>
+              {voteItem.championName}
+            </span>
+            <span className={'w-[12px] h-[12px]'}>{getTierIcon()}</span>
+            <span className='text-[#51484A]'>{voteItem.tier}</span>
+          </div>
+
+          {/* 하단: 주장 */}
+          <div className='text-[18px] font-bold leading-tight truncate pr-4 drop-shadow-md'>
+            {voteItem.claim}
+          </div>
+        </div>
+
+        {/* 오른쪽: 득표율 및 투표 수 */}
+        {!shouldBlur && (
+          <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
+            <span className='text-[24px] leading-none'>{voteItem.averageRatio}%</span>
+            <span className='text-[12px]'>{voteItem.voteCount}표</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ClaimVoteItem;

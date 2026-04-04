@@ -1,80 +1,48 @@
-interface IVoteColorsType {
-  background: string;
-  text: string;
-  hover: string;
-  border: string;
-}
+// interface IVoteColorsType {
+//   background: string;
+//   text: string;
+//   hover: string;
+//   border: string;
+// }
 
-export const voteColors: IVoteColorsType[] = [
-  {
-    background: 'bg-[#000000]',
-    text: 'text-[#000000]',
-    hover: 'hover:[#000000]',
-    border: 'border-[#000000]',
-  },
-  {
-    background: 'bg-[#9D2A2C]',
-    text: 'text-[#8A1F21]',
-    hover: 'hover:[#9D2A2C]',
-    border: 'border-[#8A1F21]',
-  },
-  {
-    background: 'bg-[#CACACA]',
-    text: 'text-[#7B7B7B]',
-    hover: 'hover:[#CACACA]',
-    border: 'border-[#CACACA]',
-  },
-  {
-    background: 'bg-[#656565]',
-    text: 'text-[#333333]',
-    hover: 'hover:[#656565]',
-    border: 'border-[#656565]',
-  },
-  {
-    background: 'bg-[#6C0000]',
-    text: 'text-[#9B111E]',
-    hover: 'hover:[#6C0000]',
-    border: 'border-[#6C0000]',
-  },
-];
+// export const voteColors: IVoteColorsType[] = [
+//   {
+//     background: 'bg-[#000000]',
+//     text: 'text-[#000000]',
+//     hover: 'hover:[#000000]',
+//     border: 'border-[#000000]',
+//   },
+//   {
+//     background: 'bg-[#9E2426]',
+//     text: 'text-[#8A1F21]',
+//     hover: 'hover:[#9E2426]',
+//     border: 'border-[#8A1F21]',
+//   },
+//   {
+//     background: 'bg-[#AAAAAA]',
+//     text: 'text-[#7B7B7B]',
+//     hover: 'hover:[#CACACA]',
+//     border: 'border-[#CACACA]',
+//   },
+//   {
+//     background: 'bg-[#656565]',
+//     text: 'text-[#333333]',
+//     hover: 'hover:[#656565]',
+//     border: 'border-[#656565]',
+//   },
+//   {
+//     background: 'bg-[#6C0000]',
+//     text: 'text-[#9B111E]',
+//     hover: 'hover:[#6C0000]',
+//     border: 'border-[#6C0000]',
+//   },
+// ];
 
-export const mobileVoteComponentColors: IVoteColorsType[] = [
-  {
-    background: 'bg-[#000000]',
-    text: 'text-[#000000]',
-    hover: 'hover:[#000000]',
-    border: 'border-[#000000]',
-  },
-  {
-    background: 'bg-[#9E2426]',
-    text: 'text-[#9E2426]',
-    hover: 'hover:[#9D2A2C]',
-    border: 'border-[#9E2426]',
-  },
-  {
-    background: 'bg-[#AAAAAA]',
-    text: 'text-[#AAAAAA]',
-    hover: 'hover:[#CACACA]',
-    border: 'border-[#AAAAAA]',
-  },
-  {
-    background: 'bg-[#70191B]',
-    text: 'text-[#70191B]',
-    hover: 'hover:[#656565]',
-    border: 'border-[#70191B]',
-  },
-  {
-    background: 'bg-[#555555]',
-    text: 'text-[#555555]',
-    hover: 'hover:[#555555]',
-    border: 'border-[#555555]',
-  },
-];
-
-export const mobileVoteColors = [
+export const voteColors = [
   {
     name: '탑',
     background: 'bg-[#000000]',
+    text: 'text-[#000000]',
     border: 'border-[#000000]',
     svgw: '/svg/top-w.svg',
     svg: '/svg/mobile/champion/top_mobile.svg',
@@ -82,6 +50,7 @@ export const mobileVoteColors = [
   {
     name: '정글',
     background: 'bg-[#9E2426]',
+    text: 'text-[#9E2426]',
     border: 'border-[#9E2426]',
     svgw: '/svg/jungle-w.svg',
     svg: '/svg/mobile/champion/jungle_mobile.svg',
@@ -89,6 +58,7 @@ export const mobileVoteColors = [
   {
     name: '미드',
     background: 'bg-[#AAAAAA]',
+    text: 'text-[#AAAAAA]',
     border: 'border-[#AAAAAA]',
     svgw: '/svg/mid-w.svg',
     svg: '/svg/mobile/champion/mid_mobile.svg',
@@ -96,6 +66,7 @@ export const mobileVoteColors = [
   {
     name: '원딜',
     background: 'bg-[#70191B]',
+    text: 'text-[#70191B]',
     border: 'border-[#70191B]',
     svgw: '/svg/onedeal-w.svg',
     svg: '/svg/mobile/champion/onedeal_mobile.svg',
@@ -103,6 +74,7 @@ export const mobileVoteColors = [
   {
     name: '서폿',
     background: 'bg-[#555555]',
+    text: 'text-[#9B111E]',
     border: 'border-[#555555]',
     svgw: '/svg/supporter-w.svg',
     svg: '/svg/mobile/champion/support_mobile.svg',

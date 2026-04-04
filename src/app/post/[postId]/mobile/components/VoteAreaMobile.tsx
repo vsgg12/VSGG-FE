@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import VoteResultMobile from './VoteResultMobile';
-import PostVote from '@/api/postVote';
+import PostVote from '@/api/vote/postVote';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';

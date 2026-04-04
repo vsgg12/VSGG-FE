@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-import formatDate from '@/utils/formatDate';
+import { formatDate } from '@/utils/formatDate';
 import { useRouter } from 'next/navigation';
-import VoteStatusCircle from '@/app/myPage/_component/VoteStatusCircle'
+import VoteStatusCircle from '@/app/myPage/_component/VoteStatusCircle';
 
-interface IMyPostItemProps{
-    myPostItem: IGetMyPostItemsType;
+interface IMyPostItemProps {
+  myPostItem: IGetMyPostItemsType;
 }
 
 function MyPostItem({ myPostItem }: IMyPostItemProps) {
-    const router = useRouter();
+  const router = useRouter();
 
   return (
     <>
@@ -26,7 +26,7 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
         </div>
 
         <div className='flex justify-between w-[310px]'>
-          <div className="w-[50px] flex justify-center">{myPostItem.commentNum}</div>
+          <div className='w-[50px] flex justify-center'>{myPostItem.commentNum}</div>
           <div>{formatDate(myPostItem.createdDate)}</div>
         </div>
       </div>
@@ -35,4 +35,4 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
   );
 }
 
-export default MyPostItem
+export default MyPostItem;

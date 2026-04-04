@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import deleteIcon from '../../../../public/svg/deleteIcon.svg';
 import { useMutation } from '@tanstack/react-query';
-import PostSignUp from '@/api/PostSignUp';
+import PostSignUp from '@/api/signup/PostSignUp';
 import { useAuthStore } from '../../login/store/useAuthStore';
-import getNicknameCheck, { IGetNickNameCheckType } from '@/api/getNicknameCheck';
+import getNicknameCheck, { IGetNickNameCheckType } from '@/api/profile/getNicknameCheck';
 
 export default function SignUp_Mobile() {
   const router = useRouter();
@@ -122,7 +122,7 @@ export default function SignUp_Mobile() {
           email: user ? user.email : '',
           nickname,
           profile_image: user ? user.profile_image : '',
-          socialLoginType: user ? user.socialLoginType : ''
+          socialLoginType: user ? user.socialLoginType : '',
         },
       });
       localStorage.setItem('nickname', nickname);

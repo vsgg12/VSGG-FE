@@ -1,6 +1,6 @@
 'use client';
 
-import getMyProfileDTO from '@/api/getMyProfileDTO';
+import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import BarChart from '@/components/BarChart';
 import HalfDoughnutChart from '@/components/HalfDoughnutChart';

@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import { useParams, useRouter } from 'next/navigation';
@@ -9,11 +9,10 @@ import {
   IoEaselOutline,
   IoSaveOutline,
   IoDocumentOutline,
-  IoCloseOutline,
 } from 'react-icons/io5';
 import { ICreatePostFormProps } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
+import { saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/write/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
 import PostUploadDesc from '@/app/post/write/_component/PostUploadDesc';
 import {
@@ -24,8 +23,8 @@ import {
   tiers,
 } from '@/app/post/write/_component/PostFe';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import getPostItem from '@/api/getPostItem';
-import patchEditPost from '@/api/patchEditPost';
+import getPostItem from '@/api/post/getPostItem';
+import patchEditPost from '@/api/edit/patchEditPost';
 
 export default function EditForm() {
   const { isLogin, accessToken } = useAuthStore();
@@ -44,9 +43,7 @@ export default function EditForm() {
   const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
   const [content, setContent] = useState<string>('');
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
-  const [hashtags, setHashtags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
-  const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IGetInGameInfoType[]>();
 
   const [selectedPos, setSelectedPos] = useState<{ [key: number]: number }>();
@@ -67,7 +64,6 @@ export default function EditForm() {
       setTitle(post.postDTO.title);
       setSelectedPos(initialSelectedPos);
       setIngameInfos(post.postDTO.inGameInfoList);
-      setHashtags(post.postDTO.hashtagList.map((hashtag) => hashtag.name));
     }
   }, [post]);
 
@@ -123,9 +119,8 @@ export default function EditForm() {
     const postUpdateRequest: IEditPostUpdateRequest = {
       title: null,
       type: null,
-      hashtag: null,
       videoLink: null,
-      inGameTierUpdateRequest: null
+      inGameTierUpdateRequest: null,
     };
     let isChanged = false;
     if (data.title === '') {
@@ -163,19 +158,7 @@ export default function EditForm() {
       postUpdateRequest.inGameTierUpdateRequest = inGameInfoRequests!;
       isChanged = true;
     } else {
-      postUpdateRequest.inGameTierUpdateRequest = null
-    }
-
-    if (JSON.stringify(hashtags) !== JSON.stringify(post?.postDTO.hashtagList)) {
-      if (post?.postDTO.hashtagList.length !== 0 && hashtags.length === 0 && ingameInfos) {
-        postUpdateRequest.hashtag = [`${ingameInfos[0].championName}`, `${ingameInfos[0].tier}`];
-        isChanged = true;
-        return;
-      }
-      postUpdateRequest.hashtag = hashtags;
-      isChanged = true;
-    } else {
-      postUpdateRequest.hashtag = null;
+      postUpdateRequest.inGameTierUpdateRequest = null;
     }
 
     //아무것도 없을 때 보내는거
@@ -398,26 +381,6 @@ export default function EditForm() {
     }
   };
 
-  //hashtags
-  const handleTagInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
-      event.preventDefault();
-      const newTag = event.currentTarget.value.trim();
-      if (newTag && !hashtags.includes(newTag) && hashtags.length < 5) {
-        if (newTag.length > 12) {
-          alert('해시태그는 띄어쓰기 포함 최대 12자입니다.');
-          return;
-        }
-        setHashtags([...hashtags, newTag]);
-        setTagInput('');
-      }
-    }
-  };
-
-  const handleTagInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTagInput(event.target.value);
-  };
-
   const handleChange = (value: string) => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -431,10 +394,6 @@ export default function EditForm() {
     } else {
       setContent(value);
     }
-  };
-
-  const removeTag = (index: number) => {
-    setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
   const handleTierChange = (tier: string, index: number) => {
@@ -736,28 +695,6 @@ export default function EditForm() {
               onChange={handleChange}
               placeholder={quillPlaceHolder}
             />
-          </div>
-          <div className=' mb-[30px] text-[20px] font-semibold  text-[#8A1F21]'>해시태그</div>
-          <input
-            type='text'
-            className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
-            placeholder='해시태그를 입력하고 엔터를 눌러주세요! (최대 5개)'
-            value={tagInput}
-            onChange={handleTagInputChange}
-            onKeyDown={handleTagInput}
-          />
-          <div className='ml-4 flex flex-wrap '>
-            {hashtags.map((hashtag, index) => (
-              <div
-                key={index}
-                className='mb-1 mr-3 flex w-fit flex-row items-center justify-center rounded-[150px] border-[1.5px] border-[#333333] px-[15px] py-[5px]'
-              >
-                <div className='mr-[8px] text-[12px]'># {hashtag}</div>
-                <button type='button'>
-                  <IoCloseOutline className='text-[20px]' onClick={() => removeTag(index)} />
-                </button>
-              </div>
-            ))}
           </div>
         </div>
 

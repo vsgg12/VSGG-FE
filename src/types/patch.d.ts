@@ -9,7 +9,6 @@ type IPatchEditPostRequestBodyType = {
 type IEditPostUpdateRequest = {
   title: string | null;
   type: string | null;
-  hashtag: string[] | null;
   videoLink: string | null;
   inGameTierUpdateRequest: IEditInGameInfoRequest[] | null;
 }

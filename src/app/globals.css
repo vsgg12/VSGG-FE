@@ -4,10 +4,15 @@
 
 @font-face {
   font-family: 'SBAggroB';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff'),
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff')
     format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+.react-hot-toast__icon {
+  width: 16px;
+  height: 16px;
 }
 
 * {
@@ -39,6 +44,7 @@ body {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
 .scrollbar-hidden {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
@@ -101,21 +107,20 @@ body {
   @apply mb-[9.375rem];
 }
 
-.p-content-tag {
-  @apply p-content-s-mr rounded-full border-2 px-[0.875rem] py-[0.5rem] text-xs;
-}
-
 .p-voting-champ-dot {
   @apply h-[12px] w-[12px] rounded-full;
 }
+
 .p-voting-number-element {
   @apply mr-[0.625em] text-[1.375em] font-semibold;
 }
+
 .p-voting-bar-mobile {
   @apply mr-[0.125em] h-[1.5em] w-[30px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
 }
+
 .p-voting-bar-element {
-  @apply mr-[0.125em] h-[1.5em] w-[49px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
+  @apply mr-[4px] h-[26px] w-[51.5px] cursor-pointer;
 }
 
 .p-tab-title {
@@ -125,6 +130,7 @@ body {
 .p-tab-n-selected {
   @apply h-[4.375rem] rounded-[10px] bg-[#F8F8F8];
 }
+
 .p-tab-selected {
   @apply border-[0.09375rem] border-b-2 border-[#828282] border-b-[#ffffff] text-[#8A1F21];
 }
@@ -166,7 +172,7 @@ body {
 }
 
 .mobile-layout {
-  @apply min-w-[375px] max-w-[768px] relative my-0 mx-auto box-border bg-[#F3F3F3];
+  @apply min-w-[370px] max-w-[768px] w-screen relative my-0 mx-auto box-border bg-[#F3F3F3];
 }
 
 .mobile-scroll {
@@ -185,30 +191,31 @@ body {
   aspect-ratio: 4;
   --_g: no-repeat radial-gradient(circle closest-side, #8a1f21 90%, #0000);
   background:
-    var(--_g) 0% 50%,
+    var(--_g) 0 50%,
     var(--_g) 50% 50%,
     var(--_g) 100% 50%;
   background-size: calc(100% / 3) 100%;
   animation: l7 1s infinite linear;
 }
+
 @keyframes l7 {
   33% {
     background-size:
-      calc(100% / 3) 0%,
+      calc(100% / 3) 0,
       calc(100% / 3) 100%,
       calc(100% / 3) 100%;
   }
   50% {
     background-size:
       calc(100% / 3) 100%,
-      calc(100% / 3) 0%,
+      calc(100% / 3) 0,
       calc(100% / 3) 100%;
   }
   66% {
     background-size:
       calc(100% / 3) 100%,
       calc(100% / 3) 100%,
-      calc(100% / 3) 0%;
+      calc(100% / 3) 0;
   }
 }
 
@@ -234,6 +241,7 @@ body {
   border-right-color: #8a1f21;
   animation: l2 1s infinite linear;
 }
+
 @keyframes l2 {
   to {
     transform: rotate(1turn);
@@ -253,6 +261,7 @@ body {
   width: 5px;
   height: 5px;
 }
+
 .custom-pagination .swiper-pagination-bullet-active {
   background-color: #8a1f21;
 }

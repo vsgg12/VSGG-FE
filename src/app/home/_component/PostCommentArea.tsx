@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import getComments from '@/api/getComments';
+import getComments from '@/api/comment/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MoreModal from '@/components/modals/MoreModal';
 import Icon_more from '../../../../public/svg/Icon_more.svg';

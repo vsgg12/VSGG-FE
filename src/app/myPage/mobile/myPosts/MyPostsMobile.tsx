@@ -1,5 +1,5 @@
 'use client';
-import getMyPostLists from '@/api/getMyPostLists';
+import getMyPostLists from '@/api/post/getMyPostLists';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
@@ -35,7 +35,7 @@ function MyPost_Mobile() {
   });
 
   useEffect(() => {
-    if (!isLoading && data.postList.length > 0 || !isFetching && data.postList.length > 0) {
+    if ((!isLoading && data.postList.length > 0) || (!isFetching && data.postList.length > 0)) {
       setMyPostLists((prev) => [...prev, ...data.postList]);
     }
   }, [data]);

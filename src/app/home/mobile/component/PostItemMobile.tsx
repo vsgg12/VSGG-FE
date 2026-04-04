@@ -7,7 +7,6 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import HomeVotedMobile from './HomeVotedMobile';
 import HomeNotVotedMobile from './HomeNotVotedMobile';
-import PostTagMobile from './PostTagMobile';
 import PostDeadLineMobile from './PostDeadLineMobile';
 
 export default function PostItemMobile({
@@ -22,27 +21,10 @@ export default function PostItemMobile({
   const contentsArr = useConvertHTML(post.content);
   const { user } = useAuthStore();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
-  const [noHashTag, setNoHashTag] = useState<IHashTagListType[]>([]);
   const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full block visible';
 
   useEffect(() => {
     setFormattedDate(moment(post.createdAt).format('YYYY.MM.DD. HH:mm'));
-    if (post) {
-      const inGameInfo = post.inGameInfoList[0] || { championName: 'Unknown', tier: 'Unknown' };
-
-      if (post.hashtagList.length === 0) {
-        setNoHashTag([
-          {
-            id: 0,
-            name: inGameInfo.championName!,
-          },
-          {
-            id: 1,
-            name: inGameInfo.tier,
-          },
-        ]);
-      }
-    }
   }, [post]);
 
   const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -88,9 +70,16 @@ export default function PostItemMobile({
       <div className='flex flex-col relative'>
         {/* isImageClick이 true면 무조건 비디오를 보여줌 */}
         {isImageClick ? (
-          <video muted controls playsInline className={videoStyle} poster={post.thumbnailURL} onClick={(e) => {
-    e.stopPropagation()
-  }}>
+          <video
+            muted
+            controls
+            playsInline
+            className={videoStyle}
+            poster={post.thumbnailURL}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <source src={post.video.url} type='video/mp4' />
             <source src={post.video.url} type='video/webm' />
           </video>
@@ -109,7 +98,7 @@ export default function PostItemMobile({
                 className={videoStyle}
                 poster={post.thumbnailURL}
                 onClick={(e) => {
-                  e.stopPropagation()
+                  e.stopPropagation();
                 }}
               >
                 <source src={post.video.url} type='video/webm' />
@@ -136,7 +125,6 @@ export default function PostItemMobile({
               return <p key={idx}>{displayContent}</p>;
             })}
           </div>
-          <PostTagMobile hashtags={post.hashtagList.length !== 0 ? post.hashtagList : noHashTag} />
           <div className='flex w-full min-h-[150px] rounded-[10px] items-center'>
             {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
               <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />

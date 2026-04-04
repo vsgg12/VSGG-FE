@@ -3,6 +3,7 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 import { useRouter } from 'next/navigation';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+import { truncateText } from '@/utils/truncateText';
 
 interface Props {
   postItem: IGetPostDTOType;
@@ -23,13 +24,6 @@ function SearchItem({ postItem }: Props) {
     return tempDiv.textContent || '';
   };
 
-  const truncateNickname = (value: string) => {
-    if (value.length > 8) {
-      return value.slice(0, 8) + '...';
-    }
-    return value;
-  };
-
   const formatDate = (value: string) => {
     return moment(value).format('YYYY-MM-DD');
   };
@@ -42,7 +36,7 @@ function SearchItem({ postItem }: Props) {
       <div className="flex w-full justify-between ">
         <div className="flex flex-col gap-[10px] w-[192px]">
           <div className="flex text-[14px] text-[#AAAAAA] justify-between">
-            <div>{truncateNickname(postItem.memberDTO.nickname)}</div>
+            <div>{truncateText(postItem.memberDTO.nickname, 8)}</div>
             <div className="font-medium">{formatDate(postItem.createdAt)}</div>
           </div>
           <div className="text-[16px] font-medium text-[#333333] line-clamp-2">
@@ -50,8 +44,12 @@ function SearchItem({ postItem }: Props) {
           </div>
         </div>
 
-        <div className="w-[117px] h-[66px] rounded-[5px]">
-          <img src={postItem.thumbnailURL} className="w-full h-full rounded-[5px]" />
+        <div className='w-[117px] h-[66px] rounded-[5px]'>
+          <img
+            src={postItem.thumbnailURL}
+            className='w-full h-full rounded-[5px]'
+            alt={'썸네일 이미지'}
+          />
         </div>
       </div>
 

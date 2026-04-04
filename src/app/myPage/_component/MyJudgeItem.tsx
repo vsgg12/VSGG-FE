@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import VoteStatusCircle from '@/app/myPage/_component/VoteStatusCircle';
-import formatDate from '@/utils/formatDate';
+import { formatDate } from '@/utils/formatDate';
 
 interface IMyJudgeItemProps {
   myJudgeItem: IVotedPostItem;
