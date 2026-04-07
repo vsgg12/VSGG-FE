@@ -1,6 +1,7 @@
 import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
 import React from 'react';
+import { truncateText } from '@/utils/truncateText';
 
 interface ICommentProps {
   comment: IGetCommentItemType;
@@ -15,21 +16,13 @@ export default function PostCommentItem({ comment, targetComment, handleReply }:
   const { getIcon } = useProfileTierIcon({ size: 14 });
   const timeAgo = useTimeDifferenceFromNow(comment.createdDateTime);
 
-  const truncateNickname = (nickname: string) => {
-    const formattedNickname = nickname.slice(0, 8);
-    if (nickname.length <= 8) {
-      return formattedNickname;
-    }
-    return formattedNickname + '...';
-  };
-
   return (
     <div>
       <div className='flex flex-row relative font-medium items-center mb-[5px]'>
         <div className='flex gap-[4px]'>
           {getIcon(comment.member.tier)}
           <p className='mr-[5px] text-[14px] text-[#333333] font-semibold'>
-            {truncateNickname(comment.member.nickname)}
+            {truncateText(comment.member.nickname, 8)}
           </p>
         </div>
         <p className='text-[14px] text-[#909090] min-w-fit'>{comment.member.tier}</p>

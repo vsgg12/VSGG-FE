@@ -1,6 +1,6 @@
 'use client';
 
-import getMyJudgeList from '@/api/getMyJudgeList';
+import getMyJudgeList from '@/api/judge/getMyJudgeList';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
@@ -26,12 +26,12 @@ function JudgeRecord_Mobile() {
   const { data, refetch, isLoading, isFetching } = useQuery({
     queryKey: ['MY_JUDGE_LISTS', page],
     queryFn: () => getMyJudgeList({ token: accessToken, size: '10', page: String(page) }),
-    enabled: isLogin
+    enabled: isLogin,
   });
 
   useEffect(() => {
     if (data?.postList) {
-      setJudgeList((prev) => [...prev, ...data.postList]); 
+      setJudgeList((prev) => [...prev, ...data.postList]);
     }
   }, [data]);
 

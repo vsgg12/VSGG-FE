@@ -13,7 +13,7 @@ import NotificationIcon from '@/components/sidebar/list/iconComponent/Notificati
 
 interface UseSidebarItemProps {
   item: sidebarListType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
 export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProps) => {

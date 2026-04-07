@@ -7,7 +7,7 @@ import SearchMobile from './component/SearchMobile';
 import { useQuery } from '@tanstack/react-query';
 import useSearchStore from '../store/useSearchStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import getPostList from '@/api/getPostList';
+import getPostList from '@/api/post/getPostList';
 import NewPopularToggleButtonMobile from './component/NewPopularToggleButtonMobile';
 import AlignModeToggleButtonMobile from './component/AlignModeToggleButtonMobile';
 import ListedPostItemMobile from './component/ListedPostItemMobile';

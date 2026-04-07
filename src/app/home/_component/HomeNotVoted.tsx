@@ -1,5 +1,5 @@
-import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
 import DoughnutChart from '@/components/DoughnutChart';
+import PostVotingChampList from '@/app/post/_component/post/PostVotingChampList';
 
 interface Props {
   voteInfos: IGetInGameInfoType[];

@@ -16,8 +16,10 @@ export const useLoginStore = create<ILoginState>()(
     isLoginModalOpen: false,
 
     setData: createSetDataImmer<ILoginField>(set),
-    setIsLoginModalOpen: (isLoginModalOpen: boolean) => set((state) => {
-      state.isLoginModalOpen = isLoginModalOpen;
-    }),
-  }))
+
+    setIsLoginModalOpen: (isLoginModalOpen: boolean) =>
+      set((state) => {
+        state.isLoginModalOpen = isLoginModalOpen;
+      }),
+  })),
 );

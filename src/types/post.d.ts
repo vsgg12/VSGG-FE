@@ -13,17 +13,11 @@ type IPostWriteType = {
 
 type IPostAddRequestType = {
   title: string;
-  type?: "LINK" | "FILE";
-  videoType?: "LINK" | "FILE"
-  hashtag: string[];
-  inGameInfoRequests: {
-    championName: string;
-    position: string;
-    tier: string;
-  }[];
-  videoLink?: string;
+  videoType: 'FILE' | 'LINK';
+  inGameInfoRequests: IIngameInfoRequestType[];
   voteEndDate: string;
-}
+  videoLink?: string;
+};
 
 type IInGameInfoType = {
   inGameInfoId: number;

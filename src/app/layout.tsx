@@ -4,7 +4,7 @@ import Script from 'next/script';
 import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
 import { Toaster } from 'react-hot-toast';
-import GlobalModalLayer from '@/components/common/GlobalModalLayer';
+import GlobalLoginModalLayer from '@/components/common/GlobalLoginModalLayer';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -91,23 +91,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <RQProvider>
           <Suspense>
-            <GlobalModalLayer />
+            <GlobalLoginModalLayer />
             <Toaster
               position='bottom-right'
               toastOptions={{
                 duration: 3000,
                 style: {
-                  width: '300px',
+                  width: 'fit-content',
                   height: '56px',
                   fontSize: '16px',
                   paddingLeft: '20px',
                   paddingRight: '80px',
-                },
-                success: {
-                  style: {
-                    background: '#222222',
-                    color: 'white',
-                  },
+                  background: '#222222',
+                  color: 'white',
                 },
               }}
             />

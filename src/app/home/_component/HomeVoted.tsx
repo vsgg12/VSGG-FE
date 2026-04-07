@@ -1,5 +1,5 @@
 import DoughnutChart from '@/components/DoughnutChart';
-import PostVotingChampList from '@/app/post/_component/PostVotingChampList';
+import PostVotingChampList from '@/app/post/_component/post/PostVotingChampList';
 
 export default function HomeVoted({ voteInfos }: { voteInfos: IGetInGameInfoType[] }) {
   return (

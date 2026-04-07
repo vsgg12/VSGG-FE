@@ -26,7 +26,7 @@ const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
   const { accessToken, user, isLogin } = useAuthStore();
-  const {setIsLoginModalOpen} = useLoginStore();
+  const { setIsLoginModalOpen } = useLoginStore();
   const contentsArr = useConvertHTML(post.content);
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
@@ -156,6 +156,12 @@ function PostContentArea({ post, voteInfos }: Props) {
     setIsImageClick(true);
   };
 
+  const getYoutubeId = (url: string) => {
+    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
+
   return (
     <div
       className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow hover:shadow-xl transition-shadow duration-300'
@@ -203,13 +209,12 @@ function PostContentArea({ post, voteInfos }: Props) {
         ) : (
           //외부영상 첨부할 때 사용
           <iframe
-            className={videoStyle}
-            src={post.video.url}
-            title={post.title}
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-            referrerPolicy='strict-origin-when-cross-origin'
+            src={`https://www.youtube.com/embed/${getYoutubeId(post.video.url)}`}
+            width='526'
+            height='296'
             allowFullScreen
-          ></iframe>
+            className='rounded-[10px] block visible'
+          />
         )}
       </div>
       <div className='flex h-[24px]'>

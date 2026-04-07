@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import PostUploadDesc from './PostUploadDesc';
@@ -24,12 +24,15 @@ import {
   IoAddCircleOutline,
   IoSaveOutline,
   IoDocumentOutline,
-  IoCloseOutline,
 } from 'react-icons/io5';
 import dynamic from 'next/dynamic';
 import { ChampionDataProps, ICreatePostFormProps, IWrappedComponent } from '@/types/form';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { createPost, saveImageAndRequestUrlToS3, sendDeleteRequestToS3 } from '@/api/postPostForm';
+import {
+  createPost,
+  saveImageAndRequestUrlToS3,
+  sendDeleteRequestToS3,
+} from '@/api/write/postPostForm';
 import LoadingFull from '@/components/LoadingFull';
 import Calendar from './Calendar';
 
@@ -134,13 +137,11 @@ export default function PostForm() {
   const [redirect, setRedirect] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedVideo, setUploadedVideo] = useState<File | undefined>(undefined);
-  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined);
-  const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined);
+  const [thumbnail, setThumbnail] = useState<Blob | undefined>(undefined); // 영상에서 추출한 썸네일 이미지
+  const [uploadedThumbnail, setUploadedThumbnail] = useState<File | undefined>(undefined); // 직접 올리는 썸네일 이미지
   const [content, setContent] = useState<string>('');
   const [contentImgUrls, setContentImgUrls] = useState<string[]>([]);
-  const [hashtags, setHashtags] = useState<string[]>([]);
   const [videoLink, setVideoLink] = useState<string>('');
-  const [tagInput, setTagInput] = useState<string>('');
   const [ingameInfos, setIngameInfos] = useState<IInGameInfoType[]>([
     { inGameInfoId: 0, position: '탑', championName: '', tier: '' },
     { inGameInfoId: 1, position: '탑', championName: '', tier: '' },
@@ -204,15 +205,11 @@ export default function PostForm() {
 
     const contentData = new Blob([content], { type: 'text/html' });
 
-    hashtags.length === 0 &&
-      setHashtags([`${inGameInfoRequests[0].championName}`, `${inGameInfoRequests[0].tier}`]);
-    const postRequestData:IPostAddRequestType = {
+    const postRequestData: IPostAddRequestType = {
       title: data.title,
       videoType: uploadedVideo ? 'FILE' : 'LINK',
-      hashtag: hashtags,
       inGameInfoRequests: inGameInfoRequests,
       voteEndDate: moment(selectedDate).format('YYYYMMDD'),
-      
     };
     //아무것도 없을 때 보내는거
     const emptyBlob = new Blob([]);
@@ -227,7 +224,7 @@ export default function PostForm() {
     if (uploadedVideo && !videoLink) {
       postFormData.append('uploadVideos', uploadedVideo);
     } else if (!uploadedVideo && videoLink) {
-      postRequestData.videoLink = videoLink
+      postRequestData.videoLink = videoLink;
     }
 
     if (!uploadedThumbnail) {
@@ -327,7 +324,7 @@ export default function PostForm() {
       }
 
       setUploadedVideo(file); // 확인 완료
-      setVideoLink("");
+      setVideoLink('');
 
       // 썸네일 이미지 생성
       const url = URL.createObjectURL(file);
@@ -410,26 +407,6 @@ export default function PostForm() {
     }
   };
 
-  //hashtags
-  const handleTagInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !event.nativeEvent.isComposing) {
-      event.preventDefault();
-      const newTag = event.currentTarget.value.trim();
-      if (newTag && !hashtags.includes(newTag) && hashtags.length < 5) {
-        if (newTag.length > 12) {
-          alert('해시태그는 띄어쓰기 포함 최대 12자입니다.');
-          return;
-        }
-        setHashtags([...hashtags, newTag]);
-        setTagInput('');
-      }
-    }
-  };
-
-  const handleTagInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTagInput(event.target.value);
-  };
-
   const handleChange = (value: string) => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -443,10 +420,6 @@ export default function PostForm() {
     } else {
       setContent(value);
     }
-  };
-
-  const removeTag = (index: number) => {
-    setHashtags(hashtags.filter((_, idx) => idx !== index)); // 특정 인덱스의 태그 제거
   };
 
   const addIngameInfo = (): void => {
@@ -777,28 +750,6 @@ export default function PostForm() {
               onChange={handleChange}
               placeholder={quillPlaceHolder}
             />
-          </div>
-          <div className=' mb-[30px] text-[20px] font-semibold  text-[#8A1F21]'>해시태그</div>
-          <input
-            type='text'
-            className='mb-4 w-full rounded-[30px] border-[1.5px] border-[#828282] px-[30px] py-[10px] outline-none'
-            placeholder='해시태그를 입력하고 엔터를 눌러주세요! (최대 5개)'
-            value={tagInput}
-            onChange={handleTagInputChange}
-            onKeyDown={handleTagInput}
-          />
-          <div className='ml-4 flex flex-wrap '>
-            {hashtags.map((hashtag, index) => (
-              <div
-                key={index}
-                className='mb-1 mr-3 flex w-fit flex-row items-center justify-center rounded-[150px] border-[1.5px] border-[#333333] px-[15px] py-[5px]'
-              >
-                <div className='mr-[8px] text-[12px]'># {hashtag}</div>
-                <button type='button'>
-                  <IoCloseOutline className='text-[20px]' onClick={() => removeTag(index)} />
-                </button>
-              </div>
-            ))}
           </div>
         </div>
 

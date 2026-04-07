@@ -40,7 +40,6 @@ interface ICreatePostRequestProps {
   title: stirng;
   // content: string;
   type: string;
-  hashtag: string[];
   ingameInfoRequests: inGameInfoRequests[];
   videoUrl: string;
 }
@@ -69,11 +68,18 @@ export interface ChampionDataProps {
   };
 }
 
+export interface ChampionInfo {
+  id: string;
+  name: string;
+  imageFileName: string;
+}
+
 type ChampionType = {
+  id: string;
   name: string;
   image: {
     full: string;
     sprite: string;
     group: string;
-  }
-}
+  };
+};
