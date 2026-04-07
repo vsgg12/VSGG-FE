@@ -8,14 +8,14 @@ import { useWriteStore } from '@/store/write/useWriteStore';
 import { YOUTUBE_REGEX } from '@/constants/regex';
 
 export const UploadLinkBox = () => {
-  const { postRequestData, setData, setPostRequestData, videoId } = useWriteStore();
+  const { postAddRequest, setData, setPostAddRequest, videoId } = useWriteStore();
 
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const onClickSearchBtn = async () => {
-    const videoLink = postRequestData.videoLink;
+    const videoLink = postAddRequest.videoLink;
     if (!videoLink) {
       setIsError(true);
       return;
@@ -58,12 +58,13 @@ export const UploadLinkBox = () => {
     if (!isValid) {
       return;
     }
-    setData('isSelectJudgeTypeScreenShow', true);
+    setPostAddRequest('videoType', 'LINK');
+    setData('isSelectCategoryScreenShow', true);
   };
 
   const onChangeVideoLink = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimValue = e.target.value.trim();
-    setPostRequestData('videoLink', trimValue);
+    setPostAddRequest('videoLink', trimValue);
   };
 
   return (
@@ -75,7 +76,7 @@ export const UploadLinkBox = () => {
           <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
           <input
             className='w-full font-semibold text-[16px] px-[15px] outline-none'
-            value={postRequestData.videoLink ?? ''}
+            value={postAddRequest.videoLink ?? ''}
             placeholder={'https://youtu.be'}
             onChange={onChangeVideoLink}
           />

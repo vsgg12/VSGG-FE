@@ -1,8 +1,8 @@
 'use client';
 
-import ViewUploadedVideo from '../../../champion/_component/ViewUploadedVideo';
-import InputTitleBox from '@/app/post/write/champion/_component/InputTitleBox';
-import InputContentBox from '@/app/post/write/champion/_component/InputContentBox';
+import ViewUploadedVideo from '@/app/post/write/fault/_component/ViewUploadedVideo';
+import InputTitleBox from '@/app/post/write/fault/_component/InputTitleBox';
+import InputContentBox from '@/app/post/write/fault/_component/InputContentBox';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
@@ -12,15 +12,8 @@ interface Props {
 }
 
 const LeftContainer = ({ activeBox, setActiveBox }: Props) => {
-  const {
-    videoId,
-    uploadVideos,
-    thumbnail,
-    postRequestData,
-    setData,
-    setPostRequestData,
-    content,
-  } = useWriteStore();
+  const { videoId, uploadVideos, thumbnail, postAddRequest, setData, setPostAddRequest, content } =
+    useWriteStore();
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
   const boxBase =
@@ -39,13 +32,13 @@ const LeftContainer = ({ activeBox, setActiveBox }: Props) => {
         getBoxClass={getBoxClass}
         uploadVideos={uploadVideos}
         thumbnail={thumbnail}
-        videoLink={postRequestData.videoLink}
+        videoLink={postAddRequest.videoLink}
       />
       <InputTitleBox
         titleClass={titleClass}
         boxBase={boxBase}
-        title={postRequestData.title}
-        setPostRequestData={setPostRequestData}
+        title={postAddRequest.title}
+        setPostAddRequest={setPostAddRequest}
       />
       <InputContentBox
         titleClass={titleClass}

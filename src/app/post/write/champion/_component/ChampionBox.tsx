@@ -9,7 +9,7 @@ interface Props {
 
 const MAX_LENGTH = 34;
 
-const ClaimBox = ({ claim, setClaim, placeholder = '내용을 입력해주세요.' }: Props) => {
+const ChampionBox = ({ claim, setClaim, placeholder = '내용을 입력해주세요.' }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     if (value.length > MAX_LENGTH) return;
@@ -35,4 +35,4 @@ const ClaimBox = ({ claim, setClaim, placeholder = '내용을 입력해주세요
   );
 };
 
-export default ClaimBox;
+export default ChampionBox;

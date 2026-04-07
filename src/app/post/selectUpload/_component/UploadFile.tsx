@@ -8,7 +8,7 @@ import SelectUploadButton from './SelectUploadButton';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
 function UploadFile() {
-  const { setData, setPostRequestData } = useWriteStore();
+  const { setData, setPostAddRequest } = useWriteStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -56,7 +56,7 @@ function UploadFile() {
     }
 
     setData('uploadVideos', file);
-    setPostRequestData('videoType', 'FILE');
+    setPostAddRequest('videoType', 'FILE');
 
     // 썸네일 생성
     const url = URL.createObjectURL(file);
@@ -91,7 +91,7 @@ function UploadFile() {
       };
     }
     setData('isLoading', false);
-    setData('isSelectJudgeTypeScreenShow', true);
+    setData('isSelectCategoryScreenShow', true);
   };
 
   return (

@@ -2,11 +2,11 @@ import Image from 'next/image';
 import judgeIcon from '../../../../../public/svg/postWrite/judgeIcon.svg';
 
 interface Props {
+  onClickJudgeFault: () => void;
   onClickJudgeChampion: () => void;
-  onClickJudgeClaim: () => void;
 }
 
-export const SelectJudgeType = ({ onClickJudgeChampion, onClickJudgeClaim }: Props) => {
+export const SelectCategory = ({ onClickJudgeFault, onClickJudgeChampion }: Props) => {
   return (
     <>
       <div className='w-full h-[202px] flex flex-col gap-[40px] justify-center items-center'>
@@ -18,7 +18,7 @@ export const SelectJudgeType = ({ onClickJudgeChampion, onClickJudgeClaim }: Pro
       <div className='w-[684px] h-[256px] flex gap-[20px] bg-white'>
         <div
           className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#8A1F21]'
-          onClick={onClickJudgeChampion}
+          onClick={onClickJudgeFault}
         >
           <div className={'font-bold text-[20px] text-[#222222]'}>챔피언 판결</div>
           <img
@@ -31,7 +31,7 @@ export const SelectJudgeType = ({ onClickJudgeChampion, onClickJudgeClaim }: Pro
         </div>
         <div
           className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#8A1F21]'
-          onClick={onClickJudgeClaim}
+          onClick={onClickJudgeChampion}
         >
           <div className={'font-bold text-[20px] text-[#222222]'}>주장 판결</div>
           <img

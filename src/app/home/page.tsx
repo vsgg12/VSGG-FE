@@ -80,7 +80,7 @@ export default function Home() {
       setIsLoginModalOpen(true);
       return;
     }
-    router.push('/post/write');
+    router.push('/post/selectUpload');
   };
 
   useEffect(() => {

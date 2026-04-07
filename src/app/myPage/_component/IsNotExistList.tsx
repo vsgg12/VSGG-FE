@@ -11,7 +11,7 @@ function IsNotExistList({ type, isMobile }: Props) {
 
   const handleBtnClick = () => {
     if (type === 'myPost') {
-      router.push('/post/write');
+      router.push('/post/selectUpload');
     } else if (type === 'myJudge') {
       router.push('/home');
     }

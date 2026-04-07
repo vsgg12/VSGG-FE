@@ -1,12 +1,6 @@
-type IIngameInfoRequestType = {
-  championName: string;
-  position: string;
-  tier: string;
-};
-
 type IPostWriteType = {
-  uploadVideos?: File;
-  thumbnailImage: File;
+  uploadVideos: File;
+  thumbnailImage?: File;
   content: string;
   postAddRequest: IPostAddRequestType;
 };
@@ -16,7 +10,35 @@ type IPostAddRequestType = {
   videoType: 'FILE' | 'LINK';
   inGameInfoRequests: IIngameInfoRequestType[];
   voteEndDate: string;
+  videoLink: string;
+  draft: boolean;
+  category: 'FAULT' | 'CHAMPION';
+};
+
+type IPostWriteOrTempType = {
+  id?: number;
+  uploadVideos: File | null;
+  thumbnailImage: File | null;
+  content?: string;
+  postAddRequest: IPostAddTempRequestType;
+};
+
+type IPostAddTempRequestType = {
+  title?: string;
+  videoType: 'FILE' | 'LINK' | null;
+  inGameInfoRequests: IIngameInfoRequestType[];
+  voteEndDate?: string;
   videoLink?: string;
+  draft?: boolean;
+  category: 'FAULT' | 'CHAMPION' | null;
+};
+
+type IIngameInfoRequestType = {
+  inGameInfoId?: number;
+  championName: string;
+  position: string;
+  tier: string;
+  claim?: string;
 };
 
 type IInGameInfoType = {
