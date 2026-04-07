@@ -1,6 +1,6 @@
 'use client';
 
-import { TempItemType, useTempStore } from '@/store/temp/useTempStore';
+import { TempItemSummaryType, useTempStore } from '@/store/temp/useTempStore';
 import { formatDateTime } from '@/utils/formatDate';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction } from 'react';
@@ -9,7 +9,7 @@ import redDeleteIcon from '../../../../../../../../../public/svg/postWrite/redDe
 import { truncateText } from '@/utils/truncateText';
 
 interface Props {
-  item: TempItemType;
+  item: TempItemSummaryType;
   isHover: number | null;
   setIsHover: Dispatch<SetStateAction<number | null>>;
 }
@@ -39,10 +39,14 @@ const TempItem = ({ item, isHover, setIsHover }: Props) => {
       onClick={onClickTempItem}
     >
       <div className={'w-fit h-full flex flex-col justify-between'}>
-        <div className={'text-[20px] font-bold text-[#333333]'}>{truncateText(item.title, 29)}</div>
+        <div className={'text-[20px] font-bold text-[#333333]'}>
+          {item.title ? truncateText(item.title, 29) : '제목 없음'}
+        </div>
         <div className={'flex gap-[10px] text-[18px]'}>
-          <div className={'font-bold text-[#777777]'}>{item.judgeType}판결</div>
-          <div className={'text-[#999999]'}>{formatDateTime(item.updatedAt)} 저장</div>
+          <div className={'font-bold text-[#777777]'}>
+            {item.category === 'FAULT' ? '과실' : '주장'}판결
+          </div>
+          <div className={'text-[#999999]'}>{formatDateTime(item.savedAt)} 저장</div>
         </div>
       </div>
       <Image

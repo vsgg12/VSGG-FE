@@ -1,10 +1,10 @@
 import React from 'react';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import ClaimInfoBox from '@/app/post/write/claim/_component/ClaimInfoBox';
+import ChampionInfoBox from '@/app/post/write/champion/_component/ChampionInfoBox';
 
 const InGameRequestBox = () => {
-  const { setInGameInfoRequestData, postRequestData } = useWriteStore();
-  const { inGameInfoRequests } = postRequestData;
+  const { setInGameInfoRequestData, postAddRequest } = useWriteStore();
+  const { inGameInfoRequests } = postAddRequest;
 
   const titleClass = 'font-bold text-[24px] text-[#333333]';
 
@@ -15,8 +15,8 @@ const InGameRequestBox = () => {
       <div className={'w-full flex flex-col gap-[20px] items-center'}>
         {inGameInfoRequests.map((item, index) => (
           <>
-            <ClaimInfoBox
-              key={item.inGameInfoId}
+            <ChampionInfoBox
+              key={item.inGameInfoId ?? index}
               championName={item.championName}
               setChampionName={(value) => setInGameInfoRequestData(index, 'championName', value)}
               tier={item.tier}

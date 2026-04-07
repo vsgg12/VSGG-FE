@@ -11,9 +11,9 @@ interface Props {
   getBoxClass: () => string;
   setActiveBox: Dispatch<SetStateAction<boolean>>;
   videoId: string;
-  uploadVideos: File | undefined;
+  uploadVideos: File | null;
   videoLink: string;
-  thumbnail: Blob | undefined;
+  thumbnail: Blob | null;
 }
 
 const ViewUploadedVideo = ({
@@ -96,8 +96,14 @@ const ViewUploadedVideo = ({
                 <video
                   width={438}
                   height={243}
-                  src={URL.createObjectURL(uploadVideos)}
-                  poster={thumbnail ? URL.createObjectURL(thumbnail) : undefined}
+                  src={
+                    uploadVideos instanceof File
+                      ? URL.createObjectURL(
+                          new Blob([uploadVideos], { type: uploadVideos.type || 'video/mp4' }),
+                        )
+                      : uploadVideos
+                  }
+                  poster={thumbnail instanceof File ? URL.createObjectURL(thumbnail) : undefined}
                   controls
                   className='rounded-[10px] object-cover'
                 />

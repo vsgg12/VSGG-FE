@@ -1,14 +1,12 @@
 'use client';
 
-import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, memo, useRef } from 'react';
 import { Setter } from '@/store/zustandTypes';
 import { IWriteField } from '@/store/write/useWriteStore';
-import editorTextToHtml from '@/utils/write/content/editorTextToHtml';
-import htmlToEditorText from '@/utils/write/content/htmlToEditorText';
 
 interface Props {
   titleClass: string;
-  content: string; // html 문자열
+  content: string; // 순수 text
   setData: Setter<IWriteField>;
   boxBase: string;
 }
@@ -17,43 +15,20 @@ const MAX_LINES = 12;
 const MIN_HEIGHT = 200;
 const MAX_HEIGHT = 312;
 
-const LINE_HEIGHT = 24; // leading-[24px]
-const PADDING_Y = 24; // py-3 → 12px * 2
+const LINE_HEIGHT = 24;
+const PADDING_Y = 24;
 
 const InputContentBox = ({ titleClass, content, setData, boxBase }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  // textarea에서 보여줄 값
-  const [editorValue, setEditorValue] = useState<string>('');
-
-  /** HTML → textarea 텍스트 변환 - debounce 적용 */
-  useEffect(() => {
-    const id = setTimeout(() => {
-      const html = editorTextToHtml(editorValue);
-      setData('content', html);
-    }, 300);
-
-    return () => clearTimeout(id);
-  }, [editorValue, setData]);
-
-  /** 초기에 props로 받은 content(html 문자열) -> 순수 문자열로 바꿈 */
-  useEffect(() => {
-    // content가 없으면 빈 문자열
-    if (!content) {
-      setEditorValue('');
-      return;
-    }
-
-    const text = htmlToEditorText(content);
-    setEditorValue(text);
-  }, [content]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const el = textareaRef.current;
     if (!el) return;
 
-    const value = e.target.value;
-    setEditorValue(value);
+    const { value } = e.currentTarget;
+
+    // 디바운스 없이 입력 즉시 전역 스토어 업데이트
+    setData('content', value);
 
     el.style.height = `${MIN_HEIGHT}px`;
 
@@ -75,15 +50,14 @@ const InputContentBox = ({ titleClass, content, setData, boxBase }: Props) => {
       <div className={'flex flex-col gap-[10px]'}>
         <textarea
           ref={textareaRef}
-          value={editorValue}
+          value={content}
           maxLength={1000}
           onChange={handleChange}
           placeholder='본문을 입력해주세요'
           className={`w-[652px] min-h-[200px] max-h-[312px] overflow-hidden resize-y rounded-[20px] text-[16px] leading-[24px] px-4 py-3 outline-none border-[#C8C8C8] focus-within:border-[1px] focus-within:border-[#8A1F21] ${boxBase}`}
         />
-        {/* 글자수 */}
         <div className='text-[14px] text-gray-400 flex justify-end gap-[5px]'>
-          <span className={'text-[#8A1F21]'}>{editorValue.length}</span>
+          <span className={'text-[#8A1F21]'}>{content.length}</span>
           <span> / 1,000</span>
         </div>
       </div>

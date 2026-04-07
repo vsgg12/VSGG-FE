@@ -17,9 +17,9 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
     setInGameInfoRequestData,
     addInGameInfoRequestItem,
     removeInGameInfoRequestItem,
-    postRequestData,
+    postAddRequest,
   } = useWriteStore();
-  const { inGameInfoRequests } = postRequestData;
+  const { inGameInfoRequests } = postAddRequest;
 
   return (
     <div className={'h-[600px] flex flex-col gap-[20px]'}>
@@ -59,6 +59,7 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
           </div>
 
           <InGameInfoBox
+            key={`${item.inGameInfoId}-${index}`}
             championName={item.championName}
             setChampionName={(value) => setInGameInfoRequestData(index, 'championName', value)}
             tier={item.tier}

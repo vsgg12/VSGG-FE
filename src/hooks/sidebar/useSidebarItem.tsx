@@ -86,7 +86,7 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
       case '글 작성':
         if (!isLogin) return setIsLoginModalOpen(true);
         setRouteState('WRITE');
-        route.push('/post/write');
+        route.push('/post/selectUpload');
         closeModal();
         break;
       case '마이페이지':
