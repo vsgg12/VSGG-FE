@@ -21,6 +21,7 @@ type IPostWriteOrTempType = {
   thumbnailImage: File | null;
   content?: string;
   postAddRequest: IPostAddTempRequestType;
+  savedAt?: string; //"2026.04.07 23:00"
 };
 
 type IPostAddTempRequestType = {

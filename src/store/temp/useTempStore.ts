@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import { IWriteField, useWriteStore } from '@/store/write/useWriteStore';
 import { YOUTUBE_REGEX } from '@/constants/regex';
 import htmlToEditorText from '@/utils/write/content/htmlToEditorText';
+import { getFormattedDateAfterDays, getOriginalDaysDiff } from '@/utils/formatDate';
 
 export type TempItemSummaryType = {
   id: number;
@@ -28,7 +29,7 @@ export interface ITempField {
 interface ITempState extends ITempField {
   setData: Setter<ITempField>;
 
-  createTemp: (body: FormData) => Promise<void>;
+  createTemp: (body: FormData) => Promise<number>;
   getAllTempSummaryList: () => Promise<void>;
   getTempDetail: (postId: number) => Promise<string>;
   publishTemp: ({ body, postId }: { body: FormData; postId: string }) => Promise<number>;
@@ -54,10 +55,11 @@ export const useTempStore = create<ITempState>()(
 
         set({ isLoading: true });
 
-        await PostTempOrPost({ body, token });
+        const postId = await PostTempOrPost({ body, token });
 
         await get().getAllTempSummaryList();
         toast.success('임시 저장이 완료되었습니다.');
+        return postId;
       } catch (error) {
         console.error('임시저장글 생성 실패:', error);
         toast.error('임시저장에 실패했습니다.');
@@ -93,10 +95,16 @@ export const useTempStore = create<ITempState>()(
 
         const post: IPostWriteOrTempType = await GetTempDetail({ postId, token });
 
-        const { uploadVideos, content, postAddRequest, thumbnailImage, id } = post;
+        const { uploadVideos, content, postAddRequest, thumbnailImage, id, savedAt } = post;
         const { title, videoType, videoLink, voteEndDate, category, inGameInfoRequests } =
           postAddRequest;
         const videoId = videoLink ? videoLink.match(YOUTUBE_REGEX)?.[4] : '';
+
+        // 임시저장 당시 설정했던 일수 계산 (기본값 1)
+        const diffDays = getOriginalDaysDiff(savedAt!, voteEndDate!);
+
+        // '오늘'을 기준으로 계산된 일수(diffDays)만큼 더하여 새로운 마감일 생성
+        const newVoteEndDate = getFormattedDateAfterDays(diffDays);
 
         const writeFormData: Partial<IWriteField> = {
           selectedMethod: videoType === 'FILE' ? '파일 첨부' : '유튜브 링크',
@@ -113,7 +121,7 @@ export const useTempStore = create<ITempState>()(
             videoLink: videoLink ?? '',
             draft: true,
             category: category,
-            voteEndDate: voteEndDate ?? '',
+            voteEndDate: newVoteEndDate ?? '',
           },
           id: id ?? null,
           thumbnail: thumbnailImage ? new Blob([thumbnailImage], { type: 'image/jpeg' }) : null,

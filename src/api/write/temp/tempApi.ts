@@ -22,7 +22,7 @@ export const PostTempOrPost = async ({
   postId?: string;
 }) => {
   const res: ICreatePostResponseType = await api.post({
-    endpoint: postId ? `/post/postId=${postId}` : '/post',
+    endpoint: postId ? `/post?postId=${postId}` : '/post',
     body,
     authorization: token,
   });

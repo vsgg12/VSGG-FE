@@ -39,6 +39,7 @@ const Fault = () => {
     createNewPost,
     errMsg,
     id,
+    setData: setWriteData,
   } = useWriteStore();
 
   const { validate } = useWriteValidation();
@@ -95,7 +96,8 @@ const Fault = () => {
       }
     } else {
       try {
-        await createTemp(body);
+        const postId = await createTemp(body);
+        setWriteData('id', postId);
         setTempData('tempModalOpen', true);
       } catch (error) {
         console.error('임시저장 중 에러 발생:', error);
@@ -117,7 +119,6 @@ const Fault = () => {
       content,
       uploadVideos,
       thumbnail,
-      postId: id ? String(id) : undefined,
     });
 
     if (id) {

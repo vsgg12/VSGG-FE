@@ -18,11 +18,10 @@ export const createPostFormData = ({
   content,
   uploadVideos,
   thumbnail,
-  postId,
 }: IProps): FormData => {
   const formData = new FormData();
 
-  if (uploadVideos && uploadVideos instanceof File && !postId) {
+  if (uploadVideos && uploadVideos instanceof File) {
     formData.append('uploadVideos', uploadVideos);
   }
 
@@ -40,6 +39,7 @@ export const createPostFormData = ({
     ...postAddRequest,
     draft: isDraft,
     inGameInfoRequests: postAddRequest.inGameInfoRequests.map((item) => ({
+      ...(item.inGameInfoId != null && { inGameInfoId: item.inGameInfoId }),
       tier: item.tier,
       championName: item.championName,
       position: item.position,
