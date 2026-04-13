@@ -96,12 +96,9 @@ const Fault = () => {
       }
     } else {
       try {
-<<<<<<< HEAD
         const postId = await createTemp(body);
         setWriteData('id', postId);
-=======
         await createTemp(body);
->>>>>>> fdb5765 (feat: 글생성, 임시저장글 상세조회, 목록 조회, 삭제, 생성, 발행 api 연동)
         setTempData('tempModalOpen', true);
       } catch (error) {
         console.error('임시저장 중 에러 발생:', error);
@@ -123,10 +120,6 @@ const Fault = () => {
       content,
       uploadVideos,
       thumbnail,
-<<<<<<< HEAD
-=======
-      postId: id ? String(id) : undefined,
->>>>>>> fdb5765 (feat: 글생성, 임시저장글 상세조회, 목록 조회, 삭제, 생성, 발행 api 연동)
     });
 
     if (id) {
