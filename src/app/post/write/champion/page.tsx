@@ -37,6 +37,7 @@ const Champion = () => {
     createNewPost,
     errMsg,
     id,
+    setData: setWriteData,
   } = useWriteStore();
   const { validate } = useWriteValidation();
 
@@ -82,7 +83,6 @@ const Champion = () => {
       content,
       uploadVideos,
       thumbnail,
-      postId: id ? String(id) : undefined,
     });
 
     if (id) {
@@ -94,7 +94,8 @@ const Champion = () => {
       }
     } else {
       try {
-        await createTemp(body);
+        const postId = await createTemp(body);
+        setWriteData('id', postId);
         setTempData('tempModalOpen', true);
       } catch (error) {
         console.error('임시저장 중 에러 발생:', error);

@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import React from 'react';
-import DescriptionBox from './DescriptionBox';
-import SelectUploadButton from './SelectUploadButton';
-import videoIcon from '../../../../../public/svg/postWrite/videoIcon.svg';
+import DescriptionBox from '../DescriptionBox';
+import SelectUploadButton from '../button/SelectUploadButton';
+import videoIcon from '../../../../../../public/svg/postWrite/videoIcon.svg';
 
 interface Props {
   onClickUploadFileBtn: () => void;

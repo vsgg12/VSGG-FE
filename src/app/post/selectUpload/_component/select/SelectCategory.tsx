@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import judgeIcon from '../../../../../public/svg/postWrite/judgeIcon.svg';
+import judgeIcon from '../../../../../../public/svg/postWrite/judgeIcon.svg';
 
 interface Props {
   onClickJudgeFault: () => void;

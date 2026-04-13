@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import SelectUploadMethod from './_component/SelectUploadMethod';
-import UploadFile from './_component/UploadFile';
-import UploadLink from './_component/UploadLink';
+import SelectUploadMethod from './_component/select/SelectUploadMethod';
+import UploadFile from './_component/upload/UploadFile';
+import UploadLink from './_component/upload/UploadLink';
 import LoadingFull from '@/components/LoadingFull';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import { SelectCategory } from './_component/SelectCategory';
+import { SelectCategory } from './_component/select/SelectCategory';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 

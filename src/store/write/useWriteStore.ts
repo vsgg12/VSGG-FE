@@ -1,7 +1,7 @@
 import { immer } from 'zustand/middleware/immer';
 import { createSetDataImmer, Setter } from '../zustandTypes';
 import { create } from 'zustand';
-import { CreateTempOrPost, PostTempOrPost } from '@/api/write/temp/tempApi';
+import { PostTempOrPost } from '@/api/write/temp/tempApi';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { toast } from 'react-hot-toast';
 
@@ -155,6 +155,7 @@ export const useWriteStore = create<IWriteState>()(
 
     clearAll: () =>
       set((state) => {
+        state.id = null;
         state.isLoading = false;
         state.isSelectCategoryScreenShow = false;
         state.selectedMethod = null;

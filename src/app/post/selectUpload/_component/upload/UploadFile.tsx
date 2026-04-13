@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useRef } from 'react';
-import UploadIcon from '../../../../../public/svg/postWrite/uploadIcon.svg';
+import UploadIcon from '../../../../../../public/svg/postWrite/uploadIcon.svg';
 import Image from 'next/image';
-import DescriptionBox from './DescriptionBox';
-import SelectUploadButton from './SelectUploadButton';
+import DescriptionBox from '../DescriptionBox';
+import SelectUploadButton from '../button/SelectUploadButton';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
 function UploadFile() {
