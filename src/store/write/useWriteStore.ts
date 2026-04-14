@@ -1,6 +1,9 @@
 import { immer } from 'zustand/middleware/immer';
 import { createSetDataImmer, Setter } from '../zustandTypes';
 import { create } from 'zustand';
+import { PostTempOrPost } from '@/api/write/temp/tempApi';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { toast } from 'react-hot-toast';
 
 export const VOTE_END_TIME_OPTIONS = [
   { label: '1일', value: 1 },
@@ -37,15 +40,18 @@ export type PostAddRequestType = {
   // 백엔드에 보낼때는 https://www.youtube.com/embed/${videoId}로 보내야함
   videoLink: string;
   voteEndDate: string; // YYYYMMDD
+  draft: boolean;
+  category: 'FAULT' | 'CHAMPION' | null;
 };
 
 export interface IWriteField {
+  id?: number | null;
   selectedMethod: '파일 첨부' | '유튜브 링크' | null;
-  postRequestData: PostAddRequestType;
-  thumbnail: Blob | undefined;
+  postAddRequest: PostAddRequestType;
+  thumbnail: Blob | null;
   isLoading: boolean;
-  uploadVideos: File | undefined;
-  isSelectJudgeTypeScreenShow: boolean;
+  uploadVideos: File | null;
+  isSelectCategoryScreenShow: boolean;
   content: string;
   videoId: string; // 유투브 영상 iframe 렌더링을 위한 비디오 ID
   allChampions: ChampionType[];
@@ -59,7 +65,7 @@ interface IWriteState extends IWriteField {
     key: K,
     value: InGameInfoRequestType[K],
   ) => void;
-  setPostRequestData: <K extends keyof PostAddRequestType>(
+  setPostAddRequest: <K extends keyof PostAddRequestType>(
     key: K,
     value: PostAddRequestType[K],
   ) => void;
@@ -67,39 +73,43 @@ interface IWriteState extends IWriteField {
   removeInGameInfoRequestItem: (index: number) => void;
   clearAll: () => void;
   fetchAllChampions: () => Promise<void>;
+  createNewPost: (body: FormData) => Promise<number>;
+  updateWriteFields: (fields: Partial<IWriteField>) => void;
 }
 
 export const useWriteStore = create<IWriteState>()(
   immer((set) => ({
     selectedMethod: null,
-    postRequestData: {
+    id: null,
+
+    postAddRequest: {
       title: '',
       videoType: null,
       videoLink: '',
       voteEndDate: '',
+      draft: false,
+      category: null,
       inGameInfoRequests: [
         {
           inGameInfoId: 0,
           championName: '',
           position: '',
           tier: '',
-          claim: '',
         },
         {
           inGameInfoId: 1,
           championName: '',
           position: '',
           tier: '',
-          claim: '',
         },
       ],
     },
-    thumbnail: undefined,
+    thumbnail: null,
     isLoading: false,
-    isSelectJudgeTypeScreenShow: false,
+    isSelectCategoryScreenShow: false,
     content: '',
     videoId: '',
-    uploadVideos: undefined,
+    uploadVideos: null,
     allChampions: [],
     errMsg: '',
 
@@ -107,25 +117,25 @@ export const useWriteStore = create<IWriteState>()(
 
     setInGameInfoRequestData: (index, key, value) =>
       set((state) => {
-        const item = state.postRequestData.inGameInfoRequests[index];
+        const item = state.postAddRequest.inGameInfoRequests[index];
         (item as InGameInfoRequestType)[key] = value;
       }),
 
-    setPostRequestData: (key, value) =>
+    setPostAddRequest: (key, value) =>
       set((state) => {
-        state.postRequestData[key] = value;
+        state.postAddRequest[key] = value;
       }),
 
     addInGameInfoRequestItem: () =>
       set((state) => {
         const nextId =
-          state.postRequestData.inGameInfoRequests.length > 0
+          state.postAddRequest.inGameInfoRequests.length > 0
             ? Math.max(
-                ...state.postRequestData.inGameInfoRequests.map((item) => item.inGameInfoId),
+                ...state.postAddRequest.inGameInfoRequests.map((item) => item.inGameInfoId),
               ) + 1
             : 0;
 
-        state.postRequestData.inGameInfoRequests.push({
+        state.postAddRequest.inGameInfoRequests.push({
           inGameInfoId: nextId,
           championName: '',
           position: '',
@@ -135,7 +145,7 @@ export const useWriteStore = create<IWriteState>()(
 
     removeInGameInfoRequestItem: (index: number) =>
       set((state) => {
-        const list = state.postRequestData.inGameInfoRequests;
+        const list = state.postAddRequest.inGameInfoRequests;
 
         // 최소 2개 유지
         if (list.length <= 2) return;
@@ -145,16 +155,19 @@ export const useWriteStore = create<IWriteState>()(
 
     clearAll: () =>
       set((state) => {
+        state.id = null;
         state.isLoading = false;
-        state.isSelectJudgeTypeScreenShow = false;
+        state.isSelectCategoryScreenShow = false;
         state.selectedMethod = null;
-        state.thumbnail = undefined;
+        state.thumbnail = null;
         state.content = '';
-        state.postRequestData = {
+        state.postAddRequest = {
           title: '',
           videoType: null,
           videoLink: '',
           voteEndDate: '',
+          draft: false,
+          category: null,
           inGameInfoRequests: [
             {
               inGameInfoId: 0,
@@ -170,7 +183,7 @@ export const useWriteStore = create<IWriteState>()(
             },
           ],
         };
-        state.uploadVideos = undefined;
+        state.uploadVideos = null;
         state.videoId = '';
       }),
 
@@ -201,5 +214,30 @@ export const useWriteStore = create<IWriteState>()(
         console.error('Error loading the champions:', error);
       }
     },
+
+    createNewPost: async (body) => {
+      try {
+        const token = useAuthStore.getState().accessToken;
+        set({ isLoading: true });
+
+        const postId = await PostTempOrPost({ body, token });
+        console.log('postId:', postId);
+
+        toast.success('게시글 등록이 완료되었습니다.');
+
+        return postId;
+      } catch (error) {
+        console.error('게시글 생성 실패:', error);
+        toast.error('게시글 등록에 실패하였습니다.');
+        throw error;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    updateWriteFields: (fields) =>
+      set((state) => {
+        Object.assign(state, fields);
+      }),
   })),
 );

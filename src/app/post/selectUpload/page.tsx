@@ -2,29 +2,36 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import SelectUploadMethod from './_component/SelectUploadMethod';
-import UploadFile from './_component/UploadFile';
-import UploadLink from './_component/UploadLink';
+import SelectUploadMethod from './_component/select/SelectUploadMethod';
+import UploadFile from './_component/upload/UploadFile';
+import UploadLink from './_component/upload/UploadLink';
 import LoadingFull from '@/components/LoadingFull';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import { SelectJudgeType } from './_component/SelectJudgeType';
+import { SelectCategory } from './_component/select/SelectCategory';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 function SelectUpload() {
   const router = useRouter();
   const {
     selectedMethod,
     isLoading,
-    isSelectJudgeTypeScreenShow,
+    isSelectCategoryScreenShow,
     setData,
-    clearAll
+    clearAll,
+    setPostAddRequest,
   } = useWriteStore();
+  const { isLogin } = useAuthStore();
+  const { route, setRouteState } = useSidebarStore();
 
-  const onClickJudgeChampion = () => {
-    router.push('/post/write/champion');
+  const onClickJudgeFault = () => {
+    setPostAddRequest('category', 'FAULT');
+    router.push('/post/write/fault');
   };
 
-  const onClickJudgeClaim = () => {
-    router.push('/post/write/claim');
+  const onClickJudgeChampion = () => {
+    setPostAddRequest('category', 'CHAMPION');
+    router.push('/post/write/champion');
   };
 
   const onClickUploadFileBtn = () => {
@@ -36,14 +43,23 @@ function SelectUpload() {
   };
 
   useEffect(() => {
+    if (!isLogin || route !== 'WRITE') {
+      router.replace('/');
+    }
+  }, [isLogin, router, route]);
+
+  useEffect(() => {
+    setRouteState('WRITE');
+  }, [setRouteState]);
+
+  useEffect(() => {
     /** 뒤로가기 감지 */
     const handlePopState = () => {
       const ok = confirm('페이지를 떠나면 작성된 내용이 사라집니다');
       if (!ok) {
         // 뒤로가기 취소
         history.pushState(null, '', location.href);
-      }
-      else {
+      } else {
         clearAll();
         router.back();
       }
@@ -66,15 +82,17 @@ function SelectUpload() {
     };
   }, [clearAll, router]);
 
+  if (!isLogin) return null;
+
   return (
     <div className='w-full h-screen flex justify-center bg-white'>
       {isLoading ? (
         <LoadingFull />
       ) : (
         <div className='w-[545px] h-full flex flex-col justify-center items-center gap-[50px] text-center py-[36px]'>
-          {isSelectJudgeTypeScreenShow ? (
-            <SelectJudgeType
-              onClickJudgeClaim={onClickJudgeClaim}
+          {isSelectCategoryScreenShow ? (
+            <SelectCategory
+              onClickJudgeFault={onClickJudgeFault}
               onClickJudgeChampion={onClickJudgeChampion}
             />
           ) : selectedMethod === null ? (

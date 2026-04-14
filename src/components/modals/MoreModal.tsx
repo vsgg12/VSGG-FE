@@ -66,12 +66,12 @@ function MoreModal({
   const handleClick = (text: string) => {
     switch (text) {
       case '수정':
-        // where에 따른 댓글 수정, 게시글 수정 api 호출 다르게
         if (where === 'post') {
           if (!isEditPostPossible) {
             return alert('게시글은 판결기간 종료 24시간 전까지만 수정이 가능합니다.');
           }
-          router.push(`/post/${postId}/edit`);
+          alert('준비중입니다.');
+          // router.push(`/post/${postId}/edit`);
         }
         break;
       case '삭제':

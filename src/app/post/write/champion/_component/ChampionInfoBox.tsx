@@ -3,7 +3,7 @@
 import SearchChampionBox from '@/app/post/write/_component/common/search/champion/SearchChampionBox';
 import SearchTierBox from '@/app/post/write/_component/common/search/tier/SearchTierBox';
 import SearchPositionBox from '@/app/post/write/_component/common/search/position/SearchPositionBox';
-import ClaimBox from '@/app/post/write/claim/_component/ClaimBox';
+import ChampionBox from '@/app/post/write/champion/_component/ChampionBox';
 
 interface Props {
   championName: string;
@@ -16,7 +16,7 @@ interface Props {
   setClaim: (claim: string) => void;
 }
 
-const ClaimInfoBox = ({
+const ChampionInfoBox = ({
   championName,
   setChampionName,
   position,
@@ -33,9 +33,9 @@ const ClaimInfoBox = ({
         <SearchTierBox tier={tier} setTier={setTier} />
         <SearchPositionBox position={position} setPosition={setPosition} />
       </div>
-      <ClaimBox claim={claim} setClaim={setClaim} />
+      <ChampionBox claim={claim} setClaim={setClaim} />
     </div>
   );
 };
 
-export default ClaimInfoBox;
+export default ChampionInfoBox;

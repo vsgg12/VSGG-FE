@@ -1,26 +1,28 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import { getFormattedDateAfterDays } from '@/utils/formatDate';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef } from 'react';
 import { useWriteStore } from '@/store/write/useWriteStore';
-import { useTempStore } from '@/store/temp/useTempStore';
+import { useRouter } from 'next/navigation';
 import LeftContainer from '@/app/post/write/_component/common/content/LeftContainer';
-import InGameRequestBox from '@/app/post/write/champion/_component/InGameRequestBox';
+import ConnectRiotButton from '@/app/post/write/fault/_component/ConnectRiotButton';
+import InGameInfoRequestBox from '@/app/post/write/fault/_component/InGameInfoRequestBox';
 import SelectVoteEndTimeBox from '@/app/post/write/_component/common/content/SelectVoteEndTimeBox';
 import WriteFooterContainer from '@/app/post/write/_component/common/footer/WriteFooterContainer';
+import { getFormattedDateAfterDays } from '@/utils/formatDate';
+import { useWriteValidation } from '@/hooks/write/useWriteValidation';
+import { useTempStore } from '@/store/temp/useTempStore';
 import TempModal from '@/app/post/write/_component/common/modal/temp/TempModal';
 import ConfirmTempModal from '@/app/post/write/_component/common/modal/temp/confirm/ConfirmTempModal';
-import { useWriteValidation } from '@/hooks/write/useWriteValidation';
 import { createPostFormData } from '@/utils/write/formDataUtils';
 
-// 주장 판결
-const Champion = () => {
+// 챔피언 과실 판결
+const Fault = () => {
   const router = useRouter();
 
   const isSubmitting = useRef<boolean>(false);
 
   const [activeBox, setActiveBox] = useState<boolean>(false);
+  const [isDeleteHover, setIsDeleteHover] = useState<number | null>(null);
   const [selectedEndTime, setSelectedEndTime] = useState<number>(1);
   const [endTimeBoxClicked, setEndTimeBoxClicked] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -39,8 +41,8 @@ const Champion = () => {
     id,
     setData: setWriteData,
   } = useWriteStore();
-  const { validate } = useWriteValidation();
 
+  const { validate } = useWriteValidation();
   const {
     setData: setTempData,
     tempModalOpen,
@@ -204,20 +206,18 @@ const Champion = () => {
     <div className={'relative w-screen h-screen flex justify-center items-center gap-[50px]'}>
       <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
 
-      <div className={'w-[568px] flex flex-col'}>
-        <div className={'flex flex-col gap-[80px] min-h-[800px] justify-between'}>
-          <div className={'flex flex-col gap-[74px]'}>
-            <InGameRequestBox />
+      <div className={'w-[568px] flex flex-col gap-[20px]'}>
+        <ConnectRiotButton titleClass={titleClass} />
+        <div className={'flex flex-col gap-[20px]'}>
+          <InGameInfoRequestBox isDeleteHover={isDeleteHover} setIsDeleteHover={setIsDeleteHover} />
 
-            <SelectVoteEndTimeBox
-              titleClass={titleClass}
-              endTimeBoxClicked={endTimeBoxClicked}
-              selectedEndTime={selectedEndTime}
-              setEndTimeBoxClicked={setEndTimeBoxClicked}
-              setSelectedEndTime={setSelectedEndTime}
-            />
-          </div>
-
+          <SelectVoteEndTimeBox
+            titleClass={titleClass}
+            endTimeBoxClicked={endTimeBoxClicked}
+            selectedEndTime={selectedEndTime}
+            setEndTimeBoxClicked={setEndTimeBoxClicked}
+            setSelectedEndTime={setSelectedEndTime}
+          />
           <WriteFooterContainer
             onClickTempSaveBtn={onClickTempSaveBtn}
             onClickRegisterBtn={onClickRegisterBtn}
@@ -231,4 +231,4 @@ const Champion = () => {
   );
 };
 
-export default Champion;
+export default Fault;
