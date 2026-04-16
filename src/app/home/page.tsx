@@ -21,7 +21,7 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
-export default function Home(): JSX.Element {
+const Home = () => {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -176,4 +176,6 @@ export default function Home(): JSX.Element {
       )}
     </>
   );
-}
+};
+
+export default Home;
