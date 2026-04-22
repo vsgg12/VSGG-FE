@@ -30,17 +30,12 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
-  const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<string>('');
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
 
   useEffect(() => {
     setIsLiked(post.liked);
-
-    if (post.voteCount === 0) {
-      setIsNoOneVoted(true);
-    }
 
     if (post.liked) {
       setHeartIcon(Icon_heart_hover);
