@@ -48,7 +48,7 @@ const ChampionVoteBox = ({
 
   return (
     <div
-      className={`relative ${isHome ? 'min-w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
+      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
     >
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
