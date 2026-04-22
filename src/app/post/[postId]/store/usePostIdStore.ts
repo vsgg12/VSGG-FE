@@ -16,9 +16,7 @@ interface PostIdStore {
 
 const initialPostVoteState = {
   voteResult: [],
-  setVoteResult: (vote: number[]) => set({ voteResult: vote }),
   votingGraph: Array(10).fill(-1),
-  setVotingGraph: (graph: number[]) => set({ votingGraph: graph }),
   postVoteResult: [],
   selectedChampIdx: 0,
   isNotAbleSubmit: true,
