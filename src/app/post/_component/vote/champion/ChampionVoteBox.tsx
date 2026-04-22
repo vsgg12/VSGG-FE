@@ -11,9 +11,17 @@ interface Props {
   daysUntilEnd: number;
   isOwner: boolean;
   isVote: boolean;
+  isHome?: boolean;
 }
 
-const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Props) => {
+const ChampionVoteBox = ({
+  voteData,
+  voteCount,
+  daysUntilEnd,
+  isOwner,
+  isVote,
+  isHome = false,
+}: Props) => {
   const [isHover, setIsHover] = useState<number>(0);
 
   const {
@@ -39,7 +47,9 @@ const ChampionVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }:
   const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
 
   return (
-    <div className='relative w-[659px] h-[359px] rounded-[16px] overflow-hidden bg-gray-900'>
+    <div
+      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
+    >
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
         className={clsx(
