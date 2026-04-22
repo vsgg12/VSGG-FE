@@ -5,8 +5,6 @@ import moment from 'moment';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
-import HomeVotedMobile from './HomeVotedMobile';
-import HomeNotVotedMobile from './HomeNotVotedMobile';
 import PostDeadLineMobile from './PostDeadLineMobile';
 
 export default function PostItemMobile({
@@ -127,9 +125,9 @@ export default function PostItemMobile({
           </div>
           <div className='flex w-full min-h-[150px] rounded-[10px] items-center'>
             {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
-              <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
+              <div></div> //투표 컴포넌트
             ) : (
-              <HomeNotVotedMobile />
+              <div></div> //투표 안한 컴포넌트
             )}
           </div>
         </div>

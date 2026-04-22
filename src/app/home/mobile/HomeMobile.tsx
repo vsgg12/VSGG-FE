@@ -3,15 +3,14 @@
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
 import { useEffect, useState } from 'react';
-import SearchMobile from './component/SearchMobile';
 import { useQuery } from '@tanstack/react-query';
 import useSearchStore from '../store/useSearchStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getPostList from '@/api/post/getPostList';
-import NewPopularToggleButtonMobile from './component/NewPopularToggleButtonMobile';
 import AlignModeToggleButtonMobile from './component/AlignModeToggleButtonMobile';
 import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
+import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 
 export default function HomeMobile() {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
@@ -39,29 +38,16 @@ export default function HomeMobile() {
     }
   }, [keyword, refetch, postData]);
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && keyword.trim() !== '' && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      refetch();
-    }
-  };
-
-  const handleSearch = () => {
-    if (keyword.trim() !== '') {
-      refetch();
-    }
-  };
-
   return (
     <div className='w-full h-[100dvh]'>
       <MainHeader />
       <div className='mobile-layout flex flex-col items-center px-[20px] py-[10px] mobile-scroll'>
-        <SearchMobile handleSearch={handleSearch} handleSearchKeyDown={handleSearchKeyDown} />
         <section className='flex flex-col justify-center relative w-full items-center mt-[70px]'>
           <div className='w-full mb-[40px] flex flex-row items-center justify-between'>
-            <NewPopularToggleButtonMobile
+            <NewPopularToggleButton
               activeButton={activeButton}
               setActiveButton={setActiveButton}
+              isMobile={true}
             />
             <AlignModeToggleButtonMobile isListed={isListed} setIsListed={setIsListed} />
           </div>
