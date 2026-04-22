@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { voteColors } from '../../../../../../data/championData';
 import usePostIdStore from '../../../store/usePostIdStore';
 
 export default function VotingGraph() {
-  const [votingGraph, setVotingGraph] = useState<number[]>(Array(10).fill(-1));
-  const { voteResult, setVoteResult, selectedChampIdx } = usePostIdStore();
+  const { voteResult, setVoteResult, selectedChampIdx, votingGraph, setVotingGraph } =
+    usePostIdStore();
 
   const handleClick = (index: number) => {
     const lastCheckedIndex = findLastCheckedIndex(votingGraph);

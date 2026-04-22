@@ -5,7 +5,6 @@ import getPostItem from '@/api/post/getPostItem';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
@@ -68,9 +67,6 @@ export default function PostDetailMain() {
         <PostDetailMobile />
       ) : (
         <div className='min-w-[1400px] flex-col items-center'>
-          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
-            <Logo />
-          </div>
           {isLoading ? (
             <Loading />
           ) : (

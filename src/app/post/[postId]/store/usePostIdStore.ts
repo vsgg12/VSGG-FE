@@ -3,6 +3,8 @@ import { create } from 'zustand';
 interface PostIdStore {
   voteResult: number[];
   setVoteResult: (voteResult: number[]) => void;
+  votingGraph: number[];
+  setVotingGraph: (graph: number[]) => void;
   postVoteResult: IVoteType[];
   setPostVoteResult: (postVote: IVoteType[]) => void;
   selectedChampIdx: number;
@@ -14,6 +16,8 @@ interface PostIdStore {
 const usePostIdStore = create<PostIdStore>((set) => ({
   voteResult: [],
   setVoteResult: (vote: number[]) => set({ voteResult: vote }),
+  votingGraph: Array(10).fill(-1),
+  setVotingGraph: (graph: number[]) => set({ votingGraph: graph }),
   postVoteResult: [],
   setPostVoteResult: (vote: IVoteType[]) => set({ postVoteResult: vote }),
   selectedChampIdx: 0,
