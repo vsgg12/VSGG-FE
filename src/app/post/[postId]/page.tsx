@@ -12,6 +12,7 @@ import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import PostDetailPC from './desktop/PostDetailPC';
+import usePostIdStore from './store/usePostIdStore';
 
 export default function PostDetailMain() {
   const { postId } = useParams();
@@ -21,9 +22,9 @@ export default function PostDetailMain() {
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  // const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   const { fetchAllChampions } = useWriteStore();
+  const { resetPostVoteState } = usePostIdStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
@@ -59,7 +60,10 @@ export default function PostDetailMain() {
 
   useEffect(() => {
     fetchAllChampions();
-  }, []);
+    return () => {
+      resetPostVoteState();
+    };
+  }, [fetchAllChampions, resetPostVoteState]);
 
   return (
     <>
