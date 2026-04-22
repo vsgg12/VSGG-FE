@@ -11,7 +11,6 @@ import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
-import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
@@ -250,7 +249,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               </p>
               <Image src={Doughnut} width={146} height={146} alt='doughnut' />
             </div>
-          ) : post.isVote || post.status === 'FINISHED' ? (
+          ) : (
             <ChampionVoteBox
               voteData={voteInfos}
               voteCount={post.voteCount}
@@ -259,8 +258,6 @@ function PostContentArea({ post, voteInfos }: Props) {
               isVote={post.isVote}
               isHome={true}
             />
-          ) : (
-            <HomeNotVoted voteInfos={voteInfos} />
           )}
         </div>
       )}

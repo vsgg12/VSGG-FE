@@ -87,23 +87,26 @@ const ChampionVoteBox = ({
       {/* 안내 문구 및 버튼 */}
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
-          {!isLogin && (
-            <>
-              <div className='flex flex-col items-center gap-1 drop-shadow-lg text-[20px] font-bold'>
-                <p>판결이 궁금하시다구요?</p>
-                <p>판결에 참여하고, 결과를 확인하세요</p>
-              </div>
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className='bg-[#8A1F21] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold text-[18px] transition-colors shadow-xl cursor-pointer'
-              >
-                지금 바로 판결하기
-              </button>
-            </>
-          )}
+          {!isLogin ||
+            (isHome && (
+              <>
+                <div
+                  className={`flex flex-col items-center gap-1 drop-shadow-lg ${isHome ? 'text-[12px]' : 'text-[20px]'} font-bold`}
+                >
+                  <p>판결이 궁금하시다구요?</p>
+                  <p>판결에 참여하고, 결과를 확인하세요</p>
+                </div>
+                <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className={`bg-[#8A1F21] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold ${isHome ? 'text-[16px]' : 'text-[18px]'} transition-colors shadow-xl cursor-pointer`}
+                >
+                  지금 바로 판결하기
+                </button>
+              </>
+            ))}
 
           {/* 로그인 상태지만 투표 없음 */}
-          {isLogin && isNoVote && !isVoteEnd && (
+          {isLogin && isNoVote && !isVoteEnd && !isHome && (
             <div className='text-[20px] font-bold drop-shadow-lg'>
               아직 투표한 사람이 없는 게시글입니다.
             </div>
