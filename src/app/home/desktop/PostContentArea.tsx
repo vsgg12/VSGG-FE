@@ -12,7 +12,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
-import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
 
 interface Props {
   post: IGetPostDTOType;

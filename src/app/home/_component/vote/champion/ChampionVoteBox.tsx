@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
-import ChampionVoteResultItem from '@/app/post/_component/vote/champion/ChampionVoteResultItem';
+import ChampionVoteResultItem from '@/app/home/_component/vote/champion/ChampionVoteResultItem';
 
 interface Props {
   voteData: IGetInGameInfoType[];
@@ -48,7 +48,7 @@ const ChampionVoteBox = ({
 
   return (
     <div
-      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
+      className={`relative ${isHome ? 'min-w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
     >
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
