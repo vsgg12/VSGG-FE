@@ -7,7 +7,6 @@ import Icon_heart_hover from '../../../../public/svg/postItem/heart_hover.svg';
 import Icon_vote from '../../../../public/svg/postItem/vote.svg';
 import Icon_vote_hover from '../../../../public/svg/postItem/vote_hover.svg';
 import Icon_view from '../../../../public/svg/postItem/view.svg';
-import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
@@ -240,25 +239,14 @@ function PostContentArea({ post, voteInfos }: Props) {
       </div>
       {isVoteClicked && (
         <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
-          {(post.status === 'FINISHED' && isNoOneVoted) || post.memberDTO.email === user?.email ? (
-            <div className='flex w-full relative justify-center'>
-              <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
-                {post.status === 'FINISHED'
-                  ? '투표한 사람이 없는 게시글입니다.'
-                  : '아직 투표한 사람이 없는 게시글입니다.'}
-              </p>
-              <Image src={Doughnut} width={146} height={146} alt='doughnut' />
-            </div>
-          ) : (
-            <ChampionVoteBox
-              voteData={voteInfos}
-              voteCount={post.voteCount}
-              daysUntilEnd={post.daysUntilEnd}
-              isOwner={post.memberDTO.nickname === user?.nickname}
-              isVote={post.isVote}
-              isHome={true}
-            />
-          )}
+          <ChampionVoteBox
+            voteData={voteInfos}
+            voteCount={post.voteCount}
+            daysUntilEnd={post.daysUntilEnd}
+            isOwner={post.memberDTO.nickname === user?.nickname}
+            isVote={post.isVote}
+            isHome={true}
+          />
         </div>
       )}
     </div>
