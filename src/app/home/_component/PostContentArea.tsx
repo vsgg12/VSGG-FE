@@ -7,14 +7,12 @@ import Icon_heart_hover from '../../../../public/svg/postItem/heart_hover.svg';
 import Icon_vote from '../../../../public/svg/postItem/vote.svg';
 import Icon_vote_hover from '../../../../public/svg/postItem/vote_hover.svg';
 import Icon_view from '../../../../public/svg/postItem/view.svg';
-import Doughnut from '../../../../public/svg/Douhnut_small.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
-import HomeVoted from './HomeVoted';
-import HomeNotVoted from './HomeNotVoted';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
 
 interface Props {
   post: IGetPostDTOType;
@@ -32,17 +30,12 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
-  const [isNoOneVoted, setIsNoOneVoted] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<string>('');
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
 
   useEffect(() => {
     setIsLiked(post.liked);
-
-    if (post.voteCount === 0) {
-      setIsNoOneVoted(true);
-    }
 
     if (post.liked) {
       setHeartIcon(Icon_heart_hover);
@@ -240,21 +233,15 @@ function PostContentArea({ post, voteInfos }: Props) {
         ))}
       </div>
       {isVoteClicked && (
-        <div className='relative flex h-[167px] items-center justify-center rounded-[20px] '>
-          {(post.status === 'FINISHED' && isNoOneVoted) || post.memberDTO.email === user?.email ? (
-            <div className='flex w-full relative justify-center'>
-              <p className='flex justify-center items-center absolute text-[16px] inset-0 text-[#828282]'>
-                {post.status === 'FINISHED'
-                  ? '투표한 사람이 없는 게시글입니다.'
-                  : '아직 투표한 사람이 없는 게시글입니다.'}
-              </p>
-              <Image src={Doughnut} width={146} height={146} alt='doughnut' />
-            </div>
-          ) : post.isVote || post.status === 'FINISHED' ? (
-            <HomeVoted voteInfos={voteInfos} />
-          ) : (
-            <HomeNotVoted voteInfos={voteInfos} />
-          )}
+        <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
+          <ChampionVoteBox
+            voteData={voteInfos}
+            voteCount={post.voteCount}
+            daysUntilEnd={post.daysUntilEnd}
+            isOwner={post.memberDTO.nickname === user?.nickname}
+            isVote={post.isVote}
+            isHome={true}
+          />
         </div>
       )}
     </div>

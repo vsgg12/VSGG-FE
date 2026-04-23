@@ -25,13 +25,19 @@ export default function BottomBox({
   const { getImageUrlByName } = useChampion();
   const { tiersMini } = tiersData;
 
-  const getTierIcon = useCallback((tier: string) => {
-    return tiersMini.find((item) => item.content === tier)?.svg;
-  }, []);
+  const getTierIcon = useCallback(
+    (tier: string) => {
+      return tiersMini.find((item) => item.content === tier)?.svg;
+    },
+    [tiersMini],
+  );
 
-  const getTierColor = useCallback((tier: string) => {
-    return tiersMini.find((item) => item.content === tier)?.color;
-  }, []);
+  const getTierColor = useCallback(
+    (tier: string) => {
+      return tiersMini.find((item) => item.content === tier)?.color;
+    },
+    [tiersMini],
+  );
   return (
     <div className='flex flex-col relative items-center w-[618px] min-h-[136px]'>
       <Image
