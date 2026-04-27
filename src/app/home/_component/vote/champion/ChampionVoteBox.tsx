@@ -105,7 +105,7 @@ const ChampionVoteBox = ({
           )}
 
           {/* 로그인 상태지만 투표 없음 */}
-          {isLogin && isNoVote && !isVoteEnd && !isHome && (
+          {isLogin && isNoVote && !isVoteEnd && (
             <div className='text-[20px] font-bold drop-shadow-lg'>
               아직 투표한 사람이 없는 게시글입니다.
             </div>
