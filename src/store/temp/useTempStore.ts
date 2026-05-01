@@ -58,7 +58,7 @@ export const useTempStore = create<ITempState>()(
         const postId = await PostTempOrPost({ body, token });
 
         await get().getAllTempSummaryList();
-        toast.success('임시 저장이 완료되었습니다.');
+        toast.success('임시저장이 완료되었습니다.');
         return postId;
       } catch (error) {
         console.error('임시저장글 생성 실패:', error);
@@ -135,7 +135,7 @@ export const useTempStore = create<ITempState>()(
 
         set({ selectedTempId: postId, loadTempDetailModalOpen: false, tempModalOpen: false });
         useWriteStore.getState().updateWriteFields(writeFormData);
-        toast.success('임시 저장글을 불러오는데 성공했습니다.');
+        toast.success('임시저장된 글을 불러왔습니다.');
 
         return category ?? '';
       } catch (error) {
@@ -194,7 +194,7 @@ export const useTempStore = create<ITempState>()(
 
         await get().getAllTempSummaryList();
         set({ deleteTempItemModalOpen: false });
-        toast.success('임시 저장글 삭제에 성공했습니다.');
+        toast.success('임시저장된 글이 삭제되었습니다.');
       } catch (error) {
         console.error('임시저장 글 삭제 실패:', error);
         toast.error('임시저장 글 삭제에 실패했습니다.');

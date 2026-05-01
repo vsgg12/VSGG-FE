@@ -149,7 +149,7 @@ const Fault = () => {
   useEffect(() => {
     /** 뒤로가기 감지 */
     const handlePopState = () => {
-      const ok = confirm('페이지를 떠나면 작성된 내용이 사라집니다');
+      const ok = confirm('페이지를 떠나면 저장되지 않은 내용이 사라질 수 있습니다.');
       if (!ok) {
         // 뒤로가기 취소
         history.pushState(null, '', location.href);
