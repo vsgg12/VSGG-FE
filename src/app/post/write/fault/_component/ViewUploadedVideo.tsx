@@ -7,6 +7,7 @@ import dropUpIcon from '../../../../../../public/svg/postWrite/dropUpIcon.svg';
 import dropDownIcon from '../../../../../../public/svg/postWrite/dropDownIcon.svg';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import UploadLinkModal from '../../_component/common/modal/upload/UploadLinkModal';
+import { truncateText } from '@/utils/truncateText';
 
 interface Props {
   titleClass: string;
@@ -168,7 +169,7 @@ const ViewUploadedVideo = ({
         <div
           ref={boxRef}
           onClick={() => setActiveBox(true)}
-          className={`w-[652px] max-h-[400px] rounded-[10px] ${getBoxClass()} ${videoBoxPbClass} py-[10px] flex flex-col gap-[20px] justify-center items-center`}
+          className={`w-[652px] rounded-[10px] ${getBoxClass()} ${videoBoxPbClass} flex flex-col gap-[20px] justify-center items-center`}
         >
           <div
             className={
@@ -177,17 +178,17 @@ const ViewUploadedVideo = ({
           >
             <div className={'w-full flex justify-between items-center'}>
               <div className={'flex gap-[5px]'}>
-                {videoLink && <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />}
+                <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
 
                 {/* 텍스트 렌더링 영역 (클릭 분기) */}
-                <div>
+                <div className={'flex items-center'}>
                   {uploadVideos ? (
                     <span
                       onClick={onClickFileText}
                       className='cursor-pointer hover:underline hover:text-blue-600 transition-colors'
                       title='클릭하여 파일 변경'
                     >
-                      {uploadVideos.name ?? uploadVideos}
+                      {truncateText(uploadVideos.name ?? uploadVideos, 55)}
                     </span>
                   ) : videoLink ? (
                     <span
@@ -212,12 +213,12 @@ const ViewUploadedVideo = ({
               </div>
             </div>
             {dropDownOpen && (
-              <div className={'w-[450px] h-[253px]'}>
+              <div className={'w-[450px] h-[253px] mb-[20px]'}>
                 {/* 유튜브 링크 */}
                 {videoId && (
                   <iframe
-                    width='438'
-                    height='243'
+                    width='100%'
+                    height='100%'
                     src={`https://www.youtube.com/embed/${videoId}`}
                     title='YouTube video preview'
                     className='rounded-[10px]'
@@ -229,8 +230,8 @@ const ViewUploadedVideo = ({
                 {/* 업로드 파일 */}
                 {uploadVideos && (
                   <video
-                    width={438}
-                    height={243}
+                    width='100%'
+                    height='100%'
                     src={
                       uploadVideos instanceof File
                         ? URL.createObjectURL(

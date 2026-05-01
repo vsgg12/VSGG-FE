@@ -14,6 +14,7 @@ import { useTempStore } from '@/store/temp/useTempStore';
 import TempModal from '@/app/post/write/_component/common/modal/temp/TempModal';
 import ConfirmTempModal from '@/app/post/write/_component/common/modal/temp/confirm/ConfirmTempModal';
 import { createPostFormData } from '@/utils/write/formDataUtils';
+import ScaleWrapper from '@/components/common/wrapper/ScaleWrapper';
 
 // 챔피언 과실 판결
 const Fault = () => {
@@ -149,7 +150,7 @@ const Fault = () => {
   useEffect(() => {
     /** 뒤로가기 감지 */
     const handlePopState = () => {
-      const ok = confirm('페이지를 떠나면 작성된 내용이 사라집니다');
+      const ok = confirm('페이지를 떠나면 저장되지 않은 내용이 사라질 수 있습니다.');
       if (!ok) {
         // 뒤로가기 취소
         history.pushState(null, '', location.href);
@@ -203,31 +204,36 @@ const Fault = () => {
   }, [selectedEndTime, setPostAddRequest]);
 
   return (
-    <div className={'relative w-screen h-screen flex justify-center items-center gap-[50px]'}>
-      <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
+    <ScaleWrapper>
+      <div className={'relative min-h-screen flex justify-center items-center gap-[50px]'}>
+        <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
 
-      <div className={'w-[568px] flex flex-col gap-[20px]'}>
-        <ConnectRiotButton titleClass={titleClass} />
-        <div className={'flex flex-col gap-[20px]'}>
-          <InGameInfoRequestBox isDeleteHover={isDeleteHover} setIsDeleteHover={setIsDeleteHover} />
+        <div className={'w-[568px] flex flex-col gap-[20px]'}>
+          <ConnectRiotButton titleClass={titleClass} />
+          <div className={'flex flex-col gap-[20px]'}>
+            <InGameInfoRequestBox
+              isDeleteHover={isDeleteHover}
+              setIsDeleteHover={setIsDeleteHover}
+            />
 
-          <SelectVoteEndTimeBox
-            titleClass={titleClass}
-            endTimeBoxClicked={endTimeBoxClicked}
-            selectedEndTime={selectedEndTime}
-            setEndTimeBoxClicked={setEndTimeBoxClicked}
-            setSelectedEndTime={setSelectedEndTime}
-          />
-          <WriteFooterContainer
-            onClickTempSaveBtn={onClickTempSaveBtn}
-            onClickRegisterBtn={onClickRegisterBtn}
-          />
+            <SelectVoteEndTimeBox
+              titleClass={titleClass}
+              endTimeBoxClicked={endTimeBoxClicked}
+              selectedEndTime={selectedEndTime}
+              setEndTimeBoxClicked={setEndTimeBoxClicked}
+              setSelectedEndTime={setSelectedEndTime}
+            />
+            <WriteFooterContainer
+              onClickTempSaveBtn={onClickTempSaveBtn}
+              onClickRegisterBtn={onClickRegisterBtn}
+            />
+          </div>
         </div>
+        {tempModalOpen && <TempModal />}
+        {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+        {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
       </div>
-      {tempModalOpen && <TempModal />}
-      {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
-      {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
-    </div>
+    </ScaleWrapper>
   );
 };
 
