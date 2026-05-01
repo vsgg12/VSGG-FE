@@ -26,12 +26,17 @@ export const useVoteResult = ({ voteCount, daysUntilEnd, voteData, isOwner, isVo
     // 1. 투표 마감 전/후 상관없이 비로그인 상태면 무조건 블러
     if (!isLogin) return true;
 
-    // 2. 투표 마감 전일 때: 내 게시글이 아니고, 내가 투표도 안 했으면 블러
+    // 2. 게시글 작성자일 때 투표한 사람이 없으면 진행 중에도 블러
+    if (isOwner && isNoVote) {
+      return true;
+    }
+
+    // 3. 투표 마감 전일 때: 내 게시글이 아니고, 내가 투표도 안 했으면 블러
     if (!isVoteEnd) {
       return !isOwner && !isVote;
     }
 
-    // 3. 투표 마감 후일 때: (위에서 비로그인을 걸렀으므로) 무조건 보임
+    // 4. 투표 마감 후일 때: (위에서 비로그인을 걸렀으므로) 무조건 보임
     return false;
   };
 
