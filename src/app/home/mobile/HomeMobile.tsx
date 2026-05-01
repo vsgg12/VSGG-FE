@@ -3,34 +3,22 @@
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import useSearchStore from '../store/useSearchStore';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
-import getPostList from '@/api/post/getPostList';
 import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
 import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 import AlignModeToggleButton from '../_component/AlignModeToggleButton';
 
-export default function HomeMobile() {
+interface Props {
+  postData: IGetPostDTOType[];
+  isLoading: boolean;
+  refetch: () => void;
+}
+
+export default function HomeMobile({ postData, isLoading, refetch }: Props) {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const { isLogin, accessToken } = useAuthStore();
   const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
-
-  const {
-    data: postData,
-    isLoading,
-    refetch,
-  } = useQuery<IGetPostListType>({
-    queryKey: ['POST_LIST', activeButton],
-    queryFn: () => {
-      if (activeButton === 'createdatetime' || activeButton === 'view') {
-        return getPostList(activeButton, keyword, isLogin ? accessToken : '');
-      }
-      throw new Error('Invalid activeButton value');
-    },
-  });
 
   useEffect(() => {
     if (keyword === '') {
@@ -52,12 +40,12 @@ export default function HomeMobile() {
         </div>
         {isLoading ? (
           <Loading />
-        ) : postData?.postDTO.length === 0 ? (
+        ) : postData?.length === 0 ? (
           <div className='flex flex-col flex-grow items-center justify-center'>
             현재 작성된 게시물이 없습니다.
           </div>
         ) : (
-          postData?.postDTO.map((post, idx) => (
+          postData?.map((post, idx) => (
             <div key={idx} className='flex flex-col w-full'>
               {isListed ? (
                 <ListedPostItemMobile post={post} />

@@ -115,7 +115,7 @@ const Home = () => {
   return (
     <>
       {isMobile ? (
-        <HomeMobile />
+        <HomeMobile postData={visiblePosts} isLoading={isLoading} refetch={refetch} />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px]'>
           <Sidebar />

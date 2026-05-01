@@ -28,6 +28,12 @@ export default function PostItemMobile({
     setIsImageClick(true);
   };
 
+  const getYoutubeId = (url: string) => {
+    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
+
   return (
     <div
       className='h-fit w-full bg-[#ffffff] cursor-pointer flex flex-col mb-[4px] px-[18px] py-[12px] gap-[15px]'
