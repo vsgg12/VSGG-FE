@@ -1,13 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import moment from 'moment';
+import { useState } from 'react';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
-import HomeVotedMobile from './HomeVotedMobile';
-import HomeNotVotedMobile from './HomeNotVotedMobile';
 import PostDeadLineMobile from './PostDeadLineMobile';
+import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
+import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
+import ChampionVoteBoxMobile from './ChampionVoteBoxMobile';
 
 export default function PostItemMobile({
   post,
@@ -17,15 +16,12 @@ export default function PostItemMobile({
   voteInfos: IGetInGameInfoType[];
 }) {
   const router = useRouter();
-  const [formattedDate, setFormattedDate] = useState<string>();
+  const { getIcon } = useProfileTierIcon({ size: 16 });
+  const timeAgo = useTimeDifferenceFromNow(post.createdAt);
   const contentsArr = useConvertHTML(post.content);
   const { user } = useAuthStore();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
-  const videoStyle = 'p-content-rounded p-content-s-mb aspect-video h-[60%] w-full block visible';
-
-  useEffect(() => {
-    setFormattedDate(moment(post.createdAt).format('YYYY.MM.DD. HH:mm'));
-  }, [post]);
+  const videoStyle = 'rounded-[14px] aspect-video w-[full] h-fit block visible';
 
   const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
     event.stopPropagation();
@@ -34,105 +30,86 @@ export default function PostItemMobile({
 
   return (
     <div
-      className='h-fit w-full rounded-[30px] bg-[#ffffff] cursor-pointer flex flex-col mb-[35px] p-[25px] gap-[15px]'
+      className='h-fit w-full bg-[#ffffff] cursor-pointer flex flex-col mb-[4px] px-[18px] py-[12px] gap-[15px]'
       onClick={() => {
         router.push(`/post/${post.id}`);
       }}
     >
       <div className='flex w-full justify-between'>
-        <div className='flex gap-[12px]'>
+        <div className='flex items-center'>
           <img
-            className='h-[32px] w-[32px] rounded-full'
             src={
               !post.memberDTO.profileImage
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
+            className='mr-[0.625rem] h-[30px] w-[30px] rounded-full text-[#D9D9D9]'
           />
-          <div className='flex flex-col'>
-            <div className='text-[12px] text-[#333333] max-w-[170px]'>
-              {post.memberDTO.nickname}
-              <span className='ml-[8px] text-[12px] text-[#909090]'>{post.memberDTO.tier}</span>
-            </div>
-            <p className='text-[12px] text-[#C8C8C8]'>{formattedDate}</p>
+          <div className='flex gap-[5px] text-[12px]'>
+            {getIcon(post.memberDTO.tier)}
+            <p>{post.memberDTO.nickname}</p>
+            <p className='text-[#C8C8C8] ml-[px]'>{timeAgo}</p>
           </div>
         </div>
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
-      <div className='flex'>
-        <p className='text-black text-[15px] whitespace-wrap'>
-          {post.title}
-          <span className='text-[#C8C8C8] text-[12px] ml-[10px]'>
-            | 조회수 {formatNumberWithCommas(post.viewCount)}
-          </span>
+      <div className='flex flex-col gap-[10px]'>
+        <p className='text-black text-[16px] whitespace-wrap'>{post.title}</p>
+        <p className='text-[16px] w-full whitespace-nowrap overflow-hidden truncate'>
+          {contentsArr.pTags[0]}
         </p>
       </div>
-      <div className='flex flex-col relative'>
-        {/* isImageClick이 true면 무조건 비디오를 보여줌 */}
+      <div>
         {isImageClick ? (
           <video
             muted
             controls
-            playsInline
-            className={videoStyle}
+            autoPlay
             poster={post.thumbnailURL}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
+            className={`block visible ${videoStyle}`}
+            onClick={(e) => e.stopPropagation}
+          >
+            <source src={post.video.url} type='video/mp4' />
+            <source src={post.video.url} type='video/webm' />
+          </video>
+        ) : post.thumbnailURL ? (
+          <img
+            className={videoStyle}
+            src={post.thumbnailURL}
+            onClick={handleImageClick}
+            alt={'thumbnail'}
+          />
+        ) : post.video.type === 'FILE' ? (
+          <video
+            muted
+            controls
+            playsInline
+            poster={post.thumbnailURL}
+            className={`block visible ${videoStyle}`}
           >
             <source src={post.video.url} type='video/mp4' />
             <source src={post.video.url} type='video/webm' />
           </video>
         ) : (
-          // isImageClick이 false일 때만 썸네일 or 비디오 판단
-          <>
-            {post.thumbnailURL ? (
-              // 썸네일이 있으면 클릭 가능하도록 렌더링
-              <img className={videoStyle} src={post.thumbnailURL} onClick={handleImageClick} />
-            ) : post.video.type === 'FILE' ? (
-              // FILE 타입이면 자동 재생 없이 비디오 렌더링
-              <video
-                muted
-                playsInline
-                controls
-                className={videoStyle}
-                poster={post.thumbnailURL}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <source src={post.video.url} type='video/webm' />
-                <source src={post.video.url} type='video/mp4' />
-              </video>
-            ) : (
-              // 외부 영상의 경우 iframe으로 렌더링
-              <iframe
-                className={videoStyle}
-                src={post.video.url}
-                title={post.title}
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                referrerPolicy='strict-origin-when-cross-origin'
-                allowFullScreen
-              ></iframe>
-            )}
-          </>
+          //외부영상 첨부할 때 사용
+          <iframe
+            src={`https://www.youtube.com/embed/${getYoutubeId(post.video.url)}`}
+            width='340'
+            height='191'
+            allowFullScreen
+            className='rounded-[10px] block visible'
+          />
         )}
-        <div className='flex flex-col w-full gap-[20px]'>
-          <div className='line-clamp-[8] h-[70px] overflow-hidden text-ellipsis decoration-solid'>
-            {contentsArr.pTags.map((content, idx) => {
-              const displayContent =
-                content.length > 150 ? `${content.slice(0, 144)}...더보기` : content;
-              return <p key={idx}>{displayContent}</p>;
-            })}
-          </div>
-          <div className='flex w-full min-h-[150px] rounded-[10px] items-center'>
-            {post.isVote || user?.email === post.memberDTO.email || post.status === 'FINISHED' ? (
-              <HomeVotedMobile voteInfos={voteInfos} isFinished={post.status === 'FINISHED'} />
-            ) : (
-              <HomeNotVotedMobile />
-            )}
-          </div>
-        </div>
+      </div>
+      <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
+        <ChampionVoteBoxMobile
+          voteData={voteInfos}
+          voteCount={post.voteCount}
+          daysUntilEnd={post.daysUntilEnd}
+          isOwner={post.memberDTO.nickname === user?.nickname}
+          isVote={post.isVote}
+          isHome={true}
+        />
       </div>
     </div>
   );

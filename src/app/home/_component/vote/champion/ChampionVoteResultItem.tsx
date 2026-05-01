@@ -11,9 +11,10 @@ import Image from 'next/image';
 interface Props {
   isHover: boolean;
   voteItem: IGetInGameInfoType;
+  isHome?: boolean;
 }
 
-const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
+const ChampionVoteResultItem = ({ voteItem, isHover, isHome = false }: Props) => {
   const { tiers } = tiersData;
   const getTierIcon = useCallback(() => {
     return tiers.find((item) => item.content === voteItem.tier)?.svg;
@@ -25,7 +26,12 @@ const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
   }, [voteItem.position, isHover]);
 
   return (
-    <div className={'w-full h-fit flex justify-between font-semibold items-center cursor-pointer'}>
+    <div
+      className={clsx(
+        'flex justify-between font-semibold items-center cursor-pointer',
+        isHome ? 'w-[256px] h-[33px]' : 'w-full h-fit',
+      )}
+    >
       <div className='flex items-center gap-[10px]'>
         {/* 포지션 */}
         <div
@@ -40,8 +46,9 @@ const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
         <div className={'flex flex-col'}>
           <div
             className={clsx(
-              'text-[16px] whitespace-nowrap',
+              'whitespace-nowrap',
               isHover ? 'text-[#D9D9D9]' : 'text-[#555555]',
+              isHome ? 'text-[12px]' : 'text-[16px]',
             )}
           >
             {voteItem.championName}
@@ -56,7 +63,12 @@ const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
       </div>
 
       {/* 육각형 */}
-      <div className={clsx('w-[50px] h-[50px] relative justify-center items-center flex shrink-0')}>
+      <div
+        className={clsx(
+          'relative justify-center items-center flex shrink-0',
+          isHome ? 'w-[33px] h-[33px]' : 'w-[50px] h-[50px]',
+        )}
+      >
         <Image
           src={isHover ? hexagon : hexagonDisable}
           alt={'육각형 이미지'}
@@ -64,8 +76,9 @@ const ChampionVoteResultItem = ({ voteItem, isHover }: Props) => {
         />
         <span
           className={clsx(
-            'relative z-10 text-[18px] flex items-center justify-center line-clamp-0',
+            'relative z-10 flex items-center justify-center line-clamp-0',
             isHover ? 'text-white' : 'text-white/60',
+            isHome ? 'text-[14px]' : 'text-[18px]',
           )}
         >
           {(voteItem.averageRatio ?? 0).toFixed(1)}

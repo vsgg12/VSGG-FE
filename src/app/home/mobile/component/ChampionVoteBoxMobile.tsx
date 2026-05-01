@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
-import ChampionVoteResultItem from '@/app/post/_component/vote/champion/ChampionVoteResultItem';
+import ChampionVoteResultItem from '@/app/home/_component/vote/champion/ChampionVoteResultItem';
 
 interface Props {
   voteData: IGetInGameInfoType[];
@@ -14,13 +14,13 @@ interface Props {
   isHome?: boolean;
 }
 
-const ChampionVoteBox = ({
+const ChampionVoteBoxMobile = ({
   voteData,
   voteCount,
   daysUntilEnd,
   isOwner,
   isVote,
-  isHome = false,
+  isHome,
 }: Props) => {
   const [isHover, setIsHover] = useState<number>(0);
 
@@ -48,7 +48,7 @@ const ChampionVoteBox = ({
 
   return (
     <div
-      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[16px] overflow-hidden bg-gray-900`}
+      className={`relative w-full min-w-[340px] h-[253px] rounded-[16px] overflow-hidden bg-gray-900`}
     >
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
@@ -70,17 +70,18 @@ const ChampionVoteBox = ({
           >
             {sortedVoteData.map((item, idx) => (
               <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
-                <ChampionVoteResultItem voteItem={item} isHover={isHover === idx} />
+                <ChampionVoteResultItem voteItem={item} isHover={isHome ? true : isHover === idx} />
               </div>
             ))}
           </div>
-
-          <div className='flex flex-col text-white items-end self-end pb-[10px]'>
-            <div className='text-[40px] font-bold'>
-              {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
+          {!isHome && (
+            <div className='flex flex-col text-white items-end self-end pb-[10px]'>
+              <div className='text-[40px] font-bold'>
+                {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
+              </div>
+              <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
             </div>
-            <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -117,4 +118,4 @@ const ChampionVoteBox = ({
   );
 };
 
-export default ChampionVoteBox;
+export default ChampionVoteBoxMobile;

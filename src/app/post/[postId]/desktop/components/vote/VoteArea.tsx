@@ -1,5 +1,5 @@
 import React from 'react';
-import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
