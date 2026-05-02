@@ -1,5 +1,5 @@
 import React from 'react';
-import ChampionVoteBox from '@/app/post/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -52,20 +52,24 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
 
   if (loading) return <div>로딩 중...</div>;
 
+  const shouldShowVoteForm = post.postDTO.status === 'PROGRESS' && isLogin && !isOwner && !post.postDTO.isVote;
+  const shouldShowVoteResult =
+    post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote || isOwner;
+
   return (
     <div className='w-[720px] bg-white rounded-[20px] flex items-center justify-center p-[30px]'>
-      {post.postDTO.status === 'PROGRESS' && isLogin && !post.postDTO.isVote && (
+      {shouldShowVoteForm && (
         <VoteForm
           voteInfo={voteData}
           voteCount={post.postDTO.voteCount}
           handleVoteSubmit={handleVoteSubmit}
         />
       )}
-      {(post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote) && (
+      {shouldShowVoteResult && (
         <ChampionVoteBox
           voteData={voteData}
-          voteCount={30}
-          daysUntilEnd={-1}
+          voteCount={post.postDTO.voteCount}
+          daysUntilEnd={post.postDTO.daysUntilEnd}
           isOwner={isOwner}
           isVote={post.postDTO.isVote}
         />

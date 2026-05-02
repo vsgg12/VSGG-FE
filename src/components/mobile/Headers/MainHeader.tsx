@@ -7,6 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getAlarms from '@/api/alarm/getAlarms';
+import logo from '../../../../public/svg/logo/vsgg.svg';
+import Image from 'next/image';
 
 function MainHeader() {
   const router = useRouter();
@@ -61,9 +63,10 @@ function MainHeader() {
   };
 
   return (
-    <div className='flex gap-[10px] py-[20px] h-[50px] pr-[20px] items-center justify-end mobile-layout sticky top-0 z-[40]'>
+    <div className='flex gap-[10px] h-[44px] px-[10px] items-center justify-between mobile-layout sticky top-0 z-[40]'>
+      <Image src={logo} alt='logo' width={102} height={20} />
       {isLogin ? (
-        <>
+        <div className='flex'>
           <button
             className={`relative group/alarm hd-items cursor-pointer `}
             onClick={handleAlarmBtnClick}
@@ -106,7 +109,7 @@ function MainHeader() {
               프로필
             </span>
           </button>
-        </>
+        </div>
       ) : (
         <button
           className='rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'

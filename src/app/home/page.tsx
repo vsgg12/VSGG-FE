@@ -11,9 +11,9 @@ import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import { useMediaQuery } from 'react-responsive';
 import HomeMobile from './mobile/HomeMobile';
-import PostItem from './_component/PostItem';
-import PostCommentArea from './_component/PostCommentArea';
-import WritePost from './_component/WritePost';
+import PostItem from './desktop/PostItem';
+import PostCommentArea from './desktop/PostCommentArea';
+import WritePost from './desktop/WritePost';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import ListPostItem from './_component/ListPostItem';
@@ -115,7 +115,7 @@ const Home = () => {
   return (
     <>
       {isMobile ? (
-        <HomeMobile />
+        <HomeMobile postData={visiblePosts} isLoading={isLoading} refetch={refetch} />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px]'>
           <Sidebar />

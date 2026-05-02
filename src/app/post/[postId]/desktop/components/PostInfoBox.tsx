@@ -6,6 +6,7 @@ import PostDeadLine from '@/components/PostDeadLine';
 import Icon_eye from '../../../../../../public/svg/postItem/eye.svg';
 import Icon_more from '../../../../../../public/svg/postItem/Icon_more.svg';
 import Image from 'next/image';
+import Default_Profile from '../../../../../../public/svg/defaultProfile.svg';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MoreModal from '@/components/modals/MoreModal';
 
@@ -33,13 +34,17 @@ function PostInfoBox({ post }: Props) {
     <div className='w-full flex justify-between relative'>
       <div className='w-[720px] flex justify-between items-center'>
         <div className='flex gap-[10px]'>
-          <img
+          <Image
             src={
-              post.postDTO.memberDTO.profileImage === null
-                ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
+              post.postDTO.memberDTO.profileImage == null ||
+              post.postDTO.memberDTO.profileImage == ''
+                ? Default_Profile
                 : post.postDTO.memberDTO.profileImage
             }
             className='w-[52px] h-[52px] rounded-full  text-[#D9D9D9]'
+            width={52}
+            height={52}
+            alt='profile_image'
           />
           <div className='flex flex-col'>
             <div className='flex gap-[3px] text-[#333333] text-[18px]'>
