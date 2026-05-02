@@ -87,7 +87,7 @@ const ChampionVoteBox = ({
       {/* 안내 문구 및 버튼 */}
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
-          {!isLogin || (isHome && !isNoVote) ? (
+          {(!isLogin || isHome) && !isOwner ? (
             <>
               <div
                 className={`flex flex-col items-center gap-1 drop-shadow-lg ${isHome ? 'text-[12px]' : 'text-[20px]'} font-bold`}
@@ -105,6 +105,7 @@ const ChampionVoteBox = ({
           ) : (
             isLogin &&
             isNoVote &&
+            isOwner &&
             !isVoteEnd && (
               <div className='text-[20px] font-bold drop-shadow-lg'>
                 아직 투표한 사람이 없는 게시글입니다.

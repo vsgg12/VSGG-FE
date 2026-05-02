@@ -117,7 +117,7 @@ const Home = () => {
       {isMobile ? (
         <HomeMobile postData={visiblePosts} isLoading={isLoading} refetch={refetch} />
       ) : (
-        <div className='flex w-screen items-center justify-center pl-[260px]'>
+        <div className='flex w-screen items-center justify-center pl-[260px] bg-[#FAFAFA]'>
           <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}

@@ -34,7 +34,7 @@ function PostInfoBox({ post }: Props) {
     <div className='w-full flex justify-between relative'>
       <div className='w-[720px] flex justify-between items-center'>
         <div className='flex gap-[10px]'>
-          <Image
+          <img
             src={
               post.postDTO.memberDTO.profileImage == null ||
               post.postDTO.memberDTO.profileImage == ''
