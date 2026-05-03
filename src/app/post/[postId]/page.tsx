@@ -5,7 +5,6 @@ import getPostItem from '@/api/post/getPostItem';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import Logo from '@/components/Logo';
 import Loading from '@/components/Loading';
 import { useMediaQuery } from 'react-responsive';
 import PostDetailMobile from './mobile/PostDetailMobile';
@@ -13,6 +12,7 @@ import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import PostDetailPC from './desktop/PostDetailPC';
+import usePostIdStore from './store/usePostIdStore';
 
 export default function PostDetailMain() {
   const { postId } = useParams();
@@ -22,9 +22,9 @@ export default function PostDetailMain() {
   const router = useRouter();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [voteData, setVoteData] = useState<IGetInGameInfoType[]>([]);
-  // const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   const { fetchAllChampions } = useWriteStore();
+  const { resetPostVoteState } = usePostIdStore();
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
 
   const {
@@ -60,7 +60,10 @@ export default function PostDetailMain() {
 
   useEffect(() => {
     fetchAllChampions();
-  }, []);
+    return () => {
+      resetPostVoteState();
+    };
+  }, [fetchAllChampions, resetPostVoteState]);
 
   return (
     <>
@@ -68,9 +71,6 @@ export default function PostDetailMain() {
         <PostDetailMobile />
       ) : (
         <div className='min-w-[1400px] flex-col items-center'>
-          <div className='mb-[100px] mt-[100px] flex flex-col items-center justify-center gap-[32px]'>
-            <Logo />
-          </div>
           {isLoading ? (
             <Loading />
           ) : (

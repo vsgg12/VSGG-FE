@@ -87,10 +87,6 @@ body {
   @apply mr-[1.125rem];
 }
 
-.p-content-rounded {
-  @apply rounded-[1.875rem];
-}
-
 .p-content-mb {
   @apply mb-11;
 }

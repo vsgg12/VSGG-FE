@@ -3,55 +3,45 @@
 import ModalOverlay from '@/app/post/write/_component/common/modal/ModalOverlay';
 import { useTempStore } from '@/store/temp/useTempStore';
 import ConfirmFooter from '@/app/post/write/_component/common/modal/temp/confirm/footer/ConfirmFooter';
-import { YOUTUBE_REGEX } from '@/constants/regex';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ConfirmModalContent from '@/app/post/write/_component/common/modal/temp/confirm/content/ConfirmModalContent';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   type: 'load' | 'delete';
 }
 
 const ConfirmTempModal = ({ type }: Props) => {
-  const { setData: setTempData, deleteTempItem, selectedTempId, fetchAllTempList } = useTempStore();
-  const { setData: setWriteData, clearAll } = useWriteStore();
+  const { setData: setTempData, deleteTemp, getTempDetail, selectedTempId } = useTempStore();
+  const { clearAll } = useWriteStore();
+  const router = useRouter();
 
   const onCloseModal = () => {
     setTempData(type === 'delete' ? 'deleteTempItemModalOpen' : 'loadTempDetailModalOpen', false);
   };
 
-  const onClickConfirm = () => {
+  const onClickConfirm = async () => {
+    if (!selectedTempId) {
+      alert('임시글이 유효하지 않아 불러올 수 없습니다.');
+      return;
+    }
+
     if (type === 'load') {
       clearAll();
-      const videoLink =
-        'https://www.youtube.com/watch?v=xYFH5kgEnMg&list=RDxYFH5kgEnMg&start_radio=1';
-      setWriteData('selectedMethod', '유튜브 링크');
-      setWriteData('postRequestData', {
-        title: '테스트 목 데이터 제목',
-        videoType: 'LINK',
-        inGameInfoRequests: [
-          {
-            inGameInfoId: 1,
-            championName: '나르',
-            position: '서폿',
-            tier: '그랜드마스터',
-          },
-          {
-            inGameInfoId: 2,
-            championName: '자헨',
-            position: '미드',
-            tier: '브론즈',
-          },
-        ],
-        videoLink,
-        voteEndDate: '20260101',
-      });
-      setWriteData('isSelectJudgeTypeScreenShow', true);
-      setWriteData('content', '<p>이건 좀 아니지 않냐</p><p>인정?</p>');
-      setWriteData('videoId', videoLink.match(YOUTUBE_REGEX)![4]);
+      try {
+        const category = await getTempDetail(selectedTempId);
+        console.log('category', category);
+
+        if (category === 'CHAMPION') {
+          router.push('/post/write/champion');
+        } else if (category === 'FAULT') {
+          router.push('/post/write/fault');
+        }
+      } catch (error) {
+        console.error(error);
+      }
     } else {
-      // 삭제 api 호출
-      deleteTempItem(selectedTempId!);
-      fetchAllTempList();
+      await deleteTemp(selectedTempId);
     }
   };
 
