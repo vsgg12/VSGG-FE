@@ -74,7 +74,6 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
         {!shouldBlur && (
           <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
             <span className='text-[24px] leading-none'>{voteItem.averageRatio}%</span>
-            <span className='text-[12px]'>{voteItem.voteCount}표</span>
           </div>
         )}
       </div>
