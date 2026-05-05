@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import { useChampion } from '@/hooks/useChampion';
 import IconVote from '../../../../../../../public/svg/postItem/vote.svg';
+import Loading from '@/components/Loading';
 
 interface IProps {
   selectedChampion: string;
@@ -16,7 +17,7 @@ export default function ChampionImgBox({
   isHamburgerClicked,
   voteInfo,
 }: IProps) {
-  const { getImageUrlByName } = useChampion();
+  const { getImageUrlByName, loading } = useChampion();
 
   return (
     <div className='flex flex-col gap-[13px]'>
@@ -26,29 +27,37 @@ export default function ChampionImgBox({
       </div>
       {isHamburgerClicked ? (
         <div className='flex relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
-          {voteInfo.map((champion) => (
-            <div
-              style={{ width: `${659 / voteInfo.length}px`, height: '201px' }}
-              className='relative'
-              key={champion.championName}
-            >
-              <Image
-                src={getImageUrlByName(champion.championName)}
-                alt='champion'
-                fill
-                className='object-cover'
-              />
-            </div>
-          ))}
+          {loading ? (
+            <Loading />
+          ) : (
+            voteInfo.map((champion) => (
+              <div
+                style={{ width: `${659 / voteInfo.length}px`, height: '201px' }}
+                className='relative'
+                key={champion.championName}
+              >
+                <Image
+                  src={getImageUrlByName(champion.championName)}
+                  alt='champion'
+                  fill
+                  className='object-cover'
+                />
+              </div>
+            ))
+          )}
         </div>
       ) : (
         <div className='relative w-[659px] h-[201px] rounded-[20px] overflow-hidden'>
-          <Image
-            src={getImageUrlByName(selectedChampion, 'flash')}
-            alt='champion'
-            fill
-            className='object-cover object-top'
-          ></Image>
+          {loading ? (
+            <Loading />
+          ) : (
+            <Image
+              src={getImageUrlByName(selectedChampion, 'flash')}
+              alt='champion'
+              fill
+              className='object-cover object-top'
+            ></Image>
+          )}
         </div>
       )}
     </div>
