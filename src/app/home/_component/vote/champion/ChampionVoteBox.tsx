@@ -112,8 +112,6 @@ const ChampionVoteBox = ({
               </div>
             )
           )}
-
-          {/* 로그인 상태지만 투표 없음 */}
         </div>
       )}
     </div>

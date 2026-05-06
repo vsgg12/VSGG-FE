@@ -79,7 +79,6 @@ const ChampionVoteBoxMobile = ({
               <div className='text-[40px] font-bold'>
                 {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
               </div>
-              <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
             </div>
           )}
         </div>
