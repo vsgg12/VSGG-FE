@@ -27,7 +27,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
     if (votes && voteInfos && voteInfos.length === votes.length) {
       setIsNoOneVoted(true);
     }
-  }, [votes]);
+  }, [votes, voteInfos]);
 
   const getPositionSrc = (position: string) => {
     if (voteInfos?.every((voteInfo) => voteInfo.averageRatio === 0)) {
