@@ -45,6 +45,7 @@ const ChampionVoteBox = ({
 
   // 현재 호버된 아이템
   const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
+  const backgroundImage = currentHoverItem ? getChampionImage(currentHoverItem.championName) : '';
 
   return (
     <div
@@ -57,7 +58,7 @@ const ChampionVoteBox = ({
           shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
         )}
         style={{
-          backgroundImage: `url(${getChampionImage(currentHoverItem.championName)})`,
+          backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -77,9 +78,8 @@ const ChampionVoteBox = ({
 
           <div className='flex flex-col text-white items-end self-end pb-[10px]'>
             <div className='text-[40px] font-bold'>
-              {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
+              {(currentHoverItem?.averageRatio ?? 0).toFixed(1)}
             </div>
-            <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
           </div>
         </div>
       </div>
@@ -87,7 +87,11 @@ const ChampionVoteBox = ({
       {/* 안내 문구 및 버튼 */}
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
-          {(!isLogin || isHome) && !isOwner ? (
+          {isOwner && isNoVote && !isVoteEnd ? (
+            <div className='text-[20px] font-bold drop-shadow-lg'>
+              아직 투표한 사람이 없는 게시글입니다.
+            </div>
+          ) : (!isLogin || isHome) && !isOwner ? (
             <>
               <div
                 className={`flex flex-col items-center gap-1 drop-shadow-lg ${isHome ? 'text-[12px]' : 'text-[20px]'} font-bold`}
@@ -102,16 +106,7 @@ const ChampionVoteBox = ({
                 지금 바로 판결하기
               </button>
             </>
-          ) : (
-            isLogin &&
-            isNoVote &&
-            isOwner &&
-            !isVoteEnd && (
-              <div className='text-[20px] font-bold drop-shadow-lg'>
-                아직 투표한 사람이 없는 게시글입니다.
-              </div>
-            )
-          )}
+          ) : null}
         </div>
       )}
     </div>

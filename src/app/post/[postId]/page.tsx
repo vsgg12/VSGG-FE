@@ -52,9 +52,9 @@ export default function PostDetailMain() {
       if (post.postDTO.memberDTO.nickname === user.nickname) {
         setIsOwner(true);
       }
-      if (post) {
-        setVoteData(post.postDTO.inGameInfoList);
-      }
+    }
+    if (post) {
+      setVoteData(post.postDTO.inGameInfoList);
     }
   }, [post, router, user]);
 
