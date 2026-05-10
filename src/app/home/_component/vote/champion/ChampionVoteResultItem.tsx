@@ -61,7 +61,6 @@ const ChampionVoteResultItem = ({ voteItem, isHover, isHome = false }: Props) =>
           </div>
         </div>
       </div>
-
       {/* 육각형 */}
       <div
         className={clsx(

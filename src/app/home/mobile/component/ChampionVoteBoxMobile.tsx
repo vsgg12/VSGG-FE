@@ -45,6 +45,7 @@ const ChampionVoteBoxMobile = ({
 
   // 현재 호버된 아이템
   const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
+  const backgroundImage = currentHoverItem ? getChampionImage(currentHoverItem.championName) : '';
 
   return (
     <div
@@ -57,7 +58,7 @@ const ChampionVoteBoxMobile = ({
           shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
         )}
         style={{
-          backgroundImage: `url(${getChampionImage(currentHoverItem.championName)})`,
+          backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -77,9 +78,8 @@ const ChampionVoteBoxMobile = ({
           {!isHome && (
             <div className='flex flex-col text-white items-end self-end pb-[10px]'>
               <div className='text-[40px] font-bold'>
-                {(currentHoverItem.averageRatio ?? 0).toFixed(1)}
+                {(currentHoverItem?.averageRatio ?? 0).toFixed(1)}
               </div>
-              <div className='text-[20px] font-semibold'>{currentHoverItem.voteCount}표</div>
             </div>
           )}
         </div>
@@ -88,30 +88,26 @@ const ChampionVoteBoxMobile = ({
       {/* 안내 문구 및 버튼 */}
       {shouldBlur && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
-          {!isLogin ||
-            (isHome && (
-              <>
-                <div
-                  className={`flex flex-col items-center gap-1 drop-shadow-lg ${isHome ? 'text-[12px]' : 'text-[20px]'} font-bold`}
-                >
-                  <p>판결이 궁금하시다구요?</p>
-                  <p>판결에 참여하고, 결과를 확인하세요</p>
-                </div>
-                <button
-                  onClick={() => setIsLoginModalOpen(true)}
-                  className={`bg-[#8A1F21] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold ${isHome ? 'text-[16px]' : 'text-[18px]'} transition-colors shadow-xl cursor-pointer`}
-                >
-                  지금 바로 판결하기
-                </button>
-              </>
-            ))}
-
-          {/* 로그인 상태지만 투표 없음 */}
-          {isLogin && isNoVote && !isVoteEnd && !isHome && (
+          {isOwner && isNoVote && !isVoteEnd ? (
             <div className='text-[20px] font-bold drop-shadow-lg'>
               아직 투표한 사람이 없는 게시글입니다.
             </div>
-          )}
+          ) : !isLogin || isHome ? (
+            <>
+              <div
+                className={`flex flex-col items-center gap-1 drop-shadow-lg ${isHome ? 'text-[12px]' : 'text-[20px]'} font-bold`}
+              >
+                <p>판결이 궁금하시다구요?</p>
+                <p>판결에 참여하고, 결과를 확인하세요</p>
+              </div>
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className={`bg-[#8A1F21] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold ${isHome ? 'text-[16px]' : 'text-[18px]'} transition-colors shadow-xl cursor-pointer`}
+              >
+                지금 바로 판결하기
+              </button>
+            </>
+          ) : null}
         </div>
       )}
     </div>
