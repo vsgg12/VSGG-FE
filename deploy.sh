@@ -8,6 +8,8 @@ echo "DEPLOYMENT_GROUP_NAME: ${DEPLOYMENT_GROUP_NAME}"
 echo "개발 서버 배포"
 cd "${REPOSITORY}"
 sudo npm install
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 pm2 describe vsgg > /dev/null
 if [ $? -eq 0 ]; then
     # 실행 중인 경우
