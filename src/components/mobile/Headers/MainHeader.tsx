@@ -7,8 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getAlarms from '@/api/alarm/getAlarms';
-import logo from '../../../../public/svg/logo/vsgg.svg';
-import Image from 'next/image';
 
 function MainHeader() {
   const router = useRouter();
