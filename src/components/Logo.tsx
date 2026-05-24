@@ -7,13 +7,26 @@ export default function Logo() {
 
   return (
     <div
-      className="font-['SBAggroB'] text-[40px] text-[#8A1F21] cursor-pointer"
+      className='cursor-pointer'
       onClick={() => {
         router.push('/home');
         setKeyword('');
       }}
     >
-      VS.GG
+      {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서 숨김 */}
+      <img
+        src='/logo/normal/normal-red.svg'
+        alt='VS.GG'
+        className='block h-[40px] w-auto dark:block'
+        // className='block h-[40px] w-auto dark:hidden'
+      />
+
+      {/* 다크모드용 로고: 기본적으로 숨기고, 다크모드(.dark)에서만 보임 */}
+      <img
+        src='/logo/normal/normal-white.svg'
+        alt='VS.GG'
+        className='hidden h-[40px] w-auto dark:hidden'
+      />
     </div>
   );
 }

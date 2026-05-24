@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
@@ -7,73 +8,78 @@ import { Toaster } from 'react-hot-toast';
 import GlobalLoginModalLayer from '@/components/common/GlobalLoginModalLayer';
 
 const inter = Inter({ subsets: ['latin'] });
-export const metadata = {
+
+export const metadata: Metadata = {
   title: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
   description:
     '라이엇도 안심하는 리그오브레전드 과실 판결 커뮤니티 VS.GG, LCK부터 내 플레이까지 모두 가능! 간단한 챔피언, 포지션, 티어 정보만 입력하세요. 과실을 판결하고 플레이어들과 토론하며 롤을 더 재밌게 즐겨요',
   keywords:
     'LCK, 라이엇, 롤문철, 라이엇도 안심하는, 과실 판결, 리플레이 영상 공유, 게임 커뮤니티 플랫폼, 챔피언, 포지션, 티어, 토론, 롤 관련 커뮤니티, 롤, 커뮤니티',
+  metadataBase: new URL('https://vsgg.co.kr'),
+  alternates: {
+    canonical: '/',
+  },
+  verification: {
+    google: 'r1opwB8ilF7fEuqvQ6Flfu9WHhshGXeABmREKa02zyQ',
+    other: {
+      'naver-site-verification': '6f47895aa61798532c99334cbb3786cb9e28a25e',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  other: {
+    Yeti: 'index, follow', // 네이버 검색 로봇 허용
+    Daumoa: 'index, follow', // 다음 검색 로봇 허용
+  },
+  // [오픈그래프 영역] 카카오톡 등 외부 링크 공유 시 보여지는 정보
   openGraph: {
     title: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
     description:
       '라이엇도 안심하는 리그오브레전드 과실 판결 커뮤니티 VS.GG, LCK부터 내 플레이까지 모두 가능! 간단한 챔피언, 포지션, 티어 정보만 입력하세요. 과실을 판결하고 플레이어들과 토론하며 롤을 더 재밌게 즐겨요',
+    url: 'https://vsgg.co.kr',
+    siteName: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
+    locale: 'ko_KR',
+    type: 'website',
     images: [
       {
-        url: '/images/openGraph.png',
+        url: '/logo/openGraph/og-image.png', // 카톡링크미리보기 이미지 적용
         width: 800,
         height: 420,
+        alt: 'VS.GG OpenGraph Image',
       },
     ],
-    siteName: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
-    type: 'website',
-    url: 'https://vsgg.co.kr',
-    locale: 'ko_KR',
   },
+  // [파비콘 영역] 탭 아이콘 및 검색 엔진 노출 아이콘
   icons: {
-    icon: '/svg/logo/CircleLogo.svg',
+    icon: [
+      // 2. 브라우저 탭 파비콘 (라이트모드)
+      { url: '/logo/favicon/favicon-light.png', media: '(prefers-color-scheme: light)' },
+
+      // 3. 브라우저 탭 파비콘 (다크모드)
+      { url: '/logo/favicon/favicon-dark.png', media: '(prefers-color-scheme: dark)' },
+    ],
+    // Safari 브라우저에서 [홈 화면에 추가] 버튼을 눌러 웹사이트를 앱처럼 바탕화면에 꺼내둘 때 사용되는 '앱 아이콘'
+    // 애플 공식 가이드라인에서도 배경이 투명하지 않고 꽉 채워진(Opaque) 고해상도(보통 180x180)의 단일 이미지를 하나만 제공하도록 권장
+    apple: [{ url: '/logo/favicon/favicon-dark.png', sizes: '180x180', type: 'image/png' }],
   },
-  metadataBase: new URL('https://vsgg.co.kr'),
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang='ko' className='root-bg'>
       <head>
-        <meta name='naver-site-verification' content='6f47895aa61798532c99334cbb3786cb9e28a25e' />
-        <meta
-          name='google-site-verification'
-          content='r1opwB8ilF7fEuqvQ6Flfu9WHhshGXeABmREKa02zyQ'
-        />
-        <meta name='Yeti' content='All' />
-        <meta name='Yeti' content='index, follow' />
-        <meta name='googlebot' content='All' />
-        <meta name='googlebot' content='index, follow' />
-        <meta name='robots' content='All' />
-        <meta name='robots' content='index, follow' />
-        <meta name='Daumoa' content='All' />
-        <meta name='Daumoa' content='index, follow' />
-
-        <meta name='title' content='리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG' />
-        <meta name='Location' content='ko_KR' />
-
-        <meta property='og:image' content='/images/openGraph.png' />
-        <meta property='og:image:width' content='800' />
-        <meta property='og:image:height' content='420' />
-
-        <link rel='canonical' href='https://vsgg.co.kr' />
-
-        <link rel='icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
-        <link rel='shortcut icon' href='/images/Favicon.ico' type='image/x-icon' sizes='48x48' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='180x180' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='152x152' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='167x167' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='120x120' />
-        <link rel='apple-touch-icon' href='/images/SquareLogo.png' sizes='76x76' />
-        <link rel='mask-icon' href='/images/Favicon.ico' color='#8A1F21' />
-        <link rel='shortcut icon' href='/images/Favicon.ico' type='image/x-icon' />
-
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
+
         {/* Google tag (gtag.js) */}
         <Script async src='https://www.googletagmanager.com/gtag/js?id=G-MYFHS8HYQ5'></Script>
         <Script
@@ -111,7 +117,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <main style={{ flex: 1 }}>
                 <Suspense>{children}</Suspense>
               </main>
-            </div>{' '}
+            </div>
           </Suspense>
         </RQProvider>
       </body>

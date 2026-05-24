@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import LinkUtils from '@/utils/link/linkUtils';
 
 const WebFooter = () => {
@@ -11,8 +10,24 @@ const WebFooter = () => {
       }
     >
       {/*왼쪽 영역*/}
-      <div className={'flex flex-col gap-[20px] h-[111px]'}>
-        <Image src={'/svg/logo/vsgg.svg'} alt={'vsgg 로고 이미지'} width={131.99} height={30} />
+      <div className={'flex flex-col items-start gap-[20px] h-[111px]'}>
+        {/* 로고 영역을 div로 감싸서 Flex 꼬임 방지 및 명확한 왼쪽 정렬 */}
+        <div>
+          {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
+          <img
+            src='/logo/horizontal/logo-horizontal-red.svg'
+            alt='VS.GG'
+            className='block w-auto h-[30px] dark:block'
+          />
+
+          {/* 다크모드용 로고: 기본적으로 숨기고, 다크모드(.dark)에서만 보임 */}
+          <img
+            src='/logo/horizontal/logo-horizontal-white.svg'
+            alt='VS.GG'
+            className='hidden w-auto h-[30px] dark:hidden'
+          />
+        </div>
+
         <div
           className={
             'w-fit bg-[#555555] px-[4px] py-[2px] text-[20px] font-extrabold text-[#F3F3F3]'
@@ -20,13 +35,13 @@ const WebFooter = () => {
         >
           리그 오브 레전드(LOL) 과실 판결 커뮤니티
         </div>
-        <div className={'text-[16px] font-semibold text[#333333]'}>
+        <div className={'text-[16px] font-semibold text-[#333333]'}>
           "소환사라면 한 번쯤은 겪어보았을 문제 상황에 판결과 논쟁을 더하다"
         </div>
       </div>
 
       {/*오른쪽 영역*/}
-      <div className={'flex flex-col h-[111px] gap-[20px] text[12px] text-[#333333]'}>
+      <div className={'flex flex-col h-[111px] gap-[20px] text-[12px] text-[#333333]'}>
         <div className={'flex flex-col gap-[8px]'}>
           <div className={'font-bold'}>서비스</div>
           <div className={'flex gap-[12px]'}>
