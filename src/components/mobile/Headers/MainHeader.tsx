@@ -7,8 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getAlarms from '@/api/alarm/getAlarms';
-import logo from '../../../../public/svg/logo/vsgg.svg';
-import Image from 'next/image';
 
 function MainHeader() {
   const router = useRouter();
@@ -64,7 +62,19 @@ function MainHeader() {
 
   return (
     <div className='flex gap-[10px] h-[44px] px-[10px] items-center justify-between mobile-layout sticky top-0 z-[40]'>
-      <Image src={logo} alt='logo' width={102} height={20} />
+      {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
+      <img
+        src='/logo/vertical/logo-vertical-red.svg'
+        alt='VS.GG'
+        className={`block w-auto h-[20px] dark:block`}
+      />
+
+      {/* 다크모드용 로고: 기본적으로 숨기고, 다크모드(.dark)에서만 보임 */}
+      <img
+        src='/logo/vertical/logo-vertical-white.svg'
+        alt='VS.GG'
+        className={`hidden w-auto h-[20px] dark:hidden`}
+      />
       {isLogin ? (
         <div className='flex'>
           <button
