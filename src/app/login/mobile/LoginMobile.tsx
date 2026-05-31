@@ -60,7 +60,7 @@ export default function Login_Mobile() {
         <LoadingFull />
       ) : (
         <>
-          <div className="mb-[131px] mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21]">
+          <div className="mb-[131px] mt-auto font-['SBAggroB'] text-5xl text-[#E20A29]">
             <div
               className='cursor-pointer'
               onClick={() => {

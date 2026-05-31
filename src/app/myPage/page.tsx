@@ -99,7 +99,7 @@ export default function MyPage() {
                   <div className='text-[16px] mb-[5px] font-medium'>
                     보유 포인트 : {formatNumberWithCommas(userProfileData.memberProfileDTO.point)}P
                   </div>
-                  <div className='h-1 w-full bg-[#8A1F21]' />
+                  <div className='h-1 w-full bg-[#E20A29]' />
                   <div className='h-[350px] flex flex-col items-center relative'>
                     <p className='text-[14px] translate-x-[-80px] font-[400]'>판결 승률</p>
                     <div className='absolute w-[180px]'>
@@ -119,7 +119,7 @@ export default function MyPage() {
                       패
                     </div>
                   </div>
-                  <div className='h-1 w-full bg-[#8A1F21]'></div>
+                  <div className='h-1 w-full bg-[#E20A29]'></div>
                   <div className='flex w-full flex-col justify-center gap-5'>
                     <div className='text-[14px] translate-x-[20px] font-[400]'>
                       <span className='font-semibold'>

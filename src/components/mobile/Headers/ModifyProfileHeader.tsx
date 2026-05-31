@@ -18,8 +18,8 @@ function ModifyProfileHeader({ handleSaveClick }: { handleSaveClick: () => void 
           router.back();
         }}
       />
-      <div className='text-[#8A1F21] font-bold text-[22px]'>프로필 수정</div>
-      <div className='text-[#8A1F21] font-semibold text-[18px] cursor-pointer' onClick={handleSaveClick}>완료</div>
+      <div className='text-[#E20A29] font-bold text-[22px]'>프로필 수정</div>
+      <div className='text-[#E20A29] font-semibold text-[18px] cursor-pointer' onClick={handleSaveClick}>완료</div>
     </div>
   );
 }

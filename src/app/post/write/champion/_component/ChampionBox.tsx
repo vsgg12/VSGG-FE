@@ -27,7 +27,7 @@ const ChampionBox = ({ claim, setClaim, placeholder = '내용을 입력해주세
         'w-full px-[20px] py-[10px] h-[47px] text-[18px]',
         'border-[0.5px] border-[#C8C8C8] bg-white rounded-[8px]',
         'hover:shadow-lg',
-        'focus:border-[#8A1F21] outline-none',
+        'focus:border-[#E20A29] outline-none',
         'transition-all duration-200',
         'placeholder:text-gray-400',
       )}

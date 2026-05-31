@@ -222,7 +222,7 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${(button.name === 'like' && post.liked) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#8A1F21]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && post.liked) || (isHovered !== '' && isHovered !== 'view') ? 'text-[#E20A29]' : 'text-[#555555]'}`}
                 >
                   {button.data}
                 </p>

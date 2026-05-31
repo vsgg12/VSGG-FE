@@ -142,7 +142,7 @@ export default function SignUp_Mobile() {
   return (
     <div className='flex justify-center mobile-layout p-[20px]'>
       <div className='mt-12 w-full flex h-full flex-col items-center justify-center gap-10'>
-        <div className="font-['SBAggroB'] text-4xl text-[#8A1F21]">VS.GG</div>
+        <div className="font-['SBAggroB'] text-4xl text-[#E20A29]">VS.GG</div>
         <div className='flex min-w-[348px] w-full items-center justify-center'>
           <div className='flex w-full items-center'>
             <div className='h-[1px] flex grow bg-[#828282]'></div>
@@ -167,7 +167,7 @@ export default function SignUp_Mobile() {
                   value={nickname}
                   maxLength={20}
                   onChange={handleChangeNickname}
-                  className='rounded-full border-2 border-[#8A1F21] pl-[20px] py-3 focus:outline-none text-[18px] pr-[35px]  bg-white w-full h-full text-black'
+                  className='rounded-full border-2 border-[#E20A29] pl-[20px] py-3 focus:outline-none text-[18px] pr-[35px]  bg-white w-full h-full text-black'
                 />
                 <Image
                   alt='deleteIcon'
@@ -188,14 +188,14 @@ export default function SignUp_Mobile() {
                 <button
                   type='button'
                   onClick={handleCheckNickname}
-                  className='rounded-full border-1 border-[#8A1F21] flex justify-center items-center font-bold text-white bg-[#8A1F21] text-[18px] min-w-[120px] h-[49px]'
+                  className='rounded-full border-1 border-[#E20A29] flex justify-center items-center font-bold text-white bg-[#E20A29] text-[18px] min-w-[120px] h-[49px]'
                 >
                   중복확인
                 </button>
               ) : (
                 <button
                   type='button'
-                  className='rounded-full border-1 border-[#8A1F21] flex justify-center items-center font-bold text-white bg-[#8A1F21] text-[18px] w-[120px] h-[49px]'
+                  className='rounded-full border-1 border-[#E20A29] flex justify-center items-center font-bold text-white bg-[#E20A29] text-[18px] w-[120px] h-[49px]'
                   disabled={true}
                 >
                   확인완료
@@ -203,7 +203,7 @@ export default function SignUp_Mobile() {
               )}
             </div>
             <span
-              className={`pl-5 text-[14px] h-[14px] flex flex-grow ${isSameNickname ? 'text-[#8A1F21]' : 'text-[#555555'}`}
+              className={`pl-5 text-[14px] h-[14px] flex flex-grow ${isSameNickname ? 'text-[#E20A29]' : 'text-[#555555'}`}
             >
               {errorMessage}
             </span>
@@ -214,7 +214,7 @@ export default function SignUp_Mobile() {
           <div className='flex items-center gap-5'>
             <input
               type='checkbox'
-              className='min-w-[32px] min-h-[32px] accent-[#8A1F21]'
+              className='min-w-[32px] min-h-[32px] accent-[#E20A29]'
               checked={Object.values(checkboxes).every(Boolean)}
               onChange={(e) => handleCheckAll(e.target.checked)}
             />
@@ -224,7 +224,7 @@ export default function SignUp_Mobile() {
           <div className='flex items-center gap-5'>
             <input
               type='checkbox'
-              className='min-w-[32px] min-h-[32px] accent-[#8A1F21]'
+              className='min-w-[32px] min-h-[32px] accent-[#E20A29]'
               name='agreeAge'
               checked={checkboxes.agreeAge}
               onChange={handleCheckboxChange}
@@ -238,33 +238,33 @@ export default function SignUp_Mobile() {
           <div className='flex items-center gap-5'>
             <input
               type='checkbox'
-              className='min-w-[32px] min-h-[32px] accent-[#8A1F21]'
+              className='min-w-[32px] min-h-[32px] accent-[#E20A29]'
               name='agreeTerms'
               checked={checkboxes.agreeTerms}
               onChange={handleCheckboxChange}
               required
             />
             <p>
-              <span className='text-[#8A1F21]'>이용약관</span>에 동의합니다. (필수)
+              <span className='text-[#E20A29]'>이용약관</span>에 동의합니다. (필수)
             </p>
           </div>
           <div className='flex items-center gap-5'>
             <input
               type='checkbox'
-              className='min-w-[32px] min-h-[32px] accent-[#8A1F21]'
+              className='min-w-[32px] min-h-[32px] accent-[#E20A29]'
               name='agreePrivacy'
               checked={checkboxes.agreePrivacy}
               onChange={handleCheckboxChange}
               required
             />
             <p>
-              <span className='text-[#8A1F21]'>개인정보처리방침</span>에 동의합니다. (필수)
+              <span className='text-[#E20A29]'>개인정보처리방침</span>에 동의합니다. (필수)
             </p>
           </div>
           <div className='flex items-center gap-5'>
             <input
               type='checkbox'
-              className='min-w-[32px] min-h-[32px] accent-[#8A1F21]'
+              className='min-w-[32px] min-h-[32px] accent-[#E20A29]'
               name='agreePromotion'
               checked={checkboxes.agreePromotion}
               onChange={handleCheckboxChange}
@@ -280,7 +280,7 @@ export default function SignUp_Mobile() {
         </div>
         <button
           type='submit'
-          className={`rounded-[30px] ${isAllValid ? 'bg-[#8A1F21]' : 'bg-[#B5B5B5]'}  p-2 text-white flex justify-center items-center w-[185px] h-[49px] text-[20px]`}
+          className={`rounded-[30px] ${isAllValid ? 'bg-[#E20A29]' : 'bg-[#B5B5B5]'}  p-2 text-white flex justify-center items-center w-[185px] h-[49px] text-[20px]`}
           onClick={handleSignUpBtnClick}
         >
           가입하기

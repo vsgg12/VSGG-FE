@@ -116,7 +116,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
         }
       />
       <button type='submit'>
-        <p className='font-bold text-[12px] text-[#8A1F21] whitespace-nowrap'>등록</p>
+        <p className='font-bold text-[12px] text-[#E20A29] whitespace-nowrap'>등록</p>
       </button>
       {isLoginModalOpen && (
         <ModalLayout setIsModalOpen={setIsLoginModalOpen}>

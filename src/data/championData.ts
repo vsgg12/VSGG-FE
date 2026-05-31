@@ -14,9 +14,9 @@
 //   },
 //   {
 //     background: 'bg-[#9E2426]',
-//     text: 'text-[#8A1F21]',
+//     text: 'text-[#E20A29]',
 //     hover: 'hover:[#9E2426]',
-//     border: 'border-[#8A1F21]',
+//     border: 'border-[#E20A29]',
 //   },
 //   {
 //     background: 'bg-[#AAAAAA]',

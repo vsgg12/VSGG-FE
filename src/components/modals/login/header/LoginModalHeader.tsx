@@ -6,7 +6,7 @@ const LoginModalHeader = () => {
       {/* 로고와 로그인 텍스트를 가로로 정렬하고 중앙 배치 */}
       <div
         className={
-          'flex items-center justify-center gap-2 text-[28px] font-black text-[#8A1F21] dark:text-black'
+          'flex items-center justify-center gap-2 text-[28px] font-black text-[#E20A29] dark:text-black'
         }
       >
         {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}

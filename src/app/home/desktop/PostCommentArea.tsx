@@ -87,11 +87,14 @@ function PostCommentArea({ postId }: Props) {
                 key={index}
                 type='button'
                 onClick={() => handleOpenReply(comment.id)}
-                className='my-[5px] text-[14px] font-medium text-[#8A1F21]'
+                className='my-[5px] text-[12px] font-medium text-[#E20A29] flex items-center gap-[6px]'
               >
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="1" viewBox="0 0 19 1" fill="none">
+                  <path d="M0 0.5H19" stroke="#E20A29"/>
+                </svg>
                 {showReply === comment.id
-                  ? '- 답글 숨기기'
-                  : comment.children?.length !== 0 && `- 답글 보기 (${comment.children?.length})개`}
+                  ? '답글 숨기기'
+                  : comment.children?.length !== 0 && `답글 보기 (${comment.children?.length})개`}
               </button>
             )}
             {showReply === comment.id && (

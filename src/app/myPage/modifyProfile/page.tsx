@@ -285,7 +285,7 @@ function ModifyProfile_Mobile() {
               중복확인
             </button>
           </div>
-          <div className='text-[14px] text-[#8A1F21] flex items-center'>{errorMessage}</div>
+          <div className='text-[14px] text-[#E20A29] flex items-center'>{errorMessage}</div>
         </div>
       </div>
     </div>
