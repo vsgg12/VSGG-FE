@@ -2,7 +2,7 @@
 
 const LoginModalHeader = () => {
   return (
-    <div className={'flex flex-col gap-[5px] w-full h-[64px] text-center'}>
+    <div className={'flex flex-col gap-[12px] w-full h-[64px] text-center'}>
       {/* 로고와 로그인 텍스트를 가로로 정렬하고 중앙 배치 */}
       <div
         className={
