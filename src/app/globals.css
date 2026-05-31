@@ -56,7 +56,7 @@ body {
 }
 
 .hd-items {
-  @apply p-0.5 text-[2rem] text-[#8A1F21];
+  @apply p-0.5 text-[2rem] text-[#E20A29];
 }
 
 .hd-items:hover {
@@ -68,11 +68,11 @@ body {
 }
 
 .su-i {
-  @apply grow rounded-full border-2 border-[#8A1F21] px-5 py-3 focus:outline-none;
+  @apply grow rounded-full border-2 border-[#E20A29] px-5 py-3 focus:outline-none;
 }
 
 .su-btn {
-  @apply rounded-full border-2 border-[#8A1F21] p-1 px-4 py-2 font-bold;
+  @apply rounded-full border-2 border-[#E20A29] p-1 px-4 py-2 font-bold;
 }
 
 .p-content-pd {
@@ -128,7 +128,7 @@ body {
 }
 
 .p-tab-selected {
-  @apply border-[0.09375rem] border-b-2 border-[#828282] border-b-[#ffffff] text-[#8A1F21];
+  @apply border-[0.09375rem] border-b-2 border-[#828282] border-b-[#ffffff] text-[#E20A29];
 }
 
 .p-tab-content {
@@ -148,7 +148,7 @@ body {
 }
 
 .p-position-selected {
-  @apply bg-[#8A1F21] text-[#ECECEC];
+  @apply bg-[#E20A29] text-[#ECECEC];
 }
 
 .p-position-n-selected {
@@ -164,7 +164,7 @@ body {
 }
 
 .si-input {
-  @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-[#8A1F21] p-[20px] outline-none;
+  @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-[#E20A29] p-[20px] outline-none;
 }
 
 .mobile-layout {
@@ -185,7 +185,7 @@ body {
 .loader {
   width: 60px;
   aspect-ratio: 4;
-  --_g: no-repeat radial-gradient(circle closest-side, #8a1f21 90%, #0000);
+  --_g: no-repeat radial-gradient(circle closest-side, #E20A29 90%, #0000);
   background:
     var(--_g) 0 50%,
     var(--_g) 50% 50%,
@@ -222,7 +222,7 @@ body {
 }
 
 .active-page {
-  @apply bg-[#8A1F21] text-white rounded-full w-[34px] h-[34px] flex items-center justify-center;
+  @apply bg-[#E20A29] text-white rounded-full w-[34px] h-[34px] flex items-center justify-center;
 }
 
 /* HTML: <div class="loader"></div> */
@@ -234,7 +234,7 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 8px solid #ececec;
-  border-right-color: #8a1f21;
+  border-right-color: #E20A29;
   animation: l2 1s infinite linear;
 }
 
@@ -259,5 +259,5 @@ body {
 }
 
 .custom-pagination .swiper-pagination-bullet-active {
-  background-color: #8a1f21;
+  background-color: #E20A29;
 }

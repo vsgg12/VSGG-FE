@@ -65,7 +65,7 @@ function Alert() {
         )}
         {filteredAlarms && (
           <div className='relative mt-[10px]'>
-            <div className='border-b-1 border-[#8A1F21] w-[301px]' />
+            <div className='border-b-1 border-[#E20A29] w-[301px]' />
             <span
               className='text-[#828282] font-medium text-[10px] bg-[#F3F3F3] px-2 whitespace-nowrap'
               style={{

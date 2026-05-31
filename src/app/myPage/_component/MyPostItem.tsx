@@ -30,7 +30,7 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
           <div>{formatDate(myPostItem.createdDate)}</div>
         </div>
       </div>
-      <div className='h-0.5 w-full bg-[#8A1F21] my-[21px]' />
+      <div className='h-0.5 w-full bg-[#E20A29] my-[21px]' />
     </>
   );
 }

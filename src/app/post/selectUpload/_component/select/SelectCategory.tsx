@@ -17,7 +17,7 @@ export const SelectCategory = ({ onClickJudgeFault, onClickJudgeChampion }: Prop
       </div>
       <div className='w-[684px] h-[256px] flex gap-[20px] bg-white'>
         <div
-          className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#8A1F21]'
+          className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#E20A29]'
           onClick={onClickJudgeFault}
         >
           <div className={'font-bold text-[20px] text-[#222222]'}>챔피언 판결</div>
@@ -30,7 +30,7 @@ export const SelectCategory = ({ onClickJudgeFault, onClickJudgeChampion }: Prop
           <div className={'text-[#000000] text-[20px]'}>챔피언 별 과실을 선택하는 방식</div>
         </div>
         <div
-          className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#8A1F21]'
+          className='w-[332px] h-full rounded-[10px] border-[#C8C8C8] border-[0.5px] flex flex-col items-center justify-between p-[15px] cursor-pointer hover:border-[#E20A29]'
           onClick={onClickJudgeChampion}
         >
           <div className={'font-bold text-[20px] text-[#222222]'}>주장 판결</div>

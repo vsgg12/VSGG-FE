@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ConfirmButton = ({ title, onClickConfirm, onClickCancel }: Props) => {
-  const buttonClass = title === '확인' ? 'bg-[#8A1F21] text-white' : 'bg-white text-[#555555]';
+  const buttonClass = title === '확인' ? 'bg-[#E20A29] text-white' : 'bg-white text-[#555555]';
 
   const onClickBtnClick = () => {
     if (title === '확인') {

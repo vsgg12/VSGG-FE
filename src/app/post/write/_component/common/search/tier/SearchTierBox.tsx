@@ -66,7 +66,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
         <div
           className='
             absolute top-0 left-0 w-full
-            bg-white border-[1px] border-[#8A1F21]
+            bg-white border-[1px] border-[#E20A29]
             rounded-[10px] shadow-lg z-50
           '
         >

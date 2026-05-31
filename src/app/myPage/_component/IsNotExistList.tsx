@@ -26,7 +26,7 @@ function IsNotExistList({ type, isMobile }: Props) {
         <p>{type === 'myPost' ? '내 플레이의 과실이 궁금하다면?' : '첫 판결을 진행해 보세요!'}</p>
       </div>
       <div
-        className={`rounded-[30px] text-white bg-[#8A1F21] ${isMobile ? 'w-[126px] h-[32px]' : 'w-[153px] h-[45px]'} flex justify-center text-[16px] font-extrabold items-center cursor-pointer`}
+        className={`rounded-[30px] text-white bg-[#E20A29] ${isMobile ? 'w-[126px] h-[32px]' : 'w-[153px] h-[45px]'} flex justify-center text-[16px] font-extrabold items-center cursor-pointer`}
       >
         <div onClick={handleBtnClick}>{type === 'myPost' ? '게시글 작성' : '판결하기'}</div>
       </div>

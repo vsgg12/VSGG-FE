@@ -108,7 +108,7 @@ export default function BottomBox({
             </p>
             <div className='flex self-end '>
               <button
-                className='h-[23px] w-[82px] rounded-full bg-[#8A1F21] text-[14px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
+                className='h-[23px] w-[82px] rounded-full bg-[#E20A29] text-[14px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
                 onClick={handleVoteSubmit}
                 disabled={isNotAbleSubmit}
               >

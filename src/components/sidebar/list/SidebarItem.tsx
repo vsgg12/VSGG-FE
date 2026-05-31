@@ -19,12 +19,12 @@ function SidebarItem({ item, setIsLoginModalOpen }: Props) {
       flex gap-[40px] items-center pl-[40px] w-[80%] h-[50px] cursor-pointer
       transition-transform duration-200 ease-in-out
       
-      ${!disabled ? 'border-l-[4px] border-l-[#8A1F21]' : 'hover:translate-x-[15px]'}
+      ${!disabled ? 'border-l-[4px] border-l-[#E20A29]' : 'hover:translate-x-[15px]'}
     `}
       onClick={handleClick}
     >
       {getIcon()}
-      <span style={{ color: disabled ? '#888888' : '#8A1F21' }}>{item}</span>
+      <span style={{ color: disabled ? '#888888' : '#E20A29' }}>{item}</span>
     </div>
   );
 }

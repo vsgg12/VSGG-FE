@@ -27,10 +27,10 @@ export default function CommentItem({ comment, targetComment, handleReply }: ICo
         <p className='text-[12px] text-[#C8C8C8] ml-2 min-w-fit'>| {timeAgo}</p>
       </div>
       <p className='text-[14px] mb-[7px]'>
-        {targetComment && <span className='text-[#8A1F21]'>@{comment.parentMemberNickname} </span>}
+        {targetComment && <span className='text-[#E20A29]'>@{comment.parentMemberNickname} </span>}
         <span className='whitespace-pre-wrap'>{comment.content}</span>
       </p>
-      <button className='text-[12px] font-medium text-[#8A1F21]' onClick={() => handleReply()}>
+      <button className='text-[12px] font-medium text-[#E20A29]' onClick={() => handleReply()}>
         답글 달기
       </button>
     </div>

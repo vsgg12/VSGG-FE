@@ -220,7 +220,7 @@ function ChangeProfileModal({
                 중복확인
               </button>
             </div>
-            <div className='text-[14px] text-[#8A1F21] flex items-center pl-[15px]'>
+            <div className='text-[14px] text-[#E20A29] flex items-center pl-[15px]'>
               {errorMessage}
             </div>
           </div>
@@ -265,13 +265,13 @@ function ChangeProfileModal({
         </div>
         <div className='flex gap-[15px] justify-center'>
           <button
-            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center text-[#8A1F21] bg-white text-[24px] font-semibold border border-[#8A1F21]'
+            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center text-[#E20A29] bg-white text-[24px] font-semibold border border-[#E20A29]'
             onClick={handleCancel}
           >
             취소
           </button>
           <button
-            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center bg-[#8A1F21] text-white text-[24px] font-semibold border border-[#8A1F21]'
+            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center bg-[#E20A29] text-white text-[24px] font-semibold border border-[#E20A29]'
             onClick={handleSave}
           >
             적용

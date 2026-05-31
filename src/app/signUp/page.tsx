@@ -149,7 +149,7 @@ export default function SignUp() {
       ) : (
         <div className='flex justify-center'>
           <div className='mt-12 w-[600px] flex h-full flex-col items-center justify-center gap-10'>
-            <div className="font-['SBAggroB'] text-4xl text-[#8A1F21]">VS.GG</div>
+            <div className="font-['SBAggroB'] text-4xl text-[#E20A29]">VS.GG</div>
             <div className='flex w-[560px] items-center justify-center'>
               <div className='flex w-full items-center'>
                 <div className='h-0.5 grow bg-[#D9D9D9]'></div>
@@ -194,14 +194,14 @@ export default function SignUp() {
                     <button
                       type='button'
                       onClick={handleCheckNickname}
-                      className='su-btn text-[#8A1F21] text-[16px]'
+                      className='su-btn text-[#E20A29] text-[16px]'
                     >
                       중복확인
                     </button>
                   ) : (
                     <button
                       type='button'
-                      className='su-btn text-[#FFFFFF] bg-[#8A1F21] text-[16px]'
+                      className='su-btn text-[#FFFFFF] bg-[#E20A29] text-[16px]'
                       disabled={true}
                     >
                       확인완료
@@ -209,7 +209,7 @@ export default function SignUp() {
                   )}
                 </div>
                 <span
-                  className={`pl-5 text-[14px] h-[14px] flex flex-grow ${isSameNickname ? 'text-[#8A1F21]' : 'text-[#555555'}`}
+                  className={`pl-5 text-[14px] h-[14px] flex flex-grow ${isSameNickname ? 'text-[#E20A29]' : 'text-[#555555'}`}
                 >
                   {errorMessage}
                 </span>
@@ -220,7 +220,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21] cursor-pointer'
+                  className='size-6 accent-[#E20A29] cursor-pointer'
                   name='agreeAge'
                   checked={checkboxes.agreeAge}
                   onChange={handleCheckboxChange}
@@ -228,47 +228,47 @@ export default function SignUp() {
                 />
                 <div className='flex flex-col gap-1'>
                   <p>만 14세 이상입니다. (필수)</p>
-                  <p className='text-xs text-[#8A1F21]'>만 14세 이상만 가입이 가능합니다.</p>
+                  <p className='text-xs text-[#E20A29]'>만 14세 이상만 가입이 가능합니다.</p>
                 </div>
               </div>
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21] cursor-pointer'
+                  className='size-6 accent-[#E20A29] cursor-pointer'
                   name='agreeTerms'
                   checked={checkboxes.agreeTerms}
                   onChange={handleCheckboxChange}
                   required
                 />
                 <p>
-                  <span className='font-bold text-[#8A1F21]'>이용약관</span>에 동의합니다. (필수)
+                  <span className='font-bold text-[#E20A29]'>이용약관</span>에 동의합니다. (필수)
                 </p>
               </div>
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21] cursor-pointer'
+                  className='size-6 accent-[#E20A29] cursor-pointer'
                   name='agreePrivacy'
                   checked={checkboxes.agreePrivacy}
                   onChange={handleCheckboxChange}
                   required
                 />
                 <p>
-                  <span className='font-bold text-[#8A1F21]'>개인정보처리방침</span>에 동의합니다.
+                  <span className='font-bold text-[#E20A29]'>개인정보처리방침</span>에 동의합니다.
                   (필수)
                 </p>
               </div>
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21] cursor-pointer'
+                  className='size-6 accent-[#E20A29] cursor-pointer'
                   name='agreePromotion'
                   checked={checkboxes.agreePromotion}
                   onChange={handleCheckboxChange}
                 />
                 <p>
                   서비스 홍보 및 마케팅 목적의{' '}
-                  <span className='font-bold text-[#8A1F21]'>개인정보처리방침</span>에 동의합니다.
+                  <span className='font-bold text-[#E20A29]'>개인정보처리방침</span>에 동의합니다.
                   (선택)
                 </p>
               </div>
@@ -276,7 +276,7 @@ export default function SignUp() {
               <div className='flex items-center gap-5'>
                 <input
                   type='checkbox'
-                  className='size-6 accent-[#8A1F21] cursor-pointer'
+                  className='size-6 accent-[#E20A29] cursor-pointer'
                   checked={Object.values(checkboxes).every(Boolean)}
                   onChange={(e) => handleCheckAll(e.target.checked)}
                 />
@@ -285,7 +285,7 @@ export default function SignUp() {
             </div>
             <button
               type='submit'
-              className={`mb-10 rounded-full ${isAllValid ? 'bg-[#8A1F21] cursor-pointer' : 'bg-[#B5B5B5] cursor-none'}  p-2 text-white w-[450px]`}
+              className={`mb-10 rounded-full ${isAllValid ? 'bg-[#E20A29] cursor-pointer' : 'bg-[#B5B5B5] cursor-none'}  p-2 text-white w-[450px]`}
               onClick={handleSignUpBtnClick}
             >
               가입하기

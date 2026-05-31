@@ -74,9 +74,9 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
         <div className={'flex w-full justify-center items-center'}>
           <button
             onClick={addInGameInfoRequestItem}
-            className='group w-[50px] h-[47px] flex flex-col items-center justify-center text-[#777777] text-[18px] font-semibold gap-[4px] mt-[20px] hover:text-[#8A1F21]'
+            className='group w-[50px] h-[47px] flex flex-col items-center justify-center text-[#777777] text-[18px] font-semibold gap-[4px] mt-[20px] hover:text-[#E20A29]'
           >
-            <div className='w-[22px] h-[22px] rounded-full border-[2px] border-[#777777] flex items-center justify-center group-hover:border-[#8A1F21]'>
+            <div className='w-[22px] h-[22px] rounded-full border-[2px] border-[#777777] flex items-center justify-center group-hover:border-[#E20A29]'>
               +
             </div>
             <div>추가</div>
