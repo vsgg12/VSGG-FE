@@ -13,6 +13,7 @@ import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
 import { useWriteStore } from '@/store/write/useWriteStore';
 import PostDetailPC from './desktop/PostDetailPC';
 import usePostIdStore from './store/usePostIdStore';
+import WebFooter from '@/components/common/footer/WebFooter';
 
 export default function PostDetailMain() {
   const { postId } = useParams();
@@ -75,19 +76,22 @@ export default function PostDetailMain() {
             <Loading />
           ) : (
             post && (
-              <div className='flex flex-col items-center justify-center px-[50px]'>
-                <div className={'flex gap-[50px] mb-[20px]'}>
-                  {/*주장 판결 결과 컴포넌트*/}
-                  {/* <ClaimVoteBox
-                    voteData={voteData}
-                    voteCount={30}
-                    daysUntilEnd={-1}
-                    isOwner={isOwner}
-                    isVote={post.postDTO.isVote}
-                  /> */}
-                  <PostDetailPC post={post} voteData={voteData} isOwner={isOwner} />
+              <>
+                <div className='flex flex-col items-center justify-center px-[50px]'>
+                  <div className={'flex gap-[50px] mb-[20px]'}>
+                    {/*주장 판결 결과 컴포넌트*/}
+                    {/* <ClaimVoteBox
+                      voteData={voteData}
+                      voteCount={30}
+                      daysUntilEnd={-1}
+                      isOwner={isOwner}
+                      isVote={post.postDTO.isVote}
+                    /> */}
+                    <PostDetailPC post={post} voteData={voteData} isOwner={isOwner} />
+                  </div>
                 </div>
-              </div>
+                <WebFooter />
+              </>
             )
           )}
         </div>

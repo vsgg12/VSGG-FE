@@ -9,6 +9,7 @@ import { SidebarModalLayout } from '../modals/SidebarModalLayout';
 import SearchModal from './modal/search/SearchModal';
 import AlarmModal from './modal/alarm/AlarmModal';
 import SidebarListMini from './list/SidebarListMini';
+import { useRouter } from 'next/navigation';
 
 function SidebarMini() {
   const { isLogin, accessToken } = useAuthStore();
@@ -24,6 +25,8 @@ function SidebarMini() {
     enabled: isLogin,
   });
 
+  const router = useRouter();
+
   if (isMobile) {
     return null;
   }
@@ -34,7 +37,8 @@ function SidebarMini() {
         <img
           src='/logo/vertical/logo-vertical-red.svg'
           alt='VS.GG'
-          className={`block w-auto h-[30px] dark:block`}
+          className={`block w-auto h-[30px] dark:block cursor-pointer`}
+          onClick={() => router.push('/')}
         />
 
         {/* 다크모드용 로고: 기본적으로 숨기고, 다크모드(.dark)에서만 보임 */}
