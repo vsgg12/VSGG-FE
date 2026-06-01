@@ -10,7 +10,7 @@ interface Props {
 
 function SidebarListMini({ setIsLoginModalOpen }: Props) {
   return (
-    <div className='flex flex-col gap-[20px] px-[10px] w-full mt-[150px]'>
+    <div className='flex flex-col gap-[20px] w-full mt-[150px] items-center'>
       {sidebarList.map((item) => (
         <SidebarItemMini key={item} item={item} setIsLoginModalOpen={setIsLoginModalOpen} />
       ))}

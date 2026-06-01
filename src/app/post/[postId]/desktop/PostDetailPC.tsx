@@ -4,7 +4,6 @@ import ContentArea from './components/ContentArea';
 import CommentArea from './components/Comment/CommentArea';
 import VoteArea from './components/vote/VoteArea';
 import SidebarMini from '@/components/sidebar/SidebarMini';
-import WebFooter from '@/components/common/footer/WebFooter';
 
 interface Props {
   post: IGetPostItemType;
@@ -26,7 +25,6 @@ export default function PostDetailPC({ post, voteData, isOwner }: Props) {
           <CommentArea id={post.postDTO.id} />
         </div>
       </div>
-      <WebFooter />
     </div>
   );
 }

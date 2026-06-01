@@ -28,7 +28,7 @@ const LoginModalContent = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-[392px] items-start justify-start">
+    <div className="flex flex-col gap-4 w-full max-w-[392px] items-start justify-start">
       {CHAT_IMAGES.map((item, index) => (
         <div
           key={item.id}

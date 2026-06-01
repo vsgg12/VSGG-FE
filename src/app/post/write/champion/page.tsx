@@ -14,6 +14,7 @@ import ConfirmTempModal from '@/app/post/write/_component/common/modal/temp/conf
 import { useWriteValidation } from '@/hooks/write/useWriteValidation';
 import { createPostFormData } from '@/utils/write/formDataUtils';
 import ScaleWrapper from '@/components/common/wrapper/ScaleWrapper';
+import WebFooter from '@/components/common/footer/WebFooter';
 
 // 주장 판결
 const Champion = () => {
@@ -202,35 +203,38 @@ const Champion = () => {
   }, [selectedEndTime, setPostAddRequest]);
 
   return (
-    <ScaleWrapper>
-      <div className={'relative min-h-screen flex justify-center items-center gap-[50px]'}>
-        <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
+    <>
+      <ScaleWrapper>
+        <div className={'relative min-h-screen flex justify-center items-center gap-[50px]'}>
+          <LeftContainer activeBox={activeBox} setActiveBox={setActiveBox} />
 
-        <div className={'w-[568px] flex flex-col'}>
-          <div className={'flex flex-col gap-[80px] min-h-[800px] justify-between'}>
-            <div className={'flex flex-col gap-[74px]'}>
-              <InGameRequestBox />
+          <div className={'w-[568px] flex flex-col'}>
+            <div className={'flex flex-col gap-[80px] min-h-[800px] justify-between'}>
+              <div className={'flex flex-col gap-[74px]'}>
+                <InGameRequestBox />
 
-              <SelectVoteEndTimeBox
-                titleClass={titleClass}
-                endTimeBoxClicked={endTimeBoxClicked}
-                selectedEndTime={selectedEndTime}
-                setEndTimeBoxClicked={setEndTimeBoxClicked}
-                setSelectedEndTime={setSelectedEndTime}
+                <SelectVoteEndTimeBox
+                  titleClass={titleClass}
+                  endTimeBoxClicked={endTimeBoxClicked}
+                  selectedEndTime={selectedEndTime}
+                  setEndTimeBoxClicked={setEndTimeBoxClicked}
+                  setSelectedEndTime={setSelectedEndTime}
+                />
+              </div>
+
+              <WriteFooterContainer
+                onClickTempSaveBtn={onClickTempSaveBtn}
+                onClickRegisterBtn={onClickRegisterBtn}
               />
             </div>
-
-            <WriteFooterContainer
-              onClickTempSaveBtn={onClickTempSaveBtn}
-              onClickRegisterBtn={onClickRegisterBtn}
-            />
           </div>
+          {tempModalOpen && <TempModal />}
+          {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+          {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
         </div>
-        {tempModalOpen && <TempModal />}
-        {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
-        {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
-      </div>
-    </ScaleWrapper>
+      </ScaleWrapper>
+      <WebFooter />
+    </>
   );
 };
 
