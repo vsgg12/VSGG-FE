@@ -20,7 +20,7 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose, isMobi
       {
         label: '# of Votes',
         data: isZero ? [0, 1] : [win, lose],
-        backgroundColor: ['#8A1F21', '#000000'],
+        backgroundColor: ['#E20A29', '#000000'],
         borderWidth: 0,
       },
     ],
@@ -36,7 +36,7 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose, isMobi
     <div className='relative flex flex-col items-center justify-center '>
       <Doughnut data={data} options={options} />
       <span
-        className={`absolute ${isMobile ? 'text-[16px]' : 'text-[20px]'} font-medium text-[#8A1F21] translate-y-[25px]`}
+        className={`absolute ${isMobile ? 'text-[16px]' : 'text-[20px]'} font-medium text-[#E20A29] translate-y-[25px]`}
       >
         {isZero ? '0' : winPercentage.toFixed(0)}%
       </span>

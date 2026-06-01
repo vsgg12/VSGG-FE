@@ -38,7 +38,7 @@ function SideAlarmItem({ alarm, handleAlarmItemClick }: Props) {
       </div>
       <div className='flex h-full justify-center flex-1 items-center'>
         {alarm.isRead === false && (
-          <span className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'></span>
+          <span className='bg-[#E20A29] rounded-full w-[6px] h-[6px]'></span>
         )}
       </div>
     </div>

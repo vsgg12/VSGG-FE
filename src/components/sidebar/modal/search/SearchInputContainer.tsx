@@ -29,12 +29,12 @@ function SearchInputContainer({
           className='w-full h-full rounded-[10px] pl-[20px] pr-[50px] text-[16px] font-medium bg-[#F8F8F8] focus:outline-none'
         />
         <button onClick={handleSearch}>
-          <GoSearch className='absolute right-5 top-[12px] text-[#8A1F21]' />
+          <GoSearch className='absolute right-5 top-[12px] text-[#E20A29]' />
         </button>
       </div>
       {visible && (
         <div className='w-full text-[16px] font-medium text-[#333333] pl-[10px]'>
-          <span className='font-semibold text-[#8A1F21]'>{keyword}</span>에 대한 검색 결과입니다.
+          <span className='font-semibold text-[#E20A29]'>{keyword}</span>에 대한 검색 결과입니다.
         </div>
       )}
     </div>

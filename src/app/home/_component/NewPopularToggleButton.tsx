@@ -63,7 +63,7 @@ function NewPopularToggleButton({
         <p
           className={`${isMobile ? 'text-[12px]' : 'text-[16px]'} transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'createdatetime'
-              ? 'text-[#8A1F21]'
+              ? 'text-[#E20A29]'
               : isHovered === 'time'
                 ? 'text-[#999999]'
                 : 'text-[#C8C8C8]'
@@ -108,7 +108,7 @@ function NewPopularToggleButton({
         <p
           className={`${isMobile ? 'text-[12px]' : 'text-[16px]'} transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'view'
-              ? 'text-[#8A1F21]'
+              ? 'text-[#E20A29]'
               : isHovered === 'view'
                 ? 'text-[#999999]'
                 : 'text-[#C8C8C8]'

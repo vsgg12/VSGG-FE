@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
-import ModalLayout from '@/components/modals/ModalLayout';
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface IPostCommentInputProps {
   targetNickname: string;
@@ -12,7 +12,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const { setIsLoginModalOpen } = useLoginStore();
   const { setValue, getValues } = useFormContext();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   }, [targetNickname, setValue, getValues]);
 
   const resizeHeight = (e?: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e && (e.key !== 'Enter' || !e.shiftKey)) return; // Shift + Enter가 아닌 경우 무시
+    if (e && (e.key !== 'Enter' || !e.shiftKey)) return;
 
     if (textareaRef.current) {
       const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight || '40px', 10);
@@ -45,7 +45,6 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
 
       if (currentLines > maxTextLines) {
         const text = textareaRef.current.value.split('\n');
-        // 최대 줄 수에 맞게 텍스트를 잘라냄
         textareaRef.current.value = text.slice(0, maxTextLines).join('\n');
       }
 
@@ -97,8 +96,8 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
           textareaRef.current = e;
         }}
         onKeyDown={(e) => {
-          resizeHeight(e); // Shift + Enter 시 높이 조정
-          handleEnterClick(e); // Enter 시 제출 처리
+          resizeHeight(e);
+          handleEnterClick(e);
         }}
         onInput={() => {
           resizeHeight();
@@ -116,14 +115,8 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
         }
       />
       <button type='submit'>
-        <p className='font-bold text-[12px] text-[#8A1F21] whitespace-nowrap'>등록</p>
+        <p className='font-bold text-[12px] text-[#E20A29] whitespace-nowrap'>등록</p>
       </button>
-      {isLoginModalOpen && (
-        <ModalLayout setIsModalOpen={setIsLoginModalOpen}>
-          {/* <AlertLoginModal /> */}
-          <div></div>
-        </ModalLayout>
-      )}
     </div>
   );
 }

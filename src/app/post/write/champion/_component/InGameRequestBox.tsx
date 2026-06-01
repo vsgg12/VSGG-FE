@@ -28,7 +28,7 @@ const InGameRequestBox = () => {
             />
 
             {index < inGameInfoRequests.length - 1 && (
-              <div className={'text-[#8A1F21] font-bold text-[20px]'}>VS</div>
+              <div className={'text-[#E20A29] font-bold text-[20px]'}>VS</div>
             )}
           </>
         ))}

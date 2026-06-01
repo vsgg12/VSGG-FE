@@ -43,7 +43,7 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
       {/* 투표율 바 */}
       {!shouldBlur && (
         <div
-          className='absolute top-0 left-0 h-full bg-[#8A1F21]/40 z-20 transition-all duration-500 ease-out'
+          className='absolute top-0 left-0 h-full bg-[#E20A29]/40 z-20 transition-all duration-500 ease-out'
           style={{ width: `${voteItem.averageRatio}%` }}
         />
       )}

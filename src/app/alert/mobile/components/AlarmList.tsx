@@ -80,7 +80,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
                     </p>
                     {!alarm.isRead && (
                       <span
-                        className='bg-[#8A1F21] rounded-full w-[6px] h-[6px]'
+                        className='bg-[#E20A29] rounded-full w-[6px] h-[6px]'
                         style={{
                           position: 'absolute',
                           right: '25px',
@@ -89,7 +89,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
                         }}
                       ></span>
                     )}
-                    <hr className='border-[#8A1F21] my-[10px]' />
+                    <hr className='border-[#E20A29] my-[10px]' />
                   </div>
                 </div>
               ))}

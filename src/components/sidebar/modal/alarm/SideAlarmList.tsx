@@ -47,15 +47,12 @@ export default function SideAlarmAlarmList({ alarms = undefined }: IAlarmListPro
       {!alarms || alarms.length === 0 ? (
         <div className='flex flex-col w-full h-[303px] py-[40px] gap-[30px] items-center'>
           <div className='text-[12px] text-[#888888]'>새로운 알림이 없습니다.</div>
-          <div className='flex flex-row'>
-            <img src={'/svg/sidebar/alarm/emptyAlarmLine.svg'} width={6} height={179} />
-            <img
-              src={'/svg/sidebar/alarm/emptyAlarmIcon.svg'}
-              width={190}
-              height={160}
-              alt={'알림없음아이콘'}
-            />
-          </div>
+          <img
+            src={'/svg/sidebar/alarm/emptyAlarmIcon.svg'}
+            width={190}
+            height={160}
+            alt={'알림없음아이콘'}
+          />
         </div>
       ) : (
         <>

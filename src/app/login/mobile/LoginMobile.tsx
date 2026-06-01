@@ -1,18 +1,19 @@
 'use client';
 
-import { SiGoogle, SiNaver } from 'react-icons/si';
-import { useEffect } from 'react';
-import LoadingFull from '@/components/LoadingFull';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../store/useAuthStore';
-import kakaoIcon from '../../../../public/svg/login/kakaoIcon.svg';
-import Image from 'next/image';
 import getNaverURL from '@/api/login/getNaverURL';
 import getGoogleURL from '@/api/login/getGoogleUrl';
 import getKakaoURL from '@/api/login/getKakaoUrl';
+import LoadingFull from '@/components/LoadingFull';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '../store/useAuthStore';
+import LoginModalHeader from '@/components/modals/login/header/LoginModalHeader';
+import LoginModalContent from '@/components/modals/login/content/LoginModalContent';
+import LoginModalFooter from '@/components/modals/login/footer/LoginModalFooter';
+import { useEffect, useState } from 'react';
 
 export default function Login_Mobile() {
+  const [mounted, setMounted] = useState(false);
   const { isLogin } = useAuthStore();
   const router = useRouter();
 
@@ -24,11 +25,14 @@ export default function Login_Mobile() {
     queryKey: ['GOOGLE_URL'],
     queryFn: () => getGoogleURL(),
   });
-
   const { data: KAKAO_AUTH_URL } = useQuery({
     queryKey: ['KAKAO_URL'],
     queryFn: () => getKakaoURL(),
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isLogin) {
@@ -54,51 +58,22 @@ export default function Login_Mobile() {
     }
   };
 
+  if (!mounted) return null;
+
   return (
-    <div className='flex h-screen flex-col items-center justify-center mobile-layout'>
+    <div className='flex h-screen flex-col items-center justify-center px-[24px] bg-white'>
       {isLoading ? (
         <LoadingFull />
       ) : (
-        <>
-          <div className="mb-[131px] mt-auto font-['SBAggroB'] text-5xl text-[#8A1F21]">
-            <div
-              className='cursor-pointer'
-              onClick={() => {
-                router.push('/');
-              }}
-            >
-              VS.GG
-            </div>
-          </div>
-          <div onClick={GoogleLogin}>
-            <div className='mb-5 flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px] cursor-pointer'>
-              <SiGoogle color='white' />
-              <button className='text-white font-bold whitespace-nowrap text-[20px]'>
-                구글로 로그인
-              </button>
-            </div>
-          </div>
-          <div onClick={NaverLogin}>
-            <div className='mb-5 flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px] cursor-pointer'>
-              <SiNaver color='white' />
-              <button className='text-white font-bold whitespace-nowrap text-[20px]'>
-                네이버로 로그인
-              </button>
-            </div>
-          </div>
-          <div onClick={KakaoLogin}>
-            <div className='flex items-center justify-center gap-2 rounded-[50px] bg-black min-w-[350px] h-[44px] cursor-pointer'>
-              <Image src={kakaoIcon} width={17} height={16} alt='카카오아이콘' />
-              <button className='text-white font-bold whitespace-nowrap text-[20px]'>
-              카카오톡으로 로그인
-              </button>
-            </div>
-          </div>
-          <div className='mb-[50px] mt-auto flex gap-5'>
-            <div>이용약관</div>
-            <div className='text-gray-400'>개인정보처리방침</div>
-          </div>
-        </>
+        <div className='flex flex-col gap-[40px] w-full justify-center items-center'>
+          <LoginModalHeader />
+          <LoginModalContent />
+          <LoginModalFooter
+            onClickGoogleLogin={GoogleLogin}
+            onClickNaverLogin={NaverLogin}
+            onClickKakaoLogin={KakaoLogin}
+          />
+        </div>
       )}
     </div>
   );

@@ -153,7 +153,7 @@ function ContentArea({ post }: Props) {
         onMouseLeave={() => setIsHovered('')}
       >
         <Image src={heartIcon} width={30} height={30} alt='like' />
-        <p>
+        <p className={isLiked ? 'text-[#E20A29]' : 'text-[#555555]'}>
           {(updatedLikeCount ?? post.likeCount) < 1000
             ? updatedLikeCount ?? post.likeCount
             : '999+'}

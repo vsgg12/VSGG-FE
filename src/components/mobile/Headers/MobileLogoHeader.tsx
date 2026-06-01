@@ -88,7 +88,7 @@ function MobileLogoHeader() {
           >
             <IoMdNotificationsOutline />
             <span
-              className={`text-[#8A1F21] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+              className={`text-[#E20A29] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
               style={{
                 position: 'absolute',
                 transform: 'translate(5.5px,-22px)',
@@ -96,7 +96,7 @@ function MobileLogoHeader() {
             >
               {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
               <span
-                className={`text-[#8A1F21] text-[12px] font-bold flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 text-stroke ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
+                className={`text-[#E20A29] text-[12px] font-bold flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 text-stroke ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
                 style={{
                   position: 'absolute',
                   left: '0',
@@ -118,7 +118,7 @@ function MobileLogoHeader() {
             <img
               src={userProfileData?.memberProfileDTO.profileUrl}
               alt='profileImage'
-              className='h-[24px] w-[24px] rounded-full border-[#8A1F21] border-[2px]'
+              className='h-[24px] w-[24px] rounded-full border-[#E20A29] border-[2px]'
             />
             <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
               프로필
@@ -127,7 +127,7 @@ function MobileLogoHeader() {
         </div>
       ) : (
         <button
-          className='mr-[1rem] rounded-[150px] border-2 border-[#8A1F21] px-[30px] py-[5px] text-[#8A1F21]'
+          className='mr-[1rem] rounded-[150px] border-2 border-[#E20A29] px-[30px] py-[5px] text-[#E20A29]'
           onClick={handleLoginBtnClick}
         >
           로그인

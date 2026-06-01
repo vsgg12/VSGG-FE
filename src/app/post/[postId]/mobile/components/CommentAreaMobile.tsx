@@ -178,7 +178,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
                       key={index}
                       type='button'
                       onClick={() => handleOpenReply(comment.id)}
-                      className='my-[5px] text-[14px] font-medium text-[#8A1F21]'
+                      className='my-[5px] text-[14px] font-medium text-[#E20A29]'
                     >
                       {showReply === comment.id
                         ? '- 답글 숨기기'

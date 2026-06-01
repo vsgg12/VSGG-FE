@@ -19,7 +19,7 @@ function MobileHeader({ headerTitle }: { headerTitle: '마이페이지' | '알�
           router.back();
         }}
       />
-      <div className='absolute left-[50%] translate-x-[-50%] text-[#8A1F21] font-bold text-[22px]'>
+      <div className='absolute left-[50%] translate-x-[-50%] text-[#E20A29] font-bold text-[22px]'>
         {headerTitle}
       </div>
     </div>

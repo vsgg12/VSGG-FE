@@ -19,7 +19,7 @@ const LeftContainer = ({ activeBox, setActiveBox }: Props) => {
   const boxBase =
     'border-[0.5px] hover:border-[1px] py-[10px] px-[20px] transition-shadow duration-300 hover:shadow-lg bg-white';
   const getBoxClass = useCallback(
-    () => `${boxBase} ${activeBox ? 'border-[#8A1F21] border-[1px]' : 'border-[#C8C8C8]'}`,
+    () => `${boxBase} ${activeBox ? 'border-[#E20A29] border-[1px]' : 'border-[#C8C8C8]'}`,
     [activeBox],
   );
 

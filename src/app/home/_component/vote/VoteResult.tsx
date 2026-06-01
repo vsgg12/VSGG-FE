@@ -74,7 +74,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                       <div
                         className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
                       >
-                        <p className='ml-16 text-[16px] font-semibold text-[#8A1F21]'>
+                        <p className='ml-16 text-[16px] font-semibold text-[#E20A29]'>
                           {champion.position}
                         </p>
                         <div className='w-[50%]'>
@@ -84,7 +84,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                           <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
                         </div>
                       </div>
-                      <p className={`text-[#8A1F21] gitd self-center mb-1 text-[14px]`}>
+                      <p className={`text-[#E20A29] gitd self-center mb-1 text-[14px]`}>
                         과실 {champion.averageRatio}
                       </p>
                     </div>
