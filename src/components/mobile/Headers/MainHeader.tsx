@@ -61,18 +61,18 @@ function MainHeader() {
   };
 
   return (
-    <div className='flex gap-[10px] h-[80px] px-[20px] items-center justify-between mobile-layout sticky top-0 z-[40]'>
+    <div className='flex gap-[10px] h-[80px] px-[20px] items-center justify-between mobile-layout sticky top-0 z-[40] !bg-[#F8F9FA]'>
         {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
         <img
           src='/logo/horizontal/logo-horizontal-red.svg'
           alt='VS.GG'
-          className={`block w-auto h-[30px] dark:block mt-[2px]`}
+          className={`block w-auto h-[26px] dark:block mt-[2px]`}
         />
         {/* 다크모드용 로고: 기본적으로 숨기고, 다크모드(.dark)에서만 보임 */}
         <img
           src='/logo/horizontal/logo-horizontal-red.svg'
           alt='VS.GG'
-          className={`hidden w-auto h-[30px] dark:hidden mt-[2px]`}
+          className={`hidden w-auto h-[26px] dark:hidden mt-[2px]`}
         />
         {isLogin ? (
           <div className='flex'>
@@ -121,7 +121,7 @@ function MainHeader() {
           </div>
         ) : (
           <button
-            className='rounded-[150px] border-2 border-[#E20A29] px-[30px] py-[4px] text-[#E20A29] text-[16px] self-center'
+            className='rounded-[150px] border-2 border-[#E20A29] px-[30px] py-[4px] text-[#E20A29] text-[16px] font-medium'
             onClick={handleLoginBtnClick}
           >
             로그인
