@@ -130,7 +130,7 @@ const Home = () => {
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
               />
-              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
+              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} isHome={true} />
             </div>
 
             <div

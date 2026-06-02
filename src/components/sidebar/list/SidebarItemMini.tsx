@@ -15,7 +15,7 @@ function SidebarItemMini({ item, setIsLoginModalOpen }: Props) {
 
   return (
     <div
-      className={`flex gap-[40px] items-center w-[80%] h-[50px] cursor-pointer
+      className={`flex items-center justify-center w-full h-[50px] cursor-pointer
       transition-transform duration-200 ease-in-out       
       ${disabled && 'hover:translate-y-[-5px]'}`}
       onClick={handleClick}

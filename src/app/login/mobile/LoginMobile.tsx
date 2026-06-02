@@ -63,7 +63,9 @@ export default function Login_Mobile() {
   return (
     <div className='flex h-screen flex-col items-center justify-center px-[24px] bg-white'>
       {isLoading ? (
-        <LoadingFull />
+        <div className='flex h-screen items-center justify-center bg-white'>
+          <div className='loader2'></div>
+        </div>
       ) : (
         <div className='flex flex-col gap-[40px] w-full justify-center items-center'>
           <LoginModalHeader />
