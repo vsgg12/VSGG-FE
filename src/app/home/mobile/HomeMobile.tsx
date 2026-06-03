@@ -10,10 +10,6 @@ import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 import AlignModeToggleButton from '../_component/AlignModeToggleButton';
 import HorizontalBannerSwiper from '@/components/sidebar/banner/HorizontalBannerSwiper';
 import WritePostMobile from './component/WritePostMobile';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
-import { useLoginStore } from '@/store/login/useLoginStore';
-
 
 interface Props {
   postData: IGetPostDTOType[];
@@ -26,17 +22,17 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
   const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
 
-  const router = useRouter();
-  const { isLogin } = useAuthStore.getState();
-  const { setIsLoginModalOpen } = useLoginStore();
+  // const router = useRouter();
+  // const { isLogin } = useAuthStore.getState();
+  // const { setIsLoginModalOpen } = useLoginStore();
 
-  const handleWriteClick = (): void => {
-    if (!isLogin) {
-      setIsLoginModalOpen(true);
-      return;
-    }
-    router.push('/post/selectUpload');
-  };
+  // const handleWriteClick = (): void => {
+  //   if (!isLogin) {
+  //     setIsLoginModalOpen(true);
+  //     return;
+  //   }
+  //   router.push('/post/selectUpload');
+  // };
 
   useEffect(() => {
     if (keyword === '') {
@@ -52,7 +48,7 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
           <HorizontalBannerSwiper />
         </div>
         <div className='mt-[22px] w-full mb-[20px]'>
-          <WritePostMobile handleWriteClick={handleWriteClick} />
+          <WritePostMobile />
         </div>
         <div className='w-full mb-[30px] flex items-center justify-between px-[20px]'>
           <NewPopularToggleButton

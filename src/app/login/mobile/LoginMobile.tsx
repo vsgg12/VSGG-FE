@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/login/getNaverURL';
 import getGoogleURL from '@/api/login/getGoogleUrl';
 import getKakaoURL from '@/api/login/getKakaoUrl';
-import LoadingFull from '@/components/LoadingFull';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/useAuthStore';
 import LoginModalHeader from '@/components/modals/login/header/LoginModalHeader';
