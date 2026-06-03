@@ -23,8 +23,8 @@ export default function CommentItem({ comment, targetComment, handleReply }: ICo
           <p className='mr-[5px] text-[14px] text-[#242526] font-semibold'>
             {truncateText(comment.member.nickname, 8)}
           </p>
+          <p className='text-[12px] text-[#D7D8D9] font-medium min-w-fit'>{timeAgo}</p>
         </div>
-        <p className='text-[12px] text-[#D7D8D9] font-medium ml-2 min-w-fit'>{timeAgo}</p>
       </div>
       <p className='text-[14px] text-[#242526] font-normal mb-[7px]'>
         {targetComment && <span className='text-[#E20A29]'>@{comment.parentMemberNickname} </span>}

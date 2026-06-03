@@ -6,7 +6,7 @@ interface Props {
 }
 
 function ConfirmButton({ onClick, isDisabled }: Props) {
-  const btnBgColor = isDisabled ? 'bg-[#ececec]' : 'bg-[#E20A29] hover:bg-[#571415] cursor-pointer';
+  const btnBgColor = isDisabled ? 'bg-[#ececec]' : 'bg-[#E20A29] hover:bg-[#B50821] cursor-pointer';
 
   return (
     <button
