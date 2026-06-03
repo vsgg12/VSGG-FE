@@ -51,7 +51,7 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
         <div className='mb-[20px] px-[10px] mt-[20px] flex justify-center'>
           <HorizontalBannerSwiper />
         </div>
-        <div className='mt-[22px] w-full mb-[11px]'>
+        <div className='mt-[22px] w-full mb-[20px]'>
           <WritePostMobile handleWriteClick={handleWriteClick} />
         </div>
         <div className='w-full mb-[30px] flex items-center justify-between px-[20px]'>
