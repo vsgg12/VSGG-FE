@@ -1,10 +1,10 @@
 import { patchAlarm } from '@/api/alarm/patchAlarm';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { truncateText } from '@/utils/truncateText';
+import SideAlarmItem from '@/components/sidebar/modal/alarm/SideAlarmItem';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IAlarmListProps {
   alarms: IAlarmsType[] | undefined;
@@ -15,6 +15,7 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   const { accessToken } = useAuthStore();
   const queryClient = useQueryClient();
   const [postId, setPostId] = useState<number>();
+  const { setRouteState } = useSidebarStore();
 
   const { mutate: postAlarm } = useMutation({
     mutationFn: ({
@@ -35,67 +36,34 @@ export default function AlarmList({ alarms = undefined }: IAlarmListProps) {
   });
 
   const handleAlarmItemClick = (alarmId: number, alarmType: string, id: number) => {
+    setRouteState('HOME');
     setPostId(id);
     postAlarm({ accessToken, alarmId, alarmType });
-  };
-
-  const extractNickname = (alarmContents: string) => {
-    const nicknameEndIndex = alarmContents.indexOf('님');
-    return nicknameEndIndex !== -1 ? alarmContents.slice(0, nicknameEndIndex) : '익명';
-  };
-
-  const formatDate = (dateTime: string) => {
-    return moment(dateTime).format('MM월 DD일');
   };
 
   return (
     <div className='w-full h-full'>
       {!alarms || alarms.length === 0 ? (
-        <p className='flex flex-grow h-full justify-center items-center'>새로운 알람이 없습니다!</p>
+        <div className='flex flex-col w-full h-[303px] py-[40px] gap-[30px] items-center'>
+          <div className='text-[12px] text-[#888888]'>새로운 알림이 없습니다.</div>
+          <img
+            src={'/svg/sidebar/alarm/emptyAlarmIcon.svg'}
+            width={190}
+            height={160}
+            alt={'알림없음아이콘'}
+          />
+        </div>
       ) : (
-        <>
-          <div className='pb-2 overflow-y-auto h-full scrollbar-hidden'>
-            <div>
-              {alarms.map((alarm, index) => (
-                <div className='flex flex-col gap-[5px] cursor-pointer' key={index}>
-                  <div
-                    className='flex flex-col gap-[3px] px-[5px] w-full relative'
-                    onClick={() =>
-                      handleAlarmItemClick(alarm.alarmId, alarm.alarmType, alarm.postId)
-                    }
-                  >
-                    {alarm.alarmType === 'COMMENT' && (
-                      <div className='text-[10px] text-[#555555]'>
-                        @ {extractNickname(alarm.alarmContents)}
-                      </div>
-                    )}
-
-                    <p className='text-[12px] text-[#555555] pr-[50px]'>
-                      {alarm.alarmType === 'POST'
-                        ? `${truncateText(alarm.alarmContents, 44)}`
-                        : `${truncateText(alarm.commentContent, 44)}`}
-                    </p>
-                    <p className='text-[10px] text-[#828282]'>
-                      {formatDate(alarm.createdDateTime)}
-                    </p>
-                    {!alarm.isRead && (
-                      <span
-                        className='bg-[#E20A29] rounded-full w-[6px] h-[6px]'
-                        style={{
-                          position: 'absolute',
-                          right: '25px',
-                          top: '30%',
-                          transform: 'translateY(-10%)',
-                        }}
-                      ></span>
-                    )}
-                    <hr className='border-[#E20A29] my-[10px]' />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
+        <div className='overflow-y-auto h-full scrollbar-hidden'>
+          {alarms.map((alarm) => (
+            <SideAlarmItem
+              key={`alarm-item-${alarm.alarmId}`}
+              alarm={alarm}
+              handleAlarmItemClick={handleAlarmItemClick}
+              isMobile={true}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

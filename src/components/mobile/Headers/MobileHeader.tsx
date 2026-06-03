@@ -8,18 +8,18 @@ import { useRouter } from 'next/navigation';
 function MobileHeader({ headerTitle }: { headerTitle: '마이페이지' | '알림' | string }) {
   const router = useRouter();
   return (
-    <div className='flex pl-[10px] py-[20px] h-[50px] items-center mobile-layout sticky top-0 z-[40]'>
+    <div className='flex pl-[10px] py-[20px] h-[80px] items-center mobile-layout sticky top-0 z-[40] !bg-white'>
       <Image
         src={BackArrowIcon}
         alt='뒤로가기 아이콘'
-        width={32}
-        height={32}
+        width={24}
+        height={24}
         className='flex justify-start cursor-pointer'
         onClick={() => {
           router.back();
         }}
       />
-      <div className='absolute left-[50%] translate-x-[-50%] text-[#E20A29] font-bold text-[22px]'>
+      <div className='absolute left-[50%] translate-x-[-50%] text-[#242526] font-bold text-[20px]'>
         {headerTitle}
       </div>
     </div>

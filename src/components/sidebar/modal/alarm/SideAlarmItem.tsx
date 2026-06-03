@@ -1,12 +1,15 @@
+'use client';
+
 import moment from 'moment';
 import React from 'react';
 
 interface Props {
   alarm: IAlarmsType;
   handleAlarmItemClick: (alarmId: number, alarmType: string, id: number) => void;
+  isMobile?: boolean;
 }
 
-function SideAlarmItem({ alarm, handleAlarmItemClick }: Props) {
+function SideAlarmItem({ alarm, handleAlarmItemClick, isMobile = false }: Props) {
   moment.locale('ko');
 
   const formatDate = (dateTime: string) => {
@@ -28,12 +31,11 @@ function SideAlarmItem({ alarm, handleAlarmItemClick }: Props) {
       onClick={() => handleAlarmItemClick(alarm.alarmId, alarm.alarmType, alarm.postId)}
     >
       <div className='h-full'>{getIcon()}</div>
-      <div className='flex flex-col h-full w-[265px] gap-[5px]'>
+      <div className={`flex flex-col h-full gap-[5px] ${isMobile ? 'w-full' : 'w-[265px]'}`}>
         <div className='flex justify-between text-[14px] text-[#AAAAAA]'>
           <div>{alarm.alarmType === 'POST' ? '판결 결과' : '댓글'}</div>
           <div className='text-[10px] text-[#828282]'>{formatDate(alarm.createdDateTime)}</div>
         </div>
-
         <div className='text-[16px] text-[#555555]'>{alarm.alarmContents}</div>
       </div>
       <div className='flex h-full justify-center flex-1 items-center'>
