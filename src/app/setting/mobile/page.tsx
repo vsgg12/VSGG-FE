@@ -9,6 +9,14 @@ import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import ProfileInfoMobile from '@/app/setting/mobile/components/header/ProfileInfoMobile';
 import { truncateText } from '@/utils/truncateText';
 import XIconButton from '@/app/setting/mobile/components/header/XIconButton';
+import SettingListMobile from '@/app/setting/mobile/components/content/SettingListMobile';
+import myPageIcon from '../../../../public/svg/mobile/setting/myPageIcon.svg';
+import myJudgeIcon from '../../../../public/svg/mobile/setting/myJudgeIcon.svg';
+import myPostIcon from '../../../../public/svg/mobile/setting/myPostIcon.svg';
+import darkThemeIcon from '../../../../public/svg/mobile/setting/darkThemeIcon.svg';
+import guideIcon from '../../../../public/svg/mobile/setting/guideIcon.svg';
+import patchNoteIcon from '../../../../public/svg/mobile/setting/patchNoteIcon.svg';
+import LinkUtils from '@/utils/link/linkUtils';
 
 const SettingMobile = () => {
   const { isLogin, user, accessToken } = useAuthStore(
@@ -18,8 +26,6 @@ const SettingMobile = () => {
       accessToken: s.accessToken,
     })),
   );
-
-  const { nickname, email, profile_image, tier } = user!;
 
   const router = useRouter();
 
@@ -32,6 +38,18 @@ const SettingMobile = () => {
   const onClose = () => {
     router.back();
   };
+
+  const myVsggItems = [
+    { icon: myPageIcon, title: '마이페이지', onClick: () => router.push('/myPage') },
+    { icon: myJudgeIcon, title: '내 판결 전적', onClick: () => router.push('/myPage/judgeRecord') },
+    { icon: myPostIcon, title: '내가 쓴 글', onClick: () => router.push('/myPage/myPosts') },
+  ];
+
+  const additionalOptionItems = [
+    { icon: darkThemeIcon, title: '어두운 테마', onClick: () => {} },
+    { icon: guideIcon, title: '이용가이드', onClick: LinkUtils.handleGuideClick },
+    { icon: patchNoteIcon, title: 'VS.GG 패치노트', onClick: LinkUtils.handlePatchNoteClick },
+  ];
 
   useEffect(() => {
     if (!isLogin) {
@@ -52,7 +70,12 @@ const SettingMobile = () => {
       />
       <XIconButton width={12} height={12} onClick={onClose} />
 
-      {/*TODO: content 추가 */}
+      <div className='mt-[26px] flex w-full flex-col gap-[30px]'>
+        <SettingListMobile title='MY VS.GG' items={myVsggItems} />
+        <SettingListMobile title='추가 옵션' items={additionalOptionItems} />
+      </div>
+
+      {/*TODO: footer 추가*/}
     </div>
   );
 };
