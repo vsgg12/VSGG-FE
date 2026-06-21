@@ -3,7 +3,6 @@
 import React from 'react';
 import XIcon from '../../../../../../public/svg/postWrite/XIcon.svg';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 interface IProps {
   onClick: () => void;
@@ -12,8 +11,6 @@ interface IProps {
 }
 
 const XIconButton = ({ onClick, width, height }: IProps) => {
-  const router = useRouter();
-
   return (
     <div
       className={

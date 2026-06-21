@@ -46,7 +46,13 @@ const SettingMobile = () => {
   ];
 
   const additionalOptionItems = [
-    { icon: darkThemeIcon, title: '어두운 테마', onClick: () => {} },
+    {
+      icon: darkThemeIcon,
+      title: '어두운 테마',
+      onClick: () => {
+        alert('준비중입니다.');
+      },
+    },
     { icon: guideIcon, title: '이용가이드', onClick: LinkUtils.handleGuideClick },
     { icon: patchNoteIcon, title: 'VS.GG 패치노트', onClick: LinkUtils.handlePatchNoteClick },
   ];
