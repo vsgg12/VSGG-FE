@@ -5,12 +5,12 @@ import { truncateText } from '@/utils/truncateText';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import { defaultImage } from '@/constants/defaultImage';
 
 function ProfileInfo() {
   const { isLogin, accessToken, user } = useAuthStore();
   const { getIcon } = useProfileTierIcon({ size: 16 });
 
-  const defaultImage = 'https://ssl.pstatic.net/static/pwe/address/img_profile.png';
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const { setIsLoginModalOpen } = useLoginStore();
 
