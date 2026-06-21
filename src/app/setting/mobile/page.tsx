@@ -17,6 +17,7 @@ import darkThemeIcon from '../../../../public/svg/mobile/setting/darkThemeIcon.s
 import guideIcon from '../../../../public/svg/mobile/setting/guideIcon.svg';
 import patchNoteIcon from '../../../../public/svg/mobile/setting/patchNoteIcon.svg';
 import LinkUtils from '@/utils/link/linkUtils';
+import SettingFooterMobile from '@/app/setting/mobile/components/footer/SettingFooterMobile';
 
 const SettingMobile = () => {
   const { isLogin, user, accessToken } = useAuthStore(
@@ -37,6 +38,12 @@ const SettingMobile = () => {
 
   const onClose = () => {
     router.back();
+  };
+
+  const onLogout = () => {
+    useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '', user: null });
+    localStorage.clear();
+    router.replace('/');
   };
 
   const myVsggItems = [
@@ -68,7 +75,7 @@ const SettingMobile = () => {
   }
 
   return (
-    <div className={'flex flex-col mobile-layout px-[20px] pt-[53px] relative'}>
+    <div className={'flex min-h-[100dvh] flex-col mobile-layout px-[20px] pt-[53px] relative'}>
       <ProfileInfoMobile
         isLogin={isLogin}
         userProfileData={userProfileData}
@@ -81,7 +88,11 @@ const SettingMobile = () => {
         <SettingListMobile title='추가 옵션' items={additionalOptionItems} />
       </div>
 
-      {/*TODO: footer 추가*/}
+      <SettingFooterMobile
+        onServiceTermClick={LinkUtils.handleServiceTermClick}
+        onPersonalInfoClick={LinkUtils.handlePersonalInfoTermClick}
+        onLogoutClick={onLogout}
+      />
     </div>
   );
 };
