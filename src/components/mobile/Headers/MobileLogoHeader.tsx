@@ -28,11 +28,14 @@ function MobileLogoHeader() {
         nickname: userProfileData.memberProfileDTO.nickName,
         profile_image: userProfileData.memberProfileDTO.profileUrl,
         email: userInfo.email,
+        socialLoginType: userInfo.socialLoginType,
+        tier: userProfileData.memberProfileDTO.tier,
       };
 
       if (
         userInfo.nickname !== newUser.nickname ||
-        userInfo.profile_image !== newUser.profile_image
+        userInfo.profile_image !== newUser.profile_image ||
+        userInfo.tier !== newUser.tier
       ) {
         useAuthStore.setState({ user: newUser });
       }
@@ -56,7 +59,8 @@ function MobileLogoHeader() {
   };
 
   const handleProfileBtnClick = (): void => {
-    router.push('/myPage');
+    // router.push('/myPage');
+    router.push('/setting/mobile');
   };
 
   const handleLoginBtnClick = (): void => {

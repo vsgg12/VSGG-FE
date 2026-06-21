@@ -11,7 +11,7 @@ import LoginModalContent from '@/components/modals/login/content/LoginModalConte
 import LoginModalFooter from '@/components/modals/login/footer/LoginModalFooter';
 import { useEffect, useState } from 'react';
 
-export default function Login_Mobile() {
+export default function LoginMobile() {
   const [mounted, setMounted] = useState(false);
   const { isLogin } = useAuthStore();
   const router = useRouter();
