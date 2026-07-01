@@ -25,6 +25,7 @@ const Home = () => {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const [isListed, setIsListed] = useState<boolean>(false);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
@@ -37,6 +38,10 @@ const Home = () => {
   const { fetchAllChampions } = useWriteStore();
 
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     fetchAllChampions();
@@ -111,6 +116,10 @@ const Home = () => {
     }
     router.push('/post/selectUpload');
   };
+
+  if (!isMounted) {
+    return <Loading />;
+  }
 
   return (
     <>
