@@ -54,7 +54,7 @@ const ChampionVoteBoxMobile = ({
   const backgroundImage = currentHoverItem ? getChampionImage(currentHoverItem.championName) : '';
 
   return (
-    <div className='relative w-full aspect-video rounded-[20px] overflow-hidden bg-gray-900'>
+    <div className='relative w-full aspect-video rounded-[30px] overflow-hidden bg-gray-900'>
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
         className={clsx(

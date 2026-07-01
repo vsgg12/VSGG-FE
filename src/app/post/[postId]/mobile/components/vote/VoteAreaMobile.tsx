@@ -1,5 +1,4 @@
 import React from 'react';
-import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
@@ -8,6 +7,7 @@ import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import usePostIdStore from '../../../store/usePostIdStore';
 import VoteFormMobile from './VoteFormMobile';
+import ChampionVoteBoxMobile from '@/app/home/mobile/component/ChampionVoteBoxMobile';
 
 interface IVoteAreaMobile {
   voteData: IGetInGameInfoType[];
@@ -67,7 +67,7 @@ function VoteAreaMobile({ voteData, isOwner, post }: IVoteAreaMobile) {
         />
       )}
       {shouldShowVoteResult && (
-        <ChampionVoteBox
+        <ChampionVoteBoxMobile
           voteData={voteData}
           voteCount={post.postDTO.voteCount}
           daysUntilEnd={post.postDTO.daysUntilEnd}
