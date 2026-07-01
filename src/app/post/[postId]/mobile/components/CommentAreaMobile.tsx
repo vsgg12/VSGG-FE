@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MoreModal from '@/components/modals/MoreModal';
 import Icon_more from '../../../../../../public/svg/Icon_more.svg';
+import Icon_line from '../../../../../../public/svg/mobile/postItem/line.svg';
 import Image from 'next/image';
 import useCommentStore from '../../store/useCommentStore';
 import PostCommentInput from './CommentInputMobile';
@@ -180,14 +181,35 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
                       onClick={() => handleOpenReply(comment.id)}
                       className='my-[5px] text-[14px] font-medium text-[#E20A29]'
                     >
-                      {showReply === comment.id
-                        ? '- 답글 숨기기'
-                        : comment.children?.length !== 0 &&
-                          `- 답글 보기 (${comment.children?.length})개`}
+                      {showReply === comment.id ? (
+                        <div className='flex items-center '>
+                          <Image
+                            src={Icon_line}
+                            alt='line'
+                            width={19}
+                            height={1}
+                            className='inline-block mr-[5px]'
+                          />
+                          <p className='text-[12px]'>답글 숨기기</p>
+                        </div>
+                      ) : (
+                        comment.children?.length !== 0 && (
+                          <div className='flex items-center '>
+                            <Image
+                              src={Icon_line}
+                              alt='line'
+                              width={19}
+                              height={1}
+                              className='inline-block mr-[5px]'
+                            />
+                            <p className='text-[12px]'>답글 보기 ({comment.children?.length})개</p>
+                          </div>
+                        )
+                      )}
                     </button>
                   )}
                   {showReply === comment.id && (
-                    <div className='pl-6'>
+                    <div className='pl-6 '>
                       {comment.children?.map((reply: IGetCommentItemType, index: number) => (
                         <div key={index} className='flex justify-between relative mb-[20px]'>
                           <CommentMobile

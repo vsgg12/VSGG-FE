@@ -4,7 +4,7 @@ interface Props {
   post: IGetPostDTOType;
 }
 
-const videoStyle = 'w-full rounded-[14px] block visible aspect-video bg-black object-contain';
+const videoStyle = 'w-full rounded-[20px] block visible aspect-video bg-black object-contain';
 
 function PostVideoAreaMobile({ post }: Props) {
   const [isImageClick, setIsImageClick] = useState<boolean>(false);

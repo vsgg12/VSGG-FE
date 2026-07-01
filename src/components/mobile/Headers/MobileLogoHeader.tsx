@@ -8,8 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import getMyProfileDTO from '@/api/profile/getMyProfileDTO';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import getAlarms from '@/api/alarm/getAlarms';
-import { IoMdNotificationsOutline } from 'react-icons/io';
-import LogoMobile from '../LogoMobile';
+import HomeHeaderActions from './HomeHeaderActions';
 
 function MobileLogoHeader() {
   const router = useRouter();
@@ -58,17 +57,20 @@ function MobileLogoHeader() {
     router.push('/alert/mobile');
   };
 
-  const handleProfileBtnClick = (): void => {
-    // router.push('/myPage');
-    router.push('/setting/mobile');
-  };
-
   const handleLoginBtnClick = (): void => {
     router.push('/login');
   };
 
+  const handleSearchBtnClick = (): void => {
+    router.push('/search/mobile');
+  };
+
+  const handleMenuBtnClick = (): void => {
+    router.push('/setting/mobile');
+  };
+
   return (
-    <div className='flex px-[10px] py-[25px] h-[32px] items-center justify-between mobile-layout sticky top-0 z-[40]'>
+    <div className='flex px-[10px] py-[25px] h-[32px] items-center justify-between sticky top-0 z-[40] bg-white'>
       <Image
         src={BackArrowIcon}
         alt='뒤로가기 아이콘'
@@ -79,55 +81,16 @@ function MobileLogoHeader() {
           router.push('/home');
         }}
       />
-      <div className='pl-[25px]'>
-        <LogoMobile size='small' />
-      </div>
       {isLoading ? (
         <div></div>
       ) : isLogin ? (
         <div className='flex gap-[8px]'>
-          <button
-            className={`relative group/alarm hd-items cursor-pointer `}
-            onClick={handleAlarmBtnClick}
-          >
-            <IoMdNotificationsOutline />
-            <span
-              className={`text-[#E20A29] text-[12px] font-bold flex flex-col relative items-center justify-center  w-[20px] h-[12px] p-0 m-0  ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
-              style={{
-                position: 'absolute',
-                transform: 'translate(5.5px,-22px)',
-              }}
-            >
-              {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
-              <span
-                className={`text-[#E20A29] text-[12px] font-bold flex flex-col items-center justify-center w-[20px] h-[12px] p-0 m-0 text-stroke ${(noReadAlarms === undefined || noReadAlarms === 0) && 'invisible'}`}
-                style={{
-                  position: 'absolute',
-                  left: '0',
-                  top: '0',
-                  zIndex: '-1',
-                }}
-              >
-                {data && noReadAlarms > 99 ? '99+' : `${noReadAlarms}`}
-              </span>
-            </span>
-            <span className='absolute top-[50px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/alarm:visible'>
-              알림
-            </span>
-          </button>
-          <button
-            className={`relative group/profile hd-items flex items-center justify-center rounded-full `}
-            onClick={handleProfileBtnClick}
-          >
-            <img
-              src={userProfileData?.memberProfileDTO.profileUrl}
-              alt='profileImage'
-              className='h-[24px] w-[24px] rounded-full border-[#E20A29] border-[2px]'
-            />
-            <span className='absolute top-[50px] left-[-3px] flex justify-center items-center h-[23px] text-[12px] font-medium bg-white text-[#828282] rounded-[5px] p-[4px] whitespace-nowrap invisible group-hover/profile:visible'>
-              프로필
-            </span>
-          </button>
+          <HomeHeaderActions
+            hasUnreadAlarm={noReadAlarms > 0}
+            onAlarmClick={handleAlarmBtnClick}
+            onSearchClick={handleSearchBtnClick}
+            onMenuClick={handleMenuBtnClick}
+          />
         </div>
       ) : (
         <button

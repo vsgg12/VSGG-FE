@@ -15,13 +15,14 @@ import postPostLike from '@/api/like/postPostLike';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useMutation } from '@tanstack/react-query';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 
 interface IContentArea {
   isOwner: boolean;
   post: IGetPostItemType;
 }
 
-const videoStyle = 'w-full rounded-[14px] block visible aspect-video bg-black object-contain';
+const videoStyle = 'w-full rounded-[20px] block visible aspect-video bg-black object-contain';
 
 function ContentAreaMobile({ isOwner, post }: IContentArea) {
   const { user, accessToken, isLogin } = useAuthStore();
@@ -35,6 +36,7 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
   const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
   const { setIsLoginModalOpen } = useLoginStore();
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
+  const { getIcon } = useProfileTierIcon({ size: 14 });
 
   useEffect(() => {
     if (post && user) {
@@ -145,7 +147,7 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
   return (
     <div className='h-fit w-full'>
       {post && (
-        <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] p-[30px] gap-[15px]'>
+        <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] gap-[15px]'>
           <div className='flex w-full'>
             <div className='flex gap-[10px] w-full justify-between items-center'>
               <div className='flex gap-[10px]'>
@@ -158,8 +160,11 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
                   }
                 />
                 <div className='flex flex-col'>
-                  <div className='text-[12px] text-[#333333] max-w-[170px]'>
-                    {post.postDTO.memberDTO.nickname}
+                  <div className='flex gap-[3px]'>
+                    {getIcon(post.postDTO.memberDTO.tier)}
+                    <p className='text-[12px] text-[#333333] font-bold'>
+                      {post.postDTO.memberDTO.nickname}
+                    </p>
                   </div>
                   <div className='flex text-[12px] text-[#C8C8C8] items-center gap-[3px]'>
                     <p>{timeAgo} ・ </p>
@@ -172,10 +177,12 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
             </div>
           </div>
           <div className='flex justify-between'>
-            <p className='text-[#242526] text-[20px] whitespace-nowrap'>{post.postDTO.title}</p>
+            <p className='text-[#242526] text-[20px] font-bold whitespace-nowrap'>
+              {post.postDTO.title}
+            </p>
             <div className='flex'>
               {isMoreModalOpen && (
-                <div className='absolute right-[75px] translate-y-[5px]'>
+                <div className='absolute right-[45px] translate-y-[2px]'>
                   {isOwner ? (
                     <MoreModal type='owner' where='post' postId={post.postDTO.id} />
                   ) : (
