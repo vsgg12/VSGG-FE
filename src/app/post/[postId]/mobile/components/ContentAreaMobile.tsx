@@ -14,6 +14,8 @@ interface IContentArea {
   post: IGetPostItemType;
 }
 
+const videoStyle = 'w-full rounded-[14px] block visible aspect-video bg-black object-contain';
+
 function ContentAreaMobile({ isOwner, post }: IContentArea) {
   const { user } = useAuthStore();
   const { voteResult, setPostVoteResult } = usePostIdStore();
@@ -41,8 +43,14 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
     setIsMoreModalOpen(!isMoreModalOpen);
   };
 
+  const getYoutubeId = (url: string) => {
+    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  };
+
   return (
-    <div>
+    <div className='h-fit w-full'>
       {post && (
         <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] p-[30px] gap-[15px]'>
           <div className='flex w-full justify-between'>
@@ -94,24 +102,34 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
               </span>
             </p>
           </div>
-          <div className='flex flex-col'>
-            <video
-              muted
-              controls
-              playsInline
-              poster={post.postDTO.thumbnailURL}
-              // key={post.postDTO.video.url}
-              className='block visible p-content-rounded p-content-s-mb p-content-mr aspect-video h-[60%] w-full'
-              onClick={(e) => {
-                const video = e.currentTarget;
-                if (video.paused) {
-                  video.play();
-                }
-              }}
-            >
-              <source src={post.postDTO.video.url} type='video/mp4' />
-              <source src={post.postDTO.video.url} type='video/webm' />
-            </video>
+          <div className='flex flex-col w-full'>
+            {post.postDTO.video.type === 'FILE' ? (
+              <video
+                muted
+                controls
+                playsInline
+                poster={post.postDTO.thumbnailURL}
+                className={videoStyle}
+                onClick={(e) => {
+                  const video = e.currentTarget;
+                  if (video.paused) {
+                    video.play();
+                  }
+                }}
+              >
+                <source src={post.postDTO.video.url} type='video/mp4' />
+                <source src={post.postDTO.video.url} type='video/webm' />
+              </video>
+            ) : (
+              <iframe
+                src={`https://www.youtube.com/embed/${getYoutubeId(post.postDTO.video.url)}`}
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                allowFullScreen
+                className={videoStyle}
+                title='YouTube video preview'
+              />
+            )}
+
             <div className='flex flex-col w-full gap-[20px]'>
               <div
                 className='w-full mt-[10px] p-1 break-words line-clamp-[8] h-fit text-ellipsis decoration-solid'

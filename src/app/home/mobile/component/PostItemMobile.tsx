@@ -16,12 +16,12 @@ export default function PostItemMobile({
   voteInfos: IGetInGameInfoType[];
 }) {
   const router = useRouter();
-  const { getIcon } = useProfileTierIcon({ size: 16 });
+  const { getIcon } = useProfileTierIcon({ size: 12 });
   const timeAgo = useTimeDifferenceFromNow(post.createdAt);
   const contentsArr = useConvertHTML(post.content);
   const { user } = useAuthStore();
   const [isImageClick, setIsImageClick] = useState<boolean>(false);
-  const videoStyle = 'rounded-[14px] aspect-video w-[full] h-fit block visible';
+  const videoStyle = 'rounded-[14px] aspect-video w-full object-cover block visible';
 
   const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
     event.stopPropagation();
@@ -33,6 +33,8 @@ export default function PostItemMobile({
     const match = url.match(regExp);
     return match ? match[1] : null;
   };
+  const youtubeId = getYoutubeId(post.video.url);
+  const isLinkVideo = post.video.type === 'LINK';
 
   return (
     <div
@@ -45,7 +47,7 @@ export default function PostItemMobile({
         <div className='flex items-center'>
           <img
             src={
-              !post.memberDTO.profileImage
+              post.memberDTO.profileImage === null || post.memberDTO.profileImage === ''
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
@@ -61,19 +63,26 @@ export default function PostItemMobile({
       </div>
       <div className='flex flex-col gap-[10px]'>
         <p className='text-black text-[16px] whitespace-wrap'>{post.title}</p>
-        <p className='text-[16px] w-full whitespace-nowrap overflow-hidden truncate'>
+        <p className='text-[14px] w-full whitespace-nowrap overflow-hidden truncate text-[#484B4D]'>
           {contentsArr.pTags[0]}
         </p>
       </div>
-      <div>
-        {isImageClick ? (
+      <div className='w-full h-fit' onClick={(e) => e.stopPropagation()}>
+        {isImageClick && isLinkVideo ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; '
+            allowFullScreen
+            className={videoStyle}
+            title='YouTube video preview'
+          />
+        ) : isImageClick ? (
           <video
             muted
             controls
             autoPlay
             poster={post.thumbnailURL}
             className={`block visible ${videoStyle}`}
-            onClick={(e) => e.stopPropagation}
           >
             <source src={post.video.url} type='video/mp4' />
             <source src={post.video.url} type='video/webm' />
@@ -99,15 +108,15 @@ export default function PostItemMobile({
         ) : (
           //외부영상 첨부할 때 사용
           <iframe
-            src={`https://www.youtube.com/embed/${getYoutubeId(post.video.url)}`}
-            width='340'
-            height='191'
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
             allowFullScreen
-            className='rounded-[10px] block visible'
+            className={videoStyle}
+            title='YouTube video preview'
           />
         )}
       </div>
-      <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
+      <div className='relative flex w-full aspect-video items-center justify-center rounded-[20px]'>
         <ChampionVoteBoxMobile
           voteData={voteInfos}
           voteCount={post.voteCount}

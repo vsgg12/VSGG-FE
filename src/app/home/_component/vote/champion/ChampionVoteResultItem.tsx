@@ -11,11 +11,13 @@ import Image from 'next/image';
 interface Props {
   isHover: boolean;
   voteItem: IGetInGameInfoType;
-  isHome?: boolean;
+  size: 'desktop-home' | 'desktop-detail' | 'mobile';
 }
 
-const ChampionVoteResultItem = ({ voteItem, isHover, isHome = false }: Props) => {
+const ChampionVoteResultItem = ({ voteItem, isHover, size }: Props) => {
   const { tiers } = tiersData;
+  const hexagonSize = size === 'desktop-home' ? 33 : size === 'desktop-detail' ? 40 : 30;
+
   const getTierIcon = useCallback(() => {
     return tiers.find((item) => item.content === voteItem.tier)?.svg;
   }, [voteItem.tier, tiers]);
@@ -29,7 +31,11 @@ const ChampionVoteResultItem = ({ voteItem, isHover, isHome = false }: Props) =>
     <div
       className={clsx(
         'flex justify-between font-semibold items-center cursor-pointer',
-        isHome ? 'w-[256px] h-[33px]' : 'w-full h-fit',
+        size === 'desktop-home'
+          ? 'w-[256px] h-[33px]'
+          : size === 'desktop-detail'
+            ? 'w-full h-fit'
+            : 'w-full h-fit',
       )}
     >
       <div className='flex items-center gap-[10px]'>
@@ -48,36 +54,46 @@ const ChampionVoteResultItem = ({ voteItem, isHover, isHome = false }: Props) =>
             className={clsx(
               'whitespace-nowrap',
               isHover ? 'text-[#D9D9D9]' : 'text-[#555555]',
-              isHome ? 'text-[12px]' : 'text-[16px]',
+              size === 'desktop-home'
+                ? 'text-[12px]'
+                : size === 'desktop-detail'
+                  ? 'text-[16px]'
+                  : 'text-[12px]',
             )}
           >
             {voteItem.championName}
           </div>
-          <div className={'flex gap-[5px] items-center'}>
-            <div className={'w-[12px] h-[12px] flex justify-items-center'}>{getTierIcon()}</div>
-            <div className={clsx('text-[10px]', isHover ? 'text-[#DDDDDD]' : 'text-[#51484A]')}>
-              {voteItem.tier}
+          {size !== 'mobile' && (
+            <div className={'flex gap-[5px] items-center'}>
+              <div className={'w-[12px] h-[12px] flex justify-items-center'}>{getTierIcon()}</div>
+              <div className={clsx('text-[10px]', isHover ? 'text-[#DDDDDD]' : 'text-[#51484A]')}>
+                {voteItem.tier}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {/* 육각형 */}
       <div
-        className={clsx(
-          'relative justify-center items-center flex shrink-0',
-          isHome ? 'w-[33px] h-[33px]' : 'w-[50px] h-[50px]',
-        )}
+        className='relative flex shrink-0 items-center justify-center'
+        style={{ width: hexagonSize, height: hexagonSize }}
       >
         <Image
           src={isHover ? hexagon : hexagonDisable}
           alt={'육각형 이미지'}
-          className={'absolute'}
+          width={hexagonSize}
+          height={hexagonSize}
+          className='h-full w-full'
         />
         <span
           className={clsx(
-            'relative z-10 flex items-center justify-center line-clamp-0',
+            'absolute inset-0 z-10 flex items-center justify-center line-clamp-0',
             isHover ? 'text-white' : 'text-white/60',
-            isHome ? 'text-[14px]' : 'text-[18px]',
+            size === 'desktop-home'
+              ? 'text-[12px]'
+              : size === 'desktop-detail'
+                ? 'text-[16px]'
+                : 'text-[12px]',
           )}
         >
           {(voteItem.averageRatio ?? 0).toFixed(1)}
