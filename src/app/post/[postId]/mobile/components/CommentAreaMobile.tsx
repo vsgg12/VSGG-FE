@@ -125,9 +125,9 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   };
 
   return (
-    <div className='relative min-h-[400px] w-full rounded-[30px] flex flex-col mb-[30px] p-[30px] gap-[15px]'>
+    <div className='relative min-h-[400px] w-full rounded-[30px] flex flex-col mt-[30px] gap-[12px]'>
       <div>
-        <p className='p-content-s-mb text-[16px]'>댓글</p>
+        <p className='p-content-s-mb text-[18px] font-semibold'>댓글</p>
         <div className='flex flex-row w-full'>
           <FormProvider {...commentMethods}>
             <form className='w-full' onSubmit={commentMethods.handleSubmit(onCommentSubmit)}>

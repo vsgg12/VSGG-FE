@@ -81,7 +81,7 @@ export default function PostItemMobile({
           <div className='flex gap-[5px] text-[12px]'>
             {getIcon(post.memberDTO.tier)}
             <p className='font-bold'>{post.memberDTO.nickname}</p>
-            <p className='text-[#C8C8C8] ml-[px]'>{timeAgo}</p>
+            <p className='text-[#C8C8C8] font-medium ml-[px]'>{timeAgo}</p>
           </div>
         </div>
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
