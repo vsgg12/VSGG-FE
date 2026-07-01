@@ -71,7 +71,11 @@ const ChampionVoteBox = ({
           >
             {sortedVoteData.map((item, idx) => (
               <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
-                <ChampionVoteResultItem voteItem={item} isHover={isHover === idx} isHome={true} />
+                <ChampionVoteResultItem
+                  voteItem={item}
+                  isHover={isHover === idx}
+                  size='desktop-home'
+                />
               </div>
             ))}
           </div>

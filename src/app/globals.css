@@ -112,7 +112,7 @@ body {
 }
 
 .p-voting-bar-mobile {
-  @apply mr-[0.125em] h-[1.5em] w-[30px] cursor-pointer border-[0.08125em] border-[#333333] hover:border-[1.5px];
+  @apply mr-[0.125em] h-[26px] min-w-[31px] flex-1 cursor-pointer border-[0.08125em];
 }
 
 .p-voting-bar-element {
@@ -185,7 +185,7 @@ body {
 .loader {
   width: 60px;
   aspect-ratio: 4;
-  --_g: no-repeat radial-gradient(circle closest-side, #E20A29 90%, #0000);
+  --_g: no-repeat radial-gradient(circle closest-side, #e20a29 90%, #0000);
   background:
     var(--_g) 0 50%,
     var(--_g) 50% 50%,
@@ -234,7 +234,7 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 8px solid #ececec;
-  border-right-color: #E20A29;
+  border-right-color: #e20a29;
   animation: l2 1s infinite linear;
 }
 
@@ -259,5 +259,5 @@ body {
 }
 
 .custom-pagination .swiper-pagination-bullet-active {
-  background-color: #E20A29;
+  background-color: #e20a29;
 }

@@ -37,24 +37,29 @@ const ChampionVoteBoxMobile = ({
   // 2. 아이템 갯수에 따른 동적 Gap 클래스 계산 (아이템 갯수에 따라 간격 조절)
   const listGapClass = useMemo(() => {
     const count = sortedVoteData.length;
+    if (isHome) {
+      if (count >= 5) return 'gap-[6px]';
+      if (count === 4) return 'gap-[10px]';
+      if (count === 3) return 'gap-[14px]';
+      return 'gap-[18px]';
+    }
     if (count >= 5) return 'gap-[12px]';
     if (count === 4) return 'gap-[24px]';
     if (count === 3) return 'gap-[36px]';
     return 'gap-[48px]';
-  }, [sortedVoteData.length]);
+  }, [isHome, sortedVoteData.length]);
 
   // 현재 호버된 아이템
   const currentHoverItem = sortedVoteData[isHover] || sortedVoteData[0];
   const backgroundImage = currentHoverItem ? getChampionImage(currentHoverItem.championName) : '';
 
   return (
-    <div
-      className={`relative w-full min-w-[340px] h-[253px] rounded-[16px] overflow-hidden bg-gray-900`}
-    >
+    <div className='relative w-full aspect-video rounded-[30px] overflow-hidden bg-gray-900'>
       {/* 컨텐츠 영역 (조건부 Blur 적용 대상) */}
       <div
         className={clsx(
-          'w-full h-full px-[50px] py-[10px] transition-all duration-300',
+          'w-full h-full py-[10px] transition-all duration-300',
+          isHome ? 'px-[24px]' : 'px-[50px]',
           shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
         )}
         style={{
@@ -66,12 +71,20 @@ const ChampionVoteBoxMobile = ({
         {/* 실제 리스트 및 텍스트 */}
         <div className='relative z-10 w-full h-full flex justify-between items-center '>
           <div
-            className={clsx('w-[230px] h-full flex flex-col justify-center', listGapClass)}
+            className={clsx(
+              'h-full flex flex-col justify-center',
+              isHome ? 'w-full max-w-[230px]' : 'w-[230px]',
+              listGapClass,
+            )}
             onMouseLeave={() => setIsHover(0)}
           >
             {sortedVoteData.map((item, idx) => (
               <div key={item.inGameInfoId} onMouseEnter={() => setIsHover(idx)}>
-                <ChampionVoteResultItem voteItem={item} isHover={isHome ? true : isHover === idx} />
+                <ChampionVoteResultItem
+                  voteItem={item}
+                  isHover={isHome ? true : isHover === idx}
+                  size='mobile'
+                />
               </div>
             ))}
           </div>

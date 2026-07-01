@@ -7,10 +7,10 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import Loading from '@/components/Loading';
 import ContentAreaMobile from './components/ContentAreaMobile';
 import CommentAreaMobile from './components/CommentAreaMobile';
-import VoteAreaMobile from './components/VoteAreaMobile';
 import ModalLayout from '@/components/modals/ModalLayout';
 import MobileLogoHeader from '@/components/mobile/Headers/MobileLogoHeader';
 import AlertLoginModal_Mobile from '@/components/mobile/modals/AlertLoginModalMobile';
+import VoteAreaMobile from './components/vote/VoteAreaMobile';
 
 export default function PostDetailMobile() {
   const { postId } = useParams();
@@ -50,14 +50,9 @@ export default function PostDetailMobile() {
         <Loading />
       ) : (
         post && (
-          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] scroll'>
+          <div className='mobile-layout flex flex-col items-center px-[20px] py-[20px] scroll !bg-white'>
             <ContentAreaMobile post={post} isOwner={isOwner} />
-            <VoteAreaMobile
-              isOwner={isOwner}
-              post={post}
-              voteData={post.postDTO.inGameInfoList}
-              setIsLoginModalOpen={setIsLoginModalOpen}
-            />
+            <VoteAreaMobile isOwner={isOwner} post={post} voteData={post.postDTO.inGameInfoList} />
             <CommentAreaMobile setIsLoginModalOpen={setIsLoginModalOpen} />
           </div>
         )

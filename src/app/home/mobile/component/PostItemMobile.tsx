@@ -1,12 +1,19 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import useConvertHTML from '@/hooks/useConvertHTML';
-import { useAuthStore } from '@/app/login/store/useAuthStore';
 import PostDeadLineMobile from './PostDeadLineMobile';
 import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
+import PostVideoAreaMobile from './PostVideoAreaMobile';
 import ChampionVoteBoxMobile from './ChampionVoteBoxMobile';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import HeartIcon from '../../../../../public/svg/mobile/postItem/heart.svg';
+import CommentIcon from '../../../../../public/svg/mobile/postItem/comment.svg';
+import ShareIcon from '../../../../../public/svg/mobile/postItem/share.svg';
+import VoteIcon from '../../../../../public/svg/mobile/postItem/vote.svg';
+import ViewIcon from '../../../../../public/svg/mobile/postItem/view.svg';
+import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 
 export default function PostItemMobile({
   post,
@@ -16,22 +23,42 @@ export default function PostItemMobile({
   voteInfos: IGetInGameInfoType[];
 }) {
   const router = useRouter();
-  const { getIcon } = useProfileTierIcon({ size: 16 });
+  const { user } = useAuthStore();
+  const { getIcon } = useProfileTierIcon({ size: 12 });
   const timeAgo = useTimeDifferenceFromNow(post.createdAt);
   const contentsArr = useConvertHTML(post.content);
-  const { user } = useAuthStore();
-  const [isImageClick, setIsImageClick] = useState<boolean>(false);
-  const videoStyle = 'rounded-[14px] aspect-video w-[full] h-fit block visible';
 
-  const handleImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    event.stopPropagation();
-    setIsImageClick(true);
-  };
+  const icons = [
+    {
+      icon: HeartIcon,
+      alt: 'heartIcon',
+      content: post.likeCount > 999 ? '999+' : post.likeCount,
+    },
+    {
+      icon: VoteIcon,
+      alt: 'voteIcon',
+      content: post.voteCount > 999 ? '999+' : post.voteCount,
+    },
+    {
+      icon: CommentIcon,
+      alt: 'commentIcon',
+      content: post.commentCount > 999 ? '999+' : post.commentCount,
+    },
+    {
+      icon: ViewIcon,
+      alt: 'viewIcon',
+      content: post.viewCount > 999 ? '999+' : post.viewCount,
+    },
+  ];
 
-  const getYoutubeId = (url: string) => {
-    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
-    const match = url.match(regExp);
-    return match ? match[1] : null;
+  const handleSharePost = async (e: React.MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(`vsgg.co.kr/post/${post.id}`);
+      toast.success('링크가 복사되었습니다.');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -45,7 +72,7 @@ export default function PostItemMobile({
         <div className='flex items-center'>
           <img
             src={
-              !post.memberDTO.profileImage
+              post.memberDTO.profileImage === null || post.memberDTO.profileImage === ''
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
@@ -53,68 +80,46 @@ export default function PostItemMobile({
           />
           <div className='flex gap-[5px] text-[12px]'>
             {getIcon(post.memberDTO.tier)}
-            <p>{post.memberDTO.nickname}</p>
-            <p className='text-[#C8C8C8] ml-[px]'>{timeAgo}</p>
+            <p className='font-bold'>{post.memberDTO.nickname}</p>
+            <p className='text-[#C8C8C8] font-medium ml-[px]'>{timeAgo}</p>
           </div>
         </div>
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
       <div className='flex flex-col gap-[10px]'>
-        <p className='text-black text-[16px] whitespace-wrap'>{post.title}</p>
-        <p className='text-[16px] w-full whitespace-nowrap overflow-hidden truncate'>
+        <p className='text-black text-[16px] font-bold whitespace-wrap'>{post.title}</p>
+        <p className='text-[14px] w-full whitespace-nowrap overflow-hidden truncate text-[#484B4D]'>
           {contentsArr.pTags[0]}
         </p>
       </div>
-      <div>
-        {isImageClick ? (
-          <video
-            muted
-            controls
-            autoPlay
-            poster={post.thumbnailURL}
-            className={`block visible ${videoStyle}`}
-            onClick={(e) => e.stopPropagation}
-          >
-            <source src={post.video.url} type='video/mp4' />
-            <source src={post.video.url} type='video/webm' />
-          </video>
-        ) : post.thumbnailURL ? (
-          <img
-            className={videoStyle}
-            src={post.thumbnailURL}
-            onClick={handleImageClick}
-            alt={'thumbnail'}
+      <div className='flex flex-col gap-[10px]'>
+        <PostVideoAreaMobile post={post} />
+        <div className='relative flex w-full aspect-video items-center justify-center rounded-[20px]'>
+          <ChampionVoteBoxMobile
+            voteData={voteInfos}
+            voteCount={post.voteCount}
+            daysUntilEnd={post.daysUntilEnd}
+            isOwner={post.memberDTO.nickname === user?.nickname}
+            isVote={post.isVote}
+            isHome={true}
           />
-        ) : post.video.type === 'FILE' ? (
-          <video
-            muted
-            controls
-            playsInline
-            poster={post.thumbnailURL}
-            className={`block visible ${videoStyle}`}
-          >
-            <source src={post.video.url} type='video/mp4' />
-            <source src={post.video.url} type='video/webm' />
-          </video>
-        ) : (
-          //외부영상 첨부할 때 사용
-          <iframe
-            src={`https://www.youtube.com/embed/${getYoutubeId(post.video.url)}`}
-            width='340'
-            height='191'
-            allowFullScreen
-            className='rounded-[10px] block visible'
-          />
-        )}
+        </div>
       </div>
-      <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
-        <ChampionVoteBoxMobile
-          voteData={voteInfos}
-          voteCount={post.voteCount}
-          daysUntilEnd={post.daysUntilEnd}
-          isOwner={post.memberDTO.nickname === user?.nickname}
-          isVote={post.isVote}
-          isHome={true}
+      <div className='flex justify-between text-[14px] '>
+        <div className='flex gap-[10px]'>
+          {icons.map((item, index) => (
+            <div key={index} className='flex gap-[4px] items-center'>
+              <Image src={item.icon} width={16} height={16} alt={item.alt} />
+              <p className='text-[12px] text-[#D7D8D9]'>{item.content}</p>
+            </div>
+          ))}
+        </div>
+        <Image
+          src={ShareIcon}
+          width={16}
+          height={16}
+          alt='shareIcon'
+          onClick={(e) => handleSharePost(e)}
         />
       </div>
     </div>
