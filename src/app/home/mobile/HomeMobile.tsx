@@ -2,7 +2,7 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { useEffect, useState } from 'react';
+import { Ref, useEffect, useState } from 'react';
 import useSearchStore from '../store/useSearchStore';
 import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
@@ -14,10 +14,18 @@ import WritePostMobile from './component/WritePostMobile';
 interface Props {
   postData: IGetPostDTOType[];
   isLoading: boolean;
+  isFetchingNextPage: boolean;
+  loaderRef: Ref<HTMLDivElement>;
   refetch: () => void;
 }
 
-export default function HomeMobile({ postData, isLoading, refetch }: Props) {
+export default function HomeMobile({
+  postData,
+  isLoading,
+  isFetchingNextPage,
+  loaderRef,
+  refetch,
+}: Props) {
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
@@ -75,6 +83,12 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
             </div>
           ))
         )}
+        {isFetchingNextPage && (
+          <div className='text-center py-4 text-[14px] text-[#828282]'>
+            게시물을 불러오는 중입니다...
+          </div>
+        )}
+        <div ref={loaderRef} className='min-h-[30px] w-full' />
       </div>
     </div>
   );

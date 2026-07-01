@@ -85,6 +85,10 @@ const Home = () => {
 
   // IntersectionObserver를 이용한 다음 페이지 패치 호출
   useEffect(() => {
+    if (!isMounted) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         const target = entries[0];
@@ -106,7 +110,7 @@ const Home = () => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [isMounted, isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // 글쓰기 버튼 이벤트
   const handleWriteClick = (): void => {
@@ -124,7 +128,13 @@ const Home = () => {
   return (
     <>
       {isMobile ? (
-        <HomeMobile postData={visiblePosts} isLoading={isLoading} refetch={refetch} />
+        <HomeMobile
+          postData={visiblePosts}
+          isLoading={isLoading}
+          isFetchingNextPage={isFetchingNextPage}
+          loaderRef={loaderRef}
+          refetch={refetch}
+        />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px] bg-[#FAFAFA]'>
           <Sidebar />
