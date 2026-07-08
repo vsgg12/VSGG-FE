@@ -134,6 +134,8 @@ const Home = () => {
           isFetchingNextPage={isFetchingNextPage}
           loaderRef={loaderRef}
           refetch={refetch}
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
         />
       ) : (
         <div className='flex w-screen items-center justify-center pl-[260px] bg-[#FAFAFA]'>
