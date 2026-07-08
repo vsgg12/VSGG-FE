@@ -2,7 +2,7 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { Ref, useEffect, useState } from 'react';
+import { Dispatch, Ref, SetStateAction, useEffect, useState } from 'react';
 import useSearchStore from '../store/useSearchStore';
 import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
@@ -17,6 +17,8 @@ interface Props {
   isFetchingNextPage: boolean;
   loaderRef: Ref<HTMLDivElement>;
   refetch: () => void;
+  activeButton: string;
+  setActiveButton: Dispatch<SetStateAction<string>>;
 }
 
 export default function HomeMobile({
@@ -25,8 +27,9 @@ export default function HomeMobile({
   isFetchingNextPage,
   loaderRef,
   refetch,
+  activeButton,
+  setActiveButton,
 }: Props) {
-  const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
 
