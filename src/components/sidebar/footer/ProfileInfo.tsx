@@ -34,7 +34,8 @@ function ProfileInfo() {
       <img
         src={
           isLogin
-            ? userProfileData?.memberProfileDTO.profileUrl === ''
+            ? userProfileData?.memberProfileDTO.profileUrl == null ||
+              userProfileData?.memberProfileDTO.profileUrl === ''
               ? defaultImage
               : userProfileData?.memberProfileDTO.profileUrl
             : defaultImage
