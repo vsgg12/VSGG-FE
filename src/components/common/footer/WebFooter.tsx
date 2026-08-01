@@ -54,7 +54,10 @@ const WebFooter = () => {
           <div className={'flex flex-col gap-[10px]'}>
             <div>©2024. VS.GG ALL RIGHTS RESERVED</div>
             <div className={'flex gap-[16px]'}>
-              <span className={'underline cursor-pointer'} onClick={LinkUtils.handleServiceTermClick}>
+              <span
+                className={'underline cursor-pointer'}
+                onClick={LinkUtils.handleServiceTermClick}
+              >
                 이용약관
               </span>
               <span
