@@ -4,11 +4,7 @@ const LoginModalHeader = () => {
   return (
     <div className={'flex flex-col gap-[12px] w-full h-[64px] text-center'}>
       {/* 로고와 로그인 텍스트를 가로로 정렬하고 중앙 배치 */}
-      <div
-        className={
-          'flex items-center justify-center'
-        }
-      >
+      <div className={'flex items-center justify-center'}>
         {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
         <img
           src='/logo/horizontal/logo-horizontal-red.svg'

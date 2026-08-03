@@ -43,7 +43,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
   ];
   return (
     <div
-      className='flex flex-col w-full min-h-[135px] bg-white mb-[20px] rounded-[30px] p-[25px] gap-[8px] cursor-pointer'
+      className='flex flex-col w-full min-h-[135px] bg-white mb-[20px] p-[25px] gap-[8px] cursor-pointer'
       onClick={() => {
         router.push(`/post/${post.id}/`);
       }}

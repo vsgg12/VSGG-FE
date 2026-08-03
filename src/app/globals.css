@@ -51,7 +51,7 @@ body {
 }
 
 .root-bg {
-  @apply h-full w-full bg-[#f3f3f3];
+  @apply h-full w-full bg-white;
   /* @apply h-full w-full bg-[#000000]; */
 }
 
