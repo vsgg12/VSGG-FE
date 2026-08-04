@@ -26,8 +26,8 @@ const SelectVoteEndTimeBox = ({
       <div className={titleClass}>판결 종료 시간</div>
 
       <div
-        className={`relative w-full h-[47px] rounded-[10px] bg-white border-[0.5px] transition-shadow duration-300 hover:shadow-lg
-        ${endTimeBoxClicked ? 'border-primary-500' : 'border-gray-150'}`}
+        className={`relative w-full h-[47px] rounded-[10px] bg-semantic-background-surface border-[0.5px] transition-shadow duration-300 hover:shadow-lg
+        ${endTimeBoxClicked ? 'border-primary-500' : 'border-semantic-border-default'}`}
       >
         {/* 실제 select */}
         <select
@@ -37,12 +37,16 @@ const SelectVoteEndTimeBox = ({
           onBlur={() => setEndTimeBoxClicked(false)}
           className='
             w-full h-full appearance-none bg-transparent
-            px-[20px] text-[18px] text-gray-850
+            px-[20px] text-[18px] text-semantic-text-primary
             cursor-pointer outline-none
           '
         >
           {VOTE_END_TIME_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              className='bg-semantic-background-surface text-semantic-text-primary'
+            >
               {option.label}
             </option>
           ))}

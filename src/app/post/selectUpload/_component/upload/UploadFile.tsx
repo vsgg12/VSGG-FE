@@ -122,8 +122,12 @@ function UploadFile() {
         }}
       >
         <Image width={138} height={138} alt={'videoIcon'} src={UploadIcon} />
-        <div className='text-[32px] font-bold text-gray-900'>동영상 파일을 끌어서 놓아주세요.</div>
-        <div className='text-[20px] text-gray-500'>또는 아래 버튼을 통해 선택해주세요</div>
+        <div className='text-[32px] font-bold text-semantic-text-primary'>
+          동영상 파일을 끌어서 놓아주세요.
+        </div>
+        <div className='text-[20px] text-semantic-text-muted'>
+          또는 아래 버튼을 통해 선택해주세요
+        </div>
       </div>
 
       <DescriptionBox type={'uploadVideo'} />

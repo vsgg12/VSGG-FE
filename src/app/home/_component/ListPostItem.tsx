@@ -3,11 +3,12 @@ import Default_Profile from '../../../../public/svg/defaultProfile.svg';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
-import Icon_vote from '../../../../public/svg/postItem/vote.svg';
-import Icon_heart_white from '../../../../public/svg/postItem/heart_white.svg';
-import Icon_comment from '../../../../public/svg/postItem/chatbox.svg';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import {
+  CommentActionIcon,
+  MediaLikeActionIcon,
+  VoteActionIcon,
+} from '@/components/common/icons/PostActionIcons';
 
 interface Props {
   post: IGetPostDTOType;
@@ -54,10 +55,10 @@ function ListPostItem({ post }: Props) {
             allowFullScreen
           ></iframe>
         )}
-        <div className='absolute top-[5px] right-[8px] flex gap-[4px]'>
-          <Image src={Icon_heart_white} width={16} height={16} alt='like' />
+        <div className='absolute top-[5px] right-[8px] flex items-center gap-[4px] text-semantic-icon-on-media'>
+          <MediaLikeActionIcon className='h-[16px] w-[16px]' alt='like' />
           <p
-            className='text-[12px] text-white'
+            className='text-[12px]'
             style={{ textShadow: '1px 1px 3px var(--color-shadow-medium)' }}
           >
             {post.likeCount > 999 ? '999+' : post.likeCount}
@@ -86,15 +87,21 @@ function ListPostItem({ post }: Props) {
             className='h-[24px] w-[24px] rounded-full mr-[10px]'
           />
           {getIcon(post.memberDTO.tier)}
-          <p className='ml-[5px] text-[12px] text-semantic-text-primary'>{post.memberDTO.nickname}</p>
+          <p className='ml-[5px] text-[12px] text-semantic-text-primary'>
+            {post.memberDTO.nickname}
+          </p>
         </div>
-        <div className='flex gap-[8px] text-[14px]'>
-          <div className='flex gap-[4px]'>
-            <Image src={Icon_vote} width={18} height={18} alt='vote_icon' />
+        <div className='flex gap-[8px] text-[14px] text-semantic-icon-action'>
+          <div className='flex items-center gap-[4px]'>
+            <span className='flex h-[24px] w-[24px] items-center justify-center'>
+              <VoteActionIcon />
+            </span>
             <p>{post.voteCount > 999 ? '999+' : post.voteCount}</p>
           </div>
-          <div className='flex gap-[4px]'>
-            <Image src={Icon_comment} width={18} height={18} alt='comment_icon' />
+          <div className='flex items-center gap-[4px]'>
+            <span className='flex h-[24px] w-[24px] items-center justify-center'>
+              <CommentActionIcon />
+            </span>
             <p>{post.commentCount > 999 ? '999+' : post.commentCount}</p>
           </div>
         </div>

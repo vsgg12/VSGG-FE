@@ -25,11 +25,11 @@ const ChampionBox = ({ claim, setClaim, placeholder = '내용을 입력해주세
       maxLength={MAX_LENGTH}
       className={clsx(
         'w-full px-[20px] py-[10px] h-[47px] text-[18px]',
-        'border-[0.5px] border-gray-150 bg-white rounded-[8px]',
+        'border-[0.5px] border-semantic-border-default bg-semantic-background-surface rounded-[8px]',
         'hover:shadow-lg',
         'focus:border-primary-500 outline-none',
         'transition-all duration-200',
-        'placeholder:text-gray-400',
+        'text-semantic-text-primary placeholder:text-semantic-text-muted',
       )}
     />
   );

@@ -6,11 +6,13 @@ interface Props {
 }
 
 function ConfirmButton({ onClick, isDisabled }: Props) {
-  const btnBgColor = isDisabled ? 'bg-gray-100' : 'bg-primary-500 hover:bg-primary-600 cursor-pointer';
+  const btnColor = isDisabled
+    ? 'bg-semantic-button-disabled-fill text-semantic-button-disabled-text'
+    : 'cursor-pointer bg-primary-500 text-white hover:bg-primary-600';
 
   return (
     <button
-      className={`w-[134px] h-[53px] rounded-[10px] text-[20px] font-bold text-white ${btnBgColor}`}
+      className={`h-[53px] w-[134px] rounded-[10px] text-[20px] font-bold ${btnColor}`}
       onClick={onClick}
     >
       확인

@@ -1,5 +1,6 @@
 'use client';
 
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useTempStore } from '@/store/temp/useTempStore';
 import React from 'react';
 
@@ -11,10 +12,13 @@ interface Props {
 
 const WriteFooterButton = ({ title, onClickTempSaveBtn, onClickRegisterBtn }: Props) => {
   const { setData: setTempData, tempNum } = useTempStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
 
   const buttonClass =
     title === '저장'
-      ? 'bg-gray-100 text-gray-850 justify-between pl-[20px]'
+      ? isDarkMode
+        ? 'bg-[#484B4D] text-[#F1F2F2] justify-center gap-[18px]'
+        : 'bg-[#E5E6E6] text-[#242526] justify-center gap-[18px]'
       : 'bg-primary-500 text-white justify-center';
 
   const onClickBtnClick = () => {
@@ -32,17 +36,15 @@ const WriteFooterButton = ({ title, onClickTempSaveBtn, onClickRegisterBtn }: Pr
 
   return (
     <div
-      className={`${buttonClass} w-[134px] h-full py-[20px] rounded-[10px]  text-[20px]  flex  items-center cursor-pointer`}
+      className={`${buttonClass} w-[134px] h-full py-[20px] rounded-[10px] text-[20px] flex items-center cursor-pointer`}
       onClick={onClickBtnClick}
     >
       <div>{title}</div>
       {title === '저장' && (
-        <div
-          className={'pr-[20px] pl-[25px] border-1.5 border-l-black'}
-          onClick={onClickTempNumClick}
-        >
-          {tempNum}
-        </div>
+        <>
+          <div className='h-[24px] w-[1px] bg-current' />
+          <div onClick={onClickTempNumClick}>{tempNum}</div>
+        </>
       )}
     </div>
   );

@@ -6,7 +6,7 @@ const InGameRequestBox = () => {
   const { setInGameInfoRequestData, postAddRequest } = useWriteStore();
   const { inGameInfoRequests } = postAddRequest;
 
-  const titleClass = 'font-bold text-[24px] text-gray-850';
+  const titleClass = 'font-bold text-[24px] text-semantic-text-primary';
 
   return (
     <div className={'flex flex-col gap-[20px] h-[334px]'}>

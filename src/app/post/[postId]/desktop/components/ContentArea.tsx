@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Icon_heart from '../../../../../../public/svg/postItem/heart.svg';
-import Icon_heart_hover from '../../../../../../public/svg/postItem/heart_hover.svg';
 import DOMPurify from 'dompurify';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useMutation } from '@tanstack/react-query';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import { LikeActionIcon } from '@/components/common/icons/PostActionIcons';
 
 interface Props {
   post: IGetPostDTOType;
@@ -20,7 +18,6 @@ function ContentArea({ post }: Props) {
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState<string>('');
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
   const [isLikeInProgress, setIsLikeInProgress] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,29 +29,7 @@ function ContentArea({ post }: Props) {
 
   useEffect(() => {
     setIsLiked(post.liked);
-
-    if (post.liked == true) {
-      setHeartIcon(Icon_heart_hover);
-    }
   }, [post]);
-
-  useEffect(() => {
-    if (isLiked) {
-      setHeartIcon(Icon_heart_hover);
-    } else {
-      setHeartIcon(Icon_heart);
-    }
-  }, [isLiked]);
-
-  useEffect(() => {
-    if (!isLiked) {
-      if (isHovered == 'like') {
-        setHeartIcon(Icon_heart_hover);
-      } else {
-        setHeartIcon(Icon_heart);
-      }
-    }
-  }, [isHovered, isLiked]);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
@@ -94,7 +69,7 @@ function ContentArea({ post }: Props) {
     },
   });
 
-  const handleLikePost = async (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleLikePost = async (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (!isLogin) {
       setIsLoginModalOpen(true);
@@ -117,8 +92,11 @@ function ContentArea({ post }: Props) {
     return match ? match[1] : null;
   };
 
+  const likeColorClass =
+    isLiked || isHovered === 'like' ? 'text-primary-500' : 'text-semantic-icon-default';
+
   return (
-    <div className='w-[720px] h-[886px] flex flex-col bg-white rounded-[20px] p-[30px] gap-[20px]'>
+    <div className='w-[720px] h-[886px] flex flex-col bg-semantic-background-surface text-semantic-text-primary rounded-[20px] p-[30px] gap-[20px]'>
       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
         <p className='font-bold text-[24px]'>{post.title}</p>
       </div>
@@ -152,8 +130,8 @@ function ContentArea({ post }: Props) {
         onMouseEnter={() => setIsHovered('like')}
         onMouseLeave={() => setIsHovered('')}
       >
-        <Image src={heartIcon} width={30} height={30} alt='like' />
-        <p className={isLiked ? 'text-primary-500' : 'text-gray-700'}>
+        <LikeActionIcon className='h-[30px] w-[30px]' alt='like' />
+        <p className={likeColorClass}>
           {(updatedLikeCount ?? post.likeCount) < 1000
             ? updatedLikeCount ?? post.likeCount
             : '999+'}

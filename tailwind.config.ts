@@ -40,6 +40,13 @@ const config: Config = {
             inverse: 'var(--color-text-inverse)',
             accent: 'var(--color-text-accent)',
           },
+          icon: {
+            default: 'var(--color-icon-default)',
+            muted: 'var(--color-icon-muted)',
+            'on-media': 'var(--color-icon-on-media)',
+            action: 'var(--color-icon-action)',
+            'action-secondary': 'var(--color-icon-action-secondary)',
+          },
           border: {
             default: 'var(--color-border-default)',
             strong: 'var(--color-border-strong)',

@@ -5,8 +5,8 @@ import { formatDateTime } from '@/utils/formatDate';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction } from 'react';
 import grayDeleteIcon from '../../../../../../../../../public/svg/postWrite/grayDeleteIcon.svg';
-import redDeleteIcon from '../../../../../../../../../public/svg/postWrite/redDeleteIcon.svg';
 import { truncateText } from '@/utils/truncateText';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface Props {
   item: TempItemSummaryType;
@@ -16,6 +16,19 @@ interface Props {
 
 const TempItem = ({ item, isHover, setIsHover }: Props) => {
   const { setData: setTempData } = useTempStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+
+  const isItemHover = isHover === item.id;
+  const itemClass = isDarkMode
+    ? isItemHover
+      ? 'bg-[#484B4D]'
+      : 'bg-transparent'
+    : isItemHover
+      ? 'bg-[#F1F2F2]'
+      : 'bg-transparent';
+  const titleClass = isDarkMode ? 'text-[#D7D8D9]' : 'text-[#242526]';
+  const categoryClass = isDarkMode ? 'text-[#D7D8D9]' : 'text-[#484B4D]';
+  const savedAtClass = isDarkMode ? 'text-[#AEB1B2]' : 'text-[#787C80]';
 
   const onClickTempItem = () => {
     setTempData('loadTempDetailModalOpen', true);
@@ -31,26 +44,24 @@ const TempItem = ({ item, isHover, setIsHover }: Props) => {
 
   return (
     <div
-      className={
-        'w-full h-[101px] flex justify-between items-center p-[20px] hover:bg-gray-50 rounded-[10px] cursor-pointer'
-      }
+      className={`flex h-[101px] w-full cursor-pointer items-center justify-between rounded-[10px] p-[20px] ${itemClass}`}
       onMouseEnter={() => setIsHover(item.id)}
       onMouseLeave={() => setIsHover(null)}
       onClick={onClickTempItem}
     >
-      <div className={'w-fit h-full flex flex-col justify-between'}>
-        <div className={'text-[20px] font-bold text-gray-850'}>
+      <div className={'flex h-full min-w-0 flex-col justify-between'}>
+        <div className={`truncate text-[20px] font-bold leading-[24px] ${titleClass}`}>
           {item.title ? truncateText(item.title, 29) : '제목 없음'}
         </div>
-        <div className={'flex gap-[10px] text-[18px]'}>
-          <div className={'font-bold text-gray-500'}>
+        <div className={'flex gap-[10px] text-[18px] leading-[24px]'}>
+          <div className={`font-bold ${categoryClass}`}>
             {item.category === 'FAULT' ? '과실' : '주장'}판결
           </div>
-          <div className={'text-gray-400'}>{formatDateTime(item.savedAt)} 저장</div>
+          <div className={savedAtClass}>{formatDateTime(item.savedAt)} 저장</div>
         </div>
       </div>
       <Image
-        src={isHover === item.id ? redDeleteIcon : grayDeleteIcon}
+        src={grayDeleteIcon}
         alt={'삭제'}
         width={24}
         height={24}

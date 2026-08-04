@@ -6,6 +6,7 @@ import ConfirmFooter from '@/app/post/write/_component/common/modal/temp/confirm
 import { useWriteStore } from '@/store/write/useWriteStore';
 import ConfirmModalContent from '@/app/post/write/_component/common/modal/temp/confirm/content/ConfirmModalContent';
 import { useRouter } from 'next/navigation';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface Props {
   type: 'load' | 'delete';
@@ -14,6 +15,7 @@ interface Props {
 const ConfirmTempModal = ({ type }: Props) => {
   const { setData: setTempData, deleteTemp, getTempDetail, selectedTempId } = useTempStore();
   const { clearAll } = useWriteStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const router = useRouter();
 
   const onCloseModal = () => {
@@ -49,7 +51,11 @@ const ConfirmTempModal = ({ type }: Props) => {
     <ModalOverlay onClose={onCloseModal}>
       <div
         className={
-          'w-[443px] h-[229px] pb-[34px] pt-[30px] px-[50px] rounded-[10px] bg-white shadow-md z-[60] flex flex-col justify-between'
+          `z-[60] flex h-[229px] w-[443px] flex-col justify-between rounded-[10px] px-[50px] pb-[34px] pt-[30px] shadow-md ${
+            isDarkMode
+              ? 'bg-[#303233] text-[#F1F2F2]'
+              : 'bg-white text-[#242526]'
+          }`
         }
       >
         <ConfirmModalContent type={type} />

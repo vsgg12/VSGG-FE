@@ -25,10 +25,10 @@ const ConnectRiotButton = ({ titleClass }: Props) => {
 
         {/* 말풍선 */}
         <div className='absolute right-0 top-full opacity-0 translate-y-[-4px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 pointer-events-none z-10'>
-          <div className='relative bg-gray-50 text-gray-400 text-[14px] px-[16px] py-[10px] rounded-[12px] shadow-md whitespace-nowrap'>
+          <div className='relative bg-semantic-background-elevated text-semantic-text-muted text-[14px] px-[16px] py-[10px] rounded-[12px] shadow-md whitespace-nowrap'>
             준비 중인 기능입니다 :)
             {/* 말풍선 꼬리 */}
-            <div className='absolute -top-[6px] right-[70px] w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-gray-50' />
+            <div className='absolute -top-[6px] right-[70px] w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-b-semantic-background-elevated' />
           </div>
         </div>
       </div>

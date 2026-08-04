@@ -15,11 +15,12 @@ const LeftContainer = ({ activeBox, setActiveBox }: Props) => {
   const { videoId, uploadVideos, thumbnail, postAddRequest, setData, setPostAddRequest, content } =
     useWriteStore();
 
-  const titleClass = 'font-bold text-[24px] text-gray-850';
+  const titleClass = 'font-bold text-[24px] text-semantic-text-primary';
   const boxBase =
-    'border-[0.5px] hover:border-[1px] py-[10px] px-[20px] transition-shadow duration-300 hover:shadow-lg bg-white';
+    'border-[0.5px] hover:border-[1px] py-[10px] px-[20px] transition-shadow duration-300 hover:shadow-lg bg-semantic-background-surface text-semantic-text-primary placeholder:text-semantic-text-muted';
   const getBoxClass = useCallback(
-    () => `${boxBase} ${activeBox ? 'border-primary-500 border-[1px]' : 'border-gray-150'}`,
+    () =>
+      `${boxBase} ${activeBox ? 'border-primary-500 border-[1px]' : 'border-semantic-border-default'}`,
     [activeBox],
   );
 

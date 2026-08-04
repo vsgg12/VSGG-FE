@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { FaGear } from 'react-icons/fa6';
 
 interface Props {
   setIsAdditionalModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -17,7 +18,7 @@ function AdditionalOption({ setIsAdditionalModalOpen, isAddtionalModalOpen }: Pr
         setIsAdditionalModalOpen((prev) => !prev);
       }}
     >
-      <img src={'/svg/sidebar/settingIcon.svg'} width={16} height={16} />
+      <FaGear className='h-[16px] w-[16px] text-semantic-icon-default' aria-hidden />
       <div className='text-[14px] text-semantic-text-secondary'>추가옵션</div>
     </div>
   );

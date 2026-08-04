@@ -26,7 +26,9 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
       {inGameInfoRequests?.map((item, index) => (
         <div key={item.inGameInfoId} className='flex flex-col gap-[20px]'>
           <div className='flex justify-between items-center'>
-            <div className={'text-[18px] font-semibold text-black'}>소환사 {index + 1}</div>
+            <div className={'text-[18px] font-semibold text-semantic-text-primary'}>
+              소환사 {index + 1}
+            </div>
 
             {inGameInfoRequests.length > 2 && index >= 2 && (
               <button
@@ -46,10 +48,10 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
                 {isDeleteHover === index && (
                   <div className='absolute top-[20px] left-1/2 -translate-x-1/2 z-10 flex flex-col items-center'>
                     {/* 삼각형 */}
-                    <div className='w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-transparent border-b-gray-50' />
+                    <div className='w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-transparent border-b-semantic-background-elevated' />
 
                     {/* 말풍선 박스 */}
-                    <div className='px-[12px] py-[6px] rounded-[5px] bg-gray-50 text-gray-400 text-[12px] whitespace-nowrap shadow-sm'>
+                    <div className='px-[12px] py-[6px] rounded-[5px] bg-semantic-background-elevated text-semantic-text-muted text-[12px] whitespace-nowrap shadow-sm'>
                       삭제
                     </div>
                   </div>
@@ -74,10 +76,10 @@ const InGameInfoRequestBox = ({ isDeleteHover, setIsDeleteHover }: Props) => {
         <div className={'flex w-full justify-center items-center'}>
           <button
             onClick={addInGameInfoRequestItem}
-            className='group w-[50px] h-[47px] flex flex-col items-center justify-center text-gray-500 text-[18px] font-semibold gap-[4px] mt-[20px] hover:text-primary-500'
+            className='group w-[50px] h-[47px] flex flex-col items-center justify-center text-semantic-text-muted text-[18px] font-semibold gap-[4px] mt-[20px] hover:text-primary-500'
           >
-            <div className='w-[22px] h-[22px] rounded-full border-[2px] border-gray-500 flex items-center justify-center group-hover:border-primary-500'>
-              +
+            <div className='w-[22px] h-[22px] rounded-full border-[2px] border-semantic-text-muted flex items-center justify-center group-hover:border-primary-500'>
+              <span className='leading-none -translate-y-[1px]'>+</span>
             </div>
             <div>추가</div>
           </button>

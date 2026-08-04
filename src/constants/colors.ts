@@ -100,13 +100,10 @@ export const colors = {
     green: '#00AE07',
   },
   gradient: {
-    horizontal:
-      'linear-gradient(90deg, rgb(0 0 0 / 70%) 35%, rgb(0 0 0 / 0%) 100%)',
+    horizontal: 'linear-gradient(90deg, rgb(0 0 0 / 70%) 35%, rgb(0 0 0 / 0%) 100%)',
     vertical: 'linear-gradient(180deg, #666666 0%, #000000 100%)',
-    decoration1:
-      'linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 80%) 100%)',
-    decoration2:
-      'linear-gradient(90deg, rgb(0 0 0 / 70%) 35%, rgb(0 0 0 / 0%) 100%)',
+    decoration1: 'linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 80%) 100%)',
+    decoration2: 'linear-gradient(90deg, rgb(0 0 0 / 70%) 35%, rgb(0 0 0 / 0%) 100%)',
     riot: 'linear-gradient(90deg, #FF0028 0%, #FF7370 100%)',
     tierMaster: 'linear-gradient(180deg, #A4584E 0%, #9D48E0 100%)',
     tierGrandMaster: 'linear-gradient(180deg, #756572 0%, #CD4545 100%)',
@@ -130,6 +127,13 @@ export const semanticColors = {
       disabled: colors.gray[300],
       inverse: colors.white,
       accent: colors.brand[500],
+    },
+    icon: {
+      default: colors.gray[600],
+      muted: colors.gray[500],
+      onMedia: colors.gray[600],
+      action: colors.gray[700],
+      actionSecondary: colors.gray[100],
     },
     border: {
       default: colors.gray[100],
@@ -160,6 +164,13 @@ export const semanticColors = {
       disabled: colors.gray[600],
       inverse: colors.gray[950],
       accent: colors.brand[500],
+    },
+    icon: {
+      default: colors.gray[50],
+      muted: colors.gray[400],
+      onMedia: colors.white,
+      action: colors.gray[200],
+      actionSecondary: colors.gray[700],
     },
     border: {
       default: colors.gray[800],

@@ -53,15 +53,15 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
   const getIcon = (): JSX.Element => {
     switch (item) {
       case '홈':
-        return <HomeIcon disabled={disabled} />;
+        return <HomeIcon />;
       case '검색':
-        return <SearchIcon disabled={disabled} />;
+        return <SearchIcon />;
       case '글 작성':
-        return <PostWriteIcon disabled={disabled} />;
+        return <PostWriteIcon />;
       case '마이페이지':
-        return <ProfileIcon disabled={disabled} />;
+        return <ProfileIcon />;
       case '알림':
-        return <NotificationIcon disabled={disabled} />;
+        return <NotificationIcon />;
       default:
         return <></>;
     }

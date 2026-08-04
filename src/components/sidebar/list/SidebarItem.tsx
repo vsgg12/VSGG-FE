@@ -4,7 +4,7 @@ import { useSidebarItem } from '@/hooks/sidebar/useSidebarItem';
 
 interface Props {
   item: sidebarListType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void
+  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
 function SidebarItem({ item, setIsLoginModalOpen }: Props) {
@@ -20,11 +20,12 @@ function SidebarItem({ item, setIsLoginModalOpen }: Props) {
       transition-transform duration-200 ease-in-out
       
       ${!disabled ? 'border-l-[4px] border-l-primary-500' : 'hover:translate-x-[15px]'}
+      ${disabled ? 'text-semantic-icon-default' : 'text-primary-500'}
     `}
       onClick={handleClick}
     >
       {getIcon()}
-      <span className={disabled ? 'text-semantic-text-muted' : 'text-primary-500'}>{item}</span>
+      <span>{item}</span>
     </div>
   );
 }

@@ -92,14 +92,14 @@ export const UploadLinkBox = ({ onClose }: IProps) => {
   };
 
   return (
-    <div className='w-[794px] bg-white rounded-[10px] border border-gray-150 flex flex-col gap-[20px] justify-center items-center px-[10px] py-[30px]'>
+    <div className='flex w-[794px] flex-col items-center justify-center gap-[20px] rounded-[10px] border border-semantic-border-default bg-semantic-background-surface px-[10px] py-[30px]'>
       {/* input박스 */}
-      <div className='flex flex-row justify-between w-[754px] h-[60px] border border-gray-150 rounded-[10px] gap-[10px] px-[20px] py-[10px] shadow-[0px_3px_3px_0px_var(--color-shadow-soft)]'>
+      <div className='flex h-[60px] w-[754px] flex-row justify-between gap-[10px] rounded-[10px] border border-semantic-border-default bg-semantic-background-input px-[20px] py-[10px] shadow-[0px_3px_3px_0px_var(--color-shadow-soft)]'>
         {/* input */}
         <div className='flex flex-row w-full'>
           <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
           <input
-            className='w-full font-semibold text-[16px] px-[15px] outline-none'
+            className='w-full bg-transparent px-[15px] text-[16px] font-semibold text-semantic-text-primary outline-none placeholder:text-semantic-text-muted'
             value={localVideoLink ?? ''}
             placeholder={'https://youtu.be'}
             onChange={onChangeVideoLink}

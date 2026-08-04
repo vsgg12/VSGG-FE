@@ -61,7 +61,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
           className='
             h-[50px] px-[14px] py-[9px]
             flex items-center gap-[10px]
-            bg-white border-[0.5px] border-gray-150 hover:shadow-md
+            bg-semantic-background-surface border-[0.5px] border-semantic-border-default hover:shadow-md
             rounded-[10px] cursor-pointer
           '
         >
@@ -75,12 +75,14 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
                 height={28}
                 className='rounded-[5px]'
               />
-              <span className='text-[16px] text-gray-850'>{selectedChampion.name}</span>
+              <span className='text-[16px] text-semantic-text-primary'>
+                {selectedChampion.name}
+              </span>
             </>
           ) : (
             <>
               <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
-              <span className='text-[16px] text-gray-400'>챔피언 검색</span>
+              <span className='text-[16px] text-semantic-text-muted'>챔피언 검색</span>
             </>
           )}
         </div>
@@ -91,7 +93,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
         <div
           className='
             absolute top-0 left-0 w-full
-            bg-white border-[1px] border-primary-500
+            bg-semantic-background-elevated border-[1px] border-primary-500
             rounded-[10px] shadow-lg z-50
           '
         >
@@ -103,7 +105,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder='챔피언 검색'
-              className='w-full bg-transparent outline-none text-[16px]'
+              className='w-full bg-transparent outline-none text-[16px] text-semantic-text-primary placeholder:text-semantic-text-muted'
             />
           </div>
 
@@ -123,7 +125,7 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
                     flex items-center gap-[12px]
                     min-h-[38px] px-[10px]
                     rounded-[5px] cursor-pointer transition-colors
-                    ${isSelected ? 'bg-primary-8' : 'hover:bg-gray-50'}
+                    ${isSelected ? 'bg-primary-8' : 'hover:bg-semantic-background-subtle'}
                   `}
                 >
                   <img
@@ -133,13 +135,15 @@ const SearchChampionBox = ({ championName, setChampionName }: Props) => {
                     height={28}
                     className='rounded-[5px]'
                   />
-                  <span className='text-[18px] text-gray-850'>{champion.name}</span>
+                  <span className='text-[18px] text-semantic-text-primary'>{champion.name}</span>
                 </div>
               );
             })}
 
             {filteredChampions.length === 0 && (
-              <div className='text-[14px] text-gray-400 px-[10px] py-[8px]'>검색 결과 없음</div>
+              <div className='text-[14px] text-semantic-text-muted px-[10px] py-[8px]'>
+                검색 결과 없음
+              </div>
             )}
           </div>
         </div>

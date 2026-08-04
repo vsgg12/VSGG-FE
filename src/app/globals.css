@@ -15,6 +15,11 @@
   --color-text-disabled: theme('colors.gray.300');
   --color-text-inverse: theme('colors.white');
   --color-text-accent: theme('colors.primary.500');
+  --color-icon-default: theme('colors.gray.600');
+  --color-icon-muted: theme('colors.gray.500');
+  --color-icon-on-media: theme('colors.gray.600');
+  --color-icon-action: theme('colors.gray.700');
+  --color-icon-action-secondary: theme('colors.gray.100');
   --color-border-default: theme('colors.gray.100');
   --color-border-strong: theme('colors.gray.200');
   --color-border-input: theme('colors.primary.500');
@@ -41,6 +46,11 @@
   --color-text-disabled: theme('colors.gray.600');
   --color-text-inverse: theme('colors.gray.950');
   --color-text-accent: theme('colors.primary.500');
+  --color-icon-default: theme('colors.gray.50');
+  --color-icon-muted: theme('colors.gray.400');
+  --color-icon-on-media: theme('colors.white');
+  --color-icon-action: theme('colors.gray.200');
+  --color-icon-action-secondary: theme('colors.gray.700');
   --color-border-default: theme('colors.gray.800');
   --color-border-strong: theme('colors.gray.700');
   --color-border-input: theme('colors.primary.500');
