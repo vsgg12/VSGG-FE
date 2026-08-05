@@ -6,6 +6,7 @@ import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { LikeActionIcon } from '@/components/common/icons/PostActionIcons';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface Props {
   post: IGetPostDTOType;
@@ -14,6 +15,7 @@ interface Props {
 function ContentArea({ post }: Props) {
   const { accessToken, isLogin } = useAuthStore();
   const { setIsLoginModalOpen } = useLoginStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const [sanitizedHtml, setSanitizedHtml] = useState<string>('');
   const [updatedLikeCount, setUpdatedLikeCount] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState<string>('');
@@ -93,12 +95,22 @@ function ContentArea({ post }: Props) {
   };
 
   const likeColorClass =
-    isLiked || isHovered === 'like' ? 'text-primary-500' : 'text-semantic-icon-default';
+    isLiked || isHovered === 'like'
+      ? 'text-primary-500'
+      : isDarkMode
+        ? 'text-[#D7D8D9]'
+        : 'text-semantic-icon-default';
+  const contentClass = isDarkMode
+    ? 'bg-[#242526] text-[#F1F2F2]'
+    : 'bg-semantic-background-surface text-semantic-text-primary';
+  const bodyClass = isDarkMode ? 'text-[#F1F2F2]' : '';
 
   return (
-    <div className='w-[720px] h-[886px] flex flex-col bg-semantic-background-surface text-semantic-text-primary rounded-[20px] p-[30px] gap-[20px]'>
+    <div
+      className={`w-[720px] h-[886px] flex flex-col rounded-[20px] pt-[30px] pr-[30px] pb-[80px] pl-[30px] gap-[17px] ${contentClass}`}
+    >
       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
-        <p className='font-bold text-[24px]'>{post.title}</p>
+        <p className='font-bold text-[24px] leading-[30px]'>{post.title}</p>
       </div>
       {post.video.type === 'FILE' ? (
         <video
@@ -121,17 +133,17 @@ function ContentArea({ post }: Props) {
         />
       )}
       <div
-        className='h-[350px] break-words overflow-scroll'
+        className={`scrollbar-hidden min-h-0 flex-1 break-words overflow-auto text-[14px] leading-[20px] ${bodyClass}`}
         dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
       ></div>
       <div
-        className='flex cursor-pointer items-center justify-center'
+        className='flex cursor-pointer items-center justify-center gap-[12px]'
         onClick={handleLikePost}
         onMouseEnter={() => setIsHovered('like')}
         onMouseLeave={() => setIsHovered('')}
       >
         <LikeActionIcon className='h-[30px] w-[30px]' alt='like' />
-        <p className={likeColorClass}>
+        <p className={`text-[16px] font-semibold ${likeColorClass}`}>
           {(updatedLikeCount ?? post.likeCount) < 1000
             ? updatedLikeCount ?? post.likeCount
             : '999+'}

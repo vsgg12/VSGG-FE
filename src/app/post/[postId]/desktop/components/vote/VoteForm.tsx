@@ -6,6 +6,7 @@ import { voteColors } from '@/data/championData';
 import usePostIdStore from '../../../store/usePostIdStore';
 import ChampionImgBox from './ChampionImgBox';
 import BottomBox from './BottomBox';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IVoteFormProps {
   voteInfo: IGetInGameInfoType[];
@@ -16,8 +17,11 @@ interface IVoteFormProps {
 export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVoteFormProps) {
   const { voteResult, setVoteResult, selectedChampIdx, setSelectedChampIdx, setIsNotAbleSubmit } =
     usePostIdStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const [isHamburgerClicked, setIsHamburgerClicked] = useState<boolean>(false);
   const [selectedChampion, setSelectedChampion] = useState<string>(voteInfo[0].championName);
+  const formClass = isDarkMode ? 'bg-[#242526] text-[#F1F2F2]' : 'bg-white text-gray-850';
+  const championTabClass = isDarkMode ? 'bg-[#303233]' : 'bg-white';
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -41,7 +45,9 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   };
 
   return (
-    <div className='relative flex flex-col w-[719px]items-center rounded-[20px] bg-white gap-[20px]'>
+    <div
+      className={`relative flex flex-col w-[719px] items-center rounded-[20px] gap-[20px] ${formClass}`}
+    >
       <ChampionImgBox
         selectedChampion={selectedChampion}
         voteCount={voteCount}
@@ -60,7 +66,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
               }}
             >
               <div
-                className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-white'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+                className={`${selectedChampion === champion.championName ? voteColors[index].background : championTabClass} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
               >
                 <Image
                   src={getPositionSrc(champion.position, index)}

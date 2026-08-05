@@ -7,11 +7,9 @@ const WebFooter = () => {
   const isDarkMode = useSidebarStore((state) => state.isDarkMode);
 
   const footerClass = isDarkMode
-    ? 'border-t-[#484B4D] bg-[#242526]'
+    ? 'border-t-[#303233] bg-[#0C0C0D]'
     : 'border-t-[#E5E6E6] bg-[#F8F9FA]';
-  const headlineClass = isDarkMode
-    ? 'bg-[#F1F2F2] text-[#303233]'
-    : 'bg-[#303233] text-[#F1F2F2]';
+  const headlineClass = isDarkMode ? 'bg-[#F1F2F2] text-[#303233]' : 'bg-[#303233] text-[#F1F2F2]';
   const sloganClass = isDarkMode ? 'text-[#F1F2F2]' : 'text-[#C9CBCC]';
   const serviceTextClass = isDarkMode ? 'text-[#D7D8D9]' : 'text-[#484B4D]';
   const linkTextClass = isDarkMode ? 'text-[#F1F2F2]' : 'text-[#242526]';
@@ -20,11 +18,11 @@ const WebFooter = () => {
     <div className={`w-full border-t ${footerClass}`}>
       <div
         className={
-          'mx-auto flex h-[500px] max-w-[1920px] items-center justify-between px-[48px] xl:px-[80px]'
+          'mx-auto flex h-[360px] max-w-[1920px] items-center justify-between gap-[10px] px-[48px] pt-[50px] pb-[60px] xl:px-[80px]'
         }
       >
         {/*왼쪽 영역*/}
-        <div className={'flex flex-col items-start'}>
+        <div className={'flex flex-col items-start gap-[48px]'}>
           {/* 로고 영역을 div로 감싸서 Flex 꼬임 방지 및 명확한 왼쪽 정렬 */}
           <div>
             {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
@@ -42,13 +40,15 @@ const WebFooter = () => {
             />
           </div>
 
-          <div
-            className={`mt-[72px] flex h-[24px] w-fit items-center px-[4px] text-[20px] font-extrabold leading-[24px] ${headlineClass}`}
-          >
-            리그 오브 레전드(LOL) 과실 판결 커뮤니티
-          </div>
-          <div className={`mt-[32px] text-[16px] font-semibold leading-[19px] ${sloganClass}`}>
-            "소환사라면 한 번쯤은 겪어보았을 문제 상황에 판결과 논쟁을 더하다"
+          <div className={'flex flex-col gap-[24px]'}>
+            <div
+              className={`flex h-[24px] w-fit items-center px-[4px] text-[20px] font-extrabold leading-[24px] ${headlineClass}`}
+            >
+              리그 오브 레전드(LOL) 과실 판결 커뮤니티
+            </div>
+            <div className={`text-[16px] font-semibold leading-[19px] ${sloganClass}`}>
+              "소환사라면 한 번쯤은 겪어보았을 문제 상황에 판결과 논쟁을 더하다"
+            </div>
           </div>
         </div>
 
