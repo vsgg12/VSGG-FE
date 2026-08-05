@@ -4,14 +4,10 @@ import { useSidebarItem } from '@/hooks/sidebar/useSidebarItem';
 
 interface Props {
   item: sidebarListType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
-function SidebarItem({ item, setIsLoginModalOpen }: Props) {
-  const { getIcon, handleClick, disabled } = useSidebarItem({
-    item,
-    setIsLoginModalOpen,
-  });
+function SidebarItem({ item }: Props) {
+  const { getIcon, handleClick, disabled } = useSidebarItem({ item });
 
   return (
     <div

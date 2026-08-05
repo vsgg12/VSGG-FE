@@ -10,13 +10,13 @@ import SearchIcon from '@/components/sidebar/list/iconComponent/SearchIcon';
 import PostWriteIcon from '@/components/sidebar/list/iconComponent/PostWriteIcon';
 import ProfileIcon from '@/components/sidebar/list/iconComponent/ProfileIcon';
 import NotificationIcon from '@/components/sidebar/list/iconComponent/NotificationIcon';
+import { useLoginStore } from '@/store/login/useLoginStore';
 
 interface UseSidebarItemProps {
   item: sidebarListType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
-export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProps) => {
+export const useSidebarItem = ({ item }: UseSidebarItemProps) => {
   const {
     setRouteState,
     setIsNotificationOpen,
@@ -26,6 +26,7 @@ export const useSidebarItem = ({ item, setIsLoginModalOpen }: UseSidebarItemProp
     isSearchOpen,
   } = useSidebarStore();
   const { isLogin } = useAuthStore();
+  const setIsLoginModalOpen = useLoginStore((state) => state.setIsLoginModalOpen);
   const route = useRouter();
 
   const [disabled, setDisabled] = useState(true);

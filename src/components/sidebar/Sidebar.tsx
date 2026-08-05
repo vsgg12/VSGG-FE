@@ -16,14 +16,12 @@ import AdditionalOptionModal from './modal/additionalOption/AdditionalOptionModa
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { SidebarModalLayout } from '../modals/SidebarModalLayout';
 import SearchModal from './modal/search/SearchModal';
-import { useLoginStore } from '@/store/login/useLoginStore';
 
 function Sidebar() {
   const [isAdditionalModalOpen, setIsAdditionalModalOpen] = useState<boolean>(false);
   const { isLogin, accessToken } = useAuthStore();
   const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } =
     useSidebarStore();
-  const { setIsLoginModalOpen } = useLoginStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -44,7 +42,7 @@ function Sidebar() {
       </div>
       <div className='flex flex-col gap-[50px]'>
         <div className='flex flex-col gap-[10px]'>
-          <SidebarList setIsLoginModalOpen={setIsLoginModalOpen} />
+          <SidebarList />
         </div>
         <div className='flex w-full justify-center'>
           <div className='w-[206px]'>
