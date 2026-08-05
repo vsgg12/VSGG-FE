@@ -36,7 +36,7 @@ export default function ScaleWrapper({ children }: { children: React.ReactNode }
 
   return (
     // 1. 화면 전체를 덮고 넘어가는 부분을 숨기는 최상위 컨테이너
-    <div className='relative w-screen h-screen overflow-hidden bg-[#F4F5F7]'>
+    <div className='relative w-screen h-screen overflow-hidden bg-gray-20'>
       {/* 2. 핵심 해결책: Absolute Centering
         Flexbox를 쓰지 않고 화면 정중앙(top-1/2 left-1/2)에 요소를 배치한 뒤
         translate(-50%, -50%)로 정중앙 영점을 맞춥니다.

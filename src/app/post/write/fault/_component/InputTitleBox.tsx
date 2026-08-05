@@ -28,7 +28,7 @@ const InputTitleBox = ({ titleClass, title, setPostAddRequest, boxBase }: Props)
         maxLength={35}
         onChange={handleChange}
         placeholder='제목을 입력해주세요.'
-        className={`w-[652px] h-[64px] text-[20px] rounded-[10px] px-4 outline-none border-[#C8C8C8] focus-within:border-[1px] focus-within:border-[#E20A29] ${boxBase}`}
+        className={`w-[652px] h-[64px] text-[20px] rounded-[10px] px-4 outline-none border-gray-150 focus-within:border-[1px] focus-within:border-primary-500 ${boxBase}`}
       />
     </div>
   );

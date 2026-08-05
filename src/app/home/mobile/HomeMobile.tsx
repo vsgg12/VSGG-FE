@@ -52,9 +52,9 @@ export default function HomeMobile({
   }, [keyword, refetch, postData]);
 
   return (
-    <div className='w-full h-[100dvh] bg-[#F8F9FA]'>
+    <div className='w-full h-[100dvh] bg-semantic-background-page'>
       <MainHeader />
-      <div className='mobile-layout flex flex-col items-center py-[10px] mobile-scroll !bg-[#F8F9FA]'>
+      <div className='mobile-layout flex flex-col items-center py-[10px] mobile-scroll !bg-semantic-background-page'>
         <div className='mb-[20px] px-[10px] mt-[20px] flex justify-center'>
           <HorizontalBannerSwiper />
         </div>

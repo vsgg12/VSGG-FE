@@ -147,12 +147,13 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
   return (
     <div className='h-fit w-full'>
       {post && (
-        <div className='h-fit w-full rounded-[30px] bg-[#ffffff] flex flex-col mb-[35px] gap-[15px]'>
+        <div className='h-fit w-full rounded-[30px] bg-white flex flex-col mb-[35px] gap-[15px]'>
           <div className='flex w-full'>
             <div className='flex gap-[10px] w-full justify-between items-center'>
               <div className='flex gap-[10px]'>
                 <img
                   className='h-[32px] w-[32px] rounded-full'
+                  alt={"profile image"}
                   src={
                     post.postDTO.memberDTO.profileImage === null
                       ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
@@ -162,11 +163,11 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
                 <div className='flex flex-col'>
                   <div className='flex gap-[3px]'>
                     {getIcon(post.postDTO.memberDTO.tier)}
-                    <p className='text-[12px] text-[#333333] font-bold'>
+                    <p className='text-[12px] text-gray-850 font-bold'>
                       {post.postDTO.memberDTO.nickname}
                     </p>
                   </div>
-                  <div className='flex text-[12px] text-[#C8C8C8] items-center gap-[3px]'>
+                  <div className='flex text-[12px] text-gray-150 items-center gap-[3px]'>
                     <p>{timeAgo} ・ </p>
                     <Image src={Icon_eye} width={16} height={16} alt='eyeIcon' />
                     <p> {formatNumberWithCommas(post.postDTO.viewCount)}</p>

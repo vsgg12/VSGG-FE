@@ -54,10 +54,10 @@ const InputContentBox = ({ titleClass, content, setData, boxBase }: Props) => {
           maxLength={1000}
           onChange={handleChange}
           placeholder='본문을 입력해주세요'
-          className={`w-[652px] min-h-[200px] max-h-[312px] overflow-hidden resize-y rounded-[20px] text-[16px] leading-[24px] px-4 py-3 outline-none border-[#C8C8C8] focus-within:border-[1px] focus-within:border-[#E20A29] ${boxBase}`}
+          className={`w-[652px] min-h-[200px] max-h-[312px] overflow-hidden resize-y rounded-[20px] text-[16px] leading-[24px] px-4 py-3 outline-none border-gray-150 focus-within:border-[1px] focus-within:border-primary-500 ${boxBase}`}
         />
         <div className='text-[14px] text-gray-400 flex justify-end gap-[5px]'>
-          <span className={'text-[#E20A29]'}>{content.length}</span>
+          <span className={'text-primary-500'}>{content.length}</span>
           <span> / 1,000</span>
         </div>
       </div>

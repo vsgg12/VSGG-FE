@@ -10,7 +10,7 @@ interface Props {
 function AlarmOptionType({ alarm, alarmType, setAlarmType }: Props) {
   return (
     <div
-      className={`h-full flex items-center justify-center cursor-pointer text-[18px] font-semibold ${alarm.type === alarmType ? 'text-[#E20A29] border-b-2 border-[#E20A29] rounded-sm' : 'text-[#888888] transition-all duration-300'}`}
+      className={`h-full flex items-center justify-center cursor-pointer text-[18px] font-semibold ${alarm.type === alarmType ? 'text-primary-500 border-b-2 border-primary-500 rounded-sm' : 'text-semantic-text-muted transition-all duration-300'}`}
       style={{ width: 'calc(100% / 3)' }}
       onClick={() => setAlarmType(alarm.type)}
     >

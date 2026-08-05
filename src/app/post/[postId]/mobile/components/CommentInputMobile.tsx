@@ -77,7 +77,7 @@ export default function CommentInputMobile({ targetNickname }: IPostCommentInput
   };
 
   return (
-    <div className='min-h-[40px] h-fit w-full rounded-[30px] border-2 border-[#E20A29] flex bg-[#ffffff]'>
+    <div className='min-h-[40px] h-fit w-full rounded-[30px] border-2 border-primary-500 flex bg-white'>
       <textarea
         className='h-[30px] w-full overflow-scroll ml-[12px] py-[8px] my-[5px] text-[12px] box-border focus:outline-none resize-none scrollbar-hide'
         {...rest}
@@ -100,7 +100,7 @@ export default function CommentInputMobile({ targetNickname }: IPostCommentInput
         }}
         placeholder={targetNickname && `@${targetNickname}`}
       />
-      <button className='text-[12px] text-[#E20A29]' type='submit'>
+      <button className='text-[12px] text-primary-500' type='submit'>
         <p className='mx-[20px] text-nowrap'>등록</p>
       </button>
       {isLoginModalOpen && (

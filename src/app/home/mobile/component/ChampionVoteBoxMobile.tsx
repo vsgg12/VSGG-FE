@@ -115,7 +115,7 @@ const ChampionVoteBoxMobile = ({
               </div>
               <button
                 onClick={() => setIsLoginModalOpen(true)}
-                className={`bg-[#E20A29] hover:bg-[#a02426] text-white w-[173px] h-[41px] rounded-[5px] font-extrabold ${isHome ? 'text-[16px]' : 'text-[18px]'} transition-colors shadow-xl cursor-pointer`}
+                className={`bg-primary-500 hover:bg-primary-600 text-white w-[173px] h-[41px] rounded-[5px] font-extrabold ${isHome ? 'text-[16px]' : 'text-[18px]'} transition-colors shadow-xl cursor-pointer`}
               >
                 지금 바로 판결하기
               </button>

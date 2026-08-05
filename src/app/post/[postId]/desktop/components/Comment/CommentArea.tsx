@@ -99,7 +99,7 @@ function CommentArea({ id }: Props) {
     <div className='w-[452px] flex flex-col gap-[10px]'>
       <div className='flex gap-[6px] mb-[10px]'>
         <Image src={Icon_comment} width={20} height={20} alt='chatBox' />
-        <div className='flex text-[14px] text-[#666666] font-semibold gap-[2px]'>
+        <div className='flex text-[14px] text-gray-600 font-semibold gap-[2px]'>
           <p>댓글</p>
           <p>
             {commentData && commentData?.comments.length > 999

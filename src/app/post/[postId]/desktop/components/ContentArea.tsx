@@ -118,7 +118,7 @@ function ContentArea({ post }: Props) {
   };
 
   return (
-    <div className='w-[720px] h-[886px] flex flex-col bg-[#FFFFFF] rounded-[20px] p-[30px] gap-[20px]'>
+    <div className='w-[720px] h-[886px] flex flex-col bg-white rounded-[20px] p-[30px] gap-[20px]'>
       <div className='flex w-full flex-row place-items-start justify-between font-medium'>
         <p className='font-bold text-[24px]'>{post.title}</p>
       </div>
@@ -153,7 +153,7 @@ function ContentArea({ post }: Props) {
         onMouseLeave={() => setIsHovered('')}
       >
         <Image src={heartIcon} width={30} height={30} alt='like' />
-        <p className={isLiked ? 'text-[#E20A29]' : 'text-[#555555]'}>
+        <p className={isLiked ? 'text-primary-500' : 'text-gray-700'}>
           {(updatedLikeCount ?? post.likeCount) < 1000
             ? updatedLikeCount ?? post.likeCount
             : '999+'}

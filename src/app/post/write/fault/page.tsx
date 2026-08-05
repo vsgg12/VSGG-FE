@@ -68,7 +68,7 @@ const Fault = () => {
     getAllTempSummaryList();
   }, [fetchAllChampions, getAllTempSummaryList]);
 
-  const titleClass = 'font-bold text-[24px] text-[#333333]';
+  const titleClass = 'font-bold text-[24px] text-gray-850';
 
   const onClickTempSaveBtn = async () => {
     if (!content && !title) {

@@ -14,8 +14,8 @@ const WriteFooterButton = ({ title, onClickTempSaveBtn, onClickRegisterBtn }: Pr
 
   const buttonClass =
     title === '저장'
-      ? 'bg-[#ECECEC] text-[#333333] justify-between pl-[20px]'
-      : 'bg-[#E20A29] text-white justify-center';
+      ? 'bg-gray-100 text-gray-850 justify-between pl-[20px]'
+      : 'bg-primary-500 text-white justify-center';
 
   const onClickBtnClick = () => {
     if (title === '등록') {

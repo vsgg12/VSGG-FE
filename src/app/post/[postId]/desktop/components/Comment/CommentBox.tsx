@@ -87,7 +87,7 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
   };
 
   return (
-    <div className='w-full h-[1266px] bg-[#FFFFFF] rounded-[20px] p-[30px]'>
+    <div className='w-full h-[1266px] bg-white rounded-[20px] p-[30px]'>
       {commentData?.comments.length === 0 ? (
         <div className='flex justify-center'>
           <div>아직 댓글이 없습니다.</div>
@@ -135,10 +135,10 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
                     key={index}
                     type='button'
                     onClick={() => handleOpenReply(comment.id)}
-                    className='my-[5px] text-[12px] font-medium text-[#E20A29] flex items-center gap-[6px]'
+                    className='my-[5px] text-[12px] font-medium text-primary-500 flex items-center gap-[6px]'
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="1" viewBox="0 0 19 1" fill="none">
-                      <path d="M0 0.5H19" stroke="#E20A29"/>
+                      <path d="M0 0.5H19" stroke="currentColor"/>
                     </svg>
                     {showReply === comment.id
                       ? '답글 숨기기'

@@ -28,7 +28,7 @@ const ProfileInfoMobile = ({ isLogin, userProfileData, userEmail }: IProps) => {
         alt={'프로필 이미지'}
       />
       <div className='flex flex-col gap-[5px] justify-center items-center font-semibold'>
-        <div className='text-[14px] text-[#333333]'>
+        <div className='text-[14px] text-gray-850'>
           {truncateText(userProfileData.memberProfileDTO.nickName, 8)}
         </div>
 
@@ -37,7 +37,7 @@ const ProfileInfoMobile = ({ isLogin, userProfileData, userEmail }: IProps) => {
           {userProfileData.memberProfileDTO.tier}
         </div>
 
-        <div className='text-[12px] text-[#888888] font-[400]'>{userEmail}</div>
+        <div className='text-[12px] text-gray-500 font-[400]'>{userEmail}</div>
       </div>
     </div>
   );

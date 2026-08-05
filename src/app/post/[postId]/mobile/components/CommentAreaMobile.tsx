@@ -179,7 +179,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
                       key={index}
                       type='button'
                       onClick={() => handleOpenReply(comment.id)}
-                      className='my-[5px] text-[14px] font-medium text-[#E20A29]'
+                      className='my-[5px] text-[14px] font-medium text-primary-500'
                     >
                       {showReply === comment.id ? (
                         <div className='flex items-center '>

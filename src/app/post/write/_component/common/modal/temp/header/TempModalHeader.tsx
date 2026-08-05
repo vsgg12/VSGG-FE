@@ -14,8 +14,8 @@ const TempModalHeader = () => {
   return (
     <div className={'w-full h-[40px] flex justify-between items-center px-[20px]'}>
       <div className={'flex gap-[6px] text-[24px] font-bold'}>
-        <div className={'text-[#333333]'}>임시 저장</div>
-        <div className={'text-[#E20A29]'}>{tempNum}</div>
+        <div className={'text-gray-850'}>임시 저장</div>
+        <div className={'text-primary-500'}>{tempNum}</div>
       </div>
       <Image
         src={XIcon}

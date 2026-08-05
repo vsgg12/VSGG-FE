@@ -87,7 +87,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
-    <div className='min-h-[20px] w-[452px] rounded-[30px] flex bg-[#FFFFFF] py-[10px] px-[20px]'>
+    <div className='min-h-[20px] w-[452px] rounded-[30px] flex bg-white py-[10px] px-[20px]'>
       <textarea
         className='w-full h-[20px] overflow-scroll text-[14px] box-border focus:outline-none resize-none scrollbar-hide'
         {...rest}
@@ -115,7 +115,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
         }
       />
       <button type='submit'>
-        <p className='font-bold text-[12px] text-[#E20A29] whitespace-nowrap'>등록</p>
+        <p className='font-bold text-[12px] text-primary-500 whitespace-nowrap'>등록</p>
       </button>
     </div>
   );

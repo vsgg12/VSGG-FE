@@ -97,11 +97,11 @@ function MoreModal({
   };
 
   return (
-    <div className='w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8] z-100 bg-white'>
-      <div className='flex flex-col text-[12px] font-medium h-full text-[#828282] text-center justify-center gap-[3px]'>
+    <div className='w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border border-gray-150 z-100 bg-white'>
+      <div className='flex flex-col text-[12px] font-medium h-full text-gray-500 text-center justify-center gap-[3px]'>
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            {index > 0 && <hr className='border-t border-[#F8F8F8]' />}
+            {index > 0 && <hr className='border-t border-gray-20' />}
             <div className='cursor-pointer' onClick={() => handleClick(item)}>
               {item}
             </div>

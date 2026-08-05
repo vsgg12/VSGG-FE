@@ -41,17 +41,17 @@ function PostInfoBox({ post }: Props) {
                 ? Default_Profile
                 : post.postDTO.memberDTO.profileImage
             }
-            className='w-[52px] h-[52px] rounded-full  text-[#D9D9D9]'
+            className='w-[52px] h-[52px] rounded-full  text-gray-100'
             width={52}
             height={52}
             alt='profile_image'
           />
           <div className='flex flex-col'>
-            <div className='flex gap-[3px] text-[#333333] text-[18px]'>
+            <div className='flex gap-[3px] text-gray-850 text-[18px]'>
               {getIcon(post.postDTO.memberDTO.tier)}
               <p className='font-bold'>{post.postDTO.memberDTO.nickname}</p>
             </div>
-            <div className='flex text-[#C8C8C8] items-center gap-[3px]'>
+            <div className='flex text-gray-150 items-center gap-[3px]'>
               <p>{timeAgo} ・ </p>
               <Image src={Icon_eye} width={16} height={16} alt='eyeIcon' />
               <p className='text-[14px]'> {formatNumberWithCommas(post.postDTO.viewCount)}</p>

@@ -20,13 +20,13 @@ function IsNotExistList({ type, isMobile }: Props) {
   return (
     <div className='w-[202px] h-[101px] flex flex-col gap-[10px] bg-inherit items-center'>
       <div
-        className={`${isMobile ? 'text-[#333333] text-[14px]' : 'text-black text-[16px]'} font-medium flex flex-col justify-center items-center`}
+        className={`${isMobile ? 'text-gray-850 text-[14px]' : 'text-black text-[16px]'} font-medium flex flex-col justify-center items-center`}
       >
         <p>{type === 'myPost' ? '아직 게시된 글이 없어요' : '아직 참여한 판결이 없어요'}</p>
         <p>{type === 'myPost' ? '내 플레이의 과실이 궁금하다면?' : '첫 판결을 진행해 보세요!'}</p>
       </div>
       <div
-        className={`rounded-[30px] text-white bg-[#E20A29] ${isMobile ? 'w-[126px] h-[32px]' : 'w-[153px] h-[45px]'} flex justify-center text-[16px] font-extrabold items-center cursor-pointer`}
+        className={`rounded-[30px] text-white bg-primary-500 ${isMobile ? 'w-[126px] h-[32px]' : 'w-[153px] h-[45px]'} flex justify-center text-[16px] font-extrabold items-center cursor-pointer`}
       >
         <div onClick={handleBtnClick}>{type === 'myPost' ? '게시글 작성' : '판결하기'}</div>
       </div>

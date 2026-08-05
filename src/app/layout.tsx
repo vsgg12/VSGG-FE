@@ -6,6 +6,8 @@ import { Suspense } from 'react';
 import RQProvider from '@/components/RQProvider';
 import { Toaster } from 'react-hot-toast';
 import GlobalLoginModalLayer from '@/components/common/GlobalLoginModalLayer';
+import ThemeProvider from '@/components/common/ThemeProvider';
+import { colors } from '@/constants/colors';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -96,29 +98,31 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <RQProvider>
-          <Suspense>
-            <GlobalLoginModalLayer />
-            <Toaster
-              position='bottom-right'
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  width: 'fit-content',
-                  height: '56px',
-                  fontSize: '16px',
-                  paddingLeft: '20px',
-                  paddingRight: '80px',
-                  background: '#222222',
-                  color: 'white',
-                },
-              }}
-            />
-            <div style={{ display: 'flex', minHeight: '100vh' }}>
-              <main style={{ flex: 1 }}>
-                <Suspense>{children}</Suspense>
-              </main>
-            </div>
-          </Suspense>
+          <ThemeProvider>
+            <Suspense>
+              <GlobalLoginModalLayer />
+              <Toaster
+                position='bottom-right'
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    width: 'fit-content',
+                    height: '56px',
+                    fontSize: '16px',
+                    paddingLeft: '20px',
+                    paddingRight: '80px',
+                    background: colors.gray[900],
+                    color: colors.white,
+                  },
+                }}
+              />
+              <div style={{ display: 'flex', minHeight: '100vh' }}>
+                <main style={{ flex: 1 }}>
+                  <Suspense>{children}</Suspense>
+                </main>
+              </div>
+            </Suspense>
+          </ThemeProvider>
         </RQProvider>
       </body>
     </html>

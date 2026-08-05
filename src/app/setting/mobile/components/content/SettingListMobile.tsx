@@ -11,7 +11,7 @@ interface IProps {
 const SettingListMobile = ({ title, items }: IProps) => {
   return (
     <section className='flex w-full flex-col gap-[13px]'>
-      <h2 className='text-[14px] font-[400] leading-none text-[#C8C8C8]'>{title}</h2>
+      <h2 className='text-[14px] font-[400] leading-none text-gray-150'>{title}</h2>
       <div className='w-full overflow-hidden rounded-[10px] bg-white'>
         {items.map((item, index) => (
           <SettingItemMobile

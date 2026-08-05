@@ -50,7 +50,7 @@ function PostCommentArea({ postId }: Props) {
   };
 
   return (
-    <div className='w-[325px] min-h-[448px] h-full rounded-[20px] bg-[#FFFFFF] scroll p-[20px] shadow flex flex-col gap-[20px]'>
+    <div className='scroll flex h-full min-h-[448px] w-[325px] flex-col gap-[20px] rounded-[20px] bg-semantic-background-surface p-[20px] text-semantic-text-primary shadow'>
       {commentData?.comments.length !== 0 ? (
         commentData?.comments.map((comment: IGetCommentItemType, index) => (
           <div key={index} className='relative text-[13px]'>
@@ -87,10 +87,10 @@ function PostCommentArea({ postId }: Props) {
                 key={index}
                 type='button'
                 onClick={() => handleOpenReply(comment.id)}
-                className='my-[5px] text-[12px] font-medium text-[#E20A29] flex items-center gap-[6px]'
+                className='my-[5px] text-[12px] font-medium text-primary-500 flex items-center gap-[6px]'
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="1" viewBox="0 0 19 1" fill="none">
-                  <path d="M0 0.5H19" stroke="#E20A29"/>
+                  <path d="M0 0.5H19" stroke="currentColor"/>
                 </svg>
                 {showReply === comment.id
                   ? '답글 숨기기'

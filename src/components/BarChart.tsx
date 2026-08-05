@@ -1,5 +1,6 @@
 import React from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
+import { colors } from '@/constants/colors';
 
 interface BarChartProps {
   num: number;
@@ -10,13 +11,13 @@ const BarChart: React.FC<BarChartProps> = ({ num, isMobile }) => {
   return (
     <div
       className={`${isMobile ? 'w-full' : 'w-[200px]'}`}
-      style={{ border: '2px solid #E20A29', borderRadius: '50px' }}
+      style={{ border: `2px solid ${colors.brand[500]}`, borderRadius: '50px' }}
     >
       <ProgressBar
         completed={num}
-        bgColor='#E20A29'
-        labelColor='#E20A29'
-        baseBgColor='#FFF'
+        bgColor={colors.brand[500]}
+        labelColor={colors.brand[500]}
+        baseBgColor={colors.white}
         borderRadius='50px'
         height={`${isMobile ? "20.55px": "30px"}`}
         animateOnRender

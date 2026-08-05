@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart, ArcElement, Tooltip, Legend, TooltipModel } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import VoteResultCard from './VoteResultCard';
+import { colors } from '@/constants/colors';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -47,7 +48,13 @@ const DoughnutChart: React.FC<DoughnutChartPropsHome> = ({
       {
         label: '# of Votes',
         data: averageValues,
-        backgroundColor: ['#000000', '#9D2A2C', '#B5B5B5', '#656565', '#70191B'],
+        backgroundColor: [
+          colors.black,
+          colors.brand[500],
+          colors.gray[300],
+          colors.gray[600],
+          colors.brand[600],
+        ],
         borderWidth: 0,
       },
     ],

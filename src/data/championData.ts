@@ -1,81 +1,41 @@
-// interface IVoteColorsType {
-//   background: string;
-//   text: string;
-//   hover: string;
-//   border: string;
-// }
-
-// export const voteColors: IVoteColorsType[] = [
-//   {
-//     background: 'bg-[#000000]',
-//     text: 'text-[#000000]',
-//     hover: 'hover:[#000000]',
-//     border: 'border-[#000000]',
-//   },
-//   {
-//     background: 'bg-[#9E2426]',
-//     text: 'text-[#E20A29]',
-//     hover: 'hover:[#9E2426]',
-//     border: 'border-[#E20A29]',
-//   },
-//   {
-//     background: 'bg-[#AAAAAA]',
-//     text: 'text-[#7B7B7B]',
-//     hover: 'hover:[#CACACA]',
-//     border: 'border-[#CACACA]',
-//   },
-//   {
-//     background: 'bg-[#656565]',
-//     text: 'text-[#333333]',
-//     hover: 'hover:[#656565]',
-//     border: 'border-[#656565]',
-//   },
-//   {
-//     background: 'bg-[#6C0000]',
-//     text: 'text-[#9B111E]',
-//     hover: 'hover:[#6C0000]',
-//     border: 'border-[#6C0000]',
-//   },
-// ];
-
 export const voteColors = [
   {
     name: '탑',
-    background: 'bg-[#000000]',
-    text: 'text-[#000000]',
-    border: 'border-[#000000]',
+    background: 'bg-black',
+    text: 'text-black',
+    border: 'border-black',
     svgw: '/svg/top-w.svg',
     svg: '/svg/mobile/champion/top_mobile.svg',
   },
   {
     name: '정글',
-    background: 'bg-[#9E2426]',
-    text: 'text-[#9E2426]',
-    border: 'border-[#9E2426]',
+    background: 'bg-primary-400',
+    text: 'text-primary-400',
+    border: 'border-primary-400',
     svgw: '/svg/jungle-w.svg',
     svg: '/svg/mobile/champion/jungle_mobile.svg',
   },
   {
     name: '미드',
-    background: 'bg-[#AAAAAA]',
-    text: 'text-[#AAAAAA]',
-    border: 'border-[#AAAAAA]',
+    background: 'bg-gray-300',
+    text: 'text-gray-300',
+    border: 'border-gray-300',
     svgw: '/svg/mid-w.svg',
     svg: '/svg/mobile/champion/mid_mobile.svg',
   },
   {
     name: '원딜',
-    background: 'bg-[#70191B]',
-    text: 'text-[#70191B]',
-    border: 'border-[#70191B]',
+    background: 'bg-primary-600',
+    text: 'text-primary-600',
+    border: 'border-primary-600',
     svgw: '/svg/onedeal-w.svg',
     svg: '/svg/mobile/champion/onedeal_mobile.svg',
   },
   {
     name: '서폿',
-    background: 'bg-[#555555]',
-    text: 'text-[#9B111E]',
-    border: 'border-[#555555]',
+    background: 'bg-gray-700',
+    text: 'text-primary-600',
+    border: 'border-gray-700',
     svgw: '/svg/supporter-w.svg',
     svg: '/svg/mobile/champion/support_mobile.svg',
   },

@@ -38,7 +38,7 @@ function Sidebar() {
   }
 
   return (
-    <div className='min-w-[260px] h-full bg-white flex flex-col justify-between fixed top-0 left-0 z-[100] py-[41px]'>
+    <div className='fixed left-0 top-0 z-[100] flex h-screen min-w-[260px] flex-col justify-between bg-semantic-background-surface py-[41px] text-semantic-text-secondary'>
       <div className='w-full flex justify-center'>
         <Logo />
       </div>

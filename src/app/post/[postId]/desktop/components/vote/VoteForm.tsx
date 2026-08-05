@@ -41,7 +41,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   };
 
   return (
-    <div className='relative flex flex-col w-[719px]items-center rounded-[20px] bg-[#ffffff] gap-[20px]'>
+    <div className='relative flex flex-col w-[719px]items-center rounded-[20px] bg-white gap-[20px]'>
       <ChampionImgBox
         selectedChampion={selectedChampion}
         voteCount={voteCount}
@@ -60,7 +60,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
               }}
             >
               <div
-                className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-[#ffffff]'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+                className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-white'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
               >
                 <Image
                   src={getPositionSrc(champion.position, index)}

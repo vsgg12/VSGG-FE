@@ -8,7 +8,7 @@ interface Props {
 function SelectUploadButton({ onClick, btnTitle }: Props) {
   return (
     <button
-      className={`w-[262.5px] h-[53px] rounded-[10px] text-[20px] font-bold text-white bg-[#E20A29] hover:bg-[#B50821]`}
+      className={`w-[262.5px] h-[53px] rounded-[10px] text-[20px] font-bold text-white bg-primary-500 hover:bg-primary-600`}
       onClick={onClick}
     >
       {btnTitle}

@@ -32,21 +32,21 @@ const TempItem = ({ item, isHover, setIsHover }: Props) => {
   return (
     <div
       className={
-        'w-full h-[101px] flex justify-between items-center p-[20px] hover:bg-[#F3F3F3] rounded-[10px] cursor-pointer'
+        'w-full h-[101px] flex justify-between items-center p-[20px] hover:bg-gray-50 rounded-[10px] cursor-pointer'
       }
       onMouseEnter={() => setIsHover(item.id)}
       onMouseLeave={() => setIsHover(null)}
       onClick={onClickTempItem}
     >
       <div className={'w-fit h-full flex flex-col justify-between'}>
-        <div className={'text-[20px] font-bold text-[#333333]'}>
+        <div className={'text-[20px] font-bold text-gray-850'}>
           {item.title ? truncateText(item.title, 29) : '제목 없음'}
         </div>
         <div className={'flex gap-[10px] text-[18px]'}>
-          <div className={'font-bold text-[#777777]'}>
+          <div className={'font-bold text-gray-500'}>
             {item.category === 'FAULT' ? '과실' : '주장'}판결
           </div>
-          <div className={'text-[#999999]'}>{formatDateTime(item.savedAt)} 저장</div>
+          <div className={'text-gray-400'}>{formatDateTime(item.savedAt)} 저장</div>
         </div>
       </div>
       <Image

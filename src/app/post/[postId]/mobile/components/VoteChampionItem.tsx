@@ -55,8 +55,8 @@ function VoteChampionItem({ index, champion, isResult }: Props) {
         />
       </div>
       <div className='flex flex-col items-center justify-center'>
-        <p className='text-[#333333] text-[12px] font-semibold'>{champion.championName}</p>
-        <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
+        <p className='text-gray-850 text-[12px] font-semibold'>{champion.championName}</p>
+        <p className='text-gray-850 text-[12px]'>{champion.tier}</p>
       </div>
     </div>
   );

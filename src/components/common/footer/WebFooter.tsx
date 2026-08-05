@@ -4,7 +4,7 @@ import LinkUtils from '@/utils/link/linkUtils';
 
 const WebFooter = () => {
   return (
-    <div className={'w-full bg-[#FFFFFF] border-t border-[#C9CBCC]'}>
+    <div className={'w-full border-t border-semantic-border-strong bg-semantic-background-surface'}>
       <div
         className={
           'max-w-[1200px] mx-auto h-[360px] pt-[50px] pb-[60px] flex justify-between items-center'
@@ -31,18 +31,18 @@ const WebFooter = () => {
 
           <div
             className={
-              'w-fit bg-[#303233] px-[4px] py-[2px] text-[20px] font-extrabold text-[#F1F2F2]'
+              'w-fit bg-gray-800 px-[4px] py-[2px] text-[20px] font-extrabold text-gray-50'
             }
           >
             리그 오브 레전드(LOL) 과실 판결 커뮤니티
           </div>
-          <div className={'text-[16px] font-semibold text-[#303233]'}>
+          <div className={'text-[16px] font-semibold text-gray-800'}>
             "소환사라면 한 번쯤은 겪어보았을 문제 상황에 판결과 논쟁을 더하다"
           </div>
         </div>
 
         {/*오른쪽 영역*/}
-        <div className={'flex flex-col h-[111px] gap-[20px] text-[12px] text-[#333333]'}>
+        <div className={'flex h-[111px] flex-col gap-[20px] text-[12px] text-semantic-text-primary'}>
           <div className={'flex flex-col gap-[8px]'}>
             <div className={'font-bold'}>서비스</div>
             <div className={'flex gap-[12px]'}>

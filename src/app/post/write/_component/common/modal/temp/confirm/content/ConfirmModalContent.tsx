@@ -22,7 +22,7 @@ const ConfirmModalContent = ({ type }: Props) => {
           </div>
         )}
       </div>
-      <div className={'w-full text-[18px] text-[#777777]'}>
+      <div className={'w-full text-[18px] text-gray-500'}>
         {type === 'load' ? (
           <>
             <p>임시저장된 글을 불러오시겠습니까?</p>

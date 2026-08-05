@@ -43,12 +43,12 @@ function Alert() {
       <MobileHeader headerTitle='알림' />
       <div className='mobile-layout flex flex-col flex-grow items-center pt-[40px] pb-[20px] mobile-scroll !bg-white'>
         {/* 탭 영역 */}
-        <div className='w-full border-b border-[#ECECEC] flex justify-center mb-[30px]'>
+        <div className='w-full border-b border-gray-100 flex justify-center mb-[30px]'>
           {alarmTypes.map((alarm, idx) => (
             <div
               key={idx}
               className={`flex items-center justify-center cursor-pointer text-[18px] font-medium px-[20px] h-[31px]
-              ${alarm.type === alarmType ? 'text-[#E20A29] border-b-2 border-[#E20A29]' : 'text-[#AAAAAA]'}`}
+              ${alarm.type === alarmType ? 'text-primary-500 border-b-2 border-primary-500' : 'text-gray-300'}`}
               style={{ width: 'calc(100% / 3)' }}
               onClick={() => setAlarmType(alarm.type)}
             >

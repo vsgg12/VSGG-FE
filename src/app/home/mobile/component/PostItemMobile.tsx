@@ -63,7 +63,7 @@ export default function PostItemMobile({
 
   return (
     <div
-      className='h-fit w-full bg-[#ffffff] cursor-pointer flex flex-col mb-[4px] px-[18px] py-[12px] gap-[15px]'
+      className='h-fit w-full bg-semantic-background-surface cursor-pointer flex flex-col mb-[4px] px-[18px] py-[12px] gap-[15px]'
       onClick={() => {
         router.push(`/post/${post.id}`);
       }}
@@ -76,18 +76,19 @@ export default function PostItemMobile({
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
-            className='mr-[0.625rem] h-[30px] w-[30px] rounded-full text-[#D9D9D9]'
+            alt={"profile image"}
+            className='mr-[0.625rem] h-[30px] w-[30px] rounded-full text-gray-100'
           />
           <div className='flex gap-[5px] text-[12px]'>
             {getIcon(post.memberDTO.tier)}
             <p className='font-bold'>{post.memberDTO.nickname}</p>
-            <p className='text-[#C8C8C8] font-medium ml-[px]'>{timeAgo}</p>
+            <p className='text-semantic-text-disabled font-medium ml-[px]'>{timeAgo}</p>
           </div>
         </div>
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
       <div className='flex flex-col gap-[10px]'>
-        <p className='text-black text-[16px] font-bold whitespace-wrap'>{post.title}</p>
+        <p className='text-semantic-text-primary text-[16px] font-bold whitespace-wrap'>{post.title}</p>
         <p className='text-[14px] w-full whitespace-nowrap overflow-hidden truncate text-[#484B4D]'>
           {contentsArr.pTags[0]}
         </p>

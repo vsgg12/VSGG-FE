@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ConfirmButton = ({ title, onClickConfirm, onClickCancel }: Props) => {
-  const buttonClass = title === '확인' ? 'bg-[#E20A29] text-white' : 'bg-white text-[#555555]';
+  const buttonClass = title === '확인' ? 'bg-primary-500 text-white' : 'bg-white text-gray-700';
 
   const onClickBtnClick = () => {
     if (title === '확인') {
@@ -19,7 +19,7 @@ const ConfirmButton = ({ title, onClickConfirm, onClickCancel }: Props) => {
 
   return (
     <button
-      className={`w-[72px] h-[41px] rounded-[5px] font-semibold text-[18px] flex items-center justify-center border-[#C8C8C8] border-[0.5px] ${buttonClass}`}
+      className={`w-[72px] h-[41px] rounded-[5px] font-semibold text-[18px] flex items-center justify-center border-gray-150 border-[0.5px] ${buttonClass}`}
       onClick={onClickBtnClick}
     >
       {title}

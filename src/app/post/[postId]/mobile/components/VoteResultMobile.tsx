@@ -85,7 +85,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
             (!isOwner && isNoOneVoted && isFinished) ||
             (isOwner && isNoOneVoted && isFinished) ? (
               <div className='flex relative justify-center w-full'>
-                <p className='flex justify-center items-center absolute text-[15px] inset-0 text-[#828282]'>
+                <p className='flex justify-center items-center absolute text-[15px] inset-0 text-gray-500'>
                   {isFinished
                     ? '투표한 사람이 없는 게시글입니다.'
                     : '아직 투표한 사람이 없는 게시글입니다.'}
@@ -102,7 +102,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
                           <div
                             className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
                           ></div>
-                          <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                          <p className='font-[12px] text-gray-850'>{champion.championName}</p>
                         </div>
                       ),
                   )}
@@ -113,7 +113,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
                     (champion, index) =>
                       index % 2 === 1 && (
                         <div key={index} className='flex items-center justify-end gap-[10px]'>
-                          <p className='font-[12px] text-[#333333]'>{champion.championName}</p>
+                          <p className='font-[12px] text-gray-850'>{champion.championName}</p>
                           <div
                             className={`${voteColors[index].background} w-[12px] h-[12px] rounded-full`}
                           ></div>
@@ -128,7 +128,7 @@ export default function VoteResultMobile({ voteInfos, isOwner, isFinished }: IVo
             {isFinished
               ? null
               : !isOwner && (
-                  <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+                  <button className='h-9 w-28 rounded-full bg-gray-100 text-lg text-gray-500'>
                     제출완료
                   </button>
                 )}

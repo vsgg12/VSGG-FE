@@ -47,12 +47,12 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
                   ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                   : post.memberDTO.profileImage
               }
-              className='mr-[0.625rem] h-[48px] w-[48px] rounded-full text-[#D9D9D9]'
+              className='mr-[0.625rem] h-[48px] w-[48px] rounded-full text-gray-100'
             />
-            <div className='flex gap-[5px]'>
+            <div className='flex gap-[5px] text-semantic-text-primary'>
               {getIcon(post.memberDTO.tier)}
               <p>{post.memberDTO.nickname}</p>
-              <p className='text-[#C8C8C8] ml-[px]'>{timeAgo}</p>
+              <p className='ml-[px] text-semantic-text-disabled'>{timeAgo}</p>
             </div>
           </div>
           <PostDeadLine deadLine={post.daysUntilEnd} />
@@ -62,7 +62,7 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
         </div>
       </div>
       <div className='flex flex-col gap-[5px] justify-end'>
-        <div className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex items-center justify-center cursor-pointer shadow'>
+        <div className='flex h-[44px] w-[44px] cursor-pointer items-center justify-center rounded-[10px] bg-semantic-background-surface shadow'>
           <Image
             src={Icon_share}
             width={24}
@@ -72,7 +72,7 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
           />
         </div>
         <div
-          className='w-[44px] h-[44px] bg-[#FFFFFF] rounded-[10px] flex flex-col justify-center items-center cursor-pointer text-[12px] shadow'
+          className='flex h-[44px] w-[44px] cursor-pointer flex-col items-center justify-center rounded-[10px] bg-semantic-background-surface text-[12px] shadow'
           onClick={handleOpenComment}
         >
           <Image src={Icon_comment} width={20} height={20} alt='commentIcon' />

@@ -27,7 +27,7 @@ const SelectVoteEndTimeBox = ({
 
       <div
         className={`relative w-full h-[47px] rounded-[10px] bg-white border-[0.5px] transition-shadow duration-300 hover:shadow-lg
-        ${endTimeBoxClicked ? 'border-[#E20A29]' : 'border-[#C8C8C8]'}`}
+        ${endTimeBoxClicked ? 'border-primary-500' : 'border-gray-150'}`}
       >
         {/* 실제 select */}
         <select
@@ -37,7 +37,7 @@ const SelectVoteEndTimeBox = ({
           onBlur={() => setEndTimeBoxClicked(false)}
           className='
             w-full h-full appearance-none bg-transparent
-            px-[20px] text-[18px] text-[#333333]
+            px-[20px] text-[18px] text-gray-850
             cursor-pointer outline-none
           '
         >

@@ -157,7 +157,7 @@ function PostContentArea({ post, voteInfos }: Props) {
 
   return (
     <div
-      className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow hover:shadow-xl transition-shadow duration-300'
+      className='flex h-fit min-h-[448px] w-[586px] cursor-pointer flex-col gap-[12px] rounded-[20px] bg-semantic-background-surface px-[30px] py-[20px] text-semantic-text-primary shadow transition-shadow duration-300 hover:shadow-xl'
       onClick={() => {
         router.push(`/post/${post.id}`);
       }}
@@ -222,13 +222,13 @@ function PostContentArea({ post, voteInfos }: Props) {
               <Image src={button.icon} alt={button.name} width={24} height={24} />
               {button.data && (
                 <p
-                  className={`text-[14px] ${(button.name === 'like' && isLiked) || (isHovered === button.name && button.name !== 'view') ? 'text-[#E20A29]' : 'text-[#555555]'}`}
+                  className={`text-[14px] ${(button.name === 'like' && isLiked) || (isHovered === button.name && button.name !== 'view') ? 'text-primary-500' : 'text-semantic-text-secondary'}`}
                 >
                   {button.data}
                 </p>
               )}
             </div>
-            {idx !== 2 && <div className='h-[20px] w-[1px] bg-[#555555]'></div>}
+            {idx !== 2 && <div className='h-[20px] w-[1px] bg-semantic-border-strong'></div>}
           </React.Fragment>
         ))}
       </div>

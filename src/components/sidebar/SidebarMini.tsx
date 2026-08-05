@@ -31,7 +31,7 @@ function SidebarMini() {
     return null;
   }
   return (
-    <div className='flex flex-col w-[50px] h-full bg-white fixed top-0 left-0 z-[100] pt-[20px]'>
+    <div className='fixed left-0 top-0 z-[100] flex h-screen w-[50px] flex-col bg-semantic-background-surface pt-[20px]'>
       <div className='flex flex-col gap-[10px] items-center '>
         {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
         <img

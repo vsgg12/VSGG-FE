@@ -92,9 +92,9 @@ export const UploadLinkBox = ({ onClose }: IProps) => {
   };
 
   return (
-    <div className='w-[794px] bg-white rounded-[10px] border border-1/2-[#C8C8C8] flex flex-col gap-[20px] justify-center items-center px-[10px] py-[30px]'>
+    <div className='w-[794px] bg-white rounded-[10px] border border-gray-150 flex flex-col gap-[20px] justify-center items-center px-[10px] py-[30px]'>
       {/* input박스 */}
-      <div className='flex flex-row justify-between w-[754px] h-[60px] border border-1/2-[#C8C8C8] rounded-[10px] gap-[10px] px-[20px] py-[10px] shadow-[0px_3px_3px_0px_rgba(0,0,0,0.1)]'>
+      <div className='flex flex-row justify-between w-[754px] h-[60px] border border-gray-150 rounded-[10px] gap-[10px] px-[20px] py-[10px] shadow-[0px_3px_3px_0px_var(--color-shadow-soft)]'>
         {/* input */}
         <div className='flex flex-row w-full'>
           <Image width={30} height={30} alt={'linkIcon'} src={linkIcon} />
@@ -144,7 +144,7 @@ export const UploadLinkBox = ({ onClose }: IProps) => {
       )}
       {/* 에러 메시지 */}
       {isError && (
-        <div className='text-[#D63111] text-[16px] font-semibold'>
+        <div className='text-special-warning text-[16px] font-semibold'>
           링크 정보를 불러오는 데 실패했습니다. 링크를 다시 확인해주세요.
         </div>
       )}
