@@ -53,7 +53,7 @@ const ChampionVoteResultItem = ({ voteItem, isHover, size }: Props) => {
           <div
             className={clsx(
               'whitespace-nowrap',
-              isHover ? 'text-[#D9D9D9]' : 'text-[#555555]',
+              isHover ? 'text-gray-100' : 'text-gray-700',
               size === 'desktop-home'
                 ? 'text-[12px]'
                 : size === 'desktop-detail'
@@ -66,7 +66,7 @@ const ChampionVoteResultItem = ({ voteItem, isHover, size }: Props) => {
           {size !== 'mobile' && (
             <div className={'flex gap-[5px] items-center'}>
               <div className={'w-[12px] h-[12px] flex justify-items-center'}>{getTierIcon()}</div>
-              <div className={clsx('text-[10px]', isHover ? 'text-[#DDDDDD]' : 'text-[#51484A]')}>
+              <div className={clsx('text-[10px]', isHover ? 'text-gray-100' : 'text-[#51484A]')}>
                 {voteItem.tier}
               </div>
             </div>

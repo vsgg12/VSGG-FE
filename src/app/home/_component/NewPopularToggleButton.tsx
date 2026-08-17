@@ -63,10 +63,10 @@ function NewPopularToggleButton({
         <p
           className={`${isMobile ? 'text-[12px]' : 'text-[16px]'} transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'createdatetime'
-              ? 'text-[#E20A29]'
+              ? 'text-primary-500'
               : isHovered === 'time'
-                ? 'text-[#999999]'
-                : 'text-[#C8C8C8]'
+                ? 'text-semantic-text-muted'
+                : 'text-semantic-text-disabled'
           }`}
         >
           최신
@@ -108,10 +108,10 @@ function NewPopularToggleButton({
         <p
           className={`${isMobile ? 'text-[12px]' : 'text-[16px]'} transition-colors duration-300 ease-in-out font-semibold ${
             activeButton === 'view'
-              ? 'text-[#E20A29]'
+              ? 'text-primary-500'
               : isHovered === 'view'
-                ? 'text-[#999999]'
-                : 'text-[#C8C8C8]'
+                ? 'text-semantic-text-muted'
+                : 'text-semantic-text-disabled'
           }`}
         >
           인기

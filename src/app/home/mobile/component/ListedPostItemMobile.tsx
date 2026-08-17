@@ -55,7 +55,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
       <p className='text-[14px] font-medium whitespace-nowrap overflow-hidden truncate text-[#484B4D]'>
         {contentsArr.pTags[0]}
       </p>
-      <p className='text-[#AEB1B2] text-[12px]'>{timeAgo}</p>
+      <p className='text-text-semantic-text-disabled text-[12px]'>{timeAgo}</p>
 
       <div className='flex w-full justify-between items-center'>
         <div className='flex gap-[4px] items-center'>
@@ -74,7 +74,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
           {icons.map((item, index) => (
             <div key={index} className='flex gap-[4px] items-center'>
               <Image src={item.icon} width={16} height={16} alt={item.alt} />
-              <p className='text-[12px] text-[#D7D8D9]'>{item.content}</p>
+              <p className='text-[12px] text-semantic-text-disabled'>{item.content}</p>
             </div>
           ))}
         </div>

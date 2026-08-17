@@ -17,7 +17,8 @@ function SidebarItemMini({ item, setIsLoginModalOpen }: Props) {
     <div
       className={`flex items-center justify-center w-full h-[50px] cursor-pointer
       transition-transform duration-200 ease-in-out       
-      ${disabled && 'hover:translate-y-[-5px]'}`}
+      ${disabled && 'hover:translate-y-[-5px]'}
+      ${disabled ? 'text-semantic-icon-default' : 'text-primary-500'}`}
       onClick={handleClick}
     >
       {getIcon()}

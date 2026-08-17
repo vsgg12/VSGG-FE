@@ -85,7 +85,7 @@ function SelectUpload() {
   if (!isLogin) return null;
 
   return (
-    <div className='w-full h-screen flex justify-center bg-white'>
+    <div className='flex h-screen w-full justify-center bg-semantic-background-page text-semantic-text-primary'>
       {isLoading ? (
         <LoadingFull />
       ) : (

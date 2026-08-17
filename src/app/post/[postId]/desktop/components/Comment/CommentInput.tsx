@@ -2,6 +2,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IPostCommentInputProps {
   targetNickname: string;
@@ -12,8 +13,13 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   const { ref, ...rest } = register('commentContent', { required: true });
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { isLogin } = useAuthStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const { setIsLoginModalOpen } = useLoginStore();
   const { setValue, getValues } = useFormContext();
+  const inputClass = isDarkMode
+    ? 'bg-[#242526] text-[#F1F2F2]'
+    : 'bg-white text-semantic-text-primary';
+  const placeholderClass = isDarkMode ? 'placeholder:text-[#F1F2F2]' : 'placeholder:text-[#787C80]';
 
   useEffect(() => {
     handleFocusTextarea();
@@ -87,9 +93,9 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
   }, [targetNickname, setValue, getValues, handleFocusTextarea]);
 
   return (
-    <div className='min-h-[20px] w-[452px] rounded-[30px] flex bg-[#FFFFFF] py-[10px] px-[20px]'>
+    <div className={`min-h-[20px] w-[452px] rounded-[30px] flex py-[10px] px-[20px] ${inputClass}`}>
       <textarea
-        className='w-full h-[20px] overflow-scroll text-[14px] box-border focus:outline-none resize-none scrollbar-hide'
+        className={`w-full h-[20px] overflow-scroll text-[14px] box-border focus:outline-none resize-none scrollbar-hide bg-transparent ${placeholderClass}`}
         {...rest}
         ref={(e) => {
           ref(e);
@@ -115,7 +121,7 @@ export default function CommentInput({ targetNickname }: IPostCommentInputProps)
         }
       />
       <button type='submit'>
-        <p className='font-bold text-[12px] text-[#E20A29] whitespace-nowrap'>등록</p>
+        <p className='font-bold text-[12px] text-primary-500 whitespace-nowrap'>등록</p>
       </button>
     </div>
   );

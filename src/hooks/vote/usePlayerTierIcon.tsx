@@ -38,27 +38,27 @@ const usePlayerTierIcon = ({ size = 16 }: Props) => {
   const getColor = useCallback((tier: string) => {
     switch (tier) {
       case '언랭':
-        return 'text-[#C8C8C8]';
+        return 'text-tier-unrank';
       case '아이언':
-        return 'text-[#51484A]';
+        return 'text-tier-iron';
       case '브론즈':
-        return 'text-[#8C513A]';
+        return 'text-tier-bronze';
       case '실버':
-        return 'text-[#80989D]';
+        return 'text-tier-silver';
       case '골드':
-        return 'text-[#CD8837]';
+        return 'text-tier-gold';
       case '플래티넘':
-        return 'text-[#54AAD2]';
+        return 'text-tier-platinum';
       case '에메랄드':
-        return 'text-[#149C3A]';
+        return 'text-tier-emerald';
       case '다이아몬드':
-        return 'text-[#7944E2]';
+        return 'text-tier-diamond';
       case '마스터':
-        return 'text-[#A4584E]';
+        return 'text-tier-master';
       case '그랜드마스터':
-        return 'text-[#756572]';
+        return 'text-tier-grand-master';
       case '챌린저':
-        return 'text-[#F4C874]';
+        return 'text-tier-challenger';
 
       default:
         return <></>;

@@ -42,7 +42,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
           className='
             h-[50px] px-[14px] py-[9px]
             flex items-center gap-[8px]
-            bg-white border-[0.5px] border-[#C8C8C8] hover:shadow-md
+            bg-semantic-background-surface border-[0.5px] border-semantic-border-default hover:shadow-md
             rounded-[10px] cursor-pointer
           '
         >
@@ -50,12 +50,12 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
             <>
               <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
               {selectedTier.svg}
-              <span className='text-[16px] text-[#333]'>{selectedTier.content}</span>
+              <span className='text-[16px] text-semantic-text-primary'>{selectedTier.content}</span>
             </>
           ) : (
             <>
               <Image src={graySearchIcon} alt='searchIcon' width={28} height={28} />
-              <span className='text-[16px] text-[#999]'>티어 검색</span>
+              <span className='text-[16px] text-semantic-text-muted'>티어 검색</span>
             </>
           )}
         </div>
@@ -66,7 +66,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
         <div
           className='
             absolute top-0 left-0 w-full
-            bg-white border-[1px] border-[#E20A29]
+            bg-semantic-background-elevated border-[1px] border-primary-500
             rounded-[10px] shadow-lg z-50
           '
         >
@@ -78,7 +78,7 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder='티어 검색'
-              className='w-full bg-transparent outline-none text-[16px]'
+              className='w-full bg-transparent outline-none text-[16px] text-semantic-text-primary placeholder:text-semantic-text-muted'
             />
           </div>
 
@@ -95,17 +95,19 @@ const SearchTierBox = ({ tier, setTier }: Props) => {
                     flex items-center gap-[12px]
                     h-[38px] px-[10px]
                     rounded-[5px] cursor-pointer transition-colors
-                    ${isSelected ? 'bg-[#F9E6E6]' : 'hover:bg-[#F3F3F3]'}
+                    ${isSelected ? 'bg-primary-8' : 'hover:bg-semantic-background-subtle'}
                   `}
                 >
                   {item.svg}
-                  <span className='text-[16px] text-[#333]'>{item.content}</span>
+                  <span className='text-[16px] text-semantic-text-primary'>{item.content}</span>
                 </div>
               );
             })}
 
             {filteredTiers.length === 0 && (
-              <div className='text-[14px] text-[#999] px-[10px] py-[8px]'>검색 결과 없음</div>
+              <div className='text-[14px] text-semantic-text-muted px-[10px] py-[8px]'>
+                검색 결과 없음
+              </div>
             )}
           </div>
         </div>

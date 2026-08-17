@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Icon_more from '../../../../../../../public/svg/Icon_more.svg';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import Comment from '@/app/post/[postId]/desktop/components/Comment/CommentItem';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface Props {
   commentData: IGetCommentListType;
@@ -19,6 +20,7 @@ interface Props {
 
 function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
   const { isLogin, user } = useAuthStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const [showReply, setShowReply] = useState<null | number>(null);
   const [isCommentMoreModalOpen, setIsCommentMoreModalOpen] = useState<number | null>(null);
   const { setIsLoginModalOpen } = useLoginStore();
@@ -86,11 +88,15 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
     }
   };
 
+  const boxClass = isDarkMode ? 'bg-[#242526] text-[#F1F2F2]' : 'bg-white text-gray-850';
+  const emptyClass = isDarkMode ? 'text-[#AEB1B2]' : 'text-gray-500';
+  const moreIconClass = isDarkMode ? 'opacity-70 brightness-0 invert' : '';
+
   return (
-    <div className='w-full h-[1266px] bg-[#FFFFFF] rounded-[20px] p-[30px]'>
+    <div className={`w-full h-[1266px] rounded-[20px] p-[30px] ${boxClass}`}>
       {commentData?.comments.length === 0 ? (
         <div className='flex justify-center'>
-          <div>아직 댓글이 없습니다.</div>
+          <div className={emptyClass}>아직 댓글이 없습니다.</div>
         </div>
       ) : (
         <div className='scroll overflow-hidden w-full h-full relative flex flex-col gap-[10px]'>
@@ -124,7 +130,7 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
                     alt='more'
                     width={12}
                     height={12}
-                    className='cursor-pointer flex self-start ml-[10px] mt-[2px]'
+                    className={`cursor-pointer flex self-start ml-[10px] mt-[2px] ${moreIconClass}`}
                     onClick={() => {
                       handleOpenCommentMoreModal(comment.id);
                     }}
@@ -135,10 +141,10 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
                     key={index}
                     type='button'
                     onClick={() => handleOpenReply(comment.id)}
-                    className='my-[5px] text-[12px] font-medium text-[#E20A29] flex items-center gap-[6px]'
+                    className='my-[5px] text-[12px] font-medium text-primary-500 flex items-center gap-[6px]'
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="19" height="1" viewBox="0 0 19 1" fill="none">
-                      <path d="M0 0.5H19" stroke="#E20A29"/>
+                      <path d="M0 0.5H19" stroke="currentColor"/>
                     </svg>
                     {showReply === comment.id
                       ? '답글 숨기기'
@@ -178,7 +184,7 @@ function CommentBox({ commentData, targetComment, setTargetComment }: Props) {
                           alt='more'
                           width={12}
                           height={12}
-                          className='cursor-pointer flex self-start ml-[5px] mt-[2px]'
+                          className={`cursor-pointer flex self-start ml-[5px] mt-[2px] ${moreIconClass}`}
                           onClick={() => {
                             handleOpenReplyMoreModal(reply.id);
                           }}

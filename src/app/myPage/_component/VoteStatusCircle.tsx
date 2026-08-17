@@ -8,22 +8,22 @@ function VoteStatusCircle({ text }: IVoteStatusCircleProps) {
   const textClass = () => {
     switch (text) {
       case '승리':
-        return 'bg-[#0D37CB] border border-[#0D37CB]';
+        return 'bg-status-blue border border-status-blue';
       case '패배':
-        return 'bg-[#B01D00] border border-[#B01D00]';
+        return 'bg-status-red border border-status-red';
       case '무승부':
-        return 'bg-[#E9B500] border border-[#E9B500]';
+        return 'bg-status-yellow border border-status-yellow';
       case '판결 종료':
-        return 'bg-[#333333] border border-[#333333]';
+        return 'bg-gray-850 border border-gray-850';
       case '판결 중':
-        return 'bg-[#00AE07] border border-[#00AE07]';
+        return 'bg-status-green border border-status-green';
       default:
         return '';
     }
   };
   return (
     <div
-      className={`text-[#333333] font-medium text-[12px] rounded-[50px] px-[10px] py-[5px] bg-opacity-30 ${textClass()} h-[21px] flex justify-center items-center whitespace-nowrap`}
+      className={`text-gray-850 font-medium text-[12px] rounded-[50px] px-[10px] py-[5px] bg-opacity-30 ${textClass()} h-[21px] flex justify-center items-center whitespace-nowrap`}
     >
       {text}
     </div>

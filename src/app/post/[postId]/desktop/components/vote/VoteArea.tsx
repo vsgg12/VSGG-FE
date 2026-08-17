@@ -8,6 +8,7 @@ import usePostIdStore from '../../../store/usePostIdStore';
 import { useParams } from 'next/navigation';
 import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];
@@ -17,6 +18,7 @@ interface IVoteArea {
 
 function VoteArea({ voteData, isOwner, post }: IVoteArea) {
   const { loading } = useChampion();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const { setIsLoginModalOpen } = useLoginStore();
   const queryClient = useQueryClient();
   const { postVoteResult, voteResult, setPostVoteResult } = usePostIdStore();
@@ -57,7 +59,11 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
     post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote || isOwner;
 
   return (
-    <div className='w-[720px] bg-white rounded-[20px] flex items-center justify-center p-[30px]'>
+    <div
+      className={`w-[720px] rounded-[20px] flex items-center justify-center p-[30px] ${
+        isDarkMode ? 'bg-[#242526]' : 'bg-white'
+      }`}
+    >
       {shouldShowVoteForm && (
         <VoteForm
           voteInfo={voteData}

@@ -3,11 +3,12 @@ import Default_Profile from '../../../../public/svg/defaultProfile.svg';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
-import Icon_vote from '../../../../public/svg/postItem/vote.svg';
-import Icon_heart_white from '../../../../public/svg/postItem/heart_white.svg';
-import Icon_comment from '../../../../public/svg/postItem/chatbox.svg';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import {
+  CommentActionIcon,
+  MediaLikeActionIcon,
+  VoteActionIcon,
+} from '@/components/common/icons/PostActionIcons';
 
 interface Props {
   post: IGetPostDTOType;
@@ -26,7 +27,7 @@ function ListPostItem({ post }: Props) {
 
   return (
     <div
-      className='w-[326px] h-[368px] bg-[#FFFFFF] rounded-[10px] flex flex-col gap-[10px] p-[20px] cursor-pointer shadow transition-transform duration-300 hover:-translate-y-[5px]'
+      className='flex h-[368px] w-[326px] cursor-pointer flex-col gap-[10px] rounded-[10px] bg-semantic-background-surface p-[20px] text-semantic-text-primary shadow transition-transform duration-300 hover:-translate-y-[5px]'
       onClick={handleClickPost}
     >
       <div className='relative'>
@@ -54,11 +55,11 @@ function ListPostItem({ post }: Props) {
             allowFullScreen
           ></iframe>
         )}
-        <div className='absolute top-[5px] right-[8px] flex gap-[4px]'>
-          <Image src={Icon_heart_white} width={16} height={16} alt='like' />
+        <div className='absolute top-[5px] right-[8px] flex items-center gap-[4px] text-semantic-icon-on-media'>
+          <MediaLikeActionIcon className='h-[16px] w-[16px]' alt='like' />
           <p
-            className='text-[12px] text-[#FFFFFF]'
-            style={{ textShadow: '1px 1px 3px rgba(0, 0, 0, 0.4)' }}
+            className='text-[12px]'
+            style={{ textShadow: '1px 1px 3px var(--color-shadow-medium)' }}
           >
             {post.likeCount > 999 ? '999+' : post.likeCount}
           </p>
@@ -72,7 +73,7 @@ function ListPostItem({ post }: Props) {
             {contentsArr.pTags[0]}
           </p>
         </div>
-        <p className='text-[#C8C8C8] text-[12px]'>{timeAgo}</p>
+        <p className='text-[12px] text-semantic-text-disabled'>{timeAgo}</p>
       </div>
 
       <div className='flex items-center justify-between'>
@@ -86,15 +87,21 @@ function ListPostItem({ post }: Props) {
             className='h-[24px] w-[24px] rounded-full mr-[10px]'
           />
           {getIcon(post.memberDTO.tier)}
-          <p className='text-[12px] text-[#333333] ml-[5px]'>{post.memberDTO.nickname}</p>
+          <p className='ml-[5px] text-[12px] text-semantic-text-primary'>
+            {post.memberDTO.nickname}
+          </p>
         </div>
-        <div className='flex gap-[8px] text-[14px]'>
-          <div className='flex gap-[4px]'>
-            <Image src={Icon_vote} width={18} height={18} alt='vote_icon' />
+        <div className='flex gap-[8px] text-[14px] text-semantic-icon-action'>
+          <div className='flex items-center gap-[4px]'>
+            <span className='flex h-[24px] w-[24px] items-center justify-center'>
+              <VoteActionIcon />
+            </span>
             <p>{post.voteCount > 999 ? '999+' : post.voteCount}</p>
           </div>
-          <div className='flex gap-[4px]'>
-            <Image src={Icon_comment} width={18} height={18} alt='comment_icon' />
+          <div className='flex items-center gap-[4px]'>
+            <span className='flex h-[24px] w-[24px] items-center justify-center'>
+              <CommentActionIcon />
+            </span>
             <p>{post.commentCount > 999 ? '999+' : post.commentCount}</p>
           </div>
         </div>

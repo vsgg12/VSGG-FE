@@ -1,18 +1,17 @@
 import useConvertHTML from '@/hooks/useConvertHTML';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Icon_heart from '../../../../public/svg/postItem/heart.svg';
-import Icon_heart_hover from '../../../../public/svg/postItem/heart_hover.svg';
-import Icon_vote from '../../../../public/svg/postItem/vote.svg';
-import Icon_vote_hover from '../../../../public/svg/postItem/vote_hover.svg';
-import Icon_view from '../../../../public/svg/postItem/view.svg';
 import postPostLike from '@/api/like/postPostLike';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
+import {
+  LikeActionIcon,
+  ViewActionIcon,
+  VoteActionIcon,
+} from '@/components/common/icons/PostActionIcons';
 
 interface Props {
   post: IGetPostDTOType;
@@ -32,33 +31,10 @@ function PostContentArea({ post, voteInfos }: Props) {
   const [isVoteClicked, setIsVoteClicked] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<string>('');
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [heartIcon, setHeartIcon] = useState<string>(Icon_heart);
 
   useEffect(() => {
     setIsLiked(post.liked);
-
-    if (post.liked) {
-      setHeartIcon(Icon_heart_hover);
-    }
   }, [post]);
-
-  useEffect(() => {
-    if (!isLiked) {
-      if (isHovered == 'like') {
-        setHeartIcon(Icon_heart_hover);
-      } else {
-        setHeartIcon(Icon_heart);
-      }
-    }
-  }, [isHovered, isLiked]);
-
-  useEffect(() => {
-    if (isLiked) {
-      setHeartIcon(Icon_heart_hover);
-    } else {
-      setHeartIcon(Icon_heart);
-    }
-  }, [isLiked]);
 
   const { mutate: likePost } = useMutation({
     mutationFn: async () => {
@@ -98,7 +74,7 @@ function PostContentArea({ post, voteInfos }: Props) {
     },
   });
 
-  const handleLikePost = async (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleLikePost = async (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (!isLogin) {
       setIsLoginModalOpen(true);
@@ -115,7 +91,7 @@ function PostContentArea({ post, voteInfos }: Props) {
     }
   };
 
-  const handleVoteClick = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleVoteClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     setIsVoteClicked(!isVoteClicked);
   };
@@ -123,20 +99,17 @@ function PostContentArea({ post, voteInfos }: Props) {
   const buttons = [
     {
       name: 'like',
-      icon: heartIcon,
       data:
         (updatedLikeCount ?? post.likeCount) < 1000 ? updatedLikeCount ?? post.likeCount : '999+',
       onclick: handleLikePost,
     },
     {
       name: 'vote',
-      icon: isHovered == 'vote' ? Icon_vote_hover : Icon_vote,
       data: post.voteCount < 1000 ? post.voteCount : '999+',
       onclick: handleVoteClick,
     },
     {
       name: 'view',
-      icon: Icon_view,
       data: post.viewCount < 1000 ? post.viewCount : '999+',
       onclick: () => {
         return;
@@ -157,7 +130,7 @@ function PostContentArea({ post, voteInfos }: Props) {
 
   return (
     <div
-      className='bg-[#FFFFFF] w-[586px] h-fit min-h-[448px] rounded-[20px] px-[30px] py-[20px] cursor-pointer flex flex-col gap-[12px] shadow hover:shadow-xl transition-shadow duration-300'
+      className='flex h-fit min-h-[448px] w-[586px] cursor-pointer flex-col gap-[12px] rounded-[20px] bg-semantic-background-surface px-[30px] py-[20px] text-semantic-text-primary shadow transition-shadow duration-300 hover:shadow-xl'
       onClick={() => {
         router.push(`/post/${post.id}`);
       }}
@@ -213,22 +186,33 @@ function PostContentArea({ post, voteInfos }: Props) {
       <div className='flex h-[24px]'>
         {buttons.map((button, idx) => (
           <React.Fragment key={idx}>
-            <div
-              className='flex w-[182px] cursor-pointer items-center justify-center gap-[6px]'
-              onClick={button.onclick}
-              onMouseEnter={() => setIsHovered(button.name)}
-              onMouseLeave={() => setIsHovered('')}
-            >
-              <Image src={button.icon} alt={button.name} width={24} height={24} />
-              {button.data && (
-                <p
-                  className={`text-[14px] ${(button.name === 'like' && isLiked) || (isHovered === button.name && button.name !== 'view') ? 'text-[#E20A29]' : 'text-[#555555]'}`}
+            {(() => {
+              const isActive = button.name === 'like' && (isLiked || isHovered === button.name);
+              const colorClass = isActive ? 'text-primary-500' : 'text-semantic-icon-action';
+
+              return (
+                <div
+                  className='flex w-[182px] cursor-pointer items-center justify-center gap-[6px]'
+                  onClick={button.onclick}
+                  onMouseEnter={() => setIsHovered(button.name)}
+                  onMouseLeave={() => setIsHovered('')}
                 >
-                  {button.data}
-                </p>
-              )}
-            </div>
-            {idx !== 2 && <div className='h-[20px] w-[1px] bg-[#555555]'></div>}
+                  {button.name === 'like' ? (
+                    <LikeActionIcon className='h-[24px] w-[24px]' alt='like' />
+                  ) : button.name === 'vote' ? (
+                    <span className='flex h-[24px] w-[24px] items-center justify-center'>
+                      <VoteActionIcon className='h-[24px] w-[24px]' />
+                    </span>
+                  ) : (
+                    <span className='flex h-[24px] w-[24px] items-center justify-center'>
+                      <ViewActionIcon className='h-[24px] w-[24px]' alt='view' />
+                    </span>
+                  )}
+                  {button.data && <p className={`text-[14px] ${colorClass}`}>{button.data}</p>}
+                </div>
+              );
+            })()}
+            {idx !== 2 && <div className='h-[20px] w-[1px] bg-semantic-border-strong'></div>}
           </React.Fragment>
         ))}
       </div>

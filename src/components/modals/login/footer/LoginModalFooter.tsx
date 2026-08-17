@@ -32,7 +32,7 @@ const LoginModalFooter = ({ onClickNaverLogin, onClickKakaoLogin, onClickGoogleL
           <LoginTypeButton type={item.type} onClick={item.onClick} />
         ))}
       </div>
-      <div className={'text-[12px] text-[#555555] text-center'}>
+      <div className={'text-[12px] text-gray-700 text-center'}>
         VS.GG의{' '}
         <span
           className={'font-semibold underline cursor-pointer'}

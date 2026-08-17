@@ -94,7 +94,7 @@ function MobileLogoHeader() {
         </div>
       ) : (
         <button
-          className='mr-[1rem] rounded-[150px] border-2 border-[#E20A29] px-[30px] py-[5px] text-[#E20A29]'
+          className='mr-[1rem] rounded-[150px] border-2 border-primary-500 px-[30px] py-[5px] text-primary-500'
           onClick={handleLoginBtnClick}
         >
           로그인

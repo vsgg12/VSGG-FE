@@ -41,12 +41,12 @@ function SearchItem({ postItem }: Props) {
       <div className='flex w-full justify-between items-start'>
         <div className='flex flex-col gap-[6px] flex-1 pr-[10px]'>
           {/* 닉네임 + 날짜 */}
-          <div className='flex text-[14px] text-[#AEB1B2] justify-between'>
+          <div className='flex text-[14px] text-gray-300 justify-between'>
             <span className='font-normal'>{truncateText(postItem.memberDTO.nickname, 8)}</span>
             <span className='font-bold'>{formatDate(postItem.createdAt)}</span>
           </div>
           {/* 제목 */}
-          <p className='text-[16px] font-medium text-[#242526] leading-[22px] tracking-[-0.32px] line-clamp-2 h-[44px]'>
+          <p className='text-[16px] font-medium text-gray-850 leading-[22px] tracking-[-0.32px] line-clamp-2 h-[44px]'>
             {postItem.title}
           </p>
         </div>
@@ -60,7 +60,7 @@ function SearchItem({ postItem }: Props) {
         </div>
       </div>
       {/* 내용 */}
-      <p className='text-[14px] text-[#787C80] font-normal leading-[24px] tracking-[-0.28px] line-clamp-1'>
+      <p className='text-[14px] text-gray-500 font-normal leading-[24px] tracking-[-0.28px] line-clamp-1'>
         {extractText(postItem.content)}
       </p>
     </div>

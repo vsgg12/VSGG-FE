@@ -33,15 +33,15 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
   return (
     <>
       <div
-        className='w-[362px] min-w-[362px] h-screen pt-[40px] pb-[60px] bg-[#FFFFFF] z-[100]'
+        className='w-[362px] min-w-[362px] h-screen pt-[40px] pb-[60px] bg-semantic-background-surface z-[100]'
         style={{
-          boxShadow: '4px 0 12px rgba(0, 0, 0, 0.1)',
+          boxShadow: '4px 0 12px var(--color-shadow-soft)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className='h-full flex flex-col gap-[30px]'>
-          <p className='text-[#888888] text-[20px] font-bold pl-[16px]'>알림</p>
-          <div className='w-full h-[32px] border-b-1 border-[#ECECEC] flex '>
+          <p className='text-semantic-text-muted text-[20px] font-bold pl-[16px]'>알림</p>
+          <div className='w-full h-[32px] border-b-1 border-semantic-border-default flex '>
             {alarmTypes.map((alarm: AlarmType) => (
               <AlarmOptionType
                 alarm={alarm}
@@ -57,7 +57,7 @@ export default function AlarmModal({ alarms = undefined }: IAlarmModalProps) {
         </div>
         <div className='relative'>
           <span
-            className='text-[#888888] font-medium text-[12px] px-2 whitespace-nowrap'
+            className='text-semantic-text-muted font-medium text-[12px] px-2 whitespace-nowrap'
             style={{
               position: 'absolute',
               bottom: '-35px',

@@ -69,7 +69,7 @@ const MainHeader = () => {
   };
 
   return (
-    <div className='flex h-[44px] items-center justify-between gap-[10px] px-[20px] mobile-layout sticky top-0 z-[40] !bg-[#F8F9FA]'>
+    <div className='flex h-[44px] items-center justify-between gap-[10px] px-[20px] mobile-layout sticky top-0 z-[40] !bg-semantic-background-page'>
       {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
       <img
         src='/logo/horizontal/logo-horizontal-red.svg'

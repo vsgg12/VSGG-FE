@@ -14,17 +14,17 @@ function MyPostItem_Mobile({ postItem }: { postItem: IGetMyPostItemsType }) {
         <div className='text-[15px] text-black font-semibold overflow-hidden text-ellipsis whitespace-nowrap'>
           {postItem.title}
         </div>
-        <div className='text-[15px] font-semibold text-[#D63111]'>
+        <div className='text-[15px] font-semibold text-special-warning'>
           {'['}
           {postItem.commentNum}
           {']'}
         </div>
         <VoteStatusCircle text={postItem.voteStatus} />
       </div>
-      <div className='text-[#C8C8C8] text-[12px] font-medium'>
+      <div className='text-gray-150 text-[12px] font-medium'>
         {formatDate(postItem.createdDate)}
       </div>
-      <div className='h-0.5 w-full bg-[#E20A29] my-[15px]' />
+      <div className='h-0.5 w-full bg-primary-500 my-[15px]' />
     </div>
   );
 }

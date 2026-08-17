@@ -12,10 +12,10 @@ const TempModalHeader = () => {
   };
 
   return (
-    <div className={'w-full h-[40px] flex justify-between items-center px-[20px]'}>
+    <div className={'flex h-[40px] w-full items-center justify-between'}>
       <div className={'flex gap-[6px] text-[24px] font-bold'}>
-        <div className={'text-[#333333]'}>임시 저장</div>
-        <div className={'text-[#E20A29]'}>{tempNum}</div>
+        <div className={'text-semantic-text-primary'}>임시 저장</div>
+        <div className={'text-primary-500'}>{tempNum}</div>
       </div>
       <Image
         src={XIcon}
@@ -23,7 +23,7 @@ const TempModalHeader = () => {
         width={30}
         height={30}
         onClick={onCloseModal}
-        className={'cursor-pointer'}
+        className={'cursor-pointer opacity-80 hover:opacity-100'}
       />
     </div>
   );

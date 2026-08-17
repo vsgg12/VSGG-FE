@@ -13,14 +13,14 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
   return (
     <>
       <div
-        className='flex justify-between items-center text-xs text-[#C3C3C3] cursor-pointer font-medium'
+        className='flex justify-between items-center text-xs text-gray-150 cursor-pointer font-medium'
         key={myJudgeItem.id}
         onClick={() => {
           router.push(`/post/${myJudgeItem.id}`);
         }}
       >
         <div className='flex gap-[10px] items-center'>
-          <div className='text-[#555555] text-[16px]'>{myJudgeItem.title}</div>
+          <div className='text-gray-700 text-[16px]'>{myJudgeItem.title}</div>
           <VoteStatusCircle
             text={
               myJudgeItem.myVoteResult === null ? myJudgeItem.voteStatus : myJudgeItem.myVoteResult
@@ -29,14 +29,14 @@ function MyJudgeItem({ myJudgeItem }: IMyJudgeItemProps) {
         </div>
 
         <div className='flex justify-between w-[390px]'>
-          <div className='flex gap-[8px] text-[#333333] w-[240px] justify-center'>
+          <div className='flex gap-[8px] text-gray-850 w-[240px] justify-center'>
             {myJudgeItem.authorNickname}{' '}
-            <span className='text-[#C3C3C3]'>{myJudgeItem.authorTier}</span>
+            <span className='text-gray-150'>{myJudgeItem.authorTier}</span>
           </div>
           <div>{formatDate(myJudgeItem.createdDate)}</div>
         </div>
       </div>
-      <div className='h-0.5 w-full bg-[#E20A29] my-[21px]' />
+      <div className='h-0.5 w-full bg-primary-500 my-[21px]' />
     </>
   );
 }

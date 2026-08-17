@@ -20,12 +20,12 @@ const SettingItemMobile = ({ icon, title, onClick, hasDivider = false }: IProps)
       onClick={onClick}
       className={`relative flex h-[52px] w-full items-center gap-[8px] px-[14px] py-[16px] text-left ${
         hasDivider
-          ? "after:absolute after:bottom-0 after:left-[52px] after:right-[14px] after:h-px after:bg-[#E6E6E6] after:content-['']"
+          ? "after:absolute after:bottom-0 after:left-[52px] after:right-[14px] after:h-px after:bg-gray-100 after:content-['']"
           : ''
       }`}
     >
       <Image src={icon} alt={`${title} 아이콘`} width={20} height={20} />
-      <span className='text-[14px] font-[400] leading-none text-[#333333]'>{title}</span>
+      <span className='text-[14px] font-[400] leading-none text-gray-850'>{title}</span>
     </button>
   );
 };

@@ -68,7 +68,7 @@ const Fault = () => {
     getAllTempSummaryList();
   }, [fetchAllChampions, getAllTempSummaryList]);
 
-  const titleClass = 'font-bold text-[24px] text-[#333333]';
+  const titleClass = 'font-bold text-[24px] text-semantic-text-primary';
 
   const onClickTempSaveBtn = async () => {
     if (!content && !title) {
@@ -231,11 +231,11 @@ const Fault = () => {
               />
             </div>
           </div>
-          {tempModalOpen && <TempModal />}
-          {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
-          {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
         </div>
       </ScaleWrapper>
+      {tempModalOpen && <TempModal />}
+      {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+      {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
       <WebFooter />
     </>
   );

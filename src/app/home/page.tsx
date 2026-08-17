@@ -138,7 +138,7 @@ const Home = () => {
           setActiveButton={setActiveButton}
         />
       ) : (
-        <div className='flex w-screen items-center justify-center pl-[260px] bg-[#FAFAFA]'>
+        <div className='flex min-h-screen w-screen items-start justify-center bg-semantic-background-page pl-[260px] text-semantic-text-primary'>
           <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
@@ -160,7 +160,7 @@ const Home = () => {
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className='flex w-full flex-col flex-grow items-center justify-center'>
+                <div className='flex w-full flex-col flex-grow items-center justify-center text-semantic-text-muted'>
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (

@@ -9,6 +9,26 @@ import { useWriteStore } from '@/store/write/useWriteStore';
 import UploadLinkModal from '../../_component/common/modal/upload/UploadLinkModal';
 import { truncateText } from '@/utils/truncateText';
 
+const useObjectUrl = (source: Blob | null) => {
+  const [objectUrl, setObjectUrl] = useState<string>();
+
+  useEffect(() => {
+    if (!source) {
+      setObjectUrl(undefined);
+      return;
+    }
+
+    const url = URL.createObjectURL(source);
+    setObjectUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [source]);
+
+  return objectUrl;
+};
+
 interface Props {
   titleClass: string;
   getBoxClass: () => string;
@@ -28,11 +48,14 @@ const ViewUploadedVideo = ({
   videoLink,
   thumbnail,
 }: Props) => {
-  const { setData, setPostAddRequest } = useWriteStore();
+  const setData = useWriteStore((state) => state.setData);
+  const setPostAddRequest = useWriteStore((state) => state.setPostAddRequest);
 
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(true);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
   const boxRef = useRef<HTMLDivElement | null>(null);
+  const previewVideoUrl = useObjectUrl(uploadVideos);
+  const posterUrl = useObjectUrl(thumbnail);
 
   // 파일 업로드 및 썸네일 추출을 위한 Refs
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -94,14 +117,23 @@ const ViewUploadedVideo = ({
 
     if (videoRef.current) {
       const video = videoRef.current;
-      video.src = url;
+      const finishThumbnailCapture = () => {
+        URL.revokeObjectURL(url);
+        video.onloadeddata = null;
+        video.onseeked = null;
+        video.onerror = null;
+      };
 
       video.onloadeddata = () => {
         video.currentTime = 1;
       };
 
       video.onseeked = async () => {
-        if (!canvasRef.current) return;
+        if (!canvasRef.current) {
+          finishThumbnailCapture();
+          setData('isLoading', false);
+          return;
+        }
 
         const canvas = canvasRef.current;
 
@@ -115,19 +147,24 @@ const ViewUploadedVideo = ({
           canvas.toBlob(async (blob) => {
             if (blob) {
               setData('thumbnail', blob);
-              URL.revokeObjectURL(url);
             }
+            finishThumbnailCapture();
             setData('isLoading', false);
           }, 'image/jpeg');
         } else {
+          finishThumbnailCapture();
           setData('isLoading', false);
         }
       };
 
       video.onerror = () => {
+        finishThumbnailCapture();
         setData('isLoading', false);
       };
+
+      video.src = url;
     } else {
+      URL.revokeObjectURL(url);
       setData('isLoading', false);
     }
   };
@@ -173,7 +210,7 @@ const ViewUploadedVideo = ({
         >
           <div
             className={
-              'w-full h-full text-[18px] text-black flex flex-col justify-between items-center gap-[10px]'
+              'w-full h-full text-[18px] text-semantic-text-primary flex flex-col justify-between items-center gap-[10px]'
             }
           >
             <div className={'w-full flex justify-between items-center'}>
@@ -228,18 +265,12 @@ const ViewUploadedVideo = ({
                 )}
 
                 {/* 업로드 파일 */}
-                {uploadVideos && (
+                {uploadVideos && previewVideoUrl && (
                   <video
                     width='100%'
                     height='100%'
-                    src={
-                      uploadVideos instanceof File
-                        ? URL.createObjectURL(
-                            new Blob([uploadVideos], { type: uploadVideos.type || 'video/mp4' }),
-                          )
-                        : uploadVideos
-                    }
-                    poster={thumbnail instanceof File ? URL.createObjectURL(thumbnail) : undefined}
+                    src={previewVideoUrl}
+                    poster={posterUrl}
                     controls
                     className='rounded-[10px] object-cover'
                   />

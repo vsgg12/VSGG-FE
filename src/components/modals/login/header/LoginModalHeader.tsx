@@ -20,7 +20,7 @@ const LoginModalHeader = () => {
         />
       </div>
 
-      <div className={'text-[16px] text-[#555555] font-medium'}>
+      <div className={'text-[16px] text-gray-700 font-medium'}>
         리그 오브 레전드에 진심인 사람들을 위한 커뮤니티!
       </div>
     </div>

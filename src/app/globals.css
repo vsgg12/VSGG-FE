@@ -2,6 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+[data-theme='light'] {
+  --color-background-page: theme('colors.gray.20');
+  --color-background-surface: theme('colors.white');
+  --color-background-elevated: theme('colors.white');
+  --color-background-input: theme('colors.white');
+  --color-background-subtle: theme('colors.gray.50');
+  --color-text-primary: theme('colors.gray.900');
+  --color-text-secondary: theme('colors.gray.700');
+  --color-text-muted: theme('colors.gray.500');
+  --color-text-disabled: theme('colors.gray.300');
+  --color-text-inverse: theme('colors.white');
+  --color-text-accent: theme('colors.primary.500');
+  --color-icon-default: theme('colors.gray.600');
+  --color-icon-muted: theme('colors.gray.500');
+  --color-icon-on-media: theme('colors.gray.600');
+  --color-icon-action: theme('colors.gray.700');
+  --color-icon-action-secondary: theme('colors.gray.100');
+  --color-border-default: theme('colors.gray.100');
+  --color-border-strong: theme('colors.gray.200');
+  --color-border-input: theme('colors.primary.500');
+  --color-button-primary-fill: theme('colors.primary.500');
+  --color-button-primary-text: theme('colors.white');
+  --color-button-secondary-fill: theme('colors.primary.100');
+  --color-button-secondary-text: theme('colors.primary.500');
+  --color-button-disabled-fill: theme('colors.gray.300');
+  --color-button-disabled-text: theme('colors.gray.500');
+  --color-shadow-soft: color-mix(in srgb, theme('colors.black') 10%, transparent);
+  --color-shadow-medium: color-mix(in srgb, theme('colors.black') 40%, transparent);
+  --color-shadow-subtle: color-mix(in srgb, theme('colors.black') 8%, transparent);
+}
+
+[data-theme='dark'] {
+  --color-background-page: theme('colors.gray.950');
+  --color-background-surface: theme('colors.gray.850');
+  --color-background-elevated: theme('colors.gray.800');
+  --color-background-input: theme('colors.gray.800');
+  --color-background-subtle: theme('colors.gray.900');
+  --color-text-primary: theme('colors.gray.50');
+  --color-text-secondary: theme('colors.gray.200');
+  --color-text-muted: theme('colors.gray.400');
+  --color-text-disabled: theme('colors.gray.600');
+  --color-text-inverse: theme('colors.gray.950');
+  --color-text-accent: theme('colors.primary.500');
+  --color-icon-default: theme('colors.gray.50');
+  --color-icon-muted: theme('colors.gray.400');
+  --color-icon-on-media: theme('colors.white');
+  --color-icon-action: theme('colors.gray.200');
+  --color-icon-action-secondary: theme('colors.gray.700');
+  --color-border-default: theme('colors.gray.800');
+  --color-border-strong: theme('colors.gray.700');
+  --color-border-input: theme('colors.primary.500');
+  --color-button-primary-fill: theme('colors.primary.500');
+  --color-button-primary-text: theme('colors.white');
+  --color-button-secondary-fill: theme('colors.gray.800');
+  --color-button-secondary-text: theme('colors.gray.50');
+  --color-button-disabled-fill: theme('colors.gray.700');
+  --color-button-disabled-text: theme('colors.gray.400');
+  --color-shadow-soft: color-mix(in srgb, theme('colors.black') 10%, transparent);
+  --color-shadow-medium: color-mix(in srgb, theme('colors.black') 40%, transparent);
+  --color-shadow-subtle: color-mix(in srgb, theme('colors.black') 8%, transparent);
+}
+
 @font-face {
   font-family: 'SBAggroB';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff')
@@ -37,7 +100,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-[#ECECEC];
+  @apply bg-gray-100;
 }
 
 /* Hide scrollbar but allow scrolling */
@@ -51,12 +114,11 @@ body {
 }
 
 .root-bg {
-  @apply h-full w-full bg-white;
-  /* @apply h-full w-full bg-[#000000]; */
+  @apply h-full w-full bg-semantic-background-page text-semantic-text-primary;
 }
 
 .hd-items {
-  @apply p-0.5 text-[2rem] text-[#E20A29];
+  @apply p-0.5 text-[2rem] text-primary-500;
 }
 
 .hd-items:hover {
@@ -64,15 +126,15 @@ body {
 }
 
 .su-i-blocked {
-  @apply select-none rounded-full bg-[#D9D9D9] px-5 py-3 text-[#7B7B7B] outline-none;
+  @apply select-none rounded-full bg-semantic-button-disabled-fill px-5 py-3 text-semantic-button-disabled-text outline-none;
 }
 
 .su-i {
-  @apply grow rounded-full border-2 border-[#E20A29] px-5 py-3 focus:outline-none;
+  @apply grow rounded-full border-2 border-semantic-border-input bg-semantic-background-input px-5 py-3 text-semantic-text-primary focus:outline-none;
 }
 
 .su-btn {
-  @apply rounded-full border-2 border-[#E20A29] p-1 px-4 py-2 font-bold;
+  @apply rounded-full border-2 border-primary-500 p-1 px-4 py-2 font-bold text-primary-500;
 }
 
 .p-content-pd {
@@ -112,7 +174,7 @@ body {
 }
 
 .p-voting-bar-mobile {
-  @apply mr-[0.125em] h-[26px] min-w-[31px] flex-1 cursor-pointer border-[0.08125em];
+  @apply mr-[0.125em] h-[1.5em] w-[30px] cursor-pointer border-[0.08125em] border-gray-850 hover:border-[1.5px];
 }
 
 .p-voting-bar-element {
@@ -120,23 +182,23 @@ body {
 }
 
 .p-tab-title {
-  @apply mr-[0.3125rem] h-[5rem] w-[8.5rem] rounded-t-[0.625rem] text-[#333333];
+  @apply mr-[0.3125rem] h-[5rem] w-[8.5rem] rounded-t-[0.625rem] text-semantic-text-primary;
 }
 
 .p-tab-n-selected {
-  @apply h-[4.375rem] rounded-[10px] bg-[#F8F8F8];
+  @apply h-[4.375rem] rounded-[10px] bg-semantic-background-subtle;
 }
 
 .p-tab-selected {
-  @apply border-[0.09375rem] border-b-2 border-[#828282] border-b-[#ffffff] text-[#E20A29];
+  @apply border-[0.09375rem] border-b-2 border-gray-500 border-b-semantic-background-surface text-primary-500;
 }
 
 .p-tab-content {
-  @apply absolute top-[4.89375rem] z-0 w-full border-collapse rounded-[1.875rem] border-[0.09375rem] border-[#828282] px-[1.875rem] py-[1.25rem] text-lg text-[#828282];
+  @apply absolute top-[4.89375rem] z-0 w-full border-collapse rounded-[1.875rem] border-[0.09375rem] border-gray-500 px-[1.875rem] py-[1.25rem] text-lg text-semantic-text-muted;
 }
 
 .p-font-color-default {
-  @apply text-[#333333];
+  @apply text-semantic-text-primary;
 }
 
 .p-input-hidden {
@@ -148,15 +210,15 @@ body {
 }
 
 .p-position-selected {
-  @apply bg-[#E20A29] text-[#ECECEC];
+  @apply bg-primary-500 text-gray-100;
 }
 
 .p-position-n-selected {
-  @apply border-[#828282] bg-[#ECECEC] text-[#828282];
+  @apply border-gray-500 bg-gray-100 text-gray-500;
 }
 
 .p-select {
-  @apply mr-[0.625rem] grow rounded-[1.875rem] border-[0.0625rem] border-[#333333] px-[5px] py-[0.3125rem] text-xs outline-none;
+  @apply mr-[0.625rem] grow rounded-[1.875rem] border-[0.0625rem] border-semantic-border-strong bg-semantic-background-input px-[5px] py-[0.3125rem] text-xs text-semantic-text-primary outline-none;
 }
 
 .v-label {
@@ -164,11 +226,11 @@ body {
 }
 
 .si-input {
-  @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-[#E20A29] p-[20px] outline-none;
+  @apply mb-[10px] h-[25px] grow select-none rounded-[30px] border-2 border-semantic-border-input bg-semantic-background-input p-[20px] text-semantic-text-primary outline-none;
 }
 
 .mobile-layout {
-  @apply min-w-[370px] max-w-[768px] w-screen relative my-0 mx-auto box-border bg-[#F3F3F3];
+  @apply relative my-0 mx-auto box-border w-screen min-w-[370px] max-w-[768px] bg-semantic-background-page;
 }
 
 .mobile-scroll {
@@ -185,7 +247,7 @@ body {
 .loader {
   width: 60px;
   aspect-ratio: 4;
-  --_g: no-repeat radial-gradient(circle closest-side, #e20a29 90%, #0000);
+  --_g: no-repeat radial-gradient(circle closest-side, theme('colors.primary.500') 90%, transparent);
   background:
     var(--_g) 0 50%,
     var(--_g) 50% 50%,
@@ -222,7 +284,7 @@ body {
 }
 
 .active-page {
-  @apply bg-[#E20A29] text-white rounded-full w-[34px] h-[34px] flex items-center justify-center;
+  @apply flex h-[34px] w-[34px] items-center justify-center rounded-full bg-primary-500 text-white;
 }
 
 /* HTML: <div class="loader"></div> */
@@ -233,8 +295,8 @@ body {
   width: 50px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 8px solid #ececec;
-  border-right-color: #e20a29;
+  border: 8px solid theme('colors.gray.100');
+  border-right-color: theme('colors.primary.500');
   animation: l2 1s infinite linear;
 }
 
@@ -253,11 +315,11 @@ body {
 }
 
 .custom-pagination .swiper-pagination-bullet {
-  background-color: #999999;
+  background-color: theme('colors.gray.400');
   width: 5px;
   height: 5px;
 }
 
 .custom-pagination .swiper-pagination-bullet-active {
-  background-color: #e20a29;
+  background-color: theme('colors.primary.500');
 }

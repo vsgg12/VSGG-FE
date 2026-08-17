@@ -47,17 +47,17 @@ function ProfileInfo() {
         <div className='flex flex-col gap-[3px]'>
           <div className='flex gap-[3px]'>
             {getIcon(userProfileData.memberProfileDTO.tier)}
-            <div className='text-[16px] text-[#333333]'>
+            <div className='text-[16px] text-semantic-text-primary'>
               {truncateText(userProfileData.memberProfileDTO.nickName, 8)}
             </div>
           </div>
 
-          <div className='text-[12px] text-[#888888]'>{truncateText(user.email, 22)}</div>
+          <div className='text-[12px] text-semantic-text-muted'>{truncateText(user.email, 22)}</div>
         </div>
       ) : (
-        <div className='text-[16px] text-[#333333] relative h-[20px] overflow-hidden w-full flex items-center'>
+        <div className='text-[16px] text-semantic-text-primary relative h-[20px] overflow-hidden w-full flex items-center'>
           <span
-            className='absolute top-0 left-0 w-full transition-opacity duration-300 ease-in-out text-[16px] text-[#333333] text-left'
+            className='absolute top-0 left-0 w-full transition-opacity duration-300 ease-in-out text-[16px] text-semantic-text-primary text-left'
             style={{
               opacity: isHovered ? 0 : 1,
               transition: 'opacity 0.3s ease-in-out',
@@ -66,7 +66,7 @@ function ProfileInfo() {
             게스트
           </span>
           <span
-            className='absolute top-0 left-0 w-full transition-opacity duration-300 ease-in-out text-[16px] text-[#333333] text-left'
+            className='absolute top-0 left-0 w-full transition-opacity duration-300 ease-in-out text-[16px] text-semantic-text-primary text-left'
             style={{
               opacity: isHovered ? 1 : 0,
               transition: 'opacity 0.3s ease-in-out',

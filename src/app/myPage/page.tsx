@@ -99,7 +99,7 @@ export default function MyPage() {
                   <div className='text-[16px] mb-[5px] font-medium'>
                     보유 포인트 : {formatNumberWithCommas(userProfileData.memberProfileDTO.point)}P
                   </div>
-                  <div className='h-1 w-full bg-[#E20A29]' />
+                  <div className='h-1 w-full bg-primary-500' />
                   <div className='h-[350px] flex flex-col items-center relative'>
                     <p className='text-[14px] translate-x-[-80px] font-[400]'>판결 승률</p>
                     <div className='absolute w-[180px]'>
@@ -111,7 +111,7 @@ export default function MyPage() {
                         }
                       />
                     </div>
-                    <div className='text-[#C3C3C3] text-[17px] absolute whitespace-nowrap bottom-[15px] font-[400]'>
+                    <div className='text-gray-150 text-[17px] absolute whitespace-nowrap bottom-[15px] font-[400]'>
                       {userProfileData.memberProfileDTO.joinedResult}전{' '}
                       {userProfileData.memberProfileDTO.predicateResult}승{' '}
                       {userProfileData.memberProfileDTO.joinedResult -
@@ -119,7 +119,7 @@ export default function MyPage() {
                       패
                     </div>
                   </div>
-                  <div className='h-1 w-full bg-[#E20A29]'></div>
+                  <div className='h-1 w-full bg-primary-500'></div>
                   <div className='flex w-full flex-col justify-center gap-5'>
                     <div className='text-[14px] translate-x-[20px] font-[400]'>
                       <span className='font-semibold'>
@@ -129,11 +129,11 @@ export default function MyPage() {
                     </div>
                     <div className='flex flex-col items-center justify-center gap-2'>
                       <BarChart num={userProfileData.memberProfileDTO.joinedResult} />
-                      <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
+                      <div className='text-[14px] font-[400] text-gray-150'>{`판결 ${userProfileData.memberProfileDTO.joinedResult} / ${userProfileData.memberProfileDTO.nextJoinedResult}`}</div>
                     </div>
                     <div className='flex flex-col items-center justify-center gap-2'>
                       <BarChart num={userProfileData.memberProfileDTO.predicateResult} />
-                      <div className='text-[14px] font-[400] text-[#C3C3C3]'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
+                      <div className='text-[14px] font-[400] text-gray-150'>{`승리한 판결 ${userProfileData.memberProfileDTO.predicateResult} / ${userProfileData.memberProfileDTO.nextPredicateResult}`}</div>
                     </div>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function MyPage() {
                       더보기
                     </div>
                   </div>
-                  <div className='flex justify-between text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
+                  <div className='flex justify-between text-[12px] font-medium text-gray-150 mb-[12px]'>
                     <div>제목</div>
                     <div className='w-[300px] flex justify-between'>
                       <div>게시자</div>
@@ -183,7 +183,7 @@ export default function MyPage() {
                     </div>
                   </div>
 
-                  <div className='flex justify-between items-center text-[12px] font-medium text-[#C3C3C3] mb-[12px]'>
+                  <div className='flex justify-between items-center text-[12px] font-medium text-gray-150 mb-[12px]'>
                     <div>제목</div>
                     <div className='w-[300px] flex justify-between'>
                       <div>댓글수</div>

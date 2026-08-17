@@ -1,5 +1,7 @@
 'use client';
 
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+
 interface Props {
   title: '확인' | '취소';
   onClickCancel?: () => void;
@@ -7,7 +9,13 @@ interface Props {
 }
 
 const ConfirmButton = ({ title, onClickConfirm, onClickCancel }: Props) => {
-  const buttonClass = title === '확인' ? 'bg-[#E20A29] text-white' : 'bg-white text-[#555555]';
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+  const buttonClass =
+    title === '확인'
+      ? 'border-primary-500 bg-primary-500 text-[#111111]'
+      : isDarkMode
+        ? 'border-[#484B4D] bg-[#242526] text-[#D7D8D9]'
+        : 'border-[#E5E6E6] bg-white text-[#242526]';
 
   const onClickBtnClick = () => {
     if (title === '확인') {
@@ -19,7 +27,7 @@ const ConfirmButton = ({ title, onClickConfirm, onClickCancel }: Props) => {
 
   return (
     <button
-      className={`w-[72px] h-[41px] rounded-[5px] font-semibold text-[18px] flex items-center justify-center border-[#C8C8C8] border-[0.5px] ${buttonClass}`}
+      className={`flex h-[41px] w-[72px] items-center justify-center rounded-[5px] border-[0.5px] text-[18px] font-semibold ${buttonClass}`}
       onClick={onClickBtnClick}
     >
       {title}

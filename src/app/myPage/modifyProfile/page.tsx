@@ -223,7 +223,7 @@ function ModifyProfile_Mobile() {
       <ModifyProfileHeader handleSaveClick={handleSave} />
       <div className='mobile-layout flex flex-col flex-grow items-center px-[21px] py-[20px] gap-[100px] pt-[80px]'>
         <div className='w-full flex flex-col gap-[20px]'>
-          {/* <div className='font-semibold text-[22px] text-[#333333]'>프로필 이미지</div> */}
+          {/* <div className='font-semibold text-[22px] text-gray-850'>프로필 이미지</div> */}
           <div className='flex gap-[15px] justify-center'>
             <img
               src={profileImage}
@@ -239,14 +239,14 @@ function ModifyProfile_Mobile() {
                 onChange={handleFileChange}
               />
               <div
-                className='border border-gray rounded-[5px] text-[#333333] bg-white w-[33px] h-[32px] flex justify-center items-center cursor-pointer'
+                className='border border-gray rounded-[5px] text-gray-850 bg-white w-[33px] h-[32px] flex justify-center items-center cursor-pointer'
                 onClick={handleChangeImage}
               >
                 <Image src={CameraIcon} alt='Camera-Icon' width={16} height={16} />
               </div>
 
               <div
-                className='border border-gray rounded-[5px] text-[#333333] bg-white w-[48px] h-[32px] cursor-pointer flex justify-center items-center'
+                className='border border-gray rounded-[5px] text-gray-850 bg-white w-[48px] h-[32px] cursor-pointer flex justify-center items-center'
                 onClick={handleDeleteImage}
               >
                 삭제
@@ -254,10 +254,10 @@ function ModifyProfile_Mobile() {
             </div>
             {/* <div className='flex flex-col justify-between'> 
                    <div className='flex flex-col'>
-                    <p className='text-[14px] font-medium text-[#909090]'>
+                    <p className='text-[14px] font-medium text-gray-400'>
                       파일 형식 : jpg, jpeg, png
                     </p>
-                    <p className='text-[14px] font-medium text-[#909090]'>파일 크기 : 2MB 이내</p>
+                    <p className='text-[14px] font-medium text-gray-400'>파일 크기 : 2MB 이내</p>
                   </div> 
                 </div> */}
           </div>
@@ -265,27 +265,27 @@ function ModifyProfile_Mobile() {
 
         <div className='flex flex-col gap-[10px] px-[25px]'>
           <div className='flex gap-[10px] items-center'>
-            <p className='font-semibold text-[15px] text-[#333333]'>닉네임</p>
-            <p className='font-medium text-[15px] text-[#909090]'>
+            <p className='font-semibold text-[15px] text-gray-850'>닉네임</p>
+            <p className='font-medium text-[15px] text-gray-400'>
               닉네임은 7일에 한번만 변경할 수 있습니다.
             </p>
           </div>
           <div className='flex gap-3 items-center justify-center'>
             <input
               type='text'
-              className='min-w-[263.5px] h-[30px] px-[2px] font-medium text-[20px] bg-inherit text-[#333333] border-b-2 border-gray focus:outline-none'
+              className='min-w-[263.5px] h-[30px] px-[2px] font-medium text-[20px] bg-inherit text-gray-850 border-b-2 border-gray focus:outline-none'
               value={nickName}
               placeholder='닉네임을 입력하세요.'
               onChange={handleChangeNickname}
             />
             <button
-              className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-[#333333] w-[76px] h-[32px] whitespace-nowrap cursor-pointer'
+              className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-gray-850 w-[76px] h-[32px] whitespace-nowrap cursor-pointer'
               onClick={handleCheckNickname}
             >
               중복확인
             </button>
           </div>
-          <div className='text-[14px] text-[#E20A29] flex items-center'>{errorMessage}</div>
+          <div className='text-[14px] text-primary-500 flex items-center'>{errorMessage}</div>
         </div>
       </div>
     </div>
