@@ -21,7 +21,6 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
   const [isHamburgerClicked, setIsHamburgerClicked] = useState<boolean>(false);
   const [selectedChampion, setSelectedChampion] = useState<string>(voteInfo[0].championName);
   const formClass = isDarkMode ? 'bg-[#242526] text-[#F1F2F2]' : 'bg-white text-gray-850';
-  const championTabClass = isDarkMode ? 'bg-[#303233]' : 'bg-white';
 
   useEffect(() => {
     setVoteResult(Array(voteInfo.length).fill(0));
@@ -66,7 +65,7 @@ export default function VoteForm({ voteInfo, handleVoteSubmit, voteCount }: IVot
               }}
             >
               <div
-                className={`${selectedChampion === champion.championName ? voteColors[index].background : championTabClass} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
+                className={`${selectedChampion === champion.championName ? voteColors[index].background : 'bg-white'} flex items-center justify-center rounded-[10px] w-[46px] h-[49px] cursor-pointer`}
               >
                 <Image
                   src={getPositionSrc(champion.position, index)}
