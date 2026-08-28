@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/alarm/getAlarms';
 import { useMediaQuery } from 'react-responsive';
-import { useLoginStore } from '@/store/login/useLoginStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { SidebarModalLayout } from '../modals/SidebarModalLayout';
@@ -15,7 +14,6 @@ function SidebarMini() {
   const { isLogin, accessToken } = useAuthStore();
   const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } =
     useSidebarStore();
-  const { setIsLoginModalOpen } = useLoginStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -47,7 +45,7 @@ function SidebarMini() {
           alt='VS.GG'
           className={`hidden w-auto h-[30px] dark:hidden`}
         />
-        <SidebarListMini setIsLoginModalOpen={setIsLoginModalOpen} />
+        <SidebarListMini />
       </div>
       {isNotificationOpen && (
         <SidebarModalLayout
