@@ -18,6 +18,7 @@ import guideIcon from '../../../../public/svg/mobile/setting/guideIcon.svg';
 import patchNoteIcon from '../../../../public/svg/mobile/setting/patchNoteIcon.svg';
 import LinkUtils from '@/utils/link/linkUtils';
 import SettingFooterMobile from '@/app/setting/mobile/components/footer/SettingFooterMobile';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 const SettingMobile = () => {
   const { isLogin, user, accessToken } = useAuthStore(
@@ -29,6 +30,8 @@ const SettingMobile = () => {
   );
 
   const router = useRouter();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+  const setIsDarkMode = useSidebarStore((state) => state.setIsDarkMode);
 
   const { data: userProfileData } = useQuery({
     queryKey: ['MY_PROFILE_INFO'],
@@ -55,9 +58,9 @@ const SettingMobile = () => {
   const additionalOptionItems = [
     {
       icon: darkThemeIcon,
-      title: '어두운 테마',
+      title: isDarkMode ? '밝은 테마' : '어두운 테마',
       onClick: () => {
-        alert('준비중입니다.');
+        setIsDarkMode(!isDarkMode);
       },
     },
     { icon: guideIcon, title: '이용가이드', onClick: LinkUtils.handleGuideClick },
