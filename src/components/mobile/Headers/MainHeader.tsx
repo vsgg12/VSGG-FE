@@ -65,6 +65,11 @@ const MainHeader = () => {
   };
 
   const handleMenuBtnClick = (): void => {
+    if (!isLogin) {
+      router.push('/login');
+      return;
+    }
+
     router.push('/setting/mobile');
   };
 
