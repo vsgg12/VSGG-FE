@@ -17,7 +17,7 @@ export default function PostVotingChampList({ voteInfos }: Props) {
             return (
               <div key={index} className='flex items-center gap-[10px]'>
                 <div className={`${voteColor.background} p-voting-champ-dot`}></div>
-                <p className='whitespace-nowrap text-[12px] text-[#333333]'>
+                <p className='whitespace-nowrap text-[12px] text-gray-850'>
                   {champion.championName}
                 </p>
               </div>

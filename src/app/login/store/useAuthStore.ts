@@ -8,6 +8,7 @@ interface IUserState {
   nickname: string;
   profile_image: string;
   socialLoginType?: string;
+  tier?: string;
 }
 
 type LoginState = {

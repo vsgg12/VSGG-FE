@@ -16,7 +16,7 @@ const TempModal = () => {
     <ModalOverlay onClose={onCloseModal}>
       <div
         className={
-          'w-[650px] h-[786px] px-[30px] py-[40px] flex flex-col gap-[27px] bg-white rounded-[30px]'
+          'h-[786px] w-[650px] rounded-[30px] bg-semantic-background-elevated px-[30px] py-[40px] text-semantic-text-primary shadow-[8px_8px_16px_rgba(0,0,0,0.16)] flex flex-col gap-[27px]'
         }
       >
         <TempModalHeader />

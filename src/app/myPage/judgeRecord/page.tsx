@@ -67,7 +67,7 @@ export default function JudgeRecord() {
                       }
                     />
                   </div>
-                  <div className='absolute text-[14px] font-[400] text-[#C3C3C3] translate-y-[160px]'>
+                  <div className='absolute text-[14px] font-[400] text-gray-150 translate-y-[160px]'>
                     {userProfileData.memberProfileDTO.joinedResult}전{' '}
                     {userProfileData.memberProfileDTO.predicateResult}승{' '}
                     {userProfileData.memberProfileDTO.joinedResult -
@@ -80,11 +80,11 @@ export default function JudgeRecord() {
               <div className='flex flex-col gap-3 rounded-[30px] bg-white px-10 pb-4 pt-8 min-h-[800px] mb-[50px] min-w-[960px]'>
                 <div className='flex items-center gap-5 mb-[8px] font-medium'>
                   <div className='text-[20px]'>판결 전적</div>
-                  <div className='text-[12px] text-[#C3C3C3]'>
+                  <div className='text-[12px] text-gray-150'>
                     최대 1달 전까지의 전적을 확인할 수 있어요
                   </div>
                 </div>
-                <div className='flex justify-between items-center text-[12px] text-[#C3C3C3] font-medium'>
+                <div className='flex justify-between items-center text-[12px] text-gray-150 font-medium'>
                   <div>제목</div>
                   <div className='w-[300px] flex justify-between'>
                     <div>게시자</div>

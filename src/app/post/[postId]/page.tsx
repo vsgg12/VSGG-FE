@@ -69,9 +69,11 @@ export default function PostDetailMain() {
   return (
     <>
       {isMobile ? (
-        <PostDetailMobile />
+        <div className='w-full h-[100dvh] flex flex-col'>
+          <PostDetailMobile />
+        </div>
       ) : (
-        <div className='min-w-[1400px] flex-col items-center'>
+        <div className='min-w-[1400px] flex-col items-center bg-semantic-background-page text-semantic-text-primary'>
           {isLoading ? (
             <Loading />
           ) : (

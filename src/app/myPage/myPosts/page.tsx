@@ -52,7 +52,7 @@ export default function MyPosts() {
                   <div className='flex items-center gap-5 mb-[8px] text-[20px]'>
                     <p>내가 쓴 글</p>
                   </div>
-                  <div className='flex justify-between items-center text-[12px] text-[#C3C3C3]'>
+                  <div className='flex justify-between items-center text-[12px] text-gray-150'>
                     <div>제목</div>
                     <div className='w-[300px] flex justify-between'>
                       <div>댓글수</div>

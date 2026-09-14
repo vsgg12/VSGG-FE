@@ -9,7 +9,7 @@ const TempList = () => {
   const [isHover, setIsHover] = useState<number | null>(null);
 
   return (
-    <div className={'w-full flex flex-col gap-[20px] h-[585px] overflow-y-auto'}>
+    <div className={'scrollbar-hidden flex h-[585px] w-full flex-col gap-[18px] overflow-y-auto'}>
       {tempList.map((item) => (
         <TempItem
           item={item}

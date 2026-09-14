@@ -1,6 +1,7 @@
 import React from 'react';
 import { Chart, ArcElement } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { colors } from '@/constants/colors';
 
 Chart.register(ArcElement);
 
@@ -20,7 +21,7 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose, isMobi
       {
         label: '# of Votes',
         data: isZero ? [0, 1] : [win, lose],
-        backgroundColor: ['#E20A29', '#000000'],
+        backgroundColor: [colors.brand[500], colors.black],
         borderWidth: 0,
       },
     ],
@@ -36,7 +37,7 @@ const HalfDoughnutChart: React.FC<HalfDoughnutChartProps> = ({ win, lose, isMobi
     <div className='relative flex flex-col items-center justify-center '>
       <Doughnut data={data} options={options} />
       <span
-        className={`absolute ${isMobile ? 'text-[16px]' : 'text-[20px]'} font-medium text-[#E20A29] translate-y-[25px]`}
+        className={`absolute ${isMobile ? 'text-[16px]' : 'text-[20px]'} font-medium text-primary-500 translate-y-[25px]`}
       >
         {isZero ? '0' : winPercentage.toFixed(0)}%
       </span>

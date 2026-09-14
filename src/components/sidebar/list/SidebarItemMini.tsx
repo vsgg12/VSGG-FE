@@ -4,20 +4,19 @@ import { useSidebarItem } from '@/hooks/sidebar/useSidebarItem';
 
 interface Props {
   item: sidebarListType;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
 }
 
-function SidebarItemMini({ item, setIsLoginModalOpen }: Props) {
+function SidebarItemMini({ item }: Props) {
   const { getIcon, handleClick, disabled } = useSidebarItem({
     item,
-    setIsLoginModalOpen,
   });
 
   return (
     <div
-      className={`flex gap-[40px] items-center w-[80%] h-[50px] cursor-pointer
+      className={`flex items-center justify-center w-full h-[50px] cursor-pointer
       transition-transform duration-200 ease-in-out       
-      ${disabled && 'hover:translate-y-[-5px]'}`}
+      ${disabled && 'hover:translate-y-[-5px]'}
+      ${disabled ? 'text-semantic-icon-default' : 'text-primary-500'}`}
       onClick={handleClick}
     >
       {getIcon()}

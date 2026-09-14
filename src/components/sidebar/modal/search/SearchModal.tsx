@@ -89,14 +89,14 @@ function SearchModal() {
 
   return (
     <div
-      className='w-[362px] min-w-[362px] h-screen py-[40px] bg-[#FFFFFF] z-[100]'
+      className='w-[362px] min-w-[362px] h-screen py-[40px] bg-semantic-background-surface z-[100]'
       style={{
-        boxShadow: '4px 0 12px rgba(0, 0, 0, 0.1)',
+        boxShadow: '4px 0 12px var(--color-shadow-soft)',
       }}
       onClick={(e) => e.stopPropagation()}
     >
       <div className='h-full flex flex-col gap-[30px]'>
-        <p className='text-[#888888] text-[20px] font-bold pl-[16px]'>검색</p>
+        <p className='text-semantic-text-muted text-[20px] font-bold pl-[16px]'>검색</p>
         <SearchInputContainer
           handleSearchKeyDown={handleSearchKeyDown}
           handleSearch={handleSearch}
@@ -110,7 +110,7 @@ function SearchModal() {
               <SearchList postList={visiblePosts} />
             </div>
           ) : (
-            <div className='text-[12px] text-[#888888] w-full justify-center flex'>
+            <div className='text-[12px] text-semantic-text-muted w-full justify-center flex'>
               검색 결과가 없습니다
             </div>
           )}

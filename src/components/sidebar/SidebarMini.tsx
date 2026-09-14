@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import getAlarms from '@/api/alarm/getAlarms';
 import { useMediaQuery } from 'react-responsive';
-import { useLoginStore } from '@/store/login/useLoginStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { SidebarModalLayout } from '../modals/SidebarModalLayout';
@@ -15,7 +14,6 @@ function SidebarMini() {
   const { isLogin, accessToken } = useAuthStore();
   const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } =
     useSidebarStore();
-  const { setIsLoginModalOpen } = useLoginStore();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -31,7 +29,7 @@ function SidebarMini() {
     return null;
   }
   return (
-    <div className='flex flex-col w-[50px] h-full bg-white fixed top-0 left-0 z-[100] pt-[20px]'>
+    <div className='fixed left-0 top-0 z-[100] flex h-screen w-[50px] flex-col bg-semantic-background-surface pt-[20px]'>
       <div className='flex flex-col gap-[10px] items-center '>
         {/* 라이트모드용 로고: 기본적으로 보이고, 다크모드(.dark)에서는 숨김 */}
         <img
@@ -47,7 +45,7 @@ function SidebarMini() {
           alt='VS.GG'
           className={`hidden w-auto h-[30px] dark:hidden`}
         />
-        <SidebarListMini setIsLoginModalOpen={setIsLoginModalOpen} />
+        <SidebarListMini />
       </div>
       {isNotificationOpen && (
         <SidebarModalLayout

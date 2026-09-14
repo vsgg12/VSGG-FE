@@ -26,15 +26,15 @@ function SearchInputContainer({
           value={keyword}
           onChange={onChangeKeyword}
           onKeyDown={handleSearchKeyDown}
-          className='w-full h-full rounded-[10px] pl-[20px] pr-[50px] text-[16px] font-medium bg-[#F8F8F8] focus:outline-none'
+          className='w-full h-full rounded-[10px] pl-[20px] pr-[50px] text-[16px] font-medium bg-semantic-background-subtle focus:outline-none'
         />
         <button onClick={handleSearch}>
-          <GoSearch className='absolute right-5 top-[12px] text-[#E20A29]' />
+          <GoSearch className='absolute right-5 top-[12px] text-primary-500' />
         </button>
       </div>
       {visible && (
-        <div className='w-full text-[16px] font-medium text-[#333333] pl-[10px]'>
-          <span className='font-semibold text-[#E20A29]'>{keyword}</span>에 대한 검색 결과입니다.
+        <div className='w-full text-[16px] font-medium text-semantic-text-primary pl-[10px]'>
+          <span className='font-semibold text-primary-500'>{keyword}</span>에 대한 검색 결과입니다.
         </div>
       )}
     </div>

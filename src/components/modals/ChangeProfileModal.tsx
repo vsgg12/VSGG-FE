@@ -199,8 +199,8 @@ function ChangeProfileModal({
       <div className='flex flex-col gap-[40px]'>
         <div>
           <div className='flex gap-3 items-center mb-[10px]'>
-            <p className='font-semibold text-[22px] text-[#555555]'>닉네임</p>
-            <p className='font-medium text-[14px] text-[#909090]'>
+            <p className='font-semibold text-[22px] text-gray-700'>닉네임</p>
+            <p className='font-medium text-[14px] text-gray-400'>
               닉네임은 7일에 한번만 변경할 수 있습니다.
             </p>
           </div>
@@ -208,25 +208,25 @@ function ChangeProfileModal({
             <div className='flex gap-3 items-center justify-center'>
               <input
                 type='text'
-                className='w-[207px] px-[2px] font-medium text-[22px] text-[#555555] border-b-2 border-gray focus:outline-none'
+                className='w-[207px] px-[2px] font-medium text-[22px] text-gray-700 border-b-2 border-gray focus:outline-none'
                 value={nickName}
                 placeholder='닉네임을 입력하세요.'
                 onChange={handleChangeNickname}
               />
               <button
-                className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-[#333333] px-[10px] py-[5px]'
+                className='bg-white rounded-[5px] border border-gray justify-center items-center text-[16px] font-medium text-gray-850 px-[10px] py-[5px]'
                 onClick={handleCheckNickname}
               >
                 중복확인
               </button>
             </div>
-            <div className='text-[14px] text-[#E20A29] flex items-center pl-[15px]'>
+            <div className='text-[14px] text-primary-500 flex items-center pl-[15px]'>
               {errorMessage}
             </div>
           </div>
         </div>
         <div className='flex flex-col gap-[20px]'>
-          <div className='font-semibold text-[22px] text-[#555555]'>프로필 이미지</div>
+          <div className='font-semibold text-[22px] text-gray-700'>프로필 이미지</div>
           <div className='flex gap-[15px] pl-[10px]'>
             <img
               src={profileImage}
@@ -235,8 +235,8 @@ function ChangeProfileModal({
             />
             <div className='flex flex-col justify-between'>
               <div className='flex flex-col'>
-                <p className='text-[14px] font-medium text-[#909090]'>파일 형식 : jpg, jpeg, png</p>
-                <p className='text-[14px] font-medium text-[#909090]'>파일 크기 : 2MB 이내</p>
+                <p className='text-[14px] font-medium text-gray-400'>파일 형식 : jpg, jpeg, png</p>
+                <p className='text-[14px] font-medium text-gray-400'>파일 크기 : 2MB 이내</p>
               </div>
               <div className='flex gap-[10px]'>
                 <input
@@ -247,14 +247,14 @@ function ChangeProfileModal({
                   onChange={handleFileChange}
                 />
                 <button
-                  className='border border-gray rounded-[5px] text-[#333333] bg-white w-[98px] h-[32px]'
+                  className='border border-gray rounded-[5px] text-gray-850 bg-white w-[98px] h-[32px]'
                   onClick={handleChangeImage}
                 >
                   사진 업로드
                 </button>
 
                 <button
-                  className='border border-gray rounded-[5px] text-[#333333] bg-white w-[50px] h-[32px]'
+                  className='border border-gray rounded-[5px] text-gray-850 bg-white w-[50px] h-[32px]'
                   onClick={handleDeleteImage}
                 >
                   삭제
@@ -265,13 +265,13 @@ function ChangeProfileModal({
         </div>
         <div className='flex gap-[15px] justify-center'>
           <button
-            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center text-[#E20A29] bg-white text-[24px] font-semibold border border-[#E20A29]'
+            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center text-primary-500 bg-white text-[24px] font-semibold border border-primary-500'
             onClick={handleCancel}
           >
             취소
           </button>
           <button
-            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center bg-[#E20A29] text-white text-[24px] font-semibold border border-[#E20A29]'
+            className='rounded-[5px] w-[150px] h-[57px] justify-center items-center bg-primary-500 text-white text-[24px] font-semibold border border-primary-500'
             onClick={handleSave}
           >
             적용

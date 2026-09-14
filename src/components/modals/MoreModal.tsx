@@ -5,6 +5,7 @@ import usePostIdStore from '@/app/post/[postId]/store/usePostIdStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction } from 'react';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface Props {
   type: 'owner' | 'user';
@@ -36,6 +37,11 @@ function MoreModal({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { setPostVoteResult } = usePostIdStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+  const modalClass = isDarkMode
+    ? 'border-[#484B4D] bg-[#242526] text-[#787C80]'
+    : 'border-gray-150 bg-white text-gray-500';
+  const dividerClass = isDarkMode ? 'border-[#484B4D]' : 'border-gray-20';
 
   const { mutate: deletePostItem } = useMutation({
     mutationFn: () => deletePost(postId, accessToken),
@@ -97,11 +103,11 @@ function MoreModal({
   };
 
   return (
-    <div className='w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border border-[#C8C8C8] z-100 bg-white'>
-      <div className='flex flex-col text-[12px] font-medium h-full text-[#828282] text-center justify-center gap-[3px]'>
+    <div className={`w-[62px] max-h-[54px] min-h-[29px] p-[5px] rounded-[10px] border z-100 ${modalClass}`}>
+      <div className='flex flex-col text-[12px] font-medium h-full text-center justify-center gap-[3px]'>
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            {index > 0 && <hr className='border-t border-[#F8F8F8]' />}
+            {index > 0 && <hr className={`border-t ${dividerClass}`} />}
             <div className='cursor-pointer' onClick={() => handleClick(item)}>
               {item}
             </div>

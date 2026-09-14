@@ -68,7 +68,7 @@ const Fault = () => {
     getAllTempSummaryList();
   }, [fetchAllChampions, getAllTempSummaryList]);
 
-  const titleClass = 'font-bold text-[24px] text-[#333333]';
+  const titleClass = 'font-bold text-[24px] text-semantic-text-primary';
 
   const onClickTempSaveBtn = async () => {
     if (!content && !title) {
@@ -108,6 +108,8 @@ const Fault = () => {
   };
 
   const onClickRegisterBtn = async () => {
+    if (isSubmitting.current) return;
+
     if (!isValid) {
       alert(errMsg);
       return;
@@ -123,19 +125,14 @@ const Fault = () => {
       thumbnail,
     });
 
-    if (id) {
-      try {
+    try {
+      if (id) {
         const newPostId = await publishTemp({ postId: String(id), body });
         router.replace(`/post/${newPostId}`);
         clearAll(); // 발행 성공 후 상태 초기화
-      } catch (error) {
-        console.error('임시저장 글 발행 실패:', error);
-        isSubmitting.current = false;
+        return;
       }
-      return;
-    }
 
-    try {
       const newPostId = await createNewPost(body);
 
       if (newPostId) {
@@ -143,7 +140,12 @@ const Fault = () => {
         clearAll(); // 생성 성공 후 상태 초기화
       }
     } catch (error) {
-      console.error('새 게시글 생성 실패:', error);
+      if (id) {
+        console.error('임시저장 글 발행 실패:', error);
+      } else {
+        console.error('새 게시글 생성 실패:', error);
+      }
+    } finally {
       isSubmitting.current = false;
     }
   };
@@ -231,11 +233,11 @@ const Fault = () => {
               />
             </div>
           </div>
-          {tempModalOpen && <TempModal />}
-          {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
-          {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
         </div>
       </ScaleWrapper>
+      {tempModalOpen && <TempModal />}
+      {deleteTempItemModalOpen && <ConfirmTempModal type={'delete'} />}
+      {loadTempDetailModalOpen && <ConfirmTempModal type={'load'} />}
       <WebFooter />
     </>
   );

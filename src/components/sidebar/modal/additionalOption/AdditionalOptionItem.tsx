@@ -13,11 +13,11 @@ function AdditionalOptionItem({ item }: Props) {
   return (
     <>
       <div
-        className='w-[160px] h-[37px] flex gap-[10px] items-center pl-[10px] cursor-pointer hover:bg-[#eeeeee] transition-colors duration-300 rounded-[8px]'
+        className='w-[160px] h-[37px] flex gap-[10px] items-center pl-[10px] cursor-pointer hover:bg-semantic-background-subtle transition-colors duration-300 rounded-[8px]'
         onClick={handleClick}
       >
         {getIcon()}
-        <div className='text-[14px] font-semibold text-[#555555]'>{item}</div>
+        <div className='text-[14px] font-semibold text-semantic-text-secondary'>{item}</div>
       </div>
     </>
   );

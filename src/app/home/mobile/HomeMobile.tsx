@@ -2,23 +2,48 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { useEffect, useState } from 'react';
+import { Dispatch, Ref, SetStateAction, useEffect, useState } from 'react';
 import useSearchStore from '../store/useSearchStore';
 import ListedPostItemMobile from './component/ListedPostItemMobile';
 import PostItemMobile from './component/PostItemMobile';
 import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 import AlignModeToggleButton from '../_component/AlignModeToggleButton';
+import HorizontalBannerSwiper from '@/components/sidebar/banner/HorizontalBannerSwiper';
+import WritePostMobile from './component/WritePostMobile';
 
 interface Props {
   postData: IGetPostDTOType[];
   isLoading: boolean;
+  isFetchingNextPage: boolean;
+  loaderRef: Ref<HTMLDivElement>;
   refetch: () => void;
+  activeButton: string;
+  setActiveButton: Dispatch<SetStateAction<string>>;
 }
 
-export default function HomeMobile({ postData, isLoading, refetch }: Props) {
-  const [activeButton, setActiveButton] = useState<string>('createdatetime');
+export default function HomeMobile({
+  postData,
+  isLoading,
+  isFetchingNextPage,
+  loaderRef,
+  refetch,
+  activeButton,
+  setActiveButton,
+}: Props) {
   const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
+
+  // const router = useRouter();
+  // const { isLogin } = useAuthStore.getState();
+  // const { setIsLoginModalOpen } = useLoginStore();
+
+  // const handleWriteClick = (): void => {
+  //   if (!isLogin) {
+  //     setIsLoginModalOpen(true);
+  //     return;
+  //   }
+  //   router.push('/post/selectUpload');
+  // };
 
   useEffect(() => {
     if (keyword === '') {
@@ -27,10 +52,16 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
   }, [keyword, refetch, postData]);
 
   return (
-    <div className='w-full h-[100dvh]'>
+    <div className='w-full h-[100dvh] bg-semantic-background-page'>
       <MainHeader />
-      <div className='mobile-layout flex flex-col items-center py-[10px] mobile-scroll'>
-        <div className='w-full mb-[30px] flex items-center justify-between px-[10px]'>
+      <div className='mobile-layout flex flex-col items-center py-[10px] mobile-scroll !bg-semantic-background-page'>
+        <div className='mb-[20px] px-[10px] mt-[20px] flex justify-center'>
+          <HorizontalBannerSwiper />
+        </div>
+        <div className='mt-[22px] w-full mb-[20px]'>
+          <WritePostMobile />
+        </div>
+        <div className='w-full mb-[30px] flex items-center justify-between px-[20px]'>
           <NewPopularToggleButton
             activeButton={activeButton}
             setActiveButton={setActiveButton}
@@ -55,6 +86,12 @@ export default function HomeMobile({ postData, isLoading, refetch }: Props) {
             </div>
           ))
         )}
+        {isFetchingNextPage && (
+          <div className='text-center py-4 text-[14px] text-[#828282]'>
+            게시물을 불러오는 중입니다...
+          </div>
+        )}
+        <div ref={loaderRef} className='min-h-[30px] w-full' />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-import { voteColors } from '../../../../../data/championData';
-import usePostIdStore from '../../store/usePostIdStore';
+import { voteColors } from '../../../../../../data/championData';
+import usePostIdStore from '../../../store/usePostIdStore';
 
 export default function VotingGraphMobile() {
   const { voteResult, setVoteResult, selectedChampIdx, votingGraph, setVotingGraph } =
@@ -45,13 +45,18 @@ export default function VotingGraphMobile() {
   };
 
   return (
-    <>
+    <div className='flex flex-row items-center justify-center w-full h-[26px] gap-[0.125em]'>
       {votingGraph.map((voting, index) => {
         const colorClass =
-          voting !== -1 &&
-          `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`;
+          voting !== -1
+            ? `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`
+            : 'bg-[#E5E6E6]';
         const roundedClass =
-          index === 0 ? 'rounded-l-[30px]' : index === 9 ? 'rounded-r-[30px]' : '';
+          index === 0
+            ? 'rounded-l-[30px] rounded-r-[5px]'
+            : index === 9
+              ? 'rounded-r-[30px] rounded-l-[5px]'
+              : 'rounded-[5px]';
 
         return (
           <div
@@ -63,6 +68,6 @@ export default function VotingGraphMobile() {
           ></div>
         );
       })}
-    </>
+    </div>
   );
 }
