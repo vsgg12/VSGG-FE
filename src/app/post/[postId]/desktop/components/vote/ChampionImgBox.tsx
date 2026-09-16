@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import { useChampion } from '@/hooks/useChampion';
-import IconVote from '../../../../../../../public/svg/postItem/vote.svg';
 import Loading from '@/components/Loading';
+import { VoteActionIcon } from '@/components/common/icons/PostActionIcons';
 
 interface IProps {
   selectedChampion: string;
@@ -21,8 +21,8 @@ export default function ChampionImgBox({
 
   return (
     <div className='flex flex-col gap-[13px]'>
-      <div className='flex text-[14px] font-semibold gap-[5px]'>
-        <Image src={IconVote} width={24} height={24} alt='vote' />
+      <div className='flex text-[14px] font-semibold gap-[5px] text-semantic-icon-action'>
+        <VoteActionIcon />
         <p>판결 {voteCount <= 999 ? voteCount : '+999'}</p>
       </div>
       {isHamburgerClicked ? (

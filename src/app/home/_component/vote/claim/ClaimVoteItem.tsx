@@ -43,7 +43,7 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
       {/* 투표율 바 */}
       {!shouldBlur && (
         <div
-          className='absolute top-0 left-0 h-full bg-[#E20A29]/40 z-20 transition-all duration-500 ease-out'
+          className='absolute top-0 left-0 h-full bg-primary-500/40 z-20 transition-all duration-500 ease-out'
           style={{ width: `${voteItem.averageRatio}%` }}
         />
       )}
@@ -57,11 +57,11 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
             <div className='w-[16px] h-[16px] flex items-center justify-center'>
               {getPositionIcon()}
             </div>
-            <span className={'font-semibold text-[16px] text-[#D9D9D9]'}>
+            <span className={'font-semibold text-[16px] text-gray-100'}>
               {voteItem.championName}
             </span>
             <span className={'w-[12px] h-[12px]'}>{getTierIcon()}</span>
-            <span className='text-[#51484A]'>{voteItem.tier}</span>
+            <span className='text-tier-iron'>{voteItem.tier}</span>
           </div>
 
           {/* 하단: 주장 */}

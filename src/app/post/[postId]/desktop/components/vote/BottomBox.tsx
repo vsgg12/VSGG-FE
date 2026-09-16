@@ -7,6 +7,7 @@ import tiersData from '@/constants/tier';
 import usePostIdStore from '../../../store/usePostIdStore';
 import { voteColors } from '@/data/championData';
 import { useChampion } from '@/hooks/useChampion';
+import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 
 interface IProps {
   voteInfo: IGetInGameInfoType[];
@@ -22,8 +23,13 @@ export default function BottomBox({
   setIsHamburgerClicked,
 }: IProps) {
   const { voteResult, isNotAbleSubmit, selectedChampIdx } = usePostIdStore();
+  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const { getImageUrlByName } = useChampion();
   const { tiersMini } = tiersData;
+  const championNameClass = isDarkMode ? 'text-[#F1F2F2]' : 'text-gray-850';
+  const positionClass = isDarkMode ? 'text-[#C9CBCC]' : 'text-gray-500';
+  const helperClass = isDarkMode ? 'text-[#AEB1B2]' : 'text-gray-400';
+  const helperChampionClass = isDarkMode ? 'text-[#F1F2F2]' : 'text-gray-600';
 
   const getTierIcon = useCallback(
     (tier: string) => {
@@ -65,9 +71,8 @@ export default function BottomBox({
                       className='rounded-full mr-[14px]w-full h-full'
                     />
                   </div>
-                  <p className='font-bold text-[14px] text-[#333333]'>
+                  <p className={`font-bold text-[14px] ${championNameClass}`}>
                     {champion.championName}
-                    {/* <span className='text-[12px] font-semibold text-[#C8C8C8]'>#dddd</span> */}
                   </p>
                 </div>
                 <div className='flex items-center gap-[40px]'>
@@ -80,7 +85,7 @@ export default function BottomBox({
                       {champion.tier}
                     </p>
                   </div>
-                  <p className='text-[14px] text-[#777777] font-semibold min-w-[25px] text-center'>
+                  <p className={`text-[14px] font-semibold min-w-[25px] text-center ${positionClass}`}>
                     {champion.position}
                   </p>
                 </div>
@@ -102,13 +107,13 @@ export default function BottomBox({
                 </div>
               ))}
             </div>
-            <p className='text-[12px] text-[#909090] font-bold'>
-              <span className='text-[#666666]'>{voteInfo[selectedChampIdx]?.championName}</span>의
+            <p className={`text-[12px] font-bold ${helperClass}`}>
+              <span className={helperChampionClass}>{voteInfo[selectedChampIdx]?.championName}</span>의
               과실을 선택해주세요
             </p>
             <div className='flex self-end '>
               <button
-                className='h-[23px] w-[82px] rounded-full bg-[#E20A29] text-[14px] text-white hover:bg-red-800 disabled:bg-[#ECECEC] disabled:text-[#828282]'
+                className='h-[23px] w-[82px] rounded-full bg-primary-500 text-[14px] text-white hover:bg-red-800 disabled:bg-gray-100 disabled:text-gray-500'
                 onClick={handleVoteSubmit}
                 disabled={isNotAbleSubmit}
               >

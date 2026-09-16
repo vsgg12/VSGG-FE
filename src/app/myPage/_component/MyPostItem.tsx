@@ -14,14 +14,14 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
   return (
     <>
       <div
-        className='flex justify-between items-center text-[12px] text-[#C3C3C3] cursor-pointer font-medium'
+        className='flex justify-between items-center text-[12px] text-gray-150 cursor-pointer font-medium'
         key={myPostItem.id}
         onClick={() => {
           router.push(`/post/${myPostItem.id}/`);
         }}
       >
         <div className='flex gap-[10px] items-center'>
-          <div className='text-[#555555] text-[16px]'>{myPostItem.title}</div>
+          <div className='text-gray-700 text-[16px]'>{myPostItem.title}</div>
           <VoteStatusCircle text={myPostItem.voteStatus} />
         </div>
 
@@ -30,7 +30,7 @@ function MyPostItem({ myPostItem }: IMyPostItemProps) {
           <div>{formatDate(myPostItem.createdDate)}</div>
         </div>
       </div>
-      <div className='h-0.5 w-full bg-[#E20A29] my-[21px]' />
+      <div className='h-0.5 w-full bg-primary-500 my-[21px]' />
     </>
   );
 }

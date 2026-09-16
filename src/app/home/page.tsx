@@ -25,6 +25,7 @@ const Home = () => {
   const router = useRouter();
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const [isListed, setIsListed] = useState<boolean>(false);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
@@ -37,6 +38,10 @@ const Home = () => {
   const { fetchAllChampions } = useWriteStore();
 
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     fetchAllChampions();
@@ -80,6 +85,10 @@ const Home = () => {
 
   // IntersectionObserver를 이용한 다음 페이지 패치 호출
   useEffect(() => {
+    if (!isMounted) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         const target = entries[0];
@@ -101,7 +110,7 @@ const Home = () => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [isMounted, isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // 글쓰기 버튼 이벤트
   const handleWriteClick = (): void => {
@@ -112,12 +121,24 @@ const Home = () => {
     router.push('/post/selectUpload');
   };
 
+  if (!isMounted) {
+    return <Loading />;
+  }
+
   return (
     <>
       {isMobile ? (
-        <HomeMobile postData={visiblePosts} isLoading={isLoading} refetch={refetch} />
+        <HomeMobile
+          postData={visiblePosts}
+          isLoading={isLoading}
+          isFetchingNextPage={isFetchingNextPage}
+          loaderRef={loaderRef}
+          refetch={refetch}
+          activeButton={activeButton}
+          setActiveButton={setActiveButton}
+        />
       ) : (
-        <div className='flex w-screen items-center justify-center pl-[260px] bg-[#FAFAFA]'>
+        <div className='flex min-h-screen w-screen items-start justify-center bg-semantic-background-page pl-[260px] text-semantic-text-primary'>
           <Sidebar />
           <section
             className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
@@ -130,7 +151,7 @@ const Home = () => {
                 activeButton={activeButton}
                 setActiveButton={setActiveButton}
               />
-              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} />
+              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} isHome={true} />
             </div>
 
             <div
@@ -139,7 +160,7 @@ const Home = () => {
               {isLoading ? (
                 <Loading />
               ) : visiblePosts.length === 0 ? (
-                <div className='flex w-full flex-col flex-grow items-center justify-center'>
+                <div className='flex w-full flex-col flex-grow items-center justify-center text-semantic-text-muted'>
                   현재 작성된 게시물이 없습니다.
                 </div>
               ) : (

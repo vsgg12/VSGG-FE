@@ -46,7 +46,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
               ? voteInfos.map((champion, index) => (
                   <div key={index} className='relative group'>
                     <div
-                      className={`bg-[#ECECEC] flex justify-center rounded-full w-[48px] h-[48px] `}
+                      className={`bg-gray-100 flex justify-center rounded-full w-[48px] h-[48px] `}
                     >
                       <Image
                         src={getPositionSrc(champion.position!)}
@@ -74,17 +74,17 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
                       <div
                         className={`v-label flex h-[48px] cursor-pointer ${voteColors[index].border}`}
                       >
-                        <p className='ml-16 text-[16px] font-semibold text-[#E20A29]'>
+                        <p className='ml-16 text-[16px] font-semibold text-primary-500'>
                           {champion.position}
                         </p>
                         <div className='w-[50%]'>
-                          <p className='text-[#333333] text-[14px] font-semibold'>
+                          <p className='text-gray-850 text-[14px] font-semibold'>
                             {champion.championName}
                           </p>
-                          <p className='text-[#333333] text-[12px]'>{champion.tier}</p>
+                          <p className='text-gray-850 text-[12px]'>{champion.tier}</p>
                         </div>
                       </div>
-                      <p className={`text-[#E20A29] gitd self-center mb-1 text-[14px]`}>
+                      <p className={`text-primary-500 gitd self-center mb-1 text-[14px]`}>
                         과실 {champion.averageRatio}
                       </p>
                     </div>
@@ -97,7 +97,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
             (!isOwner && isNoOneVoted && isFinished) ||
             (isOwner && isNoOneVoted && isFinished) ? (
               <div className='flex relative w-[340px] justify-center'>
-                <p className='flex justify-center items-center absolute text-[20px] inset-0 text-[#828282]'>
+                <p className='flex justify-center items-center absolute text-[20px] inset-0 text-gray-500'>
                   {isFinished
                     ? '투표한 사람이 없는 게시글입니다.'
                     : '아직 투표한 사람이 없는 게시글입니다.'}
@@ -113,7 +113,7 @@ export default function VoteResult({ voteInfos, isOwner, isFinished }: IVoteResu
             {isFinished
               ? null
               : !isOwner && (
-                  <button className='h-9 w-28 rounded-full bg-[#ECECEC] text-lg text-[#828282]'>
+                  <button className='h-9 w-28 rounded-full bg-gray-100 text-lg text-gray-500'>
                     제출완료
                   </button>
                 )}

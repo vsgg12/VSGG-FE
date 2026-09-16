@@ -35,11 +35,11 @@ function SearchItem({ postItem }: Props) {
     >
       <div className="flex w-full justify-between ">
         <div className="flex flex-col gap-[10px] w-[192px]">
-          <div className="flex text-[14px] text-[#AAAAAA] justify-between">
+          <div className="flex text-[14px] text-gray-300 justify-between">
             <div>{truncateText(postItem.memberDTO.nickname, 8)}</div>
             <div className="font-medium">{formatDate(postItem.createdAt)}</div>
           </div>
-          <div className="text-[16px] font-medium text-[#333333] line-clamp-2">
+          <div className="text-[16px] font-medium text-semantic-text-primary line-clamp-2">
             {postItem.title}
           </div>
         </div>
@@ -53,7 +53,7 @@ function SearchItem({ postItem }: Props) {
         </div>
       </div>
 
-      <div className="w-full text-[14px] text-[#777777] truncate whitespace-nowrap overflow-hidden">
+      <div className="w-full text-[14px] text-semantic-text-muted truncate whitespace-nowrap overflow-hidden">
         {extractText(postItem.content)}
       </div>
     </div>

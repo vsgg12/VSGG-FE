@@ -18,6 +18,7 @@ class LinkUtils {
   };
 
   public static handleGuideClick = () => {
+    alert('준비중입니다.');
     // 이용가이드 클릭 로직
   };
 }

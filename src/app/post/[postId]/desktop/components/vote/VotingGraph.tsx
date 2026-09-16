@@ -50,7 +50,7 @@ export default function VotingGraph() {
         const colorClass =
           voting !== -1
             ? `${voteColors[voting].background} ${voting !== selectedChampIdx && 'pointer-events-none'}`
-            : 'bg-[#D9D9D9]';
+            : 'bg-gray-100';
         const roundedClass =
           index === 0
             ? 'rounded-l-[30px] rounded-r-[5px]'

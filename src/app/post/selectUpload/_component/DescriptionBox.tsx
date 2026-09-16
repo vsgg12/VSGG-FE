@@ -6,23 +6,24 @@ interface Props {
 
 function DescriptionBox({ type }: Props) {
   return (
-    <div className='w-[545px] h-[144px] rounded-[10px] bg-white border-[0.5px] border-[#C8C8C8] shadow-[0px_3px_3px_0px_rgba(0,0,0,0.1)]'>
+    <div className='h-[144px] w-[545px] rounded-[10px] border-[0.5px] border-semantic-border-default bg-semantic-background-surface shadow-[0px_3px_3px_0px_var(--color-shadow-soft)]'>
       {type === 'selectMethod' ? (
-        <div className='text-[#666666] text-[18px] w-full h-full flex flex-col items-center justify-center'>
+        <div className='flex h-full w-full flex-col items-center justify-center text-[18px] text-semantic-text-secondary'>
           <p>
-            <span className='text-[#222222]'>파일 첨부</span> : mp4 파일 첨부 (최대 500MB)
+            <span className='text-semantic-text-primary'>파일 첨부</span> : mp4 파일 첨부 (최대
+            500MB)
           </p>
           <p>
-            <span className='text-[#222222]'>유튜브 링크</span> : 유튜브 영상 URL 복사
+            <span className='text-semantic-text-primary'>유튜브 링크</span> : 유튜브 영상 URL 복사
           </p>
         </div>
       ) : (
-        <div className='text-[#666666] text-[16px] w-full h-full flex flex-col justify-center items-center'>
+        <div className='flex h-full w-full flex-col items-center justify-center text-[16px] text-semantic-text-secondary'>
           <p>
-            <span className='text-[#222222]'>영상 크기</span> : 최대 500MB
+            <span className='text-semantic-text-primary'>영상 크기</span> : 최대 500MB
           </p>
           <p>
-            <span className='text-[#222222]'>영상 형식</span> : mp4
+            <span className='text-semantic-text-primary'>영상 형식</span> : mp4
           </p>
         </div>
       )}

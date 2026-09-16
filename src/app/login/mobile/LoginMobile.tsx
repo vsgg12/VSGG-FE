@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import getNaverURL from '@/api/login/getNaverURL';
 import getGoogleURL from '@/api/login/getGoogleUrl';
 import getKakaoURL from '@/api/login/getKakaoUrl';
-import LoadingFull from '@/components/LoadingFull';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/useAuthStore';
 import LoginModalHeader from '@/components/modals/login/header/LoginModalHeader';
@@ -12,7 +11,7 @@ import LoginModalContent from '@/components/modals/login/content/LoginModalConte
 import LoginModalFooter from '@/components/modals/login/footer/LoginModalFooter';
 import { useEffect, useState } from 'react';
 
-export default function Login_Mobile() {
+export default function LoginMobile() {
   const [mounted, setMounted] = useState(false);
   const { isLogin } = useAuthStore();
   const router = useRouter();
@@ -63,7 +62,9 @@ export default function Login_Mobile() {
   return (
     <div className='flex h-screen flex-col items-center justify-center px-[24px] bg-white'>
       {isLoading ? (
-        <LoadingFull />
+        <div className='flex h-screen items-center justify-center bg-white'>
+          <div className='loader2'></div>
+        </div>
       ) : (
         <div className='flex flex-col gap-[40px] w-full justify-center items-center'>
           <LoginModalHeader />
