@@ -201,7 +201,8 @@ export default function SignUp() {
                   ) : (
                     <button
                       type='button'
-                      className='su-btn text-white bg-primary-500 text-[16px]'
+                      className='su-btn bg-primary-500 text-[16px]'
+                      style={{ color: '#fff' }}
                       disabled={true}
                     >
                       확인완료

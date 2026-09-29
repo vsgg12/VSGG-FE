@@ -47,7 +47,7 @@ export const createPostFormData = ({
     })),
   };
 
-  console.log(requestJson);
+  // console.log(requestJson);
 
   formData.append(
     'postAddRequest',

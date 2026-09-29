@@ -21,6 +21,7 @@ const Champion = () => {
   const router = useRouter();
 
   const isSubmitting = useRef<boolean>(false);
+  const isNavigatingToPost = useRef<boolean>(false);
 
   const [activeBox, setActiveBox] = useState<boolean>(false);
   const [selectedEndTime, setSelectedEndTime] = useState<number>(1);
@@ -126,6 +127,7 @@ const Champion = () => {
     try {
       if (id) {
         const newPostId = await publishTemp({ postId: String(id), body });
+        isNavigatingToPost.current = true;
         router.replace(`/post/${newPostId}`);
         clearAll(); // 발행 성공 후 상태 초기화
         return;
@@ -134,6 +136,7 @@ const Champion = () => {
       const newPostId = await createNewPost(body);
 
       if (newPostId) {
+        isNavigatingToPost.current = true;
         router.replace(`/post/${newPostId}`);
         clearAll(); // 생성 성공 후 상태 초기화
       }
@@ -194,7 +197,7 @@ const Champion = () => {
   }, [clearAll, router, setTempData]);
 
   useEffect(() => {
-    if (!uploadVideos && !videoId && !isSubmitting.current) {
+    if (!uploadVideos && !videoId && !isSubmitting.current && !isNavigatingToPost.current) {
       router.replace('/post/selectUpload');
     }
   }, [router, uploadVideos, videoId]);

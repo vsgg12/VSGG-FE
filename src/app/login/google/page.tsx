@@ -12,12 +12,17 @@ export default function Google() {
   const code = searchParams.get('code');
 
   const { mutate: login } = useMutation({
-    mutationFn: () => getSocialLogin(code! , 'google'),
+    mutationFn: () => getSocialLogin(code!, 'google'),
     mutationKey: ['login'],
     onSuccess: (data) => {
       if (data.resultCode === 409) {
         useAuthStore.setState({
-          user: { email: data.email, nickname: '', profile_image: data.profileImage, socialLoginType: "GOOGLE" },
+          user: {
+            email: data.email,
+            nickname: '',
+            profile_image: data.profileImage,
+            socialLoginType: 'GOOGLE',
+          },
         }),
           router.push('/signUp');
       } else if (data.resultCode === 200) {
@@ -25,7 +30,12 @@ export default function Google() {
           isLogin: true,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
-          user: { email: data.email, nickname: data.nickname, profile_image: data.profileImage, socialLoginType: "GOOGLE"},
+          user: {
+            email: data.email,
+            nickname: data.nickname,
+            profile_image: data.profileImage,
+            socialLoginType: 'GOOGLE',
+          },
         });
         router.push('/home');
       }
@@ -33,8 +43,10 @@ export default function Google() {
   });
 
   useEffect(() => {
-    login();
-  }, []);
+    if (code) {
+      login();
+    }
+  }, [code]);
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>
