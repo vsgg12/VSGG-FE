@@ -46,15 +46,16 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
         ratio: voteResult[idx] ?? 0,
       }),
     );
-    console.log('newPostVoteResult', newPostVoteResult);
+    // console.log('newPostVoteResult', newPostVoteResult);
     setPostVoteResult(newPostVoteResult);
-    console.log('postVoteResult', postVoteResult);
+    // console.log('postVoteResult', postVoteResult);
     postVote();
   };
 
   if (loading) return <div>로딩 중...</div>;
 
-  const shouldShowVoteForm = post.postDTO.status === 'PROGRESS' && isLogin && !isOwner && !post.postDTO.isVote;
+  const shouldShowVoteForm =
+    post.postDTO.status === 'PROGRESS' && isLogin && !isOwner && !post.postDTO.isVote;
   const shouldShowVoteResult =
     post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote || isOwner;
 

@@ -17,7 +17,12 @@ export default function Kakao() {
     onSuccess: (data) => {
       if (data.resultCode === 409) {
         useAuthStore.setState({
-          user: { email: data.email, nickname: '', profile_image: data.profileImage, socialLoginType: "KAKAO" },
+          user: {
+            email: data.email,
+            nickname: '',
+            profile_image: data.profileImage,
+            socialLoginType: 'KAKAO',
+          },
         }),
           router.push('/signUp');
       } else if (data.resultCode === 200) {
@@ -25,7 +30,12 @@ export default function Kakao() {
           isLogin: true,
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
-          user: { email: data.email, nickname: data.nickname, profile_image: data.profileImage, socialLoginType: "KAKAO" },
+          user: {
+            email: data.email,
+            nickname: data.nickname,
+            profile_image: data.profileImage,
+            socialLoginType: 'KAKAO',
+          },
         });
         router.push('/home');
       }
@@ -33,8 +43,10 @@ export default function Kakao() {
   });
 
   useEffect(() => {
-    login();
-  }, []);
+    if (code) {
+      login();
+    }
+  }, [code]);
 
   return (
     <div className='flex flex-grow flex-column h-[100vh] justify-center items-center'>

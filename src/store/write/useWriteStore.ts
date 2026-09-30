@@ -221,7 +221,6 @@ export const useWriteStore = create<IWriteState>()(
         set({ isLoading: true });
 
         const postId = await PostTempOrPost({ body, token });
-        console.log('postId:', postId);
 
         toast.success('게시글 등록이 완료되었습니다.');
 
