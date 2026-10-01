@@ -67,22 +67,22 @@ function VoteArea({ voteData, isOwner, post, category }: IVoteArea) {
         isDarkMode ? 'bg-[#242526]' : 'bg-white'
       }`}
     >
-      {category === 'FAULT' && shouldShowVoteForm && (
-        <VoteForm
-          voteInfo={voteData}
-          voteCount={post.postDTO.voteCount}
-          handleVoteSubmit={handleVoteSubmit}
-        />
-      )}
-      {shouldShowVoteResult && (
-        <ChampionVoteBox
-          voteData={voteData}
-          voteCount={post.postDTO.voteCount}
-          daysUntilEnd={post.postDTO.daysUntilEnd}
-          isOwner={isOwner}
-          isVote={post.postDTO.isVote}
-        />
-      )}
+      {category === 'FAULT' &&
+        (shouldShowVoteForm ? (
+          <VoteForm
+            voteInfo={voteData}
+            voteCount={post.postDTO.voteCount}
+            handleVoteSubmit={handleVoteSubmit}
+          />
+        ) : shouldShowVoteResult ? (
+          <ChampionVoteBox
+            voteData={voteData}
+            voteCount={post.postDTO.voteCount}
+            daysUntilEnd={post.postDTO.daysUntilEnd}
+            isOwner={isOwner}
+            isVote={post.postDTO.isVote}
+          />
+        ) : null)}
 
       {category === 'CHAMPION' && (
         <ClaimVoteBox
