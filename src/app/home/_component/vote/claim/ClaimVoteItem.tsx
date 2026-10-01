@@ -36,7 +36,7 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
       style={{
         backgroundImage: `url(${currentBgImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center 20%',
+        backgroundPosition: 'center 10%',
       }}
       onClick={onVoteItemClick}
     >

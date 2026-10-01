@@ -3,6 +3,11 @@
 import { clsx } from 'clsx';
 import ClaimVoteItem from '@/app/home/_component/vote/claim/ClaimVoteItem';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import PostVote from '@/api/vote/postVote';
+import { useParams } from 'next/navigation';
+import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { useState } from 'react';
 
 interface Props {
   voteData: IGetInGameInfoType[];
@@ -20,11 +25,24 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
     isVoteEnd,
     isNoVote, // 투표한 사람이 아무도 없는지
     setIsLoginModalOpen,
-    getChampionImage,
     sortedVoteData,
   } = useVoteResult({ voteCount, daysUntilEnd, voteData, isOwner, isVote }); // DUMMY_VOTE_DATA는 지워야함 나중에 수정할때
+  const [claimVoteResult, setClaimVoteResult] = useState<IClaimVoteType[]>([]);
+  const { postId } = useParams();
+  const id: string = postId as string;
+  const { accessToken } = useAuthStore();
+  const queryClient = useQueryClient();
 
-  const onVoteItemClick = () => {
+  const { mutate: postVote } = useMutation({
+    mutationFn: () => PostVote(id, { voteList: claimVoteResult }, accessToken),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['POST_ITEM', id] });
+      await queryClient.invalidateQueries({ queryKey: ['VOTE_RESULT', id] });
+    },
+    onError: (err) => alert(err.message),
+  });
+
+  const onVoteItemClick = (item: IGetInGameInfoType) => {
     if (!isLogin) {
       setIsLoginModalOpen(true);
       return;
@@ -40,16 +58,13 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
       return;
     }
 
-    // 투표하는 api 호출
+    setClaimVoteResult([{ inGameInfoId: item.inGameInfoId }]);
+    postVote();
+
+    console.log('claimVoteResult', claimVoteResult);
   };
 
-  console.log(
-    isLogin,
-    isVoteEnd,
-    isNoVote,
-    sortedVoteData,
-    getChampionImage(sortedVoteData[0].championName),
-  );
+  console.log(isVoteEnd, isNoVote);
 
   return (
     <div className={clsx('w-[659px] h-fit flex flex-col gap-[20px]')}>
@@ -59,7 +74,7 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
             key={item.inGameInfoId}
             voteItem={item}
             shouldBlur={shouldBlur}
-            onVoteItemClick={onVoteItemClick}
+            onVoteItemClick={() => onVoteItemClick(item)}
           />
         ))}
       </div>

@@ -62,6 +62,10 @@ type IVoteType = {
   ratio: number;
 };
 
+type IClaimVoteType = {
+  inGameInfoId: number;
+};
+
 // 로그인
 type IPostLoginRequestType = {
   code: string | null;

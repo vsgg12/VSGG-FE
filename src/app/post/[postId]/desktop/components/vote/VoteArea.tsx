@@ -9,14 +9,16 @@ import { useParams } from 'next/navigation';
 import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+import ClaimVoteBox from '@/app/home/_component/vote/claim/ClaimVoteBox';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];
   isOwner: boolean;
   post: IGetPostItemType;
+  category: 'FAULT' | 'CHAMPION';
 }
 
-function VoteArea({ voteData, isOwner, post }: IVoteArea) {
+function VoteArea({ voteData, isOwner, post, category }: IVoteArea) {
   const { loading } = useChampion();
   const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const { setIsLoginModalOpen } = useLoginStore();
@@ -54,7 +56,8 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
 
   if (loading) return <div>로딩 중...</div>;
 
-  const shouldShowVoteForm = post.postDTO.status === 'PROGRESS' && isLogin && !isOwner && !post.postDTO.isVote;
+  const shouldShowVoteForm =
+    post.postDTO.status === 'PROGRESS' && isLogin && !isOwner && !post.postDTO.isVote;
   const shouldShowVoteResult =
     post.postDTO.status === 'FINISHED' || !isLogin || post.postDTO.isVote || isOwner;
 
@@ -64,7 +67,7 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
         isDarkMode ? 'bg-[#242526]' : 'bg-white'
       }`}
     >
-      {shouldShowVoteForm && (
+      {category === 'FAULT' && shouldShowVoteForm && (
         <VoteForm
           voteInfo={voteData}
           voteCount={post.postDTO.voteCount}
@@ -73,6 +76,16 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
       )}
       {shouldShowVoteResult && (
         <ChampionVoteBox
+          voteData={voteData}
+          voteCount={post.postDTO.voteCount}
+          daysUntilEnd={post.postDTO.daysUntilEnd}
+          isOwner={isOwner}
+          isVote={post.postDTO.isVote}
+        />
+      )}
+
+      {category === 'CHAMPION' && (
+        <ClaimVoteBox
           voteData={voteData}
           voteCount={post.postDTO.voteCount}
           daysUntilEnd={post.postDTO.daysUntilEnd}
