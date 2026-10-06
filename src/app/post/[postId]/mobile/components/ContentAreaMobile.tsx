@@ -152,13 +152,13 @@ function ContentAreaMobile({ isOwner, post }: IContentArea) {
             <div className='flex gap-[10px] w-full justify-between items-center'>
               <div className='flex gap-[10px]'>
                 <img
-                  className='h-[32px] w-[32px] rounded-full'
-                  alt={"profile image"}
                   src={
-                    post.postDTO.memberDTO.profileImage === null
+                    !post.postDTO.memberDTO.profileImage
                       ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                       : post.postDTO.memberDTO.profileImage
                   }
+                  alt={'profile image'}
+                  className='mr-[0.625rem] h-[32px] w-[32px] rounded-full text-gray-100'
                 />
                 <div className='flex flex-col'>
                   <div className='flex gap-[3px]'>

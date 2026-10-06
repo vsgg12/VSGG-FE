@@ -83,6 +83,7 @@ function ListPostItem({ post }: Props) {
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
+            alt={'profile image'}
             className='mr-[0.625rem] h-[24px] w-[24px] rounded-full text-gray-100'
           />
           {getIcon(post.memberDTO.tier)}
