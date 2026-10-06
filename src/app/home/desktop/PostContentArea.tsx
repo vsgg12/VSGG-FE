@@ -188,7 +188,9 @@ function PostContentArea({ post, voteInfos }: Props) {
         {buttons.map((button, idx) => (
           <React.Fragment key={idx}>
             {(() => {
-              const isActive = button.name === 'like' && (isLiked || isHovered === button.name);
+              const isActive =
+                (button.name === 'like' && (isLiked || isHovered === 'like')) ||
+                (button.name === 'vote' && (isVoteClicked || isHovered === 'vote'));
               const colorClass = isActive ? 'text-primary-500' : 'text-semantic-icon-action';
 
               return (
@@ -199,10 +201,17 @@ function PostContentArea({ post, voteInfos }: Props) {
                   onMouseLeave={() => setIsHovered('')}
                 >
                   {button.name === 'like' ? (
-                    <LikeActionIcon className='h-[24px] w-[24px]' alt='like' />
+                    <LikeActionIcon
+                      className='h-[24px] w-[24px]'
+                      alt='like'
+                      isRed={isLiked || isHovered === 'like'}
+                    />
                   ) : button.name === 'vote' ? (
                     <span className='flex h-[24px] w-[24px] items-center justify-center'>
-                      <VoteActionIcon className='h-[24px] w-[24px]' />
+                      <VoteActionIcon
+                        className='h-[24px] w-[24px]'
+                        isRed={isVoteClicked || isHovered === 'vote'}
+                      />
                     </span>
                   ) : (
                     <span className='flex h-[24px] w-[24px] items-center justify-center'>
