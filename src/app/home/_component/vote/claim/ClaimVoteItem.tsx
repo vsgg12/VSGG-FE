@@ -32,7 +32,7 @@ const ClaimVoteItem = ({ voteItem, onVoteItemClick, isHome = false }: Props) => 
 
   return (
     <div
-      className={`relative ${isHome ? 'w-[526px] h-[80px]' : 'w-[659px] h-[80px]'} rounded-[10px] overflow-hidden cursor-pointer'}`}
+      className={`relative rounded-[10px] overflow-hidden ${isHome ? 'w-[526px] h-[80px]' : 'w-[659px] h-[80px]'} }`}
       style={{
         backgroundImage: `url(${currentBgImage})`,
         backgroundSize: 'cover',

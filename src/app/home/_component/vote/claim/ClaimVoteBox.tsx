@@ -68,25 +68,22 @@ const ClaimVoteBox = ({
 
     setClaimVoteResult([{ inGameInfoId: item.inGameInfoId }]);
     postVote();
-
-    console.log('claimVoteResult', claimVoteResult);
   };
-
-  console.log(isVoteEnd, isNoVote);
-  console.log('claimVoteResult', claimVoteResult);
 
   return (
     <div
-      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[10px] overflow-hidden ${shouldBlur ? 'bg-gradient-to-r from-black/70 to-transparent' : 'be-white'}`}
+      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[10px] overflow-hidden ${shouldBlur && isHome ? 'bg-gradient-to-r from-black/70 to-transparent' : 'be-white'}`}
     >
       <div
         className={clsx(
           'w-full h-full transition-all duration-300',
-          shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
+          shouldBlur && isHome && 'blur-[8px] opacity-60 pointer-events-none',
         )}
       >
         <div className='relative z-10 w-full h-full flex items-center '>
-          <div className={'w-[230px] h-full flex flex-col justify-center gap-[20px]'}>
+          <div
+            className={'w-[230px] h-full flex flex-col justify-center gap-[20px] cursor-pointer'}
+          >
             {sortedVoteData.map((item) => (
               <ClaimVoteItem
                 key={item.inGameInfoId}
@@ -98,7 +95,7 @@ const ClaimVoteBox = ({
           </div>
         </div>
       </div>
-      {shouldBlur && (
+      {shouldBlur && isHome && (
         <div className='absolute inset-0 flex flex-col justify-center items-center z-50 text-white gap-4'>
           {isOwner && isNoVote && !isVoteEnd ? (
             <div className='text-[20px] font-bold drop-shadow-lg'>
