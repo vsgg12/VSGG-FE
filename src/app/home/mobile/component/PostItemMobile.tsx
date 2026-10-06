@@ -99,7 +99,7 @@ export default function PostItemMobile({
       <div className='flex flex-col gap-[10px]'>
         <PostVideoAreaMobile post={post} />
         <div className='relative flex w-full aspect-video items-center justify-center rounded-[20px]'>
-          {post.category === 'FAULT' ? (
+          {post.category === 'FAULT' && (
             <ChampionVoteBoxMobile
               voteData={voteInfos}
               voteCount={post.voteCount}
@@ -108,7 +108,8 @@ export default function PostItemMobile({
               isVote={post.isVote}
               isHome={true}
             />
-          ) : (
+          )}
+          {post.category === 'CHAMPION' && (
             <ClaimVoteBoxMobile
               voteData={voteInfos}
               voteCount={post.voteCount}
