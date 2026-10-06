@@ -1,5 +1,5 @@
 import React from 'react';
-import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/components/common/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
-import ClaimVoteBox from '@/app/home/_component/vote/claim/ClaimVoteBox';
+import ClaimVoteBox from '@/components/common/vote/claim/ClaimVoteBox';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];

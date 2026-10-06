@@ -1,7 +1,7 @@
 'use client';
 
 import { clsx } from 'clsx';
-import ClaimVoteItem from '@/app/home/_component/vote/claim/ClaimVoteItem';
+import ClaimVoteItem from '@/components/common/vote/claim/ClaimVoteItem';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import PostVote from '@/api/vote/postVote';

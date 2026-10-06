@@ -6,13 +6,13 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
-import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/components/common/vote/champion/ChampionVoteBox';
 import {
   LikeActionIcon,
   ViewActionIcon,
   VoteActionIcon,
 } from '@/components/common/icons/PostActionIcons';
-import ClaimVoteBox from '../_component/vote/claim/ClaimVoteBox';
+import ClaimVoteBox from '../../../components/common/vote/claim/ClaimVoteBox';
 
 interface Props {
   post: IGetPostDTOType;
