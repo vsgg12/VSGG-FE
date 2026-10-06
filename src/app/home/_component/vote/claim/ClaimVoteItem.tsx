@@ -55,22 +55,26 @@ const ClaimVoteItem = ({ voteItem, onVoteItemClick, isHome = false }: Props) => 
             <div className='w-[16px] h-[16px] flex items-center justify-center'>
               {getPositionIcon()}
             </div>
-            <span className={'font-semibold text-[16px] text-gray-100'}>
+            <span
+              className={`${isHome ? 'text-[16px]' : 'text-[14px]'} 'font-semibold text-[16px] text-gray-100'`}
+            >
               {voteItem.championName}
             </span>
             <span className={'w-[12px] h-[12px]'}>{getTierIcon()}</span>
-            <span className='text-tier-iron'>{voteItem.tier}</span>
+            <span className='text-[10px] text-tier-iron'>{voteItem.tier}</span>
           </div>
 
           {/* 하단: 주장 */}
-          <div className='text-[18px] font-bold leading-tight truncate pr-4 drop-shadow-md'>
+          <div
+            className={`${isHome ? 'text-[16px]' : 'text-[18px]'} 'font-bold leading-tight truncate pr-4 drop-shadow-md'`}
+          >
             {voteItem.claim}
           </div>
         </div>
 
         {/* 오른쪽: 득표율 및 투표 수 */}
         <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
-          <span className='text-[20px] leading-none'>
+          <span className={`${isHome ? 'text-[18px]' : 'text-[20px]'} 'leading-none'`}>
             {voteItem.averageRatio}
             <span className='text-[12px]'>%</span>
           </span>
