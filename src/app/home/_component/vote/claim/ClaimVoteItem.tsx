@@ -7,11 +7,11 @@ import tiersData from '@/constants/tier';
 
 interface Props {
   voteItem: IGetInGameInfoType;
-  shouldBlur: boolean;
   onVoteItemClick: () => void; // 투표 item 클릭 시 투표 api 호출
+  isHome?: boolean;
 }
 
-const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
+const ClaimVoteItem = ({ voteItem, onVoteItemClick, isHome = false }: Props) => {
   const { allChampions } = useWriteStore();
   const { tiers } = tiersData;
 
@@ -32,7 +32,7 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
 
   return (
     <div
-      className='relative w-[659px] h-[80px] rounded-[10px] overflow-hidden cursor-pointer'
+      className={`relative ${isHome ? 'w-[526px] h-[80px]' : 'w-[659px] h-[80px]'} rounded-[10px] overflow-hidden cursor-pointer'}`}
       style={{
         backgroundImage: `url(${currentBgImage})`,
         backgroundSize: 'cover',
@@ -41,12 +41,10 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
       onClick={onVoteItemClick}
     >
       {/* 투표율 바 */}
-      {!shouldBlur && (
-        <div
-          className='absolute top-0 left-0 h-full bg-primary-500/40 z-20 transition-all duration-500 ease-out'
-          style={{ width: `${voteItem.averageRatio}%` }}
-        />
-      )}
+      <div
+        className='absolute top-0 left-0 h-full bg-primary-500/40 z-20 transition-all duration-500 ease-out'
+        style={{ width: `${voteItem.averageRatio}%` }}
+      />
 
       {/* 텍스트 컨텐츠 */}
       <div className='relative z-30 w-full h-full flex justify-between items-center px-[20px] py-[10px] text-white'>
@@ -71,15 +69,13 @@ const ClaimVoteItem = ({ voteItem, shouldBlur, onVoteItemClick }: Props) => {
         </div>
 
         {/* 오른쪽: 득표율 및 투표 수 */}
-        {!shouldBlur && (
-          <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
-            <span className='text-[20px] leading-none'>
-              {voteItem.averageRatio}
-              <span className='text-[12px]'>%</span>
-            </span>
-            <span className='text-[12px]'>{voteItem.voteCount}표</span>
-          </div>
-        )}
+        <div className='flex flex-col items-end justify-center shrink-0 font-semibold gap-1.5'>
+          <span className='text-[20px] leading-none'>
+            {voteItem.averageRatio}
+            <span className='text-[12px]'>%</span>
+          </span>
+          <span className='text-[12px]'>{voteItem.voteCount}표</span>
+        </div>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import {
   ViewActionIcon,
   VoteActionIcon,
 } from '@/components/common/icons/PostActionIcons';
+import ClaimVoteBox from '../_component/vote/claim/ClaimVoteBox';
 
 interface Props {
   post: IGetPostDTOType;
@@ -218,14 +219,25 @@ function PostContentArea({ post, voteInfos }: Props) {
       </div>
       {isVoteClicked && (
         <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
-          <ChampionVoteBox
-            voteData={voteInfos}
-            voteCount={post.voteCount}
-            daysUntilEnd={post.daysUntilEnd}
-            isOwner={post.memberDTO.nickname === user?.nickname}
-            isVote={post.isVote}
-            isHome={true}
-          />
+          {post.category === 'CHAMPION' ? (
+            <ClaimVoteBox
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          ) : (
+            <ChampionVoteBox
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          )}
         </div>
       )}
     </div>
