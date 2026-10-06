@@ -1,13 +1,13 @@
 'use client';
 
 import { clsx } from 'clsx';
-import ClaimVoteItem from '@/components/common/vote/claim/ClaimVoteItem';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import PostVote from '@/api/vote/postVote';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useState } from 'react';
+import ClaimVoteItemMobile from './ClaimVoteItemMobile';
 
 interface Props {
   voteData: IGetInGameInfoType[];
@@ -18,7 +18,7 @@ interface Props {
   isHome?: boolean; // 홈에서 보여지는지 여부
 }
 
-const ClaimVoteBox = ({
+const ClaimVoteBoxMobile = ({
   voteData,
   voteCount,
   daysUntilEnd,
@@ -72,20 +72,18 @@ const ClaimVoteBox = ({
 
   return (
     <div
-      className={`relative ${isHome ? 'w-[526px] h-[253px]' : 'w-[659px] h-[359px]'} rounded-[10px] overflow-hidden ${shouldBlur && isHome ? 'bg-gradient-to-r from-black/70 to-transparent' : 'bg-white'}`}
+      className={`relative w-full aspect-video rounded-[30px] overflow-hidden ${shouldBlur && isHome ? 'bg-gradient-to-r from-black/70 to-transparent' : 'bg-white'}`}
     >
       <div
         className={clsx(
-          'w-full h-full transition-all duration-300',
-          shouldBlur && isHome && 'blur-[8px] opacity-60 pointer-events-none',
+          'w-full h-full py-[10px] transition-all duration-300',
+          isHome && shouldBlur && 'blur-[8px] opacity-60 pointer-events-none',
         )}
       >
         <div className='relative z-10 w-full h-full flex items-center '>
-          <div
-            className={'w-[230px] h-full flex flex-col justify-center gap-[20px] cursor-pointer'}
-          >
+          <div className={'w-full h-full flex flex-col justify-center gap-[20px] cursor-pointer'}>
             {sortedVoteData.map((item) => (
-              <ClaimVoteItem
+              <ClaimVoteItemMobile
                 key={item.inGameInfoId}
                 voteItem={item}
                 onVoteItemClick={() => onVoteItemClick(item)}
@@ -123,4 +121,4 @@ const ClaimVoteBox = ({
   );
 };
 
-export default ClaimVoteBox;
+export default ClaimVoteBoxMobile;

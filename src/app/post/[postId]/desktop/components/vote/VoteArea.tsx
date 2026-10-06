@@ -63,7 +63,7 @@ function VoteArea({ voteData, isOwner, post, category }: IVoteArea) {
 
   return (
     <div
-      className={`w-[720px] rounded-[20px] flex items-center justify-center p-[30px] ${
+      className={`w-[720px] rounded-[20px] flex items-center justify-center ${category === 'FAULT' && 'p-[30px]'} ${
         isDarkMode ? 'bg-[#242526]' : 'bg-white'
       }`}
     >

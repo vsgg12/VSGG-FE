@@ -14,6 +14,7 @@ import VoteIcon from '../../../../../public/svg/mobile/postItem/vote.svg';
 import ViewIcon from '../../../../../public/svg/mobile/postItem/view.svg';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
+import ClaimVoteBoxMobile from './ClaimVoteBoxMobile';
 
 export default function PostItemMobile({
   post,
@@ -76,7 +77,7 @@ export default function PostItemMobile({
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
-            alt={"profile image"}
+            alt={'profile image'}
             className='mr-[0.625rem] h-[30px] w-[30px] rounded-full text-gray-100'
           />
           <div className='flex gap-[5px] text-[12px]'>
@@ -88,7 +89,9 @@ export default function PostItemMobile({
         <PostDeadLineMobile deadLine={post.daysUntilEnd} />
       </div>
       <div className='flex flex-col gap-[10px]'>
-        <p className='text-semantic-text-primary text-[16px] font-bold whitespace-wrap'>{post.title}</p>
+        <p className='text-semantic-text-primary text-[16px] font-bold whitespace-wrap'>
+          {post.title}
+        </p>
         <p className='text-[14px] w-full whitespace-nowrap overflow-hidden truncate text-[#484B4D]'>
           {contentsArr.pTags[0]}
         </p>
@@ -96,14 +99,25 @@ export default function PostItemMobile({
       <div className='flex flex-col gap-[10px]'>
         <PostVideoAreaMobile post={post} />
         <div className='relative flex w-full aspect-video items-center justify-center rounded-[20px]'>
-          <ChampionVoteBoxMobile
-            voteData={voteInfos}
-            voteCount={post.voteCount}
-            daysUntilEnd={post.daysUntilEnd}
-            isOwner={post.memberDTO.nickname === user?.nickname}
-            isVote={post.isVote}
-            isHome={true}
-          />
+          {post.category === 'FAULT' ? (
+            <ChampionVoteBoxMobile
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          ) : (
+            <ClaimVoteBoxMobile
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          )}
         </div>
       </div>
       <div className='flex justify-between text-[14px] '>
