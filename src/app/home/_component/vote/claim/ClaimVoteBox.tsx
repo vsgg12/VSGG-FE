@@ -65,6 +65,7 @@ const ClaimVoteBox = ({ voteData, voteCount, daysUntilEnd, isOwner, isVote }: Pr
   };
 
   console.log(isVoteEnd, isNoVote);
+  console.log('claimVoteResult', claimVoteResult);
 
   return (
     <div className={clsx('w-[659px] h-fit flex flex-col gap-[20px]')}>
