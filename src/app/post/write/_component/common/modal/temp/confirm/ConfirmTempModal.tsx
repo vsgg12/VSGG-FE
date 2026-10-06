@@ -32,7 +32,7 @@ const ConfirmTempModal = ({ type }: Props) => {
       clearAll();
       try {
         const category = await getTempDetail(selectedTempId);
-        console.log('category', category);
+        // console.log('category', category);
 
         if (category === 'CHAMPION') {
           router.push('/post/write/champion');
@@ -50,13 +50,9 @@ const ConfirmTempModal = ({ type }: Props) => {
   return (
     <ModalOverlay onClose={onCloseModal}>
       <div
-        className={
-          `z-[60] flex h-[229px] w-[443px] flex-col justify-between rounded-[10px] px-[50px] pb-[34px] pt-[30px] shadow-md ${
-            isDarkMode
-              ? 'bg-[#303233] text-[#F1F2F2]'
-              : 'bg-white text-[#242526]'
-          }`
-        }
+        className={`z-[60] flex h-[229px] w-[443px] flex-col justify-between rounded-[10px] px-[50px] pb-[34px] pt-[30px] shadow-md ${
+          isDarkMode ? 'bg-[#303233] text-[#F1F2F2]' : 'bg-white text-[#242526]'
+        }`}
       >
         <ConfirmModalContent type={type} />
 

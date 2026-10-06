@@ -44,9 +44,9 @@ function VoteAreaMobile({ voteData, isOwner, post }: IVoteAreaMobile) {
         ratio: voteResult[idx] ?? 0,
       }),
     );
-    console.log('newPostVoteResult', newPostVoteResult);
+    // console.log('newPostVoteResult', newPostVoteResult);
     setPostVoteResult(newPostVoteResult);
-    console.log('postVoteResult', postVoteResult);
+    // console.log('postVoteResult', postVoteResult);
     postVote();
   };
 
