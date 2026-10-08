@@ -48,6 +48,7 @@ function PostItem({ post, voteInfos, showCommentPostId, setShowCommentPostId }: 
                   ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                   : post.memberDTO.profileImage
               }
+              alt={'profile image'}
               className='mr-[0.625rem] h-[48px] w-[48px] rounded-full text-gray-100'
             />
             <div className='flex gap-[5px] text-semantic-text-primary'>

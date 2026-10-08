@@ -100,9 +100,11 @@ function ContentArea({ post }: Props) {
       : isDarkMode
         ? 'text-[#D7D8D9]'
         : 'text-semantic-icon-default';
+
   const contentClass = isDarkMode
     ? 'bg-[#242526] text-[#F1F2F2]'
     : 'bg-semantic-background-surface text-semantic-text-primary';
+
   const bodyClass = isDarkMode ? 'text-[#F1F2F2]' : '';
 
   return (
@@ -142,7 +144,11 @@ function ContentArea({ post }: Props) {
         onMouseEnter={() => setIsHovered('like')}
         onMouseLeave={() => setIsHovered('')}
       >
-        <LikeActionIcon className='h-[30px] w-[30px]' alt='like' />
+        <LikeActionIcon
+          className='h-[30px] w-[30px]'
+          alt='like'
+          isRed={isLiked || isHovered === 'like'}
+        />
         <p className={`text-[16px] font-semibold ${likeColorClass}`}>
           {(updatedLikeCount ?? post.likeCount) < 1000
             ? updatedLikeCount ?? post.likeCount

@@ -24,6 +24,7 @@ type IGetPostDTOType = {
   isDeleted: 'TRUE' | 'FALSE';
   daysUntilEnd: number;
   liked: boolean;
+  category: 'FAULT' | 'CHAMPION';
 };
 
 type IGetVideoType = {

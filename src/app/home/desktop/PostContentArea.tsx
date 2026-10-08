@@ -6,12 +6,13 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import { useMutation } from '@tanstack/react-query';
 import patchCancelLike from '@/api/like/patchCancelLike';
 import { useLoginStore } from '@/store/login/useLoginStore';
-import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/components/common/vote/champion/ChampionVoteBox';
 import {
   LikeActionIcon,
   ViewActionIcon,
   VoteActionIcon,
 } from '@/components/common/icons/PostActionIcons';
+import ClaimVoteBox from '../../../components/common/vote/claim/ClaimVoteBox';
 
 interface Props {
   post: IGetPostDTOType;
@@ -187,7 +188,9 @@ function PostContentArea({ post, voteInfos }: Props) {
         {buttons.map((button, idx) => (
           <React.Fragment key={idx}>
             {(() => {
-              const isActive = button.name === 'like' && (isLiked || isHovered === button.name);
+              const isActive =
+                (button.name === 'like' && (isLiked || isHovered === 'like')) ||
+                (button.name === 'vote' && (isVoteClicked || isHovered === 'vote'));
               const colorClass = isActive ? 'text-primary-500' : 'text-semantic-icon-action';
 
               return (
@@ -198,10 +201,17 @@ function PostContentArea({ post, voteInfos }: Props) {
                   onMouseLeave={() => setIsHovered('')}
                 >
                   {button.name === 'like' ? (
-                    <LikeActionIcon className='h-[24px] w-[24px]' alt='like' />
+                    <LikeActionIcon
+                      className='h-[24px] w-[24px]'
+                      alt='like'
+                      isRed={isLiked || isHovered === 'like'}
+                    />
                   ) : button.name === 'vote' ? (
                     <span className='flex h-[24px] w-[24px] items-center justify-center'>
-                      <VoteActionIcon className='h-[24px] w-[24px]' />
+                      <VoteActionIcon
+                        className='h-[24px] w-[24px]'
+                        isRed={isVoteClicked || isHovered === 'vote'}
+                      />
                     </span>
                   ) : (
                     <span className='flex h-[24px] w-[24px] items-center justify-center'>
@@ -218,14 +228,25 @@ function PostContentArea({ post, voteInfos }: Props) {
       </div>
       {isVoteClicked && (
         <div className='relative flex h-[253px] items-center justify-center rounded-[20px] '>
-          <ChampionVoteBox
-            voteData={voteInfos}
-            voteCount={post.voteCount}
-            daysUntilEnd={post.daysUntilEnd}
-            isOwner={post.memberDTO.nickname === user?.nickname}
-            isVote={post.isVote}
-            isHome={true}
-          />
+          {post.category === 'CHAMPION' ? (
+            <ClaimVoteBox
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          ) : (
+            <ChampionVoteBox
+              voteData={voteInfos}
+              voteCount={post.voteCount}
+              daysUntilEnd={post.daysUntilEnd}
+              isOwner={post.memberDTO.nickname === user?.nickname}
+              isVote={post.isVote}
+              isHome={true}
+            />
+          )}
         </div>
       )}
     </div>

@@ -19,7 +19,12 @@ export default function PostDetailPC({ post, voteData, isOwner }: Props) {
       <div className='flex gap-[30px]'>
         <div className='flex flex-col gap-[30px]'>
           <ContentArea post={post.postDTO} />
-          <VoteArea post={post} voteData={voteData} isOwner={isOwner} />
+          <VoteArea
+            post={post}
+            voteData={voteData}
+            isOwner={isOwner}
+            category={post.postDTO.category}
+          />
         </div>
         <div>
           <CommentArea id={post.postDTO.id} />

@@ -4,8 +4,8 @@ import tiersData from '@/constants/tier';
 import { useCallback } from 'react';
 import positions from '@/constants/positions';
 import { clsx } from 'clsx';
-import hexagon from '../../../../../../public/svg/vote/hexagon.svg';
-import hexagonDisable from '../../../../../../public/svg/vote/hexagonDisable.svg';
+import hexagon from '../../../../../public/svg/vote/hexagon.svg';
+import hexagonDisable from '../../../../../public/svg/vote/hexagonDisable.svg';
 import Image from 'next/image';
 
 interface Props {

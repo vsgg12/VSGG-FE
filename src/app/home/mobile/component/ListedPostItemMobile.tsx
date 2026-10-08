@@ -66,6 +66,7 @@ export default function ListedPostItemMobile({ post }: IListedItem) {
                 ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
+            alt={'profile image'}
           />
           {getIcon(post.memberDTO.tier)}
           <p className='font-bold text-[12px]'>{post.memberDTO.nickname}</p>

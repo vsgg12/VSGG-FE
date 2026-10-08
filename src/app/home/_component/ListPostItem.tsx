@@ -1,5 +1,4 @@
 import React from 'react';
-import Default_Profile from '../../../../public/svg/defaultProfile.svg';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
 import useConvertHTML from '@/hooks/useConvertHTML';
 import useProfileTierIcon from '@/hooks/sidebar/useProfileTierIcon';
@@ -80,11 +79,12 @@ function ListPostItem({ post }: Props) {
         <div className='flex items-center'>
           <img
             src={
-              post.memberDTO.profileImage == null || post.memberDTO.profileImage == ''
-                ? Default_Profile
+              !post.memberDTO.profileImage
+                ? 'https://ssl.pstatic.net/static/pwe/address/img_profile.png'
                 : post.memberDTO.profileImage
             }
-            className='h-[24px] w-[24px] rounded-full mr-[10px]'
+            alt={'profile image'}
+            className='mr-[0.625rem] h-[24px] w-[24px] rounded-full text-gray-100'
           />
           {getIcon(post.memberDTO.tier)}
           <p className='ml-[5px] text-[12px] text-semantic-text-primary'>

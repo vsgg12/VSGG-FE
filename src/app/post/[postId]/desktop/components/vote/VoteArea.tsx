@@ -1,5 +1,5 @@
 import React from 'react';
-import ChampionVoteBox from '@/app/home/_component/vote/champion/ChampionVoteBox';
+import ChampionVoteBox from '@/components/common/vote/champion/ChampionVoteBox';
 import { useChampion } from '@/hooks/useChampion';
 import VoteForm from '@/app/post/[postId]/desktop/components/vote/VoteForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -9,14 +9,16 @@ import { useParams } from 'next/navigation';
 import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+import ClaimVoteBox from '@/components/common/vote/claim/ClaimVoteBox';
 
 interface IVoteArea {
   voteData: IGetInGameInfoType[];
   isOwner: boolean;
   post: IGetPostItemType;
+  category: 'FAULT' | 'CHAMPION';
 }
 
-function VoteArea({ voteData, isOwner, post }: IVoteArea) {
+function VoteArea({ voteData, isOwner, post, category }: IVoteArea) {
   const { loading } = useChampion();
   const isDarkMode = useSidebarStore((state) => state.isDarkMode);
   const { setIsLoginModalOpen } = useLoginStore();
@@ -61,19 +63,12 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
 
   return (
     <div
-      className={`w-[720px] rounded-[20px] flex items-center justify-center p-[30px] ${
+      className={`w-[720px] rounded-[20px] flex items-center justify-center ${category === 'FAULT' && 'p-[30px]'} ${
         isDarkMode ? 'bg-[#242526]' : 'bg-white'
       }`}
     >
-      {shouldShowVoteForm && (
-        <VoteForm
-          voteInfo={voteData}
-          voteCount={post.postDTO.voteCount}
-          handleVoteSubmit={handleVoteSubmit}
-        />
-      )}
-      {shouldShowVoteResult && (
-        <ChampionVoteBox
+      {category === 'CHAMPION' && (
+        <ClaimVoteBox
           voteData={voteData}
           voteCount={post.postDTO.voteCount}
           daysUntilEnd={post.postDTO.daysUntilEnd}
@@ -81,6 +76,23 @@ function VoteArea({ voteData, isOwner, post }: IVoteArea) {
           isVote={post.postDTO.isVote}
         />
       )}
+
+      {category === 'FAULT' &&
+        (shouldShowVoteForm ? (
+          <VoteForm
+            voteInfo={voteData}
+            voteCount={post.postDTO.voteCount}
+            handleVoteSubmit={handleVoteSubmit}
+          />
+        ) : shouldShowVoteResult ? (
+          <ChampionVoteBox
+            voteData={voteData}
+            voteCount={post.postDTO.voteCount}
+            daysUntilEnd={post.postDTO.daysUntilEnd}
+            isOwner={isOwner}
+            isVote={post.postDTO.isVote}
+          />
+        ) : null)}
     </div>
   );
 }

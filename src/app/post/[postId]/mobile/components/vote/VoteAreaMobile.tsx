@@ -8,6 +8,7 @@ import { useLoginStore } from '@/store/login/useLoginStore';
 import usePostIdStore from '../../../store/usePostIdStore';
 import VoteFormMobile from './VoteFormMobile';
 import ChampionVoteBoxMobile from '@/app/home/mobile/component/ChampionVoteBoxMobile';
+import ClaimVoteBoxMobile from '@/app/home/mobile/component/ClaimVoteBoxMobile';
 
 interface IVoteAreaMobile {
   voteData: IGetInGameInfoType[];
@@ -59,20 +60,31 @@ function VoteAreaMobile({ voteData, isOwner, post }: IVoteAreaMobile) {
 
   return (
     <div className='w-full h-fit rounded-[20px] bg-white'>
-      {shouldShowVoteForm && (
-        <VoteFormMobile
-          voteInfo={voteData}
-          voteCount={post.postDTO.voteCount}
-          handleVoteSubmit={handleVoteSubmit}
-        />
-      )}
-      {shouldShowVoteResult && (
-        <ChampionVoteBoxMobile
+      {post.postDTO.category === 'FAULT' &&
+        (shouldShowVoteForm ? (
+          <VoteFormMobile
+            voteInfo={voteData}
+            voteCount={post.postDTO.voteCount}
+            handleVoteSubmit={handleVoteSubmit}
+          />
+        ) : shouldShowVoteResult ? (
+          <ChampionVoteBoxMobile
+            voteData={voteData}
+            voteCount={post.postDTO.voteCount}
+            daysUntilEnd={post.postDTO.daysUntilEnd}
+            isOwner={isOwner}
+            isVote={post.postDTO.isVote}
+          />
+        ) : null)}
+
+      {post.postDTO.category === 'CHAMPION' && (
+        <ClaimVoteBoxMobile
           voteData={voteData}
           voteCount={post.postDTO.voteCount}
           daysUntilEnd={post.postDTO.daysUntilEnd}
           isOwner={isOwner}
           isVote={post.postDTO.isVote}
+          isHome={false}
         />
       )}
     </div>

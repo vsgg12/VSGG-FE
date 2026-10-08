@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import { useMemo, useState } from 'react';
 import { useVoteResult } from '@/hooks/vote/useVoteResult';
-import ChampionVoteResultItem from '@/app/home/_component/vote/champion/ChampionVoteResultItem';
+import ChampionVoteResultItem from '@/components/common/vote/champion/ChampionVoteResultItem';
 
 interface Props {
   voteData: IGetInGameInfoType[];

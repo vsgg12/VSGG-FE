@@ -5,16 +5,21 @@ import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 interface IconProps {
   className?: string;
   alt?: string;
+  isRed?: boolean;
 }
 
-const POST_ITEM_ICON_SRC = {
+type PostItemIconSrc = { light: string; dark: string; red?: string };
+
+const POST_ITEM_ICON_SRC: Record<string, PostItemIconSrc> = {
   like: {
     light: '/svg/postItem/heart_light.svg',
     dark: '/svg/postItem/heart_dark.svg',
+    red: '/svg/postItem/heart_red.svg',
   },
   vote: {
     light: '/svg/postItem/vote_light.svg',
     dark: '/svg/postItem/vote_dark.svg',
+    red: '/svg/postItem/vote_red.svg',
   },
   comment: {
     light: '/svg/postItem/comment_light.svg',
@@ -36,20 +41,23 @@ const POST_ITEM_ICON_SRC = {
     light: '/svg/postItem/heart_white.svg',
     dark: '/svg/postItem/heart_white.svg',
   },
-} as const;
+};
 
-function usePostItemIconSrc(icon: keyof typeof POST_ITEM_ICON_SRC) {
+function usePostItemIconSrc(icon: keyof typeof POST_ITEM_ICON_SRC, isRed = false) {
   const isDarkMode = useSidebarStore((state) => state.isDarkMode);
 
-  return isDarkMode ? POST_ITEM_ICON_SRC[icon].dark : POST_ITEM_ICON_SRC[icon].light;
+  const iconSrc = POST_ITEM_ICON_SRC[icon];
+
+  return (isRed ? iconSrc.red : undefined) ?? (isDarkMode ? iconSrc.dark : iconSrc.light);
 }
 
 function PostSvgIcon({
   icon,
   className,
   alt = '',
+  isRed = false,
 }: IconProps & { icon: keyof typeof POST_ITEM_ICON_SRC }) {
-  const src = usePostItemIconSrc(icon);
+  const src = usePostItemIconSrc(icon, isRed);
 
   return (
     <img
@@ -62,12 +70,12 @@ function PostSvgIcon({
   );
 }
 
-export function VoteActionIcon({ className = 'h-[24px] w-[24px]', alt = '' }: IconProps) {
-  return <PostSvgIcon icon='vote' className={className} alt={alt} />;
+export function VoteActionIcon({ className = 'h-[24px] w-[24px]', alt = '', isRed }: IconProps) {
+  return <PostSvgIcon icon='vote' className={className} alt={alt} isRed={isRed} />;
 }
 
-export function LikeActionIcon({ className = 'h-[24px] w-[24px]', alt = '' }: IconProps) {
-  return <PostSvgIcon icon='like' className={className} alt={alt} />;
+export function LikeActionIcon({ className = 'h-[24px] w-[24px]', alt = '', isRed }: IconProps) {
+  return <PostSvgIcon icon='like' className={className} alt={alt} isRed={isRed} />;
 }
 
 export function CommentActionIcon({ className = 'h-[24px] w-[24px]', alt = '' }: IconProps) {

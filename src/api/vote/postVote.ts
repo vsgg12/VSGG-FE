@@ -5,12 +5,20 @@ type IResultType = {
   resultMsg: string;
 };
 
-interface IBodyType {
+interface IChampionVoteBodyType {
   voteList: IVoteType[];
 }
 
-export default async function PostVote(postId: string, body: IBodyType, token: string) {
-  const data = await api.post<IBodyType, IResultType>({
+interface IClaimVoteBodyType {
+  voteList: IClaimVoteType[];
+}
+
+export default async function PostVote(
+  postId: string,
+  body: IChampionVoteBodyType | IClaimVoteBodyType,
+  token: string,
+) {
+  const data = await api.post<IChampionVoteBodyType | IClaimVoteBodyType, IResultType>({
     endpoint: `/post/${postId}/vote`,
     body,
     authorization: token,
