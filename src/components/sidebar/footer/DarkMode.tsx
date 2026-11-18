@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+import useIsDarkMode from '@/hooks/useIsDarkMode';
 import { FaMoon } from 'react-icons/fa';
 
 function BrightThemeIcon({ className }: { className?: string }) {
@@ -54,7 +55,7 @@ function BrightThemeIcon({ className }: { className?: string }) {
 }
 
 function DarkMode() {
-  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+  const isDarkMode = useIsDarkMode();
   const setIsDarkMode = useSidebarStore((state) => state.setIsDarkMode);
 
   return (

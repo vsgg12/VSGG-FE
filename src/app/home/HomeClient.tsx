@@ -9,7 +9,7 @@ import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useSearchStore from '@/app/home/store/useSearchStore';
 import NewPopularToggleButton from './_component/NewPopularToggleButton';
 import AlignModeToggleButton from './_component/AlignModeToggleButton';
-import { useMediaQuery } from 'react-responsive';
+import useIsMobile from '@/hooks/useIsMobile';
 import HomeMobile from './mobile/HomeMobile';
 import PostItem from './desktop/PostItem';
 import PostCommentArea from './desktop/PostCommentArea';
@@ -21,11 +21,14 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
 
-const HomeClient = () => {
-  const router = useRouter();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+interface Props {
+  isMobileUA: boolean;
+}
 
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+const HomeClient = ({ isMobileUA }: Props) => {
+  const router = useRouter();
+  const isMobile = useIsMobile(isMobileUA);
+
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
   const [isListed, setIsListed] = useState<boolean>(false);
   const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
@@ -38,10 +41,6 @@ const HomeClient = () => {
   const { fetchAllChampions } = useWriteStore();
 
   useBodyScrollLock(isNotificationOpen || isSearchOpen);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     fetchAllChampions();
@@ -82,6 +81,14 @@ const HomeClient = () => {
     }
   }, [keyword, refetch]);
 
+  // 서버에서 받은 첫 목록은 비로그인 기준이라 liked / isVote가 비어 있음
+  // → 로그인 사용자는 마운트 후 토큰을 붙여 한 번 다시 받아옴
+  useEffect(() => {
+    if (isLogin) {
+      refetch();
+    }
+  }, [isLogin, refetch]);
+
   // 페이지 단위로 들어온 배열들을 하나의 1차원 배열로 병합 및 삭제 데이터 필터링
   // useMemo를 사용하여 불필요한 재연산을 방지합니다.
   const visiblePosts: IGetPostDTOType[] = useMemo(() => {
@@ -93,10 +100,6 @@ const HomeClient = () => {
 
   // IntersectionObserver를 이용한 다음 페이지 패치 호출
   useEffect(() => {
-    if (!isMounted) {
-      return;
-    }
-
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
         const target = entries[0];
@@ -118,7 +121,7 @@ const HomeClient = () => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [isMounted, isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // 글쓰기 버튼 이벤트
   const handleWriteClick = (): void => {
@@ -128,10 +131,6 @@ const HomeClient = () => {
     }
     router.push('/post/selectUpload');
   };
-
-  if (!isMounted) {
-    return <Loading />;
-  }
 
   return (
     <>
