@@ -4,36 +4,39 @@ interface Props {
   size: number;
 }
 
-const useProfileTierIcon = ({ size = 16 }: Props) => {
-  const getIcon = useCallback((tier: string): JSX.Element => {
-    switch (tier) {
-      case '언랭':
-        return <img src='/svg/sidebar/tier/unrankIcon.svg' width={size} height={size} />;
-      case '아이언':
-        return <img src='/svg/sidebar/tier/ironIcon.svg' width={size} height={size} />;
-      case '브론즈':
-        return <img src='/svg/sidebar/tier/bronzeIcon.svg' width={size} height={size} />;
-      case '실버':
-        return <img src='/svg/sidebar/tier/silverIcon.svg' width={size} height={size} />;
-      case '골드':
-        return <img src='/svg/sidebar/tier/goldIcon.svg' width={size} height={size} />;
-      case '플래티넘':
-        return <img src='/svg/sidebar/tier/platinumIcon.svg' width={size} height={size} />;
-      case '에메랄드':
-        return <img src='/svg/sidebar/tier/emeraldIcon.svg' width={size} height={size} />;
-      case '다이아몬드':
-        return <img src='/svg/sidebar/tier/diamondIcon.svg' width={size} height={size} />;
-      case '마스터':
-        return <img src='/svg/sidebar/tier/masterIcon.svg' width={size} height={size} />;
-      case '그랜드마스터':
-        return <img src='/svg/sidebar/tier/grandMasterIcon.svg' width={size} height={size} />;
-      case '챌린저':
-        return <img src='/svg/sidebar/tier/challengerIcon.svg' width={size} height={size} />;
+// 티어 이름 → 아이콘 파일명
+// 훅 바깥(모듈 최상단)에 두면 렌더링마다 객체를 새로 만들지 않음
+const TIER_ICON: Record<string, string> = {
+  언랭: 'unrankIcon',
+  아이언: 'ironIcon',
+  브론즈: 'bronzeIcon',
+  실버: 'silverIcon',
+  골드: 'goldIcon',
+  플래티넘: 'platinumIcon',
+  에메랄드: 'emeraldIcon',
+  다이아몬드: 'diamondIcon',
+  마스터: 'masterIcon',
+  그랜드마스터: 'grandMasterIcon',
+  챌린저: 'challengerIcon',
+};
 
-      default:
-        return <></>;
-    }
-  }, []);
+const useProfileTierIcon = ({ size = 16 }: Props) => {
+  const getIcon = useCallback(
+    (tier: string): JSX.Element => {
+      const fileName = TIER_ICON[tier];
+      if (!fileName) return <></>;
+
+      return (
+        <img
+          src={`/svg/sidebar/tier/${fileName}.svg`}
+          width={size}
+          height={size}
+          alt={`${tier} 티어`}
+        />
+      );
+    },
+    [size], // size가 바뀌면 새 크기로 다시 그리도록
+  );
 
   return { getIcon };
 };
