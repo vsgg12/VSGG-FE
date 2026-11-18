@@ -21,7 +21,7 @@ function PostCommentArea({ postId }: Props) {
   const commentRef = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   const { data: commentData } = useQuery({
-    queryKey: ['COMMENTS'],
+    queryKey: ['COMMENTS', postId],
     queryFn: async () => getComments(String(postId)),
   });
 

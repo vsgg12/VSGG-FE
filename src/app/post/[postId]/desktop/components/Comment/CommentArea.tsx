@@ -30,7 +30,7 @@ function CommentArea({ id }: Props) {
   const { getValues } = commentMethods;
 
   const { data: commentData } = useQuery({
-    queryKey: ['COMMENTS'],
+    queryKey: ['COMMENTS', id],
     queryFn: async () => getComments(String(id)),
   });
 
