@@ -36,6 +36,7 @@ function PostVideoAreaMobile({ post }: Props) {
           muted
           controls
           autoPlay
+          preload='none'
           poster={post.thumbnailURL}
           className={`block visible ${videoStyle}`}
         >
@@ -55,6 +56,7 @@ function PostVideoAreaMobile({ post }: Props) {
           controls
           playsInline
           poster={post.thumbnailURL}
+          preload='none'
           className={`block visible ${videoStyle}`}
         >
           <source src={post.video.url} type='video/mp4' />

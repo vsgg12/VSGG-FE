@@ -148,6 +148,7 @@ function PostContentArea({ post, voteInfos }: Props) {
             muted
             controls
             autoPlay
+            preload='none'
             poster={post.thumbnailURL}
             className={`block visible ${videoStyle}`}
             onClick={(e) => e.stopPropagation}
@@ -167,6 +168,7 @@ function PostContentArea({ post, voteInfos }: Props) {
             muted
             controls
             playsInline
+            preload='none'
             poster={post.thumbnailURL}
             className={`block visible ${videoStyle}`}
           >
