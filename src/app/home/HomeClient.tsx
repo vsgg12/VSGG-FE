@@ -24,7 +24,9 @@ const HomeDesktop = dynamic(() => import('./desktop/HomeDesktop'), {
 const HomeClient = ({ isMobileUA }: Props) => {
   const isMobile = useIsMobile(isMobileUA);
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const loaderRef = useRef<HTMLDivElement | null>(null);
+  // dynamic import된 화면(HomeDesktop/HomeMobile)이 나중에 마운트돼도 감지할 수 있도록
+  // ref 대신 state(callback ref)로 관찰 대상 요소를 저장
+  const [loaderEl, setLoaderEl] = useState<HTMLDivElement | null>(null);
   const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
@@ -101,7 +103,7 @@ const HomeClient = ({ isMobileUA }: Props) => {
       { threshold: 0.8 },
     );
 
-    const currentLoader = loaderRef.current;
+    const currentLoader = loaderEl;
     if (currentLoader) {
       observer.observe(currentLoader);
     }
@@ -111,13 +113,13 @@ const HomeClient = ({ isMobileUA }: Props) => {
         observer.unobserve(currentLoader);
       }
     };
-  }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [loaderEl, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const viewProps = {
     postData: visiblePosts,
     isLoading,
     isFetchingNextPage,
-    loaderRef,
+    loaderRef: setLoaderEl,
     activeButton,
     setActiveButton,
   };
