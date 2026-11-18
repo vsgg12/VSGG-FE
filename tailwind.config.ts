@@ -1,8 +1,5 @@
-import { nextui } from '@nextui-org/theme';
 import type { Config } from 'tailwindcss';
 import { PluginAPI } from 'tailwindcss/types/config';
-import lineClamp from '@tailwindcss/line-clamp';
-
 import plugin from 'tailwindcss/plugin';
 import { colors } from './src/constants/colors';
 
@@ -13,7 +10,6 @@ const config: Config = {
     './src/hooks/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/data/championData.ts',
-    './node_modules/@nextui-org/theme/dist/components/[object Object].js',
   ],
   theme: {
     extend: {
@@ -74,8 +70,6 @@ const config: Config = {
     },
   },
   plugins: [
-    nextui(),
-    lineClamp,
     plugin(function ({ addUtilities }: PluginAPI) {
       addUtilities({
         '.text-stroke': {
