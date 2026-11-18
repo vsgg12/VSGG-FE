@@ -6,7 +6,7 @@ import { formatNumberWithCommas } from '@/utils/formatNumberWithCommas';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import DOMPurify from 'dompurify';
 import usePostIdStore from '../../store/usePostIdStore';
-import PostDeadLineMobile from '@/app/home/mobile/component/PostDeadLineMobile';
+import PostDeadLineMobile from '@/app/home/mobile/_components/PostDeadLineMobile';
 import useTimeDifferenceFromNow from '@/hooks/useTimeDifferenceFromNow';
 import Icon_eye from '../../../../../../public/svg/postItem/eye.svg';
 import Icon_heart from '../../../../../../public/svg/postItem/heart.svg';

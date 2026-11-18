@@ -12,7 +12,7 @@ import {
   ViewActionIcon,
   VoteActionIcon,
 } from '@/components/common/icons/PostActionIcons';
-import ClaimVoteBox from '../../../components/common/vote/claim/ClaimVoteBox';
+import ClaimVoteBox from '../../../../components/common/vote/claim/ClaimVoteBox';
 
 interface Props {
   post: IGetPostDTOType;

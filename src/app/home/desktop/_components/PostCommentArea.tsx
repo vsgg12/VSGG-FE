@@ -3,7 +3,7 @@ import Image from 'next/image';
 import getComments from '@/api/comment/getComments';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import MoreModal from '@/components/modals/MoreModal';
-import Icon_more from '../../../../public/svg/Icon_more.svg';
+import Icon_more from '../../../../../public/svg/Icon_more.svg';
 import { useQuery } from '@tanstack/react-query';
 import PostCommentItem from './PostCommentItem';
 import { useRouter } from 'next/navigation';
@@ -89,8 +89,14 @@ function PostCommentArea({ postId }: Props) {
                 onClick={() => handleOpenReply(comment.id)}
                 className='my-[5px] text-[12px] font-medium text-primary-500 flex items-center gap-[6px]'
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="1" viewBox="0 0 19 1" fill="none">
-                  <path d="M0 0.5H19" stroke="currentColor"/>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='19'
+                  height='1'
+                  viewBox='0 0 19 1'
+                  fill='none'
+                >
+                  <path d='M0 0.5H19' stroke='currentColor' />
                 </svg>
                 {showReply === comment.id
                   ? '답글 숨기기'

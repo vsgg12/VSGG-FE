@@ -3,40 +3,30 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import getPostList from '@/api/post/getPostList';
-import Loading from '@/components/Loading';
-import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
 import useSearchStore from '@/app/home/store/useSearchStore';
-import NewPopularToggleButton from './_component/NewPopularToggleButton';
-import AlignModeToggleButton from './_component/AlignModeToggleButton';
 import useIsMobile from '@/hooks/useIsMobile';
-import HomeMobile from './mobile/HomeMobile';
-import PostItem from './desktop/PostItem';
-import PostCommentArea from './desktop/PostCommentArea';
-import WritePost from './desktop/WritePost';
 import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
 import useBodyScrollLock from '@/hooks/sidebar/useBodyScrollLock';
-import ListPostItem from './_component/ListPostItem';
-import Sidebar from '@/components/sidebar/Sidebar';
-import { useLoginStore } from '@/store/login/useLoginStore';
 import { useWriteStore } from '@/store/write/useWriteStore';
+import dynamic from 'next/dynamic';
+import Loading from '@/components/Loading';
 
 interface Props {
   isMobileUA: boolean;
 }
 
+const HomeMobile = dynamic(() => import('./mobile/HomeMobile'), { loading: () => <Loading /> });
+const HomeDesktop = dynamic(() => import('./desktop/HomeDesktop'), {
+  loading: () => <Loading />,
+});
+
 const HomeClient = ({ isMobileUA }: Props) => {
-  const router = useRouter();
   const isMobile = useIsMobile(isMobileUA);
-
   const [activeButton, setActiveButton] = useState<string>('createdatetime');
-  const [isListed, setIsListed] = useState<boolean>(false);
-  const [showCommentPostId, setShowCommentPostId] = useState<number>(-1);
   const loaderRef = useRef<HTMLDivElement | null>(null);
-
   const { isLogin, accessToken } = useAuthStore.getState();
   const { keyword } = useSearchStore();
-  const { setIsLoginModalOpen } = useLoginStore();
   const { isNotificationOpen, isSearchOpen, setRouteState } = useSidebarStore();
   const { fetchAllChampions } = useWriteStore();
 
@@ -123,86 +113,15 @@ const HomeClient = ({ isMobileUA }: Props) => {
     };
   }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // 글쓰기 버튼 이벤트
-  const handleWriteClick = (): void => {
-    if (!isLogin) {
-      setIsLoginModalOpen(true);
-      return;
-    }
-    router.push('/post/selectUpload');
+  const viewProps = {
+    postData: visiblePosts,
+    isLoading,
+    isFetchingNextPage,
+    loaderRef,
+    activeButton,
+    setActiveButton,
   };
-
-  return (
-    <>
-      {isMobile ? (
-        <HomeMobile
-          postData={visiblePosts}
-          isLoading={isLoading}
-          isFetchingNextPage={isFetchingNextPage}
-          loaderRef={loaderRef}
-          activeButton={activeButton}
-          setActiveButton={setActiveButton}
-        />
-      ) : (
-        <div className='flex min-h-screen w-screen items-start justify-center bg-semantic-background-page pl-[260px] text-semantic-text-primary'>
-          <Sidebar />
-          <section
-            className={`flex flex-col relative ${isListed ? 'min-w-[1022px]' : 'min-w-[698px]'} mt-[40px]`}
-          >
-            <WritePost handleWriteClick={handleWriteClick} isListed={isListed} />
-            <div
-              className={`${isListed ? 'w-full' : 'w-[640px]'} mb-[40px] mt-[40px] flex flex-row items-center justify-between`}
-            >
-              <NewPopularToggleButton
-                activeButton={activeButton}
-                setActiveButton={setActiveButton}
-              />
-              <AlignModeToggleButton isListed={isListed} setIsListed={setIsListed} isHome={true} />
-            </div>
-
-            <div
-              className={`${isListed ? 'grid grid-cols-3 gap-[30px]' : 'flex flex-col gap-[40px]'}`}
-            >
-              {isLoading ? (
-                <Loading />
-              ) : visiblePosts.length === 0 ? (
-                <div className='flex w-full flex-col flex-grow items-center justify-center text-semantic-text-muted'>
-                  현재 작성된 게시물이 없습니다.
-                </div>
-              ) : (
-                visiblePosts.map((post) =>
-                  isListed ? (
-                    <ListPostItem post={post} key={post.id} />
-                  ) : (
-                    <div className='relative' key={post.id}>
-                      <PostItem
-                        post={post}
-                        voteInfos={post.inGameInfoList}
-                        showCommentPostId={showCommentPostId}
-                        setShowCommentPostId={setShowCommentPostId}
-                      />
-                      {showCommentPostId === post.id && (
-                        <div className='h-full pt-[48px] absolute bottom-0 left-full translate-x-[10px]'>
-                          <PostCommentArea postId={post.id} />
-                        </div>
-                      )}
-                    </div>
-                  ),
-                )
-              )}
-              {/* 스크롤 시 데이터를 불러오는 중일 때의 로딩 처리 (선택 사항) */}
-              {isFetchingNextPage && (
-                <div className='text-center py-4'>게시물을 불러오는 중입니다...</div>
-              )}
-            </div>
-
-            {/* Observer Target */}
-            <div ref={loaderRef} style={{ minHeight: '30px' }} />
-          </section>
-        </div>
-      )}
-    </>
-  );
+  return isMobile ? <HomeMobile {...viewProps} /> : <HomeDesktop {...viewProps} />;
 };
 
 export default HomeClient;

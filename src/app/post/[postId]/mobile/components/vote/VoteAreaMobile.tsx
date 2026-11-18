@@ -7,8 +7,8 @@ import PostVote from '@/api/vote/postVote';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import usePostIdStore from '../../../store/usePostIdStore';
 import VoteFormMobile from './VoteFormMobile';
-import ChampionVoteBoxMobile from '@/app/home/mobile/component/ChampionVoteBoxMobile';
-import ClaimVoteBoxMobile from '@/app/home/mobile/component/ClaimVoteBoxMobile';
+import ChampionVoteBoxMobile from '@/app/home/mobile/_components/ChampionVoteBoxMobile';
+import ClaimVoteBoxMobile from '@/app/home/mobile/_components/ClaimVoteBoxMobile';
 
 interface IVoteAreaMobile {
   voteData: IGetInGameInfoType[];

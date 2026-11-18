@@ -3,12 +3,12 @@
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
 import { Dispatch, Ref, SetStateAction, useState } from 'react';
-import ListedPostItemMobile from './component/ListedPostItemMobile';
-import PostItemMobile from './component/PostItemMobile';
+import ListedPostItemMobile from './_components/ListedPostItemMobile';
+import PostItemMobile from './_components/PostItemMobile';
 import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 import AlignModeToggleButton from '../_component/AlignModeToggleButton';
 import HorizontalBannerSwiper from '@/components/sidebar/banner/HorizontalBannerSwiper';
-import WritePostMobile from './component/WritePostMobile';
+import WritePostMobile from './_components/WritePostMobile';
 
 interface Props {
   postData: IGetPostDTOType[];
