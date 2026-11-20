@@ -6,9 +6,13 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useLoginStore } from '@/store/login/useLoginStore';
 import { defaultImage } from '@/constants/defaultImage';
+import useIsHydrated from '@/hooks/useIsHydrated';
 
 function ProfileInfo() {
-  const { isLogin, accessToken, user } = useAuthStore();
+  const { isLogin: persistedIsLogin, accessToken, user } = useAuthStore();
+  // 서버는 로그인 여부를 모르므로 hydration 중에는 비로그인 상태로 렌더링 (hydration mismatch 방지)
+  const isHydrated = useIsHydrated();
+  const isLogin = isHydrated && persistedIsLogin;
   const { getIcon } = useProfileTierIcon({ size: 16 });
 
   const [isHovered, setIsHovered] = useState<boolean>(false);

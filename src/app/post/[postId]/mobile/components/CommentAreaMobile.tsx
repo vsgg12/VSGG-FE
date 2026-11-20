@@ -36,7 +36,7 @@ function CommentAreaMobile({ setIsLoginModalOpen }: ICommentArea) {
   const { getValues } = commentMethods;
 
   const { data: commentData } = useQuery({
-    queryKey: ['COMMENTS'],
+    queryKey: ['COMMENTS', postId],
     queryFn: async () => getComments(id),
   });
 

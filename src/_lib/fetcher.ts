@@ -1,5 +1,6 @@
 'use client';
 import { useAuthStore } from '@/app/login/store/useAuthStore';
+import { ApiError, fetchCore } from '@/_lib/fetchCore';
 
 interface IFetchOptions<T = unknown> {
   endpoint: string;
@@ -52,85 +53,50 @@ const _fetch = async <T = unknown, R = unknown>({
   body,
   authorization,
 }: IFetchOptions<T>): Promise<R> => {
-  const headers: HeadersInit = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  };
-
-  if (authorization) {
-    headers.Authorization = 'Bearer ' + authorization;
-  }
-
-  const requestOptions: RequestInit = {
-    method,
-    headers,
-    credentials: 'include',
-  };
-
-  if (body instanceof FormData) {
-    delete headers['Content-Type'];
-    requestOptions.body = body;
-  } else if (body) {
-    requestOptions.body = JSON.stringify(body);
-  }
+  const request = (token?: string) =>
+    fetchCore<R, T>({ method, endpoint, body, authorization: token, credentials: 'include' });
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`, requestOptions);
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        const { refreshToken } = useAuthStore.getState();
-        if (refreshToken) {
-          try {
-            const newToken: IPostRefreshType = await postRefresh(refreshToken);
-            if (newToken.resultCode === 200) {
-              useAuthStore.setState({
-                isLogin: true,
-                accessToken: newToken.tokens.accessToken,
-                refreshToken: newToken.tokens.refreshToken,
-              });
-              headers.Authorization = 'Bearer ' + newToken.tokens.accessToken;
-
-              // 새로운 요청 옵션을 생성하여 재시도
-              const retryRequestOptions: RequestInit = {
-                method,
-                headers,
-                credentials: 'include',
-              };
-
-              if (body) {
-                retryRequestOptions.body = JSON.stringify(body);
-              }
-
-              // 재요청
-              const retryRes = await fetch(
-                `${process.env.NEXT_PUBLIC_PROXY_URL}${endpoint}`,
-                retryRequestOptions,
-              );
-
-              if (!retryRes.ok) {
-                const retryErrorData = await retryRes.json();
-                throw new Error(retryErrorData.message);
-              }
-              return await retryRes.json();
-            }
-          } catch (err) {
-            // 토큰 재발급 오류
-            throw new Error('Session expired. Please log in again.');
-          }
-        } else {
-          // 로컬에 refreshToken이 없을경우
-          useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
-          window.location.reload();
-          throw new Error('Session expired. Please log in again.');
-        }
-      }
-      const { resultMsg } = await res.json();
-      throw new Error(resultMsg);
-    }
-    return await res.json();
+    return await request(authorization);
   } catch (error) {
-    throw error;
+    // 401이 아닌 에러는 그대로 전달
+    if (!(error instanceof ApiError) || error.status !== 401) {
+      throw error;
+    }
+
+    const { refreshToken } = useAuthStore.getState();
+
+    // 로컬에 refreshToken이 없을경우
+    if (!refreshToken) {
+      useAuthStore.setState({ isLogin: false, accessToken: '', refreshToken: '' });
+      window.location.reload();
+      throw new Error('Session expired. Please log in again.');
+    }
+
+    let newToken: IPostRefreshType;
+    try {
+      newToken = await postRefresh(refreshToken);
+    } catch (err) {
+      // 토큰 재발급 오류
+      throw new Error('Session expired. Please log in again.');
+    }
+
+    if (newToken.resultCode !== 200) {
+      throw error;
+    }
+
+    useAuthStore.setState({
+      isLogin: true,
+      accessToken: newToken.tokens.accessToken,
+      refreshToken: newToken.tokens.refreshToken,
+    });
+
+    // 새 토큰으로 재요청
+    try {
+      return await request(newToken.tokens.accessToken);
+    } catch (err) {
+      throw new Error('Session expired. Please log in again.');
+    }
   }
 };
 

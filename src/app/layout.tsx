@@ -11,6 +11,14 @@ import { colors } from '@/constants/colors';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// localStorage의 sidebar-storage(zustand persist)에서 다크모드 여부를 읽어 바로 적용
+const themeInitScript = `
+try {
+  var stored = JSON.parse(localStorage.getItem('sidebar-storage') || '{}');
+  document.documentElement.dataset.theme = stored.state && stored.state.isDarkMode ? 'dark' : 'light';
+} catch (e) {}
+`;
+
 export const metadata: Metadata = {
   title: '리그 오브 레전드(LoL) 과실 판결 커뮤니티 VS.GG',
   description:
@@ -78,8 +86,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko' className='root-bg'>
+    // suppressHydrationWarning: 아래 스크립트가 hydration 전에 data-theme을 바꾸므로 html 속성 불일치 경고를 끔
+    <html lang='ko' className='root-bg' data-theme='light' suppressHydrationWarning>
       <head>
+        {/* 첫 페인트 전에 저장된 테마를 적용해 다크모드 사용자의 라이트모드 깜빡임 방지 */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Script defer src='https://cdn.swygbro.com/public/widget/swyg-widget.js'></Script>
 
         {/* Google tag (gtag.js) */}

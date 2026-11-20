@@ -1,5 +1,3 @@
-import ReactQuill from 'react-quill';
-
 //회원가입 - 백엔드로 보내는 용
 export interface ICreateMemberProps {
   token: string;
@@ -51,11 +49,6 @@ export interface ICreateVoteProps {
 }
 
 export type ICreateVotingDataProps = ICreateVoteProps[];
-
-//react-quill
-export interface IWrappedComponent extends React.ComponentProps<typeof ReactQuill> {
-  forwardedRef: LegacyRef<ReactQuill>;
-}
 
 //image
 interface ICreateImageData {

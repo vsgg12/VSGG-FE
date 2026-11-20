@@ -12,7 +12,7 @@ import {
 interface Props {
   post: IGetPostDTOType;
 }
-const videoStyle = 'w-[286px] h-[166px] rounded-[10px] aspect-video';
+const videoStyle = 'w-[286px] h-[166px] rounded-[10px] aspect-video object-cover';
 
 function ListPostItem({ post }: Props) {
   const timeAgo = useTimeDifferenceFromNow(post.createdAt);
@@ -31,7 +31,7 @@ function ListPostItem({ post }: Props) {
     >
       <div className='relative'>
         {post.thumbnailURL ? (
-          <img className={videoStyle} src={post.thumbnailURL} />
+          <img className={videoStyle} src={post.thumbnailURL} alt={post.title} />
         ) : post.video.type === 'FILE' ? (
           <video
             muted

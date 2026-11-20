@@ -2,21 +2,19 @@
 
 import Loading from '@/components/Loading';
 import MainHeader from '@/components/mobile/Headers/MainHeader';
-import { Dispatch, Ref, SetStateAction, useEffect, useState } from 'react';
-import useSearchStore from '../store/useSearchStore';
-import ListedPostItemMobile from './component/ListedPostItemMobile';
-import PostItemMobile from './component/PostItemMobile';
+import { Dispatch, Ref, SetStateAction, useState } from 'react';
+import ListedPostItemMobile from './_components/ListedPostItemMobile';
+import PostItemMobile from './_components/PostItemMobile';
 import NewPopularToggleButton from '../_component/NewPopularToggleButton';
 import AlignModeToggleButton from '../_component/AlignModeToggleButton';
 import HorizontalBannerSwiper from '@/components/sidebar/banner/HorizontalBannerSwiper';
-import WritePostMobile from './component/WritePostMobile';
+import WritePostMobile from './_components/WritePostMobile';
 
 interface Props {
   postData: IGetPostDTOType[];
   isLoading: boolean;
   isFetchingNextPage: boolean;
   loaderRef: Ref<HTMLDivElement>;
-  refetch: () => void;
   activeButton: string;
   setActiveButton: Dispatch<SetStateAction<string>>;
 }
@@ -26,11 +24,9 @@ export default function HomeMobile({
   isLoading,
   isFetchingNextPage,
   loaderRef,
-  refetch,
   activeButton,
   setActiveButton,
 }: Props) {
-  const { keyword } = useSearchStore();
   const [isListed, setIsListed] = useState<boolean>(false);
 
   // const router = useRouter();
@@ -44,12 +40,6 @@ export default function HomeMobile({
   //   }
   //   router.push('/post/selectUpload');
   // };
-
-  useEffect(() => {
-    if (keyword === '') {
-      refetch();
-    }
-  }, [keyword, refetch, postData]);
 
   return (
     <div className='w-full h-[100dvh] bg-semantic-background-page'>

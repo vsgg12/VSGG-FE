@@ -1,5 +1,5 @@
 import React from 'react';
-import Default_Profile from '../../../../public/svg/defaultProfile.svg';
+import Default_Profile from '../../../../../public/svg/defaultProfile.svg';
 import Image from 'next/image';
 
 interface Props {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSidebarStore } from '@/store/sidebar/useSidebarStore';
+import useIsDarkMode from '@/hooks/useIsDarkMode';
 
 interface IconProps {
   className?: string;
@@ -44,7 +44,7 @@ const POST_ITEM_ICON_SRC: Record<string, PostItemIconSrc> = {
 };
 
 function usePostItemIconSrc(icon: keyof typeof POST_ITEM_ICON_SRC, isRed = false) {
-  const isDarkMode = useSidebarStore((state) => state.isDarkMode);
+  const isDarkMode = useIsDarkMode();
 
   const iconSrc = POST_ITEM_ICON_SRC[icon];
 

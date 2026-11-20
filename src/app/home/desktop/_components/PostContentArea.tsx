@@ -12,14 +12,14 @@ import {
   ViewActionIcon,
   VoteActionIcon,
 } from '@/components/common/icons/PostActionIcons';
-import ClaimVoteBox from '../../../components/common/vote/claim/ClaimVoteBox';
+import ClaimVoteBox from '../../../../components/common/vote/claim/ClaimVoteBox';
 
 interface Props {
   post: IGetPostDTOType;
   voteInfos: IGetInGameInfoType[];
 }
 
-const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video ';
+const videoStyle = 'w-[526px] h-[296px] rounded-[20px] aspect-video object-cover';
 
 function PostContentArea({ post, voteInfos }: Props) {
   const router = useRouter();
@@ -148,6 +148,7 @@ function PostContentArea({ post, voteInfos }: Props) {
             muted
             controls
             autoPlay
+            preload='none'
             poster={post.thumbnailURL}
             className={`block visible ${videoStyle}`}
             onClick={(e) => e.stopPropagation}
@@ -160,13 +161,14 @@ function PostContentArea({ post, voteInfos }: Props) {
             className={videoStyle}
             src={post.thumbnailURL}
             onClick={handleImageClick}
-            alt={'thumbnail'}
+            alt={post.title}
           />
         ) : post.video.type === 'FILE' ? (
           <video
             muted
             controls
             playsInline
+            preload='none'
             poster={post.thumbnailURL}
             className={`block visible ${videoStyle}`}
           >

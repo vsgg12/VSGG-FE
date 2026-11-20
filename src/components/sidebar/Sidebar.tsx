@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
+import useIsMobile from '@/hooks/useIsMobile';
 import Logo from '../Logo';
 import HorizontalBannerSwiper from './banner/HorizontalBannerSwiper';
 import SidebarList from './list/SidebarList';
@@ -23,7 +23,7 @@ function Sidebar() {
   const { isNotificationOpen, setIsNotificationOpen, isSearchOpen, setIsSearchOpen } =
     useSidebarStore();
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useIsMobile();
 
   const { data: alarmData } = useQuery({
     queryKey: ['alarms'],
